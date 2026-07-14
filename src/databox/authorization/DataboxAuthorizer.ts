@@ -2,6 +2,15 @@ import type { PermissionMap } from '../../authorization/permissions/Permissions'
 import { PermissionReader } from '../../authorization/PermissionReader';
 import { IdentifierMap } from '../../util/map/IdentifierMap';
 
+// Re-export the DBX-14 composed-authorizer modules through this file so the existing barrel line
+// `export * from './authorization/DataboxAuthorizer'` (src/databox/index.ts, which DBX-14 may NOT edit)
+// carries every new public symbol transitively — mirroring the DBX-11 TenantResolver re-export pattern.
+export * from './AuthorizationReasonCodes';
+export * from './ComposedAuthorizationEngine';
+export * from './ComposedDataboxPermissionReader';
+export * from './DataboxAuthorizationInput';
+export * from './SafeStepUpResponse';
+
 /**
  * The composed Databox authorizer seam (component C4, DBX-04 §2).
  *
