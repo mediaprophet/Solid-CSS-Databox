@@ -42,6 +42,9 @@ export * from './odrl/TermSupport';
 // Deposit/submission gateway (C7, DBX-15)
 export * from './gateway/DepositSubmissionGateway';
 
+// Verifiable record proof validation (C7/C16, DBX-16)
+export * from './proof/RecordProofValidator';
+
 // Connection credential lifecycle (C7/C9/C16, DBX-13)
 export * from './credential/BitstringStatusList';
 export * from './credential/ConnectionCredentialIssuer';
