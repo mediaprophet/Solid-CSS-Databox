@@ -18,7 +18,7 @@ describe('A RandomOpaqueIdentifierGenerator', (): void => {
   });
 
   it('mints identifiers of at least 128 bits of entropy (>= 32 hex chars).', (): void => {
-    const { path } = generator.generate('');
+    const { path } = generator.generate();
     const id = path.slice(BASE.length, -1);
     // 16 bytes -> 32 lowercase hex characters.
     expect(id).toMatch(/^[0-9a-f]{32}$/u);
@@ -27,20 +27,20 @@ describe('A RandomOpaqueIdentifierGenerator', (): void => {
 
   it('honours a larger requested entropy.', (): void => {
     const wide = new RandomOpaqueIdentifierGenerator(BASE, 32);
-    const id = wide.generate('').path.slice(BASE.length, -1);
+    const id = wide.generate().path.slice(BASE.length, -1);
     expect(id).toMatch(/^[0-9a-f]{64}$/u);
   });
 
   it('ensures a trailing slash on the base.', (): void => {
     const noSlash = new RandomOpaqueIdentifierGenerator('https://databox.example/boxes');
-    expect(noSlash.generate('').path.startsWith('https://databox.example/boxes/')).toBe(true);
+    expect(noSlash.generate().path.startsWith('https://databox.example/boxes/')).toBe(true);
   });
 
   it('produces non-sequential, unique, unpredictable identifiers (T-06 enumeration).', (): void => {
     const ids = new Set<string>();
     let previous = '';
     for (let i = 0; i < 1000; i++) {
-      const id = generator.generate('').path;
+      const id = generator.generate().path;
       ids.add(id);
       // No two consecutive ids share a common prefix beyond the base (no counter/sequence structure).
       const previousSuffix = previous.slice(BASE.length);
