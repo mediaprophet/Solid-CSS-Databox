@@ -12,6 +12,11 @@ Follows decisions/ADR-TEMPLATE.md exactly.
 - **Consumed by / blocks prompts:** DBX-04 (topology/discovery surface), DBX-10 (opaque box identifiers / provisioning), DBX-11 (per-program tenant isolation). Also consumed by DBX-06, DBX-07.
 - **Relates to:** ADR-0016 (integration plane and protected relationship/customer→box mapping — the server-side mapping this ADR mandates), ADR-0021 (encryption boundary — provider/program payload confidentiality below the ACL layer), ADR-0024 (Track separation), ADR-0025 (Solid interoperability guarantee — the advertised topology must stay standard-discoverable).
 
+> **See also [ADR-0026](ADR-0026-deployment-and-customer-onboarding.md):** the primary deployment is one
+> organisation, one installed instance, many customer boxes (tenant = `(organisation, program)`, customers
+> = opaque boxes within it). Multi-program / shared-provider tenancy below is the outer ring, not required
+> for the single-organisation case.
+
 ## Context
 
 Before any authorization, credential or exchange decision can be made, the register must fix *what a Databox is* as a Solid entity and *who controls it*. S-02 asks whether the Databox is presented as a Solid storage, a resource subtree, or another advertised service, and warns against "claiming personal Pod ownership where the organisation is custodian". S-24 asks who the LWS storage controller is for an organisation-hosted Databox and answers: the accountable organisation normally controls the storage, the consumer is the protected assignee/rights-holder, and governance/redress/non-waivable rights are encoded **separately** from storage control. Getting this wrong in either direction is dangerous: calling the Databox the consumer's Pod would falsely imply Pod-owner control over institutional evidence and a right to overwrite append-only records (implementation-decisions.md warns Solid compatibility "does not imply … Pod-owner control over institutional evidence, or permission to overwrite append-only records"); but letting "the organisation controls storage" imply custody erases the consumer's legal rights is exactly the failure standards-roadmap.md flags — "Documentation and UI must not imply that institutional custody eliminates consumer legal rights or redress."
