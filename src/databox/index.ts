@@ -38,3 +38,13 @@ export * from './profile/InstitutionProfileValidator';
 // ODRL vocabulary & profile (C12, DBX-07)
 export * from './odrl/terms';
 export * from './odrl/TermSupport';
+
+// Connection credential lifecycle (C7/C9/C16, DBX-13)
+export * from './credential/BitstringStatusList';
+export * from './credential/ConnectionCredentialIssuer';
+export * from './credential/ConnectionCredentialRegistry';
+export * from './credential/ConnectionCredentialTypes';
+export * from './credential/ConnectionCredentialValidator';
+export * from './credential/Es256';
+export * from './credential/HolderKeyProof';
+export * from './credential/ProvisionalTokenExchange';
