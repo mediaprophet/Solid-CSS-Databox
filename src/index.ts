@@ -619,6 +619,16 @@ export * from './util/templates/StaticTemplateEngine';
 export * from './util/templates/TemplateEngine';
 export * from './util/templates/TemplateUtil';
 
+// Databox (DBX-09 scaffold — see databox/handoffs/DBX-09.md)
+export * from './databox/authorization/DataboxAuthorizer';
+export * from './databox/context/AuthenticatedContextExtractor';
+export * from './databox/context/DataboxRequestContext';
+export * from './databox/evidence/Evidence';
+export * from './databox/feed/CursorFeed';
+export * from './databox/identifiers/OpaqueIdentifierGenerator';
+export * from './databox/storage/AppendOnlyStore';
+export * from './databox/tenant/TenantResolver';
+
 // Util
 export * from './util/ContentTypes';
 export * from './util/FetchUtil';
