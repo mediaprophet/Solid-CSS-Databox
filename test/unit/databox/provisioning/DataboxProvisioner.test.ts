@@ -85,12 +85,31 @@ describe('A DataboxProvisioner', (): void => {
     });
 
     it('keeps the raw customerId out of every emitted id / path / record (invariant 2).', async(): Promise<void> => {
-      const { provisioner, registry } = makeProvisioner();
+      const registry = new InMemoryRelationshipMappingRegistry();
+      // Inject a DETERMINISTIC, digit-free box id so the non-leakage assertions below are structural, not
+      // probabilistic (a random hex id contains a short substring like '42' ~11% of the time by chance).
+      // The spy also proves the customerId never reaches the generator — the id cannot be name-derived.
+      const generateArgs: string[] = [];
+      const stubGenerator = {
+        opaque: true as const,
+        generate: (name: string): { path: string } => {
+          generateArgs.push(name);
+          return { path: `${BASE}boxaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/` };
+        },
+        extractPod: (identifier: { path: string }): { path: string } => identifier,
+      };
+      const provisioner = new DataboxProvisioner(stubGenerator, registry, {
+        relationshipIdFactory: (): string => 'rel-1',
+        clock: (): string => '2026-07-15T00:00:00.000Z',
+      });
       const result = await provisioner.provision(freshProfile(), key({ customerId: 'SECRET-CUSTOMER-42' }), WEBID);
 
+      // The generator was invoked WITHOUT any customer data, so the box id cannot be customer-derived.
+      expect(generateArgs).toEqual([ '' ]);
       const emitted = JSON.stringify(result);
       expect(emitted).not.toContain('SECRET-CUSTOMER-42');
-      expect(result.databox.boxId).not.toContain('42');
+      expect(emitted).not.toContain('42');
+      expect(result.databox.boxId).toBe('boxaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
       expect(result.relationship).not.toHaveProperty('customerId');
       // The raw customerId is retained ONLY inside the registry, reachable only via the control-plane path.
       await expect(registry.resolveCustomer(result.relationship.relationshipId))
