@@ -1,0 +1,20 @@
+# Enforce LF line endings for all text files across platforms.
+# The repository is canonically LF (CI/lint require it); this prevents Windows
+# checkouts (core.autocrlf=true) from producing CRLF working trees that fail
+# the eslint `linebreak-style` rule.
+* text=auto eol=lf
+
+# Binary files must never be line-ending converted.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
+*.pdf binary
+*.gz binary
+*.zip binary
