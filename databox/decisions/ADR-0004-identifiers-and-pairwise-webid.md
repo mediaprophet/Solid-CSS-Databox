@@ -8,10 +8,10 @@
 - **Consumed by / blocks prompts:** DBX-07, DBX-10, DBX-13, DBX-24, HAK-01, HAK-03, HAK-06.
 - **Relates to:** ADR-0002 (opaque box IDs), ADR-0007 (holder binding), ADR-0016 (mapping registry).
 
-> **See also [ADR-0026](ADR-0026-deployment-and-customer-onboarding.md):** in the single-organisation
-> mass-onboarding case the pairwise consumer WebID is **unclaimed** during Tier-1 (portal) access and
-> becomes **claimed** (holder-key bound) only when the customer connects a vault (Tier 2). The organisation
-> MUST NOT persist an organisation-controlled consumer key — see ADR-0026 for that lifecycle.
+> **See also [ADR-0026](ADR-0026-deployment-and-customer-onboarding.md):** each customer accesses their
+> org-hosted databox through **their own Solid-compatible pod**, so the pairwise consumer WebID is
+> controlled by the customer's own pod from the start. The organisation MUST NOT mint or persist an
+> organisation-controlled consumer key or interpose a portal as the access path.
 
 ## Context
 Isolation (invariant 1, isolation-and-privacy.md) requires that no organisation and no shared provider

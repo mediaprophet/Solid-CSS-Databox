@@ -49,7 +49,7 @@ input that unblocks them and the prompts they block.
 | [0023](ADR-0023-record-awareness-access-correction.md) | Record awareness, access & correction | Adopted (CDR profile = candidate) | legal-policy | DBX-14, DBX-23 |
 | [0024](ADR-0024-track-separation-and-experimental-isolation.md) | Track separation & experimental isolation | Adopted | — | DBX-09, DBX-27, DBX-28 |
 | [0025](ADR-0025-solid-interoperability-guarantee.md) | Solid interoperability guarantee | Adopted | — | DBX-05, DBX-24, DBX-27 |
-| [0026](ADR-0026-deployment-and-customer-onboarding.md) | Single-org deployment & two-tier customer onboarding | Adopted (vault-required = Profile choice) | identity, privacy | DBX-13, DBX-24, new portal prompt |
+| [0026](ADR-0026-deployment-and-customer-onboarding.md) | Single-org deployment & consumer-pod access | Adopted (consumer pod required) | identity, privacy | DBX-13, DBX-24 |
 
 ## 3. Coverage — implementation-review items (1–18)
 
