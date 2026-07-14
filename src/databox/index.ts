@@ -5,6 +5,7 @@
 // Context (C3)
 export * from './context/AuthenticatedContextExtractor';
 export * from './context/DataboxRequestContext';
+export * from './context/AssuranceCrosswalk';
 
 // Tenant (C5)
 export * from './tenant/TenantResolver';
@@ -17,6 +18,11 @@ export * from './storage/AppendOnlyStore';
 
 // Identifiers (C10)
 export * from './identifiers/OpaqueIdentifierGenerator';
+
+// Provisioning & relationship mapping (C10/C11, DBX-10)
+export * from './provisioning/ProvisioningTypes';
+export * from './provisioning/RelationshipMappingRegistry';
+export * from './provisioning/DataboxProvisioner';
 
 // Evidence & receipts (C13/C19)
 export * from './evidence/Evidence';
