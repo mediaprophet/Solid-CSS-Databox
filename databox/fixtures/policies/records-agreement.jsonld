@@ -1,0 +1,58 @@
+{
+  "@context": [
+    "http://www.w3.org/ns/odrl.jsonld",
+    {
+      "dbx": "https://w3id.org/solid-databox/ns#",
+      "syntheticFixture": { "@id": "dbx:syntheticFixture", "@type": "http://www.w3.org/2001/XMLSchema#boolean" }
+    }
+  ],
+  "@type": "Agreement",
+  "uid": "https://databox.megamart-rewards.example/policies/records-v1",
+  "profile": "https://w3id.org/solid-databox/odrl-profile/v1",
+  "syntheticFixture": true,
+  "conflict": "dbx:prohibitOverrides",
+  "permission": [
+    {
+      "target": "https://databox.megamart-rewards.example/boxes/bx_syn_9c21e0a7/records/",
+      "assigner": "https://id.megamart-rewards.example/id#organisation",
+      "assignee": "https://wallet.example/id/program/megamart#me",
+      "action": [ "read", "use" ],
+      "constraint": [
+        { "leftOperand": "dbx:declaredPurpose", "operator": "eq", "rightOperand": "dbx:personalRecordkeeping" },
+        { "leftOperand": "dbx:minimumAssurance", "operator": "gteq", "rightOperand": "high" }
+      ]
+    }
+  ],
+  "prohibition": [
+    {
+      "target": "https://databox.megamart-rewards.example/boxes/bx_syn_9c21e0a7/records/",
+      "assigner": "https://wallet.example/id/program/megamart#me",
+      "assignee": "https://id.megamart-rewards.example/id#organisation",
+      "action": "distribute",
+      "constraint": [
+        { "leftOperand": "recipient", "operator": "isA", "rightOperand": "dbx:otherProgram" }
+      ]
+    }
+  ],
+  "obligation": [
+    {
+      "assigner": "https://id.megamart-rewards.example/id#organisation",
+      "assignee": "https://databox.megamart-rewards.example/id#provider",
+      "action": "dbx:deposit",
+      "duty": [
+        { "action": "dbx:makeAvailable" },
+        { "action": "dbx:issueReceipt" },
+        { "action": "dbx:retainEvidence" }
+      ]
+    },
+    {
+      "assigner": "https://id.megamart-rewards.example/id#organisation",
+      "assignee": "https://databox.megamart-rewards.example/id#provider",
+      "action": "dbx:makeRecordKnown",
+      "consequence": [
+        { "action": "dbx:provideAccessRoute" },
+        { "action": "dbx:notifyPriorRecipient" }
+      ]
+    }
+  ]
+}

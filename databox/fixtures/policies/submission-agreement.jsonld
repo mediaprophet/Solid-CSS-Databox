@@ -1,0 +1,39 @@
+{
+  "@context": [
+    "http://www.w3.org/ns/odrl.jsonld",
+    {
+      "dbx": "https://w3id.org/solid-databox/ns#",
+      "syntheticFixture": { "@id": "dbx:syntheticFixture", "@type": "http://www.w3.org/2001/XMLSchema#boolean" }
+    }
+  ],
+  "@type": "Agreement",
+  "uid": "https://databox.megamart-rewards.example/policies/submissions-v1",
+  "profile": "https://w3id.org/solid-databox/odrl-profile/v1",
+  "syntheticFixture": true,
+  "conflict": "dbx:prohibitOverrides",
+  "permission": [
+    {
+      "target": "https://databox.megamart-rewards.example/boxes/bx_syn_9c21e0a7/submissions/",
+      "assigner": "https://databox.megamart-rewards.example/id#provider",
+      "assignee": "https://wallet.example/id/program/megamart#me",
+      "action": "dbx:submit",
+      "constraint": [
+        { "leftOperand": "dbx:recordClass", "operator": "eq", "rightOperand": "sc-correction" },
+        { "leftOperand": "dbx:minimumAssurance", "operator": "gteq", "rightOperand": "basic" }
+      ],
+      "duty": [
+        { "action": "dbx:issueReceipt" },
+        {
+          "action": "dbx:stageForReview",
+          "consequence": [
+            { "action": "dbx:recordDisposition" },
+            { "action": "dbx:acknowledgeCorrection" },
+            { "action": "dbx:assessCorrection" },
+            { "action": "dbx:correctOrAssociateStatement" },
+            { "action": "dbx:provideComplaintRoute" }
+          ]
+        }
+      ]
+    }
+  ]
+}

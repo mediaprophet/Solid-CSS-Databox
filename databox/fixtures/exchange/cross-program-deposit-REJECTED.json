@@ -1,0 +1,14 @@
+{
+  "syntheticFixture": true,
+  "expectedOutcome": "REJECTED",
+  "expectedReason": "tenant-mismatch",
+  "note": "NEGATIVE isolation fixture (HD-16 / CR-SRV-02 / CR-BRG-01). A deposit that presents this program's record but is addressed at a DIFFERENT synthetic program's origin/relationship MUST fail closed with a non-leaking tenant-mismatch deny. It must never land cross-tenant. This program is prog-megamart-rewards-loyalty; the foreign program below is a separate synthetic tenant.",
+  "recordClass": "rc-receipt",
+  "homeProgram": "prog-megamart-rewards-loyalty",
+  "homeOrigin": "https://databox.megamart-rewards.example/",
+  "foreignProgram": "prog-otherco-loyalty",
+  "foreignOrigin": "https://databox.otherco-loyalty.example/",
+  "foreignRelationshipId": "rel_syn_OTHERCO_11aa22bb",
+  "attemptedTarget": "https://databox.otherco-loyalty.example/boxes/bx_syn_OTHER/records/receipts/rcpt_syn_0001",
+  "attemptedAudience": "https://databox.otherco-loyalty.example/"
+}

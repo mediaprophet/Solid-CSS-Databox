@@ -1,0 +1,22 @@
+{
+  "@context": [
+    "http://www.w3.org/ns/odrl.jsonld",
+    {
+      "dbx": "https://w3id.org/solid-databox/ns#",
+      "syntheticFixture": { "@id": "dbx:syntheticFixture", "@type": "http://www.w3.org/2001/XMLSchema#boolean" }
+    }
+  ],
+  "@type": "Agreement",
+  "uid": "https://databox.megamart-rewards.example/policies/invalid-unknown-action-v1",
+  "profile": "https://w3id.org/solid-databox/odrl-profile/v1",
+  "syntheticFixture": true,
+  "_comment": "NEGATIVE fixture. MUST FAIL closed: the permission action dbx:exfiltrate is NOT an enumerated term in the Databox ODRL profile, so checkTermSupport returns reason 'unsupported-term' and the policy is rejected at ingestion (ADR-0013 fail-closed; unknown terms never default-permit).",
+  "permission": [
+    {
+      "target": "https://databox.megamart-rewards.example/boxes/bx_syn_9c21e0a7/records/",
+      "assigner": "https://id.megamart-rewards.example/id#organisation",
+      "assignee": "https://wallet.example/id/program/megamart#me",
+      "action": "dbx:exfiltrate"
+    }
+  ]
+}

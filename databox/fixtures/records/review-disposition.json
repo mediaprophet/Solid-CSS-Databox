@@ -1,0 +1,30 @@
+{
+  "syntheticFixture": true,
+  "assuranceClass": "high",
+  "recordClass": "rc-disposition",
+  "program": "prog-megamart-rewards-loyalty",
+  "sourceSystem": "sor-care",
+  "relationshipId": "rel_syn_7f3a9c2148d0",
+  "box": "bx_syn_9c21e0a7",
+  "resource": "https://databox.megamart-rewards.example/boxes/bx_syn_9c21e0a7/records/dispositions/disp_syn_0001",
+  "idempotencyKey": "megamart-rewards/loyalty/care/disposition/evt_syn_0005",
+  "policyRef": "https://databox.megamart-rewards.example/policies/records-v1",
+  "respondsToSubmission": "sub_syn_correction_0001",
+  "acceptanceReceipt": {
+    "eventId": "evt_syn_0005",
+    "recordDigest": "urn:sha256:SYNTHETIC-record-disposition-0001",
+    "policyDigest": "urn:sha256:SYNTHETIC-compiled-loyalty-0001",
+    "signature": "SYNTHETIC-es256-signature-disposition-0001"
+  },
+  "payload": {
+    "dispositionId": "disp_syn_0001",
+    "outcome": "correction-applied",
+    "dutyState": "Accepted",
+    "correctedRecord": "rcpt_syn_0001",
+    "correctionSummary": "Synthetic: line item 2 quantity corrected from 3 to 2.",
+    "assessedAt": "2026-03-05T00:00:00Z",
+    "reviewer": "staff_syn_agent_17",
+    "reasons": "Synthetic reviewer note: point-of-sale scan error confirmed.",
+    "priorRecipientsNotified": [ "notifyPriorRecipient:none" ]
+  }
+}
