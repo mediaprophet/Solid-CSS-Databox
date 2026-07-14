@@ -1,0 +1,21 @@
+{
+  "@context": [
+    "http://www.w3.org/ns/odrl.jsonld",
+    {
+      "dbx": "https://w3id.org/solid-databox/ns#",
+      "syntheticFixture": { "@id": "dbx:syntheticFixture", "@type": "http://www.w3.org/2001/XMLSchema#boolean" }
+    }
+  ],
+  "@type": "Agreement",
+  "uid": "https://databox.megamart-rewards.example/policies/invalid-notifyholder-v1",
+  "profile": "https://w3id.org/solid-databox/odrl-profile/v1",
+  "syntheticFixture": true,
+  "_comment": "NEGATIVE fixture. MUST FAIL closed: the obligation action dbx:notifyHolder is the DEPRECATED alias (DEPRECATED_TERMS / owl:deprecated), so checkTermSupport returns reason 'deprecated-term' and the policy is rejected at ingestion (ADR-0012/0013).",
+  "obligation": [
+    {
+      "assigner": "https://databox.megamart-rewards.example/id#provider",
+      "assignee": "https://wallet.example/id/program/megamart#me",
+      "action": "dbx:notifyHolder"
+    }
+  ]
+}

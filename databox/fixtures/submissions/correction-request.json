@@ -1,0 +1,25 @@
+{
+  "syntheticFixture": true,
+  "submissionClass": "sc-correction",
+  "program": "prog-megamart-rewards-loyalty",
+  "relationshipId": "rel_syn_7f3a9c2148d0",
+  "box": "bx_syn_9c21e0a7",
+  "target": "https://databox.megamart-rewards.example/boxes/bx_syn_9c21e0a7/submissions/",
+  "resource": "https://databox.megamart-rewards.example/boxes/bx_syn_9c21e0a7/submissions/sub_syn_correction_0001",
+  "purpose": "p-correction",
+  "policyRef": "https://databox.megamart-rewards.example/policies/submissions-v1",
+  "acceptanceReceipt": {
+    "eventId": "evt_syn_0101",
+    "recordDigest": "urn:sha256:SYNTHETIC-submission-correction-0001",
+    "policyDigest": "urn:sha256:SYNTHETIC-compiled-loyalty-0001",
+    "signature": "SYNTHETIC-es256-signature-submission-0101"
+  },
+  "payload": {
+    "submissionId": "sub_syn_correction_0001",
+    "aboutRecord": "rcpt_syn_0001",
+    "field": "lineItems[1].quantity",
+    "assertedValue": 2,
+    "statement": "Synthetic: I was charged for 3 loaves but bought 2.",
+    "submittedAt": "2026-03-02T08:00:00Z"
+  }
+}

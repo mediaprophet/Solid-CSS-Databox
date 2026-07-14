@@ -1,0 +1,55 @@
+{
+  "syntheticFixture": true,
+  "assuranceClass": "high",
+  "recordClass": "rc-receipt",
+  "program": "prog-megamart-rewards-loyalty",
+  "sourceSystem": "sor-pos",
+  "relationshipId": "rel_syn_7f3a9c2148d0",
+  "box": "bx_syn_9c21e0a7",
+  "resource": "https://databox.megamart-rewards.example/boxes/bx_syn_9c21e0a7/records/receipts/rcpt_syn_0001",
+  "idempotencyKey": "megamart-rewards/loyalty/pos/receipt/evt_syn_0001",
+  "policyRef": "https://databox.megamart-rewards.example/policies/records-v1",
+  "acceptanceReceipt": {
+    "eventId": "evt_syn_0001",
+    "recordDigest": "urn:sha256:SYNTHETIC-record-receipt-0001",
+    "policyDigest": "urn:sha256:SYNTHETIC-compiled-loyalty-0001",
+    "signature": "SYNTHETIC-es256-signature-receipt-0001"
+  },
+  "payload": {
+    "receiptId": "rcpt_syn_0001",
+    "purchasedAt": "2026-02-10T09:31:00Z",
+    "storeRef": "store_syn_042",
+    "currency": "AUD",
+    "totalInclTax": 42.85,
+    "lineItems": [
+      {
+        "lineId": 1,
+        "productRef": "sku_syn_peanut_butter_375g",
+        "description": "Synthetic Crunchy Peanut Butter 375g",
+        "quantity": 1,
+        "unitPrice": 4.5,
+        "allergens": [ "peanut" ],
+        "dietary": [ "vegetarian" ]
+      },
+      {
+        "lineId": 2,
+        "productRef": "sku_syn_wholemeal_bread",
+        "description": "Synthetic Wholemeal Bread Loaf",
+        "quantity": 2,
+        "unitPrice": 3.2,
+        "allergens": [ "gluten", "wheat", "soy" ],
+        "dietary": [ "vegan" ]
+      },
+      {
+        "lineId": 3,
+        "productRef": "sku_syn_cordless_kettle",
+        "description": "Synthetic 1.7L Cordless Kettle",
+        "quantity": 1,
+        "unitPrice": 31.95,
+        "allergens": [],
+        "warrantyRef": "warr_syn_0001"
+      }
+    ],
+    "rewardsEarned": { "points": 42, "statementRef": "rwd_syn_0001" }
+  }
+}

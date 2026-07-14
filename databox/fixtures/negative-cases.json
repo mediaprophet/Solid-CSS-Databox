@@ -1,0 +1,54 @@
+{
+  "syntheticFixture": true,
+  "note": "Each negative profile is the valid loyalty profile with ONE seeded fail-closed violation. loadInstitutionProfile MUST throw and validateInstitutionProfile MUST report the expectedCode.",
+  "cases": [
+    {
+      "file": "neg-unsatisfiable-assurance.json",
+      "expectedCode": "unsatisfiable-assurance"
+    },
+    {
+      "file": "neg-destructive-retention.json",
+      "expectedCode": "destructive-retention"
+    },
+    {
+      "file": "neg-blocked-compliance-claim.json",
+      "expectedCode": "blocked-compliance-claim"
+    },
+    {
+      "file": "neg-blocked-provider-blind.json",
+      "expectedCode": "blocked-provider-blind"
+    },
+    {
+      "file": "neg-unattested-policy.json",
+      "expectedCode": "unattested-policy"
+    },
+    {
+      "file": "neg-audience-not-program-bound.json",
+      "expectedCode": "audience-not-program-bound"
+    },
+    {
+      "file": "neg-unknown-field.json",
+      "expectedCode": "unknown-field"
+    },
+    {
+      "file": "neg-corpus-digest-mismatch.json",
+      "expectedCode": "corpus-digest-mismatch"
+    },
+    {
+      "file": "neg-shared-platform-key.json",
+      "expectedCode": "shared-platform-key"
+    },
+    {
+      "file": "neg-unauthorized-retroactive.json",
+      "expectedCode": "unauthorized-retroactive"
+    },
+    {
+      "file": "neg-dangling-purpose.json",
+      "expectedCode": "dangling-ref"
+    },
+    {
+      "file": "neg-uncovered-record-class.json",
+      "expectedCode": "uncovered-record-class"
+    }
+  ]
+}

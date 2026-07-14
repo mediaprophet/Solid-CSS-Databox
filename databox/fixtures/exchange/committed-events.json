@@ -1,0 +1,14 @@
+{
+  "syntheticFixture": true,
+  "program": "prog-megamart-rewards-loyalty",
+  "tenantId": "tnt_syn_megamart",
+  "note": "Synthetic CursorFeed (C15) page: opaque committed events for exactly-once recovery. Payload carries only opaque references, never protected content (IF-08/IF-09).",
+  "events": [
+    { "cursor": "cur_syn_0001", "tenantId": "tnt_syn_megamart", "resourceRef": "res_syn_rcpt_0001", "activity": "Create" },
+    { "cursor": "cur_syn_0002", "tenantId": "tnt_syn_megamart", "resourceRef": "res_syn_warr_0001", "activity": "Create" },
+    { "cursor": "cur_syn_0003", "tenantId": "tnt_syn_megamart", "resourceRef": "res_syn_recall_0001", "activity": "Create" },
+    { "cursor": "cur_syn_0004", "tenantId": "tnt_syn_megamart", "resourceRef": "res_syn_rwd_0001", "activity": "Create" },
+    { "cursor": "cur_syn_0005", "tenantId": "tnt_syn_megamart", "resourceRef": "res_syn_disp_0001", "activity": "Create" }
+  ],
+  "nextCursor": "cur_syn_0005"
+}
