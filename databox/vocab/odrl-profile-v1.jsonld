@@ -1,0 +1,66 @@
+{
+  "@context": {
+    "dbx": "https://w3id.org/solid-databox/ns#",
+    "odrl": "http://www.w3.org/ns/odrl/2/",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "profile": { "@id": "odrl:profile", "@type": "@id" },
+    "hasAction": { "@id": "skos:member", "@type": "@id" },
+    "hasLeftOperand": { "@id": "skos:member", "@type": "@id" },
+    "hasRightOperand": { "@id": "skos:member", "@type": "@id" },
+    "hasConflictStrategy": { "@id": "skos:member", "@type": "@id" },
+    "hasDutyState": { "@id": "skos:member", "@type": "@id" },
+    "hasSourceRank": { "@id": "skos:member", "@type": "@id" },
+    "reusesFromOdrl": { "@id": "dcterms:references", "@type": "@id" }
+  },
+  "@id": "https://w3id.org/solid-databox/odrl-profile/v1",
+  "@type": "odrl:Profile",
+  "dcterms:title": "Solid Databox ODRL Profile v1",
+  "owl:versionInfo": "1.0.0",
+  "dcterms:conformsTo": { "@id": "http://www.w3.org/ns/odrl/2/" },
+  "rdfs:comment": "Versioned ODRL profile for the Solid Databox extension. It enumerates the custom dbx: actions, operands, duty actions, duty states, conflict strategies and policy-source ranks a conforming evaluator MUST recognise, and points at the ODRL Core terms it reuses. A policy that references this profile IRI and uses a term NOT enumerated here (or its SHACL shapes) MUST fail closed (ADR-0013). This profile asserts operational semantics only; no attested legal content (ADR-0015).",
+
+  "reusesFromOdrl": [
+    "odrl:read", "odrl:use", "odrl:distribute", "odrl:reproduce", "odrl:delete",
+    "odrl:recipient", "odrl:purpose", "odrl:dateTime", "odrl:elapsedTime",
+    "odrl:eq", "odrl:neq", "odrl:gt", "odrl:gteq", "odrl:lt", "odrl:lteq",
+    "odrl:isA", "odrl:isPartOf", "odrl:isAnyOf", "odrl:isAllOf", "odrl:isNoneOf",
+    "odrl:consequence", "odrl:remedy", "odrl:conflict", "odrl:duty", "odrl:obligation"
+  ],
+
+  "hasAction": [
+    "dbx:deposit", "dbx:submit",
+    "dbx:makeAvailable", "dbx:signalHolder", "dbx:deliverToInbox", "dbx:acknowledge",
+    "dbx:issueReceipt", "dbx:stageForReview",
+    "dbx:recordDisposition", "dbx:makeRecordKnown", "dbx:provideAccessRoute",
+    "dbx:acknowledgeCorrection", "dbx:assessCorrection", "dbx:correctOrAssociateStatement",
+    "dbx:notifyPriorRecipient", "dbx:provideReasons", "dbx:provideComplaintRoute",
+    "dbx:retainEvidence", "dbx:tombstone"
+  ],
+
+  "hasLeftOperand": [
+    "dbx:declaredPurpose", "dbx:minimumAssurance", "dbx:recordClass", "dbx:retentionPeriod"
+  ],
+
+  "hasRightOperand": [
+    "dbx:otherProgram", "dbx:personalRecordkeeping"
+  ],
+
+  "hasConflictStrategy": [
+    "dbx:prohibitOverrides", "dbx:moreProtectiveWins"
+  ],
+
+  "hasDutyState": [
+    "dbx:Queued", "dbx:Attempted", "dbx:Accepted", "dbx:Failed",
+    "dbx:Remedied", "dbx:Acknowledged", "dbx:Superseded"
+  ],
+
+  "hasSourceRank": [
+    "dbx:mandatoryBaseline", "dbx:guardianPolicy", "dbx:userPreference"
+  ],
+
+  "dcterms:isReplacedBy": [],
+  "dbx:deprecatedTerm": [ "dbx:notifyHolder" ]
+}

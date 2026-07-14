@@ -1,0 +1,412 @@
+@prefix dbx:     <https://w3id.org/solid-databox/ns#> .
+@prefix odrl:    <http://www.w3.org/ns/odrl/2/> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+
+#################################################################
+#  Databox vocabulary (dbx:) — machine-loadable term definitions
+#  Prompt DBX-07. Stable IRI base: https://w3id.org/solid-databox/ns#
+#
+#  Reuse rule (rights-and-obligations.md): ODRL Core/Common terms are
+#  reused wherever they exist; a dbx: term is defined ONLY for a domain
+#  concept ODRL lacks. Every term below carries: a stable IRI, an
+#  rdfs:comment giving DETERMINISTIC processing semantics, and (for
+#  duties) an ADR-0012 fulfilment condition. Unknown/unsupported terms
+#  MUST fail closed (ADR-0013); the runtime evaluator MUST NOT interpret
+#  legislation (ADR-0015).
+#
+#  This file asserts TECHNICAL/OPERATIONAL semantics only. It asserts NO
+#  attested legal interpretation; the WebCivics/legal mapping is a
+#  loss-aware SHAPE with deferred, human-attested content (ADR-0015).
+#################################################################
+
+dbx: a owl:Ontology ;
+  dcterms:title "Solid Databox ODRL vocabulary"@en ;
+  dcterms:description "Custom ODRL actions, operands, constraints, duties, duty states, consequences, remedies, conflict strategies, policy-source ranks and versioning terms for the Solid Databox extension. Operational semantics only; no attested legal content (ADR-0015)."@en ;
+  owl:versionInfo "1.0.0" ;
+  dcterms:conformsTo <http://www.w3.org/ns/odrl/2/> ;
+  rdfs:seeAlso <https://w3id.org/solid-databox/odrl-profile/v1> ;
+  dcterms:isDefinedBy <https://w3id.org/solid-databox/odrl-profile/v1> .
+
+#################################################################
+#  Classes
+#################################################################
+
+dbx:DutyAction a rdfs:Class, owl:Class ;
+  rdfs:subClassOf odrl:Action ;
+  rdfs:label "Databox duty action"@en ;
+  rdfs:comment "An odrl:Action used as the action of an odrl:Duty whose fulfilment condition is fixed by ADR-0012. A worker MUST NOT upgrade or downgrade the guarantee the action names."@en ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:DutyState a rdfs:Class, owl:Class ;
+  rdfs:label "Duty fulfilment state"@en ;
+  rdfs:comment "One state of the ADR-0012 duty state machine. States are pairwise distinct; only dbx:Accepted (and dbx:Acknowledged for acknowledgement duties) count as fulfilled. Every transition is an append-only evidence event."@en ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:ConflictStrategy a rdfs:Class, owl:Class ;
+  rdfs:label "ODRL conflict strategy"@en ;
+  rdfs:comment "A supported value of odrl:conflict for stage 3 of the ADR-0013 composition. Only strategies that cannot broaden a denial are supported; an unsupported strategy in a genuine conflict fails closed."@en ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:PolicySourceRank a rdfs:Class, owl:Class ;
+  rdfs:label "Policy source rank"@en ;
+  rdfs:comment "A WebCivics source rank (ADR-0013 stage 2). Higher rank outranks lower on the same action; ties resolve to the more protective outcome. Ordered by dbx:rankOrder (lower number = higher authority)."@en ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:UpdateEffect a rdfs:Class, owl:Class ;
+  rdfs:label "Policy update effect"@en ;
+  rdfs:comment "How a policy version applies to already-accepted assets (ADR-0014). dbx:Prospective is the safe default; dbx:AuthorizedRetroactive requires explicit attested authorisation."@en ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:Purpose a rdfs:Class, owl:Class ;
+  rdfs:subClassOf skos:Concept ;
+  rdfs:label "Declared purpose"@en ;
+  rdfs:comment "A value class for the dbx:declaredPurpose left operand. Purposes are matched by exact IRI/literal equality; an unknown purpose fails closed."@en ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:PartyClass a rdfs:Class, owl:Class ;
+  rdfs:label "Party class"@en ;
+  rdfs:comment "A class of party used as a constraint right operand (e.g. odrl:recipient isA dbx:otherProgram)."@en ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:AssuranceLevel a rdfs:Class, owl:Class ;
+  rdfs:label "Assurance level (referenced)"@en ;
+  rdfs:comment "Value class for the dbx:minimumAssurance left operand. The concrete level instances and their ordering are OWNED by the ADR-0010 assurance crosswalk and referenced here, NOT redefined. An assurance value not present in the deployment's ADR-0010 crosswalk fails closed."@en ;
+  rdfs:isDefinedBy dbx: .
+
+#################################################################
+#  Properties (constraint operands + versioning binding tuple)
+#################################################################
+
+dbx:rankOrder a rdf:Property, owl:DatatypeProperty ;
+  rdfs:domain dbx:PolicySourceRank ;
+  rdfs:range xsd:integer ;
+  rdfs:label "rank order"@en ;
+  rdfs:comment "Total order over policy source ranks; a strictly smaller value is strictly more authoritative (ADR-0013 stage 2)."@en ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:effectiveFrom a rdf:Property, owl:DatatypeProperty ;
+  rdfs:range xsd:dateTime ;
+  rdfs:label "effective from"@en ;
+  rdfs:comment "Inclusive wall-clock/legal time from which a policy version governs (ADR-0014). Distinct from authored/committed time."@en ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:effectiveUntil a rdf:Property, owl:DatatypeProperty ;
+  rdfs:range xsd:dateTime ;
+  rdfs:label "effective until"@en ;
+  rdfs:comment "Optional exclusive upper bound of a policy version's effective interval (ADR-0014). Overlapping intervals for one asset class fail closed."@en ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:updateEffect a rdf:Property, owl:ObjectProperty ;
+  rdfs:range dbx:UpdateEffect ;
+  rdfs:label "update effect"@en ;
+  rdfs:comment "Declares, per affected asset class, whether the version is dbx:Prospective or dbx:AuthorizedRetroactive (ADR-0014). Absent ⇒ treated as dbx:Prospective."@en ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:affectedAssetClass a rdf:Property, owl:DatatypeProperty ;
+  rdfs:label "affected asset class"@en ;
+  rdfs:comment "A record/submission class a policy version governs. Governing-version selection matches (class, time) deterministically (ADR-0014)."@en ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:supersedes a rdf:Property, owl:ObjectProperty ;
+  rdfs:label "supersedes"@en ;
+  rdfs:comment "Links a policy version to the immutable prior version it replaces. History is never rewritten; the prior version stays resolvable (ADR-0014)."@en ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:compiledPolicyDigest a rdf:Property, owl:DatatypeProperty ;
+  rdfs:label "compiled-policy digest"@en ;
+  rdfs:comment "Canonical content digest of the compiled policy bytes. Part of the multi-digest binding that proves the governing corpus (ADR-0014/0019). A bare version string is insufficient."@en ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:corpusManifestDigest a rdf:Property, owl:DatatypeProperty ;
+  rdfs:label "corpus-manifest digest"@en ;
+  rdfs:comment "Digest of the immutable corpus manifest (source URI, jurisdiction, expression/version, retrieval time, media type, content digest, provenance). An ELI does NOT substitute for it (ADR-0015)."@en ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:profileDigest a rdf:Property, owl:DatatypeProperty ;
+  rdfs:label "profile digest"@en ;
+  rdfs:comment "Pinned digest of the Databox ODRL profile version a policy conforms to (offline verification, ADR-0025)."@en ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:evaluatorVersion a rdf:Property, owl:DatatypeProperty ;
+  rdfs:label "evaluator version"@en ;
+  rdfs:comment "Evaluator-compatibility marker recorded with a decision so a past decision is reproducible (ADR-0014/0019). Incompatible ⇒ not admitted."@en ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:attestation a rdf:Property, owl:ObjectProperty ;
+  rdfs:label "attestation"@en ;
+  rdfs:comment "Reference to the human attestation record (attester identity, method, verification-state, scope, signature) that promotes a proposed mapping to admissible (ADR-0015). ABSENCE ⇒ status proposed ⇒ NOT admissible; the runtime fails closed."@en ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:attestationStatus a rdf:Property, owl:DatatypeProperty ;
+  rdfs:label "attestation status"@en ;
+  rdfs:comment "Either \"proposed\" or \"attested\". A machine-produced mapping is \"proposed\" and MUST NOT be admitted to a runtime bundle until an authorized human sets \"attested\" (ADR-0015)."@en ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:syntheticFixture a rdf:Property, owl:DatatypeProperty ;
+  rdfs:range xsd:boolean ;
+  rdfs:label "synthetic fixture"@en ;
+  rdfs:comment "Machine-readable label marking a policy as a clearly synthetic test fixture (ADR-0015). A true value means the artifact makes NO legal-compliance claim and MUST NOT be admitted as attested legal content."@en ;
+  rdfs:isDefinedBy dbx: .
+
+#################################################################
+#  Actions (odrl:Action) — only where ODRL Core lacks a term
+#  Reuse for existing concepts: odrl:read, odrl:use, odrl:distribute,
+#  odrl:reproduce, odrl:delete — DO NOT redefine these.
+#################################################################
+
+dbx:deposit a odrl:Action, skos:Concept ;
+  skos:broader odrl:use ;
+  rdfs:label "deposit"@en ;
+  rdfs:comment "An organisation deposits a canonical, policy-bound record into a Databox via authenticated create. Distinct from odrl:distribute: deposit is create-into-append-only-store, not onward disclosure."@en ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:submit a odrl:Action, skos:Concept ;
+  skos:broader odrl:use ;
+  rdfs:label "submit"@en ;
+  rdfs:comment "A consumer appends a purpose-specific submission to a governed submission container. A submission is staged for review, never applied directly to a system of record."@en ;
+  rdfs:isDefinedBy dbx: .
+
+#################################################################
+#  Duty actions (ADR-0012). Each fulfilment condition names the ONLY
+#  state that counts as dbx:Accepted. queued/attempted != fulfilled.
+#################################################################
+
+dbx:makeAvailable a odrl:Action, dbx:DutyAction, skos:Concept ;
+  rdfs:label "make available"@en ;
+  rdfs:comment "FULFILLED iff the target resource AND its ordered event are durably committed and retrievable via authenticated GET. Availability is separate from receipt issuance."@en ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:signalHolder a odrl:Action, dbx:DutyAction, skos:Concept ;
+  rdfs:label "signal holder"@en ;
+  rdfs:comment "FULFILLED iff an eligible notification signal was ACCEPTED by the selected channel (channel returned success). Delivery/read is NOT implied. The signal carries only an opaque event id, never record content."@en ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:deliverToInbox a odrl:Action, dbx:DutyAction, skos:Concept ;
+  rdfs:label "deliver to inbox"@en ;
+  rdfs:comment "FULFILLED iff a success response from the registered durable inbox was received. A local POST attempt is insufficient. Vocabulary-only until DBX-21 lands; MUST NOT back a fulfilment claim before then."@en ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:acknowledge a odrl:Action, dbx:DutyAction, skos:Concept ;
+  rdfs:label "acknowledge"@en ;
+  rdfs:comment "FULFILLED iff an authenticated consumer/vault acknowledgement referencing the event is durably recorded, reaching the SEPARATE terminal state dbx:Acknowledged from accepted delivery. Never inferred from dbx:signalHolder or dbx:makeAvailable. Vocabulary-only until DBX-21."@en ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:issueReceipt a odrl:Action, dbx:DutyAction, skos:Concept ;
+  rdfs:label "issue receipt"@en ;
+  rdfs:comment "FULFILLED iff a valid signed receipt is durably committed and returned synchronously or retrievable. A receipt MUST NOT be returned before durable acceptance of the operation it attests."@en ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:stageForReview a odrl:Action, dbx:DutyAction, skos:Concept ;
+  rdfs:label "stage for review"@en ;
+  rdfs:comment "FULFILLED iff the submission is durably present in the governed review queue (not merely POSTed to a container)."@en ;
+  rdfs:isDefinedBy dbx: .
+
+# Correction / awareness / redress duties (ADR-0023; reuse the ADR-0012 machine).
+dbx:recordDisposition a odrl:Action, dbx:DutyAction, skos:Concept ;
+  rdfs:label "record disposition"@en ;
+  rdfs:comment "FULFILLED iff a governed review outcome (supersede, linked statement, partial correction, reasoned no-change, or redirect) is durably appended and linked to the originating submission/correction."@en ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:makeRecordKnown a odrl:Action, dbx:DutyAction, skos:Concept ;
+  rdfs:label "make record known"@en ;
+  rdfs:comment "FULFILLED iff the existence of a record is disclosed to the eligible holder through the minimised, authorised awareness channel."@en ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:provideAccessRoute a odrl:Action, dbx:DutyAction, skos:Concept ;
+  rdfs:label "provide access route"@en ;
+  rdfs:comment "FULFILLED iff a resolvable, authenticated access route to a known record is durably provided to the eligible holder."@en ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:acknowledgeCorrection a odrl:Action, dbx:DutyAction, skos:Concept ;
+  rdfs:label "acknowledge correction"@en ;
+  rdfs:comment "FULFILLED iff a signed acknowledgement of a correction request, carrying accepted time, applicable response profile and due time, is durably committed. Accepting a request is NOT assessing it."@en ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:assessCorrection a odrl:Action, dbx:DutyAction, skos:Concept ;
+  rdfs:label "assess correction"@en ;
+  rdfs:comment "FULFILLED iff a governed assessment of the correction is durably recorded within its due time. Assessing is NOT correcting the source."@en ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:correctOrAssociateStatement a odrl:Action, dbx:DutyAction, skos:Concept ;
+  rdfs:label "correct or associate statement"@en ;
+  rdfs:comment "FULFILLED iff a superseding record OR a conspicuously linked consumer statement is durably appended per the assessment outcome (ADR-0018 supersession, never in-place edit)."@en ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:notifyPriorRecipient a odrl:Action, dbx:DutyAction, skos:Concept ;
+  rdfs:label "notify prior recipient"@en ;
+  rdfs:comment "FULFILLED iff, per eligible prior recipient, one independently tracked signalling obligation reaches its accepted state. A notification hint is NOT evidence the recipient's copy was corrected."@en ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:provideReasons a odrl:Action, dbx:DutyAction, skos:Concept ;
+  rdfs:label "provide reasons"@en ;
+  rdfs:comment "FULFILLED iff the reasoned basis of a disposition is durably provided in the consumer-visible projection. Usable as an odrl:consequence/odrl:remedy action."@en ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:provideComplaintRoute a odrl:Action, dbx:DutyAction, skos:Concept ;
+  rdfs:label "provide complaint route"@en ;
+  rdfs:comment "FULFILLED iff a resolvable complaint/appeal route is durably provided to the consumer. Usable as an odrl:consequence/odrl:remedy action."@en ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:retainEvidence a odrl:Action, dbx:DutyAction, skos:Concept ;
+  rdfs:label "retain evidence"@en ;
+  rdfs:comment "FULFILLED iff the applicable evidence is durably retained for its retention period in the append-only ledger. Later provider deletion MUST NOT invalidate an already-issued receipt."@en ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:tombstone a odrl:Action, dbx:DutyAction, skos:Concept ;
+  rdfs:label "tombstone"@en ;
+  rdfs:comment "FULFILLED iff a lawful-deletion tombstone plus its evidence event are durably appended (ADR-0018). Tombstoning is append-only; it never erases the historical evidence chain."@en ;
+  rdfs:isDefinedBy dbx: .
+
+# Deprecated alias — the compiler REJECTS it with a diagnostic (ADR-0012).
+dbx:notifyHolder a odrl:Action ;
+  owl:deprecated true ;
+  rdfs:label "notify holder (DEPRECATED)"@en ;
+  rdfs:comment "DEPRECATED and NON-ADMISSIBLE (ADR-0012). Its undefined fulfilment condition hid the queued/attempted/accepted distinction. Replaced by the typed duties dbx:signalHolder / dbx:deliverToInbox / dbx:acknowledge. A policy using it fails closed."@en ;
+  dcterms:isReplacedBy dbx:signalHolder ;
+  rdfs:isDefinedBy dbx: .
+
+#################################################################
+#  Left operands (odrl:LeftOperand)
+#  Reuse: odrl:recipient, odrl:purpose (where a plain purpose fits),
+#  odrl:dateTime, odrl:elapsedTime — DO NOT redefine.
+#################################################################
+
+dbx:declaredPurpose a odrl:LeftOperand, skos:Concept ;
+  rdfs:label "declared purpose"@en ;
+  rdfs:comment "The purpose a party declares for an action. Matched by exact equality (odrl:eq) against a dbx:Purpose value; an undeclared or unknown purpose fails closed. Distinct from odrl:purpose in that it is the party's asserted, auditable declaration."@en ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:minimumAssurance a odrl:LeftOperand, skos:Concept ;
+  rdfs:label "minimum assurance"@en ;
+  rdfs:comment "Minimum authentication assurance required for an action. Compared (odrl:gteq) against the request's current assurance using the ADR-0010 ordering. Insufficient assurance ⇒ denial regardless of any permission (ADR-0013 stage 1)."@en ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:recordClass a odrl:LeftOperand, skos:Concept ;
+  rdfs:label "record class"@en ;
+  rdfs:comment "The class of the target record/submission. Matched by exact equality; used to bind rules to stable asset classes rather than per-resource policies."@en ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:retentionPeriod a odrl:LeftOperand, skos:Concept ;
+  rdfs:label "retention period"@en ;
+  rdfs:comment "Duration for which a record MUST remain available. Compared against elapsed time (odrl:lteq/odrl:gteq) with an xsd:duration right operand. Expiry of retention does not delete evidence (ADR-0014)."@en ;
+  rdfs:isDefinedBy dbx: .
+
+#################################################################
+#  Right operands / value classes
+#################################################################
+
+dbx:otherProgram a odrl:RightOperand, dbx:PartyClass, skos:Concept ;
+  rdfs:label "other program"@en ;
+  rdfs:comment "The class of any loyalty/program party other than the one bound to the relationship. Used as: odrl:recipient odrl:isA dbx:otherProgram. Disclosure to this class is the canonical prohibition; cross-program reach also fails the ADR-0013 stage-1 invariant."@en ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:personalRecordkeeping a dbx:Purpose ;
+  rdfs:label "personal recordkeeping"@en ;
+  rdfs:comment "A declared purpose value: retaining a record for the person's own recordkeeping. Synthetic example value; carries no legal meaning by itself."@en ;
+  skos:inScheme dbx:PurposeScheme ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:PurposeScheme a skos:ConceptScheme ;
+  rdfs:label "Databox declared-purpose scheme"@en ;
+  rdfs:comment "Open scheme of declared-purpose values. Deployment profiles extend it; a purpose not in the deployment's admitted set fails closed."@en ;
+  rdfs:isDefinedBy dbx: .
+
+#################################################################
+#  Duty fulfilment states (ADR-0012)
+#################################################################
+
+dbx:Queued a dbx:DutyState ;
+  rdfs:label "queued"@en ;
+  rdfs:comment "The duty instance exists and is scheduled. NOT fulfilled. A queued task is never proof of fulfilment."@en ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:Attempted a dbx:DutyState ;
+  rdfs:label "attempted"@en ;
+  rdfs:comment "A side effect was attempted but its fulfilment condition is not yet observed. NOT fulfilled."@en ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:Accepted a dbx:DutyState ;
+  rdfs:label "accepted"@en ;
+  rdfs:comment "The duty's fulfilment condition is observed and durably recorded. This is the ONLY generally-fulfilling state. Bound to a specific evidence digest."@en ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:Failed a dbx:DutyState ;
+  rdfs:label "failed"@en ;
+  rdfs:comment "The fulfilment condition was not reached within the due time. First-class, audit-visible and retryable; activates the declared consequence/remedy. Notification failure MUST NOT roll back an accepted deposit."@en ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:Remedied a dbx:DutyState ;
+  rdfs:label "remedied"@en ;
+  rdfs:comment "A consequence/remedy path was applied after dbx:Failed. Recorded as new evidence; never rewrites the failure."@en ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:Acknowledged a dbx:DutyState ;
+  rdfs:label "acknowledged"@en ;
+  rdfs:comment "SEPARATE terminal fulfilling state reachable ONLY for dbx:acknowledge, and only from accepted delivery. Never inferred from a signal or availability."@en ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:Superseded a dbx:DutyState ;
+  rdfs:label "superseded"@en ;
+  rdfs:comment "The duty instance was cancelled/superseded by an authorized policy event (ADR-0014). Terminal, non-fulfilling."@en ;
+  rdfs:isDefinedBy dbx: .
+
+#################################################################
+#  Conflict strategies (odrl:conflict values supported at ADR-0013 stage 3)
+#################################################################
+
+dbx:prohibitOverrides a dbx:ConflictStrategy ;
+  rdfs:label "prohibit overrides"@en ;
+  rdfs:comment "Within a single source rank, a prohibition overrides a conflicting permission. Aligned with odrl:prohibit. Safe: it can only subtract from the allowed set."@en ;
+  owl:sameAs odrl:prohibit ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:moreProtectiveWins a dbx:ConflictStrategy ;
+  rdfs:label "more protective wins"@en ;
+  rdfs:comment "The Databox default tie rule (ADR-0013 stage 2): on equal rank and opposite outcome, the more protective result is chosen (prohibited over permitted; a safeguarding duty retained over its omission). Applied when no odrl:conflict is declared."@en ;
+  rdfs:isDefinedBy dbx: .
+
+# NOTE (documentary): a permit-overrides strategy is intentionally NOT a
+# member of dbx:ConflictStrategy. A permit-wins operand that would override a
+# prohibition is unsupported and fails closed (ADR-0013 stage 5); it is not
+# expressible as a relaxable rule in this profile.
+
+#################################################################
+#  Policy source ranks (ADR-0013 stage 2)
+#################################################################
+
+dbx:mandatoryBaseline a dbx:PolicySourceRank ;
+  dbx:rankOrder 1 ;
+  rdfs:label "mandatory baseline"@en ;
+  rdfs:comment "Highest authority source rank. Outranks guardian policy and user preference on the same action."@en ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:guardianPolicy a dbx:PolicySourceRank ;
+  dbx:rankOrder 2 ;
+  rdfs:label "guardian policy"@en ;
+  rdfs:comment "Middle authority source rank. Outranks user preference; outranked by mandatory baseline."@en ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:userPreference a dbx:PolicySourceRank ;
+  dbx:rankOrder 3 ;
+  rdfs:label "user preference"@en ;
+  rdfs:comment "Lowest authority source rank. Never silently defeats a higher rank; recency is handled by effective-time versioning, not by rank (ADR-0013/0014)."@en ;
+  rdfs:isDefinedBy dbx: .
+
+#################################################################
+#  Update effects (ADR-0014)
+#################################################################
+
+dbx:Prospective a dbx:UpdateEffect ;
+  rdfs:label "prospective"@en ;
+  rdfs:comment "Governs only assets accepted at or after dbx:effectiveFrom; existing assets keep their governing version. The safe default."@en ;
+  rdfs:isDefinedBy dbx: .
+
+dbx:AuthorizedRetroactive a dbx:UpdateEffect ;
+  rdfs:label "authorized retroactive"@en ;
+  rdfs:comment "Re-evaluates existing assets of named classes from dbx:effectiveFrom. Permitted ONLY under explicit attested authorisation (ADR-0015); changes obligations going forward, never historical bytes or evidence. Absent authorisation ⇒ treated as dbx:Prospective."@en ;
+  rdfs:isDefinedBy dbx: .

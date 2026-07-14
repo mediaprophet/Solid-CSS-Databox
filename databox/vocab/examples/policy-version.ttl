@@ -1,0 +1,29 @@
+@prefix dbx:  <https://w3id.org/solid-databox/ns#> .
+@prefix odrl: <http://www.w3.org/ns/odrl/2/> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+# SYNTHETIC policy-version metadata fixture (ADR-0014). Valid against
+# dbx:PolicyVersionShape. Makes NO legal-compliance claim (dbx:syntheticFixture).
+<https://databox.example/policies/retail-receipt-v1>
+  a odrl:Agreement ;
+  dbx:syntheticFixture true ;
+  odrl:profile <https://w3id.org/solid-databox/odrl-profile/v1> ;
+  dbx:effectiveFrom "2026-07-15T00:00:00Z"^^xsd:dateTime ;
+  dbx:updateEffect dbx:Prospective ;
+  dbx:affectedAssetClass "retail-receipt" ;
+  dbx:supersedes <https://databox.example/policies/retail-receipt-v0> ;
+  dbx:profileDigest "urn:sha256:PLACEHOLDER-profile-digest" .
+
+# SYNTHETIC compiled bundle. Valid against dbx:CompiledBundleShape ONLY because
+# it carries the full binding tuple AND an attested attestation. Removing the
+# attestation (or setting attestationStatus "proposed") makes it inadmissible
+# (ADR-0015 fail closed).
+<https://databox.example/bundles/retail-receipt-v1>
+  a dbx:CompiledPolicyBundle ;
+  dbx:syntheticFixture true ;
+  dbx:compiledPolicyDigest "urn:sha256:PLACEHOLDER-compiled-digest" ;
+  dbx:corpusManifestDigest "urn:sha256:PLACEHOLDER-corpus-digest" ;
+  dbx:profileDigest "urn:sha256:PLACEHOLDER-profile-digest" ;
+  dbx:evaluatorVersion "dbx-eval/1" ;
+  dbx:attestationStatus "attested" ;
+  dbx:attestation <https://databox.example/attestations/syn-1> .

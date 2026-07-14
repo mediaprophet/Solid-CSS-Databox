@@ -1,0 +1,52 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "@protected": true,
+
+    "dbx": "https://w3id.org/solid-databox/ns#",
+    "odrl": "http://www.w3.org/ns/odrl/2/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+
+    "profile": { "@id": "odrl:profile", "@type": "@id" },
+
+    "deposit": "dbx:deposit",
+    "submit": "dbx:submit",
+    "makeAvailable": "dbx:makeAvailable",
+    "signalHolder": "dbx:signalHolder",
+    "deliverToInbox": "dbx:deliverToInbox",
+    "acknowledge": "dbx:acknowledge",
+    "issueReceipt": "dbx:issueReceipt",
+    "stageForReview": "dbx:stageForReview",
+    "recordDisposition": "dbx:recordDisposition",
+    "makeRecordKnown": "dbx:makeRecordKnown",
+    "provideAccessRoute": "dbx:provideAccessRoute",
+    "acknowledgeCorrection": "dbx:acknowledgeCorrection",
+    "assessCorrection": "dbx:assessCorrection",
+    "correctOrAssociateStatement": "dbx:correctOrAssociateStatement",
+    "notifyPriorRecipient": "dbx:notifyPriorRecipient",
+    "provideReasons": "dbx:provideReasons",
+    "provideComplaintRoute": "dbx:provideComplaintRoute",
+    "retainEvidence": "dbx:retainEvidence",
+    "tombstone": "dbx:tombstone",
+
+    "declaredPurpose": "dbx:declaredPurpose",
+    "minimumAssurance": "dbx:minimumAssurance",
+    "recordClass": "dbx:recordClass",
+    "retentionPeriod": "dbx:retentionPeriod",
+    "otherProgram": "dbx:otherProgram",
+
+    "effectiveFrom": { "@id": "dbx:effectiveFrom", "@type": "xsd:dateTime" },
+    "effectiveUntil": { "@id": "dbx:effectiveUntil", "@type": "xsd:dateTime" },
+    "updateEffect": { "@id": "dbx:updateEffect", "@type": "@id" },
+    "affectedAssetClass": "dbx:affectedAssetClass",
+    "supersedes": { "@id": "dbx:supersedes", "@type": "@id" },
+    "compiledPolicyDigest": "dbx:compiledPolicyDigest",
+    "corpusManifestDigest": "dbx:corpusManifestDigest",
+    "profileDigest": "dbx:profileDigest",
+    "evaluatorVersion": "dbx:evaluatorVersion",
+    "attestation": { "@id": "dbx:attestation", "@type": "@id" },
+    "attestationStatus": "dbx:attestationStatus",
+    "syntheticFixture": { "@id": "dbx:syntheticFixture", "@type": "xsd:boolean" },
+    "rankOrder": { "@id": "dbx:rankOrder", "@type": "xsd:integer" }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "@context": [
+    "http://www.w3.org/ns/odrl.jsonld",
+    {
+      "dbx": "https://w3id.org/solid-databox/ns#",
+      "syntheticFixture": { "@id": "dbx:syntheticFixture", "@type": "http://www.w3.org/2001/XMLSchema#boolean" }
+    }
+  ],
+  "@type": "Agreement",
+  "uid": "https://databox.example/policies/retail-receipt-v1",
+  "profile": "https://w3id.org/solid-databox/odrl-profile/v1",
+  "syntheticFixture": true,
+  "permission": [{
+    "target": "https://databox.example/boxes/bx_syn/records/receipts/rcpt_syn",
+    "assigner": "https://retailer.example/id#organisation",
+    "assignee": "https://wallet.example/id/program/syn#me",
+    "action": [ "read", "use" ],
+    "constraint": [{
+      "leftOperand": "dbx:declaredPurpose",
+      "operator": "eq",
+      "rightOperand": "dbx:personalRecordkeeping"
+    }]
+  }],
+  "prohibition": [{
+    "target": "https://databox.example/boxes/bx_syn/records/receipts/rcpt_syn",
+    "assigner": "https://wallet.example/id/program/syn#me",
+    "assignee": "https://retailer.example/id#organisation",
+    "action": "distribute",
+    "constraint": [{
+      "leftOperand": "recipient",
+      "operator": "isA",
+      "rightOperand": "dbx:otherProgram"
+    }]
+  }],
+  "obligation": [{
+    "assigner": "https://wallet.example/id/program/syn#me",
+    "assignee": "https://databox.example/id#provider",
+    "action": "dbx:retainEvidence"
+  }]
+}

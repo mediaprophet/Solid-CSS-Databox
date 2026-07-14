@@ -1,0 +1,16 @@
+@prefix dbx:  <https://w3id.org/solid-databox/ns#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+# SYNTHETIC, PROPOSED WebCivics -> ODRL mapping instance (review-item #14).
+# Valid against dbx:WebCivicsMappingShape (well-formed + loss-aware) but its
+# attestationStatus is "proposed", so it MUST NOT be admitted to a runtime
+# bundle (ADR-0015). It asserts NO attested legal meaning.
+<https://databox.example/mappings/syn-correction-duty>
+  a dbx:WebCivicsMapping ;
+  dbx:syntheticFixture true ;
+  dbx:webCivicsSourceTerm <https://example.org/webcivics/PLACEHOLDER-correction-claim> ;
+  dbx:juralCategory dbx:right ;
+  dbx:odrlProjection dbx:assessCorrection ;
+  dbx:mapsToSourceRank dbx:mandatoryBaseline ;
+  dbx:mappingLoss "ODRL projection carries the operational assess-correction duty and its due time, but cannot carry the underlying statutory basis, the jurisdiction's commencement analysis, or the appeal-forum identity; those remain in the attested corpus manifest (ADR-0015)." ;
+  dbx:attestationStatus "proposed" .

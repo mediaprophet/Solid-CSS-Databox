@@ -40,10 +40,16 @@ describe('Databox fail-closed stubs', (): void => {
       .toThrow(NotImplementedHttpError);
   });
 
-  it('the package barrel re-exports the scaffolded seams.', (): void => {
+  it('the package barrel re-exports the scaffolded seams and Wave-B artifacts.', (): void => {
     expect(DataboxExports.AppendOnlyStore).toBeDefined();
     expect(DataboxExports.NotImplementedOpaqueIdentifierGenerator).toBeDefined();
     expect(DataboxExports.DenyAllDataboxPermissionReader).toBeDefined();
+    // DBX-06 institution profile schema
+    expect(DataboxExports.validateInstitutionProfile).toBeDefined();
+    expect(DataboxExports.loadInstitutionProfile).toBeDefined();
+    // DBX-07 ODRL vocabulary & profile
+    expect(DataboxExports.DBX_PROFILE_V1).toBeDefined();
+    expect(DataboxExports.DBX_DUTIES).toBeDefined();
   });
 
   it('the composed authorizer (C4) grants nothing (empty map, narrow-never-broaden).', async(): Promise<void> => {
