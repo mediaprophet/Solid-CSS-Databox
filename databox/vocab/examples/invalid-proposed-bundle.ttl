@@ -1,0 +1,9 @@
+@prefix dbx: <https://w3id.org/solid-databox/ns#> .
+
+# NEGATIVE fixture. MUST FAIL dbx:CompiledBundleShape: this compiled bundle has
+# NO attestation and attestationStatus "proposed", so it is inadmissible and the
+# runtime fails closed (ADR-0015). It also omits the required digest bindings.
+<https://databox.example/bundles/proposed-not-admissible>
+  a dbx:CompiledPolicyBundle ;
+  dbx:syntheticFixture true ;
+  dbx:attestationStatus "proposed" .

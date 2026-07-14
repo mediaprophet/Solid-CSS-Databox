@@ -1,0 +1,107 @@
+{
+  "rogueField": "unknown security-critical fields must be rejected (fail closed)",
+  "schemaVersion": "dbx-institution-profile/1.0.0",
+  "profileId": "prog-broken",
+  "profileVersion": "1.0.0",
+  "effectiveInterval": {
+    "effectiveFrom": "2027-01-01T00:00:00Z",
+    "effectiveUntil": "2026-01-01T00:00:00Z"
+  },
+  "synthetic": true,
+  "program": {
+    "principal": {
+      "id": "party-principal",
+      "legalName": "Broken Program",
+      "jurisdiction": "AU"
+    },
+    "accountableParty": {
+      "id": "party-accountable",
+      "legalName": "Broken Program Office",
+      "jurisdiction": "AU"
+    }
+  },
+  "processors": [],
+  "tenancy": {
+    "deploymentModel": "path-only",
+    "origin": "https://databox.example/",
+    "tokenAudience": "https://other-origin.example/"
+  },
+  "crypto": {
+    "signingSuite": "ES256",
+    "signingKeyRef": "kms://broken/1",
+    "atRestEncryption": { "required": true, "perTenantKeys": false },
+    "applicationLevelEncryption": "required-provider-blind"
+  },
+  "identityProviders": [
+    {
+      "id": "idp-myid",
+      "issuer": "https://idp.example/",
+      "protocol": "solid-oidc",
+      "claimContract": [ "sub" ]
+    }
+  ],
+  "assuranceMappings": [
+    { "issuer": "idp-myid", "dimension": "identityProofing", "claim": "ial", "level": 1 }
+  ],
+  "tokenBroker": {
+    "adopted": true,
+    "brokerOrigin": "http://insecure.example/"
+  },
+  "offlineGrantPolicy": {
+    "allowOffline": true,
+    "maxOfflineMinutes": 0
+  },
+  "recordClasses": [
+    {
+      "id": "rc-receipt",
+      "label": "Purchase receipt",
+      "minimumAssurance": [
+        { "dimension": "identityProofing", "minLevel": 5 }
+      ],
+      "policyTemplate": "pt-nonexistent",
+      "legalBasis": "lb-nonexistent",
+      "purposes": [ "p-nonexistent" ],
+      "existenceVisibility": "visible"
+    }
+  ],
+  "submissionClasses": [],
+  "policies": {
+    "templates": [
+      { "id": "pt-records", "version": "1.0.0", "odrlProfile": "https://odrl.example/profile/records" }
+    ],
+    "conflictStrategy": "prohibition-overrides",
+    "effectiveTimeBehavior": "authorized-retroactive"
+  },
+  "compiledPolicy": {
+    "compiledPolicyDigest": "sha256-compiled-0001",
+    "corpusManifestDigest": "sha256-mismatch",
+    "attestationId": "attest-0001",
+    "evaluatorVersion": "evaluator/1.0.0",
+    "profileDigest": "sha256-profile-0001",
+    "attestationStatus": "proposed",
+    "legalComplianceClaimed": true
+  },
+  "legislativeCorpus": {
+    "manifestDigest": "sha256-corpus-0001",
+    "entries": []
+  },
+  "legalBases": [
+    { "id": "lb-contract", "description": "Performance of a contract (SYNTHETIC)." }
+  ],
+  "declaredPurposes": [
+    { "id": "p-account", "description": "Maintain the account (SYNTHETIC)." }
+  ],
+  "retention": [
+    { "recordClass": "rc-receipt", "retentionDays": 100, "deletionMode": "hard-delete", "tombstoneOnExpiry": false }
+  ],
+  "systemsOfRecord": [],
+  "notifications": {
+    "notificationFormat": "solid-notification/websocket",
+    "receiptFormat": "vc-jose-cose/es256"
+  },
+  "redress": {
+    "stepUpSupported": true,
+    "existenceVisibilityDefault": "visible",
+    "appealRoutes": []
+  }
+}

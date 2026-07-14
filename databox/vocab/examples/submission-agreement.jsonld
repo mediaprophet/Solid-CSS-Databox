@@ -1,0 +1,40 @@
+{
+  "@context": [
+    "http://www.w3.org/ns/odrl.jsonld",
+    {
+      "dbx": "https://w3id.org/solid-databox/ns#",
+      "syntheticFixture": { "@id": "dbx:syntheticFixture", "@type": "http://www.w3.org/2001/XMLSchema#boolean" }
+    }
+  ],
+  "@type": "Agreement",
+  "uid": "https://databox.example/policies/submission-v1",
+  "profile": "https://w3id.org/solid-databox/odrl-profile/v1",
+  "syntheticFixture": true,
+  "conflict": "dbx:prohibitOverrides",
+  "permission": [{
+    "target": "https://databox.example/boxes/bx_syn/submissions/",
+    "assigner": "https://databox.example/id#provider",
+    "assignee": "https://wallet.example/id/program/syn#me",
+    "action": "dbx:submit",
+    "constraint": [{
+      "leftOperand": "dbx:minimumAssurance",
+      "operator": "gteq",
+      "rightOperand": "basic"
+    }],
+    "duty": [
+      {
+        "assigner": "https://databox.example/id#provider",
+        "assignee": "https://databox.example/id#provider",
+        "action": "dbx:issueReceipt"
+      },
+      {
+        "assigner": "https://databox.example/id#provider",
+        "assignee": "https://retailer.example/id#organisation",
+        "action": "dbx:stageForReview",
+        "consequence": [{
+          "action": "dbx:provideComplaintRoute"
+        }]
+      }
+    ]
+  }]
+}

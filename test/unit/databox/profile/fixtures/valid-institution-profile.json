@@ -1,0 +1,165 @@
+{
+  "schemaVersion": "dbx-institution-profile/1.0.0",
+  "profileId": "prog-woolworths-loyalty",
+  "profileVersion": "1.0.0",
+  "effectiveInterval": {
+    "effectiveFrom": "2026-01-01T00:00:00Z",
+    "effectiveUntil": "2027-01-01T00:00:00Z"
+  },
+  "synthetic": true,
+  "program": {
+    "principal": {
+      "id": "party-principal",
+      "legalName": "Woolworths Group Limited",
+      "jurisdiction": "AU",
+      "contact": "mailto:privacy@woolworths.example"
+    },
+    "accountableParty": {
+      "id": "party-accountable",
+      "legalName": "Woolworths Program Office",
+      "jurisdiction": "AU"
+    }
+  },
+  "processors": [
+    {
+      "id": "proc-mailer",
+      "legalName": "Notification Processor Pty Ltd",
+      "jurisdiction": "AU",
+      "purposes": [ "p-account" ],
+      "readsPayload": true
+    }
+  ],
+  "tenancy": {
+    "deploymentModel": "program-subdomain",
+    "origin": "https://databox.woolworths.example/",
+    "tokenAudience": "https://databox.woolworths.example/"
+  },
+  "crypto": {
+    "signingSuite": "ES256",
+    "signingKeyRef": "kms://program/woolworths/signing/1",
+    "atRestEncryption": { "required": true, "perTenantKeys": true },
+    "applicationLevelEncryption": "optional"
+  },
+  "identityProviders": [
+    {
+      "id": "idp-myid",
+      "issuer": "https://idp.example/",
+      "protocol": "solid-oidc",
+      "accreditation": "TDIF:IP2",
+      "claimContract": [ "sub", "ial", "aal" ]
+    }
+  ],
+  "assuranceMappings": [
+    { "issuer": "idp-myid", "dimension": "identityProofing", "claim": "ial", "level": 2 },
+    { "issuer": "idp-myid", "dimension": "identityProofing", "claim": "ial_secondary", "level": 1 },
+    { "issuer": "idp-myid", "dimension": "authenticatorStrength", "claim": "aal", "level": 2 },
+    { "issuer": "idp-myid", "dimension": "federationTrust", "claim": "iss", "level": 1 }
+  ],
+  "tokenBroker": {
+    "adopted": true,
+    "brokerOrigin": "https://broker.woolworths.example/",
+    "tokenExchange": "rfc8693",
+    "senderConstraint": "dpop"
+  },
+  "offlineGrantPolicy": {
+    "allowOffline": true,
+    "maxOfflineMinutes": 60
+  },
+  "recordClasses": [
+    {
+      "id": "rc-receipt",
+      "label": "Purchase receipt",
+      "minimumAssurance": [
+        { "dimension": "identityProofing", "minLevel": 2 },
+        { "dimension": "authenticatorStrength", "minLevel": 1 }
+      ],
+      "policyTemplate": "pt-records",
+      "legalBasis": "lb-contract",
+      "purposes": [ "p-account" ],
+      "existenceVisibility": "visible"
+    },
+    {
+      "id": "rc-warranty",
+      "label": "Warranty record",
+      "minimumAssurance": [
+        { "dimension": "identityProofing", "minLevel": 1 },
+        { "dimension": "stepUpState", "minLevel": 0 }
+      ],
+      "policyTemplate": "pt-records",
+      "legalBasis": "lb-contract",
+      "purposes": [ "p-account" ],
+      "existenceVisibility": "visible"
+    }
+  ],
+  "submissionClasses": [
+    {
+      "id": "sc-correction",
+      "label": "Correction request",
+      "minimumAssurance": [
+        { "dimension": "identityProofing", "minLevel": 1 }
+      ],
+      "policyTemplate": "pt-submissions",
+      "purposes": [ "p-correction" ]
+    }
+  ],
+  "policies": {
+    "templates": [
+      { "id": "pt-records", "version": "1.0.0", "odrlProfile": "https://odrl.example/profile/records" },
+      { "id": "pt-submissions", "version": "1.0.0", "odrlProfile": "https://odrl.example/profile/submissions" }
+    ],
+    "conflictStrategy": "prohibition-overrides",
+    "effectiveTimeBehavior": "prospective"
+  },
+  "compiledPolicy": {
+    "compiledPolicyDigest": "sha256-compiled-0001",
+    "corpusManifestDigest": "sha256-corpus-0001",
+    "attestationId": "attest-0001",
+    "evaluatorVersion": "evaluator/1.0.0",
+    "profileDigest": "sha256-profile-0001",
+    "attestationStatus": "attested",
+    "legalComplianceClaimed": false
+  },
+  "legislativeCorpus": {
+    "manifestDigest": "sha256-corpus-0001",
+    "entries": [
+      {
+        "sourceUri": "https://legislation.example/act/2019",
+        "jurisdiction": "AU",
+        "expressionVersion": "2019-08-01",
+        "retrievedAt": "2026-01-01T00:00:00Z",
+        "mediaType": "text/html",
+        "contentDigest": "sha256-source-0001"
+      }
+    ]
+  },
+  "legalBases": [
+    { "id": "lb-contract", "description": "Performance of a contract (SYNTHETIC)." }
+  ],
+  "declaredPurposes": [
+    { "id": "p-account", "description": "Maintain the loyalty account relationship (SYNTHETIC)." },
+    { "id": "p-correction", "description": "Handle correction requests (SYNTHETIC)." }
+  ],
+  "retention": [
+    { "recordClass": "rc-receipt", "retentionDays": 2555, "deletionMode": "tombstone", "tombstoneOnExpiry": true },
+    { "recordClass": "rc-warranty", "retentionDays": 3650, "deletionMode": "supersede", "tombstoneOnExpiry": false }
+  ],
+  "systemsOfRecord": [
+    { "id": "sor-pos", "label": "Point of sale", "recordClasses": [ "rc-receipt", "rc-warranty" ] }
+  ],
+  "notifications": {
+    "notificationFormat": "solid-notification/websocket",
+    "receiptFormat": "vc-jose-cose/es256"
+  },
+  "redress": {
+    "stepUpSupported": true,
+    "existenceVisibilityDefault": "visible",
+    "correctionResponseDays": 10,
+    "appealRoutes": [
+      {
+        "id": "appeal-oaic",
+        "responsibleBody": "Office of the Australian Information Commissioner (SYNTHETIC)",
+        "filingMethod": "https://appeal.example/file"
+      }
+    ]
+  }
+}

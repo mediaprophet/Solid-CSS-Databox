@@ -1,0 +1,126 @@
+@prefix dbx:  <https://w3id.org/solid-databox/ns#> .
+@prefix odrl: <http://www.w3.org/ns/odrl/2/> .
+@prefix sh:   <http://www.w3.org/ns/shacl#> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+#################################################################
+#  WebCivics -> ODRL LOSS-AWARE MAPPING SHAPE  (DBX-07, review-item #14)
+#
+#  SCOPE BOUNDARY (ADR-0015): this file defines the TECHNICAL mapping
+#  SHAPE and its placeholders ONLY. It contains NO attested legal content.
+#  The actual normative mapping of jural correlatives, legitimacy,
+#  jurisdiction, provenance and accountability into ODRL rules is a
+#  compilation artefact that is 'proposed' until an authorized human
+#  attester promotes it (ADR-0015). The runtime evaluator MUST NOT
+#  interpret legislation; it consumes the ATTESTED output of this mapping.
+#
+#  "Loss-aware": each mapping instance MUST record what the ODRL
+#  projection cannot carry (dbx:mappingLoss) so information dropped in the
+#  jural -> ODRL projection is explicit and reviewable, never silent.
+#################################################################
+
+##########  Mapping-instance class + shape  ##########
+
+dbx:WebCivicsMapping a rdfs:Class ;
+  rdfs:label "WebCivics -> ODRL mapping instance"@en ;
+  rdfs:comment "A single, reviewable mapping from one WebCivics jural/legitimacy/jurisdiction/accountability source term to a Databox/ODRL rule. Proposed until attested (ADR-0015)."@en .
+
+dbx:WebCivicsMappingShape a sh:NodeShape ;
+  sh:targetClass dbx:WebCivicsMapping ;
+  rdfs:label "WebCivics mapping shape"@en ;
+
+  # 1. The WebCivics source term being mapped (jural correlative, legitimacy,
+  #    jurisdiction, provenance or accountability locus). Placeholder IRI now;
+  #    the concrete WebCivics vocabulary IRIs are bound at compilation time.
+  sh:property [
+    sh:path dbx:webCivicsSourceTerm ;
+    sh:minCount 1 ;
+    sh:message "A mapping MUST identify the WebCivics source term it projects (fail closed if absent)." ;
+  ] ;
+
+  # 2. The jural category, from the loss-aware placeholder scheme below.
+  sh:property [
+    sh:path dbx:juralCategory ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:in ( dbx:right dbx:duty-correlative dbx:privilege dbx:noRight
+            dbx:power dbx:liability dbx:immunity dbx:disability ) ;
+    sh:message "juralCategory MUST be one of the eight Hohfeldian placeholders; an unrecognised category fails closed." ;
+  ] ;
+
+  # 3. The ODRL projection this term maps to (a supported action / duty / rank).
+  sh:property [
+    sh:path dbx:odrlProjection ;
+    sh:minCount 1 ;
+    sh:message "A mapping MUST name the ODRL/dbx projection it produces (fail closed if absent)." ;
+  ] ;
+
+  # 4. Source rank (ADR-0013 stage 2) this mapping contributes.
+  sh:property [
+    sh:path dbx:mapsToSourceRank ;
+    sh:maxCount 1 ;
+    sh:in ( dbx:mandatoryBaseline dbx:guardianPolicy dbx:userPreference ) ;
+    sh:message "mapsToSourceRank MUST be a known policy source rank." ;
+  ] ;
+
+  # 5. LOSS-AWARENESS: what the ODRL projection cannot represent MUST be
+  #    stated. An empty/absent loss field is itself a violation, forcing the
+  #    author to assert (even if "none") rather than silently drop meaning.
+  sh:property [
+    sh:path dbx:mappingLoss ;
+    sh:minCount 1 ;
+    sh:datatype xsd:string ;
+    sh:message "A loss-aware mapping MUST state what the ODRL projection cannot carry (use \"none\" only if genuinely lossless). Silent loss is rejected." ;
+  ] ;
+
+  # 6. ATTESTATION GATE (ADR-0015). A mapping is inadmissible while proposed.
+  sh:property [
+    sh:path dbx:attestationStatus ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:in ( "proposed" "attested" ) ;
+    sh:message "attestationStatus MUST be 'proposed' or 'attested'." ;
+  ] .
+
+# A mapping that a runtime bundle ADMITS MUST additionally be attested with an
+# attestation record. Proposed mappings pass the well-formedness shape above
+# but MUST NOT be admitted (enforced here + by dbx:CompiledBundleShape).
+dbx:AdmissibleMappingShape a sh:NodeShape ;
+  sh:targetNode dbx:AdmittedMappingClosure ;
+  rdfs:label "Admissible (attested) mapping shape"@en ;
+  sh:property [
+    sh:path [ sh:inversePath rdf:type ] ;
+    sh:message "Placeholder anchor: admission requires attestationStatus = 'attested' + a dbx:attestation record (ADR-0015)." ;
+  ] .
+
+##########  Loss-aware jural placeholder scheme (Hohfeldian correlatives)  ##########
+#  These are TECHNICAL placeholders so the mapping SHAPE is complete and
+#  testable NOW. They carry NO attested legal meaning (ADR-0015). The
+#  authored legal semantics are supplied later by the attested compilation.
+
+dbx:JuralScheme a skos:ConceptScheme ;
+  rdfs:label "Jural correlative placeholder scheme"@en ;
+  rdfs:comment "Placeholder-only. Eight Hohfeldian positions used to shape the WebCivics mapping; no attested legal content (ADR-0015)."@en .
+
+dbx:right              a skos:Concept ; skos:inScheme dbx:JuralScheme ; skos:prefLabel "right (claim)"@en .
+dbx:duty-correlative   a skos:Concept ; skos:inScheme dbx:JuralScheme ; skos:prefLabel "duty"@en .
+dbx:privilege          a skos:Concept ; skos:inScheme dbx:JuralScheme ; skos:prefLabel "privilege (liberty)"@en .
+dbx:noRight            a skos:Concept ; skos:inScheme dbx:JuralScheme ; skos:prefLabel "no-right"@en .
+dbx:power              a skos:Concept ; skos:inScheme dbx:JuralScheme ; skos:prefLabel "power"@en .
+dbx:liability          a skos:Concept ; skos:inScheme dbx:JuralScheme ; skos:prefLabel "liability"@en .
+dbx:immunity           a skos:Concept ; skos:inScheme dbx:JuralScheme ; skos:prefLabel "immunity"@en .
+dbx:disability         a skos:Concept ; skos:inScheme dbx:JuralScheme ; skos:prefLabel "disability"@en .
+
+##########  Mapping property placeholders  ##########
+
+dbx:webCivicsSourceTerm a rdf:Property ; rdfs:label "WebCivics source term"@en ;
+  rdfs:comment "IRI of the WebCivics jural/legitimacy/jurisdiction/provenance/accountability term being mapped. Concrete IRIs bound at attested compilation."@en .
+dbx:juralCategory a rdf:Property ; rdfs:label "jural category"@en ;
+  rdfs:comment "One of the eight placeholder Hohfeldian positions (dbx:JuralScheme)."@en .
+dbx:odrlProjection a rdf:Property ; rdfs:label "ODRL projection"@en ;
+  rdfs:comment "The supported dbx:/ODRL term this source term projects to."@en .
+dbx:mapsToSourceRank a rdf:Property ; rdfs:label "maps to source rank"@en ;
+  rdfs:comment "The ADR-0013 policy source rank the mapping contributes."@en .
+dbx:mappingLoss a rdf:Property ; rdfs:label "mapping loss"@en ;
+  rdfs:comment "Human-readable statement of meaning the ODRL projection cannot carry. Mandatory; silent loss is rejected."@en .

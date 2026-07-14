@@ -23,3 +23,12 @@ export * from './evidence/Evidence';
 
 // Cursor feed (C15)
 export * from './feed/CursorFeed';
+
+// Institution/program profile schema (C10/C11 provisioning inputs, DBX-06)
+export * from './profile/InstitutionProfile';
+export * from './profile/InstitutionProfileSchema';
+export * from './profile/InstitutionProfileValidator';
+
+// ODRL vocabulary & profile (C12, DBX-07)
+export * from './odrl/terms';
+export * from './odrl/TermSupport';

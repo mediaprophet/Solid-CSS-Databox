@@ -1,0 +1,184 @@
+@prefix dbx:  <https://w3id.org/solid-databox/ns#> .
+@prefix odrl: <http://www.w3.org/ns/odrl/2/> .
+@prefix sh:   <http://www.w3.org/ns/shacl#> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+#################################################################
+#  Databox ODRL Profile — SHACL validation shapes (DBX-07)
+#
+#  These shapes are a NECESSARY PRE-FILTER, not a substitute for human
+#  attestation (ADR-0015): shape-validity proves well-formedness, never
+#  legal correctness. They enforce the fail-closed rule (ADR-0013): a
+#  policy that references the Databox profile and uses an action, left
+#  operand, right-operand class, operator or conflict strategy NOT in the
+#  supported set produces a sh:Violation and MUST be rejected at ingestion.
+#
+#  The sh:in enumerations below are the SHACL projection of the exact same
+#  supported-term sets encoded in src/databox/odrl/terms.ts, so the shape
+#  layer and the runtime helper agree.
+#################################################################
+
+##########  Policy container  ##########
+
+dbx:PolicyShape a sh:NodeShape ;
+  sh:targetClass odrl:Policy, odrl:Set, odrl:Offer, odrl:Agreement ;
+  rdfs:label "Databox policy shape"@en ;
+  # A Databox-governed policy MUST name the profile it conforms to.
+  sh:property [
+    sh:path odrl:profile ;
+    sh:minCount 1 ;
+    sh:hasValue <https://w3id.org/solid-databox/odrl-profile/v1> ;
+    sh:message "A Databox policy MUST declare profile https://w3id.org/solid-databox/odrl-profile/v1 (fail closed)." ;
+  ] ;
+  sh:property [
+    sh:path odrl:permission ;
+    sh:node dbx:RuleShape ;
+  ] ;
+  sh:property [
+    sh:path odrl:prohibition ;
+    sh:node dbx:RuleShape ;
+  ] ;
+  sh:property [
+    sh:path odrl:obligation ;
+    sh:node dbx:DutyShape ;
+  ] .
+
+##########  Rule (permission / prohibition)  ##########
+
+dbx:RuleShape a sh:NodeShape ;
+  rdfs:label "Databox rule shape"@en ;
+  sh:property [
+    sh:path odrl:action ;
+    sh:minCount 1 ;
+    sh:message "Every rule MUST carry at least one action; a rule with no action fails closed." ;
+    # Supported actions = reused ODRL core actions + the enumerated dbx: actions.
+    sh:or (
+      [ sh:in ( odrl:read odrl:use odrl:distribute odrl:reproduce odrl:delete ) ]
+      [ sh:node dbx:SupportedActionShape ]
+    ) ;
+  ] ;
+  sh:property [
+    sh:path odrl:constraint ;
+    sh:node dbx:ConstraintShape ;
+  ] ;
+  sh:property [
+    sh:path odrl:duty ;
+    sh:node dbx:DutyShape ;
+  ] .
+
+dbx:SupportedActionShape a sh:NodeShape ;
+  rdfs:label "Supported dbx: action shape"@en ;
+  sh:in (
+    dbx:deposit dbx:submit
+    dbx:makeAvailable dbx:signalHolder dbx:deliverToInbox dbx:acknowledge
+    dbx:issueReceipt dbx:stageForReview
+    dbx:recordDisposition dbx:makeRecordKnown dbx:provideAccessRoute
+    dbx:acknowledgeCorrection dbx:assessCorrection dbx:correctOrAssociateStatement
+    dbx:notifyPriorRecipient dbx:provideReasons dbx:provideComplaintRoute
+    dbx:retainEvidence dbx:tombstone
+  ) ;
+  sh:message "Unsupported or deprecated action IRI (e.g. dbx:notifyHolder) — fail closed (ADR-0012/0013)." .
+
+##########  Duty (obligation / consequence / remedy)  ##########
+
+dbx:DutyShape a sh:NodeShape ;
+  rdfs:label "Databox duty shape"@en ;
+  sh:property [
+    sh:path odrl:action ;
+    sh:minCount 1 ;
+    sh:node dbx:SupportedActionShape ;
+    sh:message "A duty action MUST be a supported dbx: duty action; an unknown duty IRI fails closed (ADR-0012)." ;
+  ] .
+
+##########  Constraint  ##########
+
+dbx:ConstraintShape a sh:NodeShape ;
+  rdfs:label "Databox constraint shape"@en ;
+  sh:property [
+    sh:path odrl:leftOperand ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:or (
+      [ sh:in ( odrl:recipient odrl:purpose odrl:dateTime odrl:elapsedTime ) ]
+      [ sh:in ( dbx:declaredPurpose dbx:minimumAssurance dbx:recordClass dbx:retentionPeriod ) ]
+    ) ;
+    sh:message "Unsupported left operand — fail closed." ;
+  ] ;
+  sh:property [
+    sh:path odrl:operator ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:in (
+      odrl:eq odrl:neq odrl:gt odrl:gteq odrl:lt odrl:lteq
+      odrl:isA odrl:isPartOf odrl:isAnyOf odrl:isAllOf odrl:isNoneOf
+    ) ;
+    sh:message "Unsupported operator — fail closed." ;
+  ] ;
+  sh:property [
+    sh:path odrl:rightOperand ;
+    sh:minCount 1 ;
+    sh:message "A constraint MUST carry a right operand; an absent right operand fails closed." ;
+  ] .
+
+##########  Conflict strategy (odrl:conflict) on a policy  ##########
+
+dbx:ConflictStrategyShape a sh:NodeShape ;
+  sh:targetSubjectsOf odrl:conflict ;
+  rdfs:label "Databox conflict-strategy shape"@en ;
+  sh:property [
+    sh:path odrl:conflict ;
+    sh:maxCount 1 ;
+    # Only prohibit-overrides / more-protective are supported. A permit-overrides
+    # strategy (odrl:perm) that could override a prohibition is intentionally
+    # excluded and therefore fails closed (ADR-0013 stage 3/5).
+    sh:in ( dbx:prohibitOverrides dbx:moreProtectiveWins odrl:prohibit ) ;
+    sh:message "Unsupported conflict strategy (permit-overrides is not admissible) — fail closed (ADR-0013)." ;
+  ] .
+
+##########  Policy version / compiled-bundle binding (ADR-0014/0015/0019)  ##########
+
+dbx:PolicyVersionShape a sh:NodeShape ;
+  sh:targetSubjectsOf dbx:effectiveFrom ;
+  rdfs:label "Databox policy-version shape"@en ;
+  sh:property [
+    sh:path dbx:effectiveFrom ;
+    sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:dateTime ;
+    sh:message "A policy version MUST carry exactly one dbx:effectiveFrom (ADR-0014)." ;
+  ] ;
+  sh:property [
+    sh:path dbx:effectiveUntil ;
+    sh:maxCount 1 ; sh:datatype xsd:dateTime ;
+  ] ;
+  sh:property [
+    sh:path dbx:updateEffect ;
+    sh:maxCount 1 ;
+    sh:in ( dbx:Prospective dbx:AuthorizedRetroactive ) ;
+    sh:message "dbx:updateEffect MUST be dbx:Prospective or dbx:AuthorizedRetroactive; absent ⇒ prospective (ADR-0014)." ;
+  ] ;
+  sh:property [
+    sh:path dbx:affectedAssetClass ;
+    sh:minCount 1 ;
+    sh:message "A policy version MUST name at least one affected asset class (ADR-0014)." ;
+  ] .
+
+# Admissibility of a COMPILED, runtime-admitted bundle: the full multi-digest
+# binding + human attestation is REQUIRED. A bundle missing any is 'proposed'
+# and MUST NOT be admitted (ADR-0015 fail-closed). Applied only to nodes typed
+# as a compiled bundle so synthetic policy fragments are validated separately.
+dbx:CompiledBundleShape a sh:NodeShape ;
+  sh:targetClass dbx:CompiledPolicyBundle ;
+  rdfs:label "Databox compiled-bundle admissibility shape"@en ;
+  sh:property [ sh:path dbx:compiledPolicyDigest ; sh:minCount 1 ;
+    sh:message "Missing compiled-policy digest — not admissible (ADR-0015)." ] ;
+  sh:property [ sh:path dbx:corpusManifestDigest ; sh:minCount 1 ;
+    sh:message "Missing corpus-manifest digest — ELI does not substitute; not admissible (ADR-0015)." ] ;
+  sh:property [ sh:path dbx:profileDigest ; sh:minCount 1 ;
+    sh:message "Missing pinned profile digest — not admissible (ADR-0025/0015)." ] ;
+  sh:property [ sh:path dbx:evaluatorVersion ; sh:minCount 1 ;
+    sh:message "Missing evaluator-version marker — not admissible (ADR-0014)." ] ;
+  sh:property [ sh:path dbx:attestation ; sh:minCount 1 ;
+    sh:message "Missing human attestation — status is 'proposed'; MUST NOT be admitted (ADR-0015 fail closed)." ] ;
+  sh:property [ sh:path dbx:attestationStatus ; sh:hasValue "attested" ;
+    sh:message "attestationStatus MUST be 'attested' for admission; 'proposed' fails closed (ADR-0015)." ] .
