@@ -1,0 +1,23 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server/^7.0.0/components/context.jsonld",
+  "import": [
+    "css:config/default.json",
+    "css:config/databox/preset/databox-experimental-components.json"
+  ],
+  "@graph": [
+    {
+      "comment": [
+        "EXPERIMENTAL Track B (LWS) Databox deployment preset (ADR-0024 §2, DBX-09 scaffold).",
+        "This is a SEPARATE top-level config, not a runtime toggle: CSS 7.1.9 has no feature flag",
+        "(DBX-01 §7), so experimental isolation IS choosing this preset at server-assembly time.",
+        "It layers the fail-closed Databox component seams over the standard Track A default config.",
+        "The default (Track A / production) config MUST NOT import the Databox experimental components;",
+        "a Track A deployment is provably free of this code from its launch config alone (ADR-0024).",
+        "Load it via AppRunner config array, e.g. new App from [ 'config/default.json',",
+        "'config/databox/experimental.json' ], or `community-solid-server -c config/databox/experimental.json`.",
+        "Every seam here is a placeholder that fails closed; NOTHING here is graduated or claims LWS",
+        "conformance (ADR-0024 §4 graduation gate not met)."
+      ]
+    }
+  ]
+}
