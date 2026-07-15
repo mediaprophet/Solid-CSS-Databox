@@ -33,6 +33,12 @@ export * from './feed/CursorFeed';
 // Transactional outbox & notification delivery (C14, DBX-21)
 export * from './notification/NotificationDelivery';
 
+// Synthetic institutional bridge (C21, DBX-22)
+export * from './bridge/DataboxBridge';
+
+// Reference consumer agent (C20, DBX-24)
+export * from './agent/ReferenceConsumerAgent';
+
 // Institution/program profile schema (C10/C11 provisioning inputs, DBX-06)
 export * from './profile/InstitutionProfile';
 export * from './profile/InstitutionProfileSchema';
