@@ -74,7 +74,48 @@ Every implementation should preserve these rules:
 12. Databox extensions preserve the standard Solid discovery, authentication and resource-operation surface so an
     independent conforming Solid client can exercise its granted access without proprietary transport or tokens.
 
+## Implementation status
+
+The design in these documents is being implemented as a Community Solid Server extension under
+[`src/databox/`](../src/databox) (tests under `test/unit/databox/`, an experimental Track B config preset
+under `config/databox/`). Progress follows the ordered prompts in the
+[prompt implementation plan](prompt-implementation-plan.md); each prompt records a handoff under
+[`handoffs/`](handoffs) and consumes the binding decisions in the [decision register](decisions/README.md).
+
+**Completed: DBX-01 through DBX-21 of the 28-prompt plan** (Waves A–D). Remaining: Wave E (DBX-22 synthetic
+bridge, DBX-23 review/disposition workflow, DBX-24 reference consumer agent) and Wave F (DBX-25 integration,
+DBX-26 adversarial, DBX-27 conformance, DBX-28 release readiness).
+
+| Wave | Prompts | What landed |
+|---|---|---|
+| A — discovery & binding decisions | 01–05 | Extension map, 26 ADRs, threat model (58 threats/tests), reference architecture, conformance matrix |
+| B — schemas, policy & scaffold | 06–09 | Institution-profile schema, Databox vocabulary + ODRL profile, synthetic loyalty profile, extension scaffold |
+| C — provisioning, identity & authorization | 10–14 | Opaque provisioning, tenant isolation, authenticated context + assurance, VC connection credential, composed authorizer |
+| D — exchange, policy execution & evidence | 15–21 | Deposit/submission gateway, record-proof validation, append-only + tombstone, signed receipts, evidence ledger, ODRL evaluator + duty engine, outbox + SSRF-guarded notification + cursor recovery |
+
+**How to read the code state:** the extension is a **reference implementation**. Every subsystem is
+fail-closed and 100% unit-test covered, but (a) durable substrates are in-memory reference stores in this
+slice — production needs a WORM/signed evidence ledger, KMS-held keys, and durable outbox/feed/registry
+stores; (b) the Databox classes are **not yet wired** into a live Components.js config (DI wiring is
+deferred to the integration prompts, so they are excluded from component generation); and (c) every
+security/cryptography/legal-policy prompt carries a **residual human-review gate** recorded in its handoff
+that has **not** been independently certified here. Two protocol bindings remain provisional pending their
+decisions: the RFC 8693 token-exchange wire format ([ADR-0005](decisions/ADR-0005-authorization-server-broker-and-idp-trust.md))
+and record/credential/crosswalk signature verification against a pinned key.
+
 ## Documents
+
+### Implementation artifacts
+
+- [Extension map (DBX-01)](dbx-01-extension-map.md) inventories the CSS seams the Databox reuses, wraps or replaces.
+- [Decision register (DBX-02)](decisions/README.md) — the ADRs (ADR-0001…ADR-0026) with a coverage matrix.
+- [Threat model (DBX-03)](dbx-03-threat-model.md) and [adversarial-test backlog](dbx-03-adversarial-test-backlog.md).
+- [Reference architecture (DBX-04)](dbx-04-reference-architecture.md) — components, interfaces, sequence traces.
+- [Conformance requirements (DBX-05)](dbx-05-conformance-requirements.md) and
+  [test-identification scheme](dbx-05-test-identification-scheme.md).
+- [Prompt handoffs](handoffs) — one per completed prompt (inputs, decisions, tests, residual gates).
+
+### Design specifications
 
 - [Architecture](architecture.md) defines the participants, deployment topology and resource layout.
 - [Identity and access](identity-and-access.md) defines onboarding, pairwise identity, credentials and authorization.
