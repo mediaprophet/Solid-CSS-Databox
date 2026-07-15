@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>CSS DataBox - Solid for Organisations</title>
+  <link rel="stylesheet" href="../assets/styles/main.css" type="text/css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+</head>
+<body>
+  <canvas id="three-canvas" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; opacity: 0.5;"></canvas>
+  <header>
+    <div class="logo-container">
+      <img src="../assets/images/solid.svg" alt="Solid Logo" />
+      <h1>CSS DataBox</h1>
+    </div>
+  </header>
+  
+  <main class="main-container">
+    <div class="hero-text">
+      <h2>Solid for Organisations</h2>
+      <p>A hypermedia communications service—like a modern-day postbox—acting as a private, two-way exchange point between one organisation program and its community.</p>
+    </div>
+
+    <!-- Marketing Section -->
+    <section class="info-card reveal">
+      <h3>What is the CSS DataBox?</h3>
+      <p>
+        The Databox is not the person's general-purpose wallet. It is a relationship-specific post-box operated for a declared program. It enables the organisation to securely provide records, receipts, credentials, warranty information, and notices to the consumer, while enabling the consumer to return submissions, corrections, claims, preferences, or evidence.
+      </p>
+      
+      <div class="grid-2">
+        <div>
+          <h4 style="color: var(--text-accent); font-size: 1.25rem; margin-bottom: 1rem;">Key Features</h4>
+          <ul class="feature-list">
+            <li><strong>Isolated Security:</strong> Every program relationship is a separate security domain.</li>
+            <li><strong>Immutable Records:</strong> Accepted records are not silently overwritten; changes create linked, auditable events.</li>
+            <li><strong>Long-term Connections:</strong> Connection credentials are portable, rotatable, and holder-bound API keys.</li>
+            <li><strong>Cryptographic Receipts:</strong> Every accepted submission produces a signed receipt.</li>
+          </ul>
+        </div>
+        <div>
+          <h4 style="color: var(--text-accent); font-size: 1.25rem; margin-bottom: 1rem;">Developer Resources</h4>
+          <p style="margin-bottom: 2rem;">
+            To set up a Databox for your organisation, you must define an <em>Institution Profile</em> and connect it to the Databox Forge control plane.
+          </p>
+          <a href="https://github.com/CommunitySolidServer/CommunitySolidServer/tree/main/databox" target="_blank" class="action-btn">
+            Read the Documentation
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ESG Section -->
+    <section class="info-card reveal">
+      <h3 style="color: var(--success);">Transformational ESG Governance & Compliance</h3>
+      <p style="margin-bottom: 0;">
+        The Databox provides a globally standards-based method to transformationally improve the governance, delivery, and auditability of ESG (Environmental, Social, and Governance) obligations. It achieves this by encoding rights and obligations as versioned, machine-readable <strong>ODRL policies</strong> that produce auditable duties. Every transaction generates cryptographically signed receipts and immutable evidence ledgers, ensuring verifiable, zero-knowledge compliance with complex data privacy frameworks.
+      </p>
+    </section>
+
+    <!-- Industry Applications Section -->
+    <div class="divider"></div>
+    <div class="hero-text reveal">
+      <h2 style="font-size: 2.5rem;">Industry Applications</h2>
+      <p style="font-size: 1.15rem;">Discover how the Solid Databox fundamentally transforms data governance and relationships across every sector.</p>
+    </div>
+    
+    <div class="tabs" id="category-tabs" style="display: flex; flex-wrap: wrap;">
+      <!-- Category Tabs generated dynamically -->
+    </div>
+
+    <div id="use-cases-grid" class="record-grid reveal" style="margin-bottom: 3rem;">
+      <!-- Use Case Cards generated dynamically -->
+      <div style="text-align: center; width: 100%; color: var(--text-secondary);">Loading applications...</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="hero-text reveal">
+      <h2 style="font-size: 2.5rem;">Interactive Demonstrators</h2>
+      <p style="font-size: 1.15rem;">Explore the live integrations currently running on this Databox server instance.</p>
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn demo-tab active" onclick="switchTab('consumer')">Seraphim: Consumer Portal</button>
+      <button class="tab-btn demo-tab" onclick="switchTab('admin')">Seraphim: Admin Panel</button>
+      <button class="tab-btn demo-tab" onclick="switchTab('loyalty')">MegaMart: Loyalty Forge</button>
+    </div>
+
+    <!-- Consumer Tab -->
+    <div id="tab-consumer" class="tab-content active reveal">
+      <div class="info-card" style="text-align: center; max-width: 800px; margin: 0 auto;">
+        <div class="demo-banner" style="background: rgba(220,38,38,0.2); border: 1px solid rgba(220,38,38,0.4); margin-bottom: 1rem;">NOTE: This static GitHub Pages version cannot run the backend provisioner APIs. Clone the repo and run locally for full interactivity.</div>
+        <h3>Seraphim Welfare Demonstrator</h3>
+        <p style="max-width: 600px; margin: 0 auto 2.5rem auto;">
+          Generate a secure connection string for a new welfare consumer ("Charles James"). The consumer can scan this QR code with their mobile Databox app to establish a trust relationship.
+        </p>
+        
+        <button id="btn-provision" class="action-btn" onclick="provisionCharles()">
+          <span>Provision "Charles James"</span>
+          <span class="loading-spinner" id="spinner-provision"></span>
+        </button>
+
+        <div id="qr-section" class="qr-container hidden">
+          <div class="demo-banner">DEMO EXAMPLE - SYNTHETIC DATA</div>
+          <p style="margin-bottom: 0.75rem; color: var(--text-secondary); font-size: 0.9rem;">
+            Scan this QR code with a Solid pod app to pair your WebID with the organisation's programme.
+          </p>
+          <div id="qrcode"></div>
+          <p style="margin: 1rem 0 0.25rem; font-size: 0.85rem;"><strong>Connection URI:</strong></p>
+          <div class="code-block" id="connection-uri" style="word-break: break-all; font-size: 0.75rem;"></div>
+          <details style="margin-top: 1rem;">
+            <summary style="cursor: pointer; color: var(--text-accent); font-weight: 600; font-size: 0.9rem;">Connection Details</summary>
+            <div style="margin-top: 0.75rem; font-size: 0.85rem; line-height: 1.7;">
+              <p><strong>Pairwise WebID:</strong> <span id="lbl-pair-webid" style="color: var(--text-secondary);"></span></p>
+              <p><strong>Organisation (Issuer):</strong> <span id="lbl-issuer" style="color: var(--text-secondary);"></span></p>
+              <p><strong>Programme:</strong> <span id="lbl-programme" style="color: var(--text-secondary);"></span></p>
+              <p><strong>Databox Root:</strong> <span id="lbl-databox" style="color: var(--text-secondary);"></span></p>
+              <p><strong>Storage Description:</strong> <span id="lbl-storage-desc" style="color: var(--text-secondary);"></span></p>
+              <p><strong>Connection ID:</strong> <span id="lbl-conn-id" style="color: var(--text-secondary);"></span></p>
+            </div>
+            <p style="margin-top: 0.75rem; font-size: 0.85rem;"><strong>Securing JWS:</strong></p>
+            <div class="code-block" id="jws-string" style="max-height: 120px; overflow-y: auto; font-size: 0.7rem;"></div>
+          </details>
+        </div>
+      </div>
+    </div>
+
+    
+    <!-- Loyalty Tab -->
+    <div id="tab-loyalty" class="tab-content reveal">
+      <div class="info-card" style="text-align: center; max-width: 800px; margin: 0 auto;">
+        <h3>MegaMart Loyalty Forge</h3>
+        <p style="max-width: 600px; margin: 0 auto 2.5rem auto;">
+          Generate a secure connection string for a new synthetic loyalty customer ("Customer 042"). This will forge a new program relationship and post a digital receipt to their Databox.
+        </p>
+        
+        <button id="btn-provision-loyalty" class="action-btn" onclick="provisionMegaMart()" style="background-color: var(--color-accent);">
+          <span>Provision "Customer 042"</span>
+          <span class="loading-spinner" id="spinner-provision-loyalty"></span>
+        </button>
+
+        <div id="qr-section-loyalty" class="qr-container hidden">
+          <div class="demo-banner">DEMO EXAMPLE - SYNTHETIC DATA</div>
+          <p style="margin-bottom: 0.75rem; color: var(--text-secondary); font-size: 0.9rem;">
+            Scan this QR code with a Solid pod app to pair your WebID with MegaMart Rewards.
+          </p>
+          <div id="qrcode-loyalty"></div>
+          <p style="margin: 1rem 0 0.25rem; font-size: 0.85rem;"><strong>Connection URI:</strong></p>
+          <div class="code-block" id="connection-uri-loyalty" style="word-break: break-all; font-size: 0.75rem;"></div>
+          <details style="margin-top: 1rem;">
+            <summary style="cursor: pointer; color: var(--text-accent); font-weight: 600; font-size: 0.9rem;">Connection Details</summary>
+            <div style="margin-top: 0.75rem; font-size: 0.85rem; line-height: 1.7;">
+              <p><strong>Pairwise WebID:</strong> <span id="lbl-pair-webid-loyalty" style="color: var(--text-secondary);"></span></p>
+              <p><strong>Organisation (Issuer):</strong> <span id="lbl-issuer-loyalty" style="color: var(--text-secondary);"></span></p>
+              <p><strong>Programme:</strong> <span id="lbl-programme-loyalty" style="color: var(--text-secondary);"></span></p>
+              <p><strong>Databox Root:</strong> <span id="lbl-databox-loyalty" style="color: var(--text-secondary);"></span></p>
+              <p><strong>Storage Description:</strong> <span id="lbl-storage-desc-loyalty" style="color: var(--text-secondary);"></span></p>
+              <p><strong>Connection ID:</strong> <span id="lbl-conn-id-loyalty" style="color: var(--text-secondary);"></span></p>
+            </div>
+            <p style="margin-top: 0.75rem; font-size: 0.85rem;"><strong>Securing JWS:</strong></p>
+            <div class="code-block" id="jws-string-loyalty" style="max-height: 120px; overflow-y: auto; font-size: 0.7rem;"></div>
+          </details>
+        </div>
+      </div>
+    </div>
+  
+
+    <!-- Admin Tab -->
+    <div id="tab-admin" class="tab-content reveal">
+      <div class="info-card">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
+          <h3 style="margin: 0;">Case Worker Dashboard</h3>
+          <span style="background: rgba(251, 191, 36, 0.15); color: var(--text-accent); padding: 0.5rem 1rem; border-radius: 99px; font-weight: 600; font-size: 0.9rem; border: 1px solid rgba(251, 191, 36, 0.3);">
+            Active Case: Charles James
+          </span>
+        </div>
+        
+        <p>This panel securely renders the cryptographic receipts and live references for the data physically committed to the Databox server.</p>
+        
+        <div id="admin-empty-state" style="text-align: center; padding: 4rem 2rem; background: rgba(0,0,0,0.2); border-radius: 16px; border: 1px dashed var(--border-light);">
+          <p style="margin: 0; color: var(--text-secondary); font-size: 1.25rem;">No case data provisioned yet. Please provision the consumer first.</p>
+        </div>
+
+        <div id="admin-data-state" class="hidden">
+          <div class="record-grid">
+            <div class="record-box">
+              <h4>Program Mapping</h4>
+              <p><strong>Relationship ID:</strong> <br/><span id="lbl-relationship"></span></p>
+              <p><strong>Pairwise WebID:</strong> <br/><span id="lbl-pairwise"></span></p>
+            </div>
+            <div class="record-box">
+              <h4 style="color: var(--success);">Case Note Dispatched</h4>
+              <p><strong>Status:</strong> Reconciled & Accepted</p>
+              <p><strong>Notes:</strong> Initial intake completed. Immediate stability goals set.</p>
+            </div>
+          </div>
+          
+          <h4 style="color: var(--text-accent); font-size: 1.25rem; margin-top: 3rem; margin-bottom: 0.5rem;">Live CSS Resource Locator</h4>
+          <p>The accepted resource has been physically committed to the CSS storage under the relationship root:</p>
+          <div class="code-block" id="lbl-resource"></div>
+
+          <h4 style="color: var(--text-accent); font-size: 1.25rem; margin-top: 3rem; margin-bottom: 0.5rem;">Cryptographic Receipt (JWS)</h4>
+          <p>The Forge issued this cryptographically signed receipt as proof of acceptance:</p>
+          <div class="code-block" id="lbl-receipt"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>Community Solid Server &middot; Databox Experimental Track B</p>
+  </footer>
+
+  <script>
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn.demo-tab').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+      
+      event.target.classList.add('active');
+      document.getElementById('tab-' + tabId).classList.add('active');
+    }
+
+    let allUseCases = [];
+
+    async function loadUseCases() {
+      try {
+        const res = await fetch('./assets/scripts/use-cases.json');
+        if (!res.ok) throw new Error('Failed to load');
+        allUseCases = await res.json();
+        
+        // Extract unique categories
+        const categories = [...new Set(allUseCases.map(uc => uc.category))];
+        
+        // Build Tabs
+        const tabsContainer = document.getElementById('category-tabs');
+        tabsContainer.innerHTML = `<button class="tab-btn category-tab active" onclick="filterUseCases('All')">All</button>`;
+        categories.forEach(cat => {
+          tabsContainer.innerHTML += `<button class="tab-btn category-tab" onclick="filterUseCases('${cat}')">${cat}</button>`;
+        });
+        
+        filterUseCases('All');
+      } catch (e) {
+        document.getElementById('use-cases-grid').innerHTML = '<p style="color: #ef4444; text-align: center; width: 100%;">Failed to load industry applications.</p>';
+      }
+    }
+
+    function filterUseCases(category) {
+      // Update Tab Styles
+      document.querySelectorAll('.tab-btn.category-tab').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.innerText === category) btn.classList.add('active');
+      });
+
+      // Filter and Render Cards
+      const filtered = category === 'All' ? allUseCases : allUseCases.filter(uc => uc.category === category);
+      const grid = document.getElementById('use-cases-grid');
+      
+      grid.innerHTML = filtered.map(uc => `
+        <div class="record-box" style="display: flex; flex-direction: column;">
+          <span style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-accent); margin-bottom: 0.5rem; font-weight: 700;">${uc.category}</span>
+          <h4 style="color: white; font-size: 1.4rem; margin-bottom: 1rem; margin-top: 0;">${uc.title}</h4>
+          <p style="margin-bottom: 0; color: var(--text-secondary); flex: 1;">${uc.description}</p>
+        </div>
+      `).join('');
+    }
+
+    // Load use cases on boot
+    loadUseCases();
+
+    const FORGE_URL = 'http://localhost:3000/.databox/forge';
+    const TOKEN = '12345678901234567890123456789012';
+
+    const profile = {
+      "schemaVersion": "dbx-institution-profile/1.0.0",
+      "profileId": "prog-seraphim-welfare",
+      "profileVersion": "1.0.0",
+      "effectiveInterval": { "effectiveFrom": "2026-01-01T00:00:00Z", "effectiveUntil": "2027-01-01T00:00:00Z" },
+      "synthetic": true,
+      "program": {
+        "principal": { "id": "party-principal", "legalName": "Seraphim Welfare Demonstrator (SYNTHETIC)", "jurisdiction": "AU", "contact": "mailto:privacy@seraphim.example" },
+        "accountableParty": { "id": "party-accountable", "legalName": "Seraphim Case Management (SYNTHETIC)", "jurisdiction": "AU" }
+      },
+      "processors": [],
+      "tenancy": { "deploymentModel": "path-only", "origin": "https://localhost:3000/", "tokenAudience": "https://localhost:3000/" },
+      "crypto": { "signingSuite": "ES256", "signingKeyRef": "kms://program/seraphim/signing/1", "atRestEncryption": { "required": true, "perTenantKeys": true }, "applicationLevelEncryption": "optional" },
+      "identityProviders": [ { "id": "idp-govid", "issuer": "https://id.govid.example/", "protocol": "oidc", "accreditation": "SYNTHETIC-TDIF:IP3", "claimContract": [ "sub", "ial", "aal", "iss", "acr" ] } ],
+      "assuranceMappings": [ { "issuer": "idp-govid", "dimension": "identityProofing", "claim": "ial", "level": 3 } ],
+      "tokenBroker": { "adopted": true, "brokerOrigin": "https://broker.seraphim.example/", "tokenExchange": "rfc8693", "senderConstraint": "dpop" },
+      "offlineGrantPolicy": { "allowOffline": true, "maxOfflineMinutes": 60 },
+      "recordClasses": [ { "id": "rc-case-note", "label": "Case Note", "minimumAssurance": [ { "dimension": "identityProofing", "minLevel": 2 } ], "policyTemplate": "pt-records", "legalBasis": "lb-consent", "purposes": [ "p-service-delivery" ], "existenceVisibility": "visible" } ],
+      "submissionClasses": [],
+      "policies": { "templates": [ { "id": "pt-records", "version": "1.0.0", "odrlProfile": "https://w3id.org/solid-databox/odrl-profile/v1" } ], "conflictStrategy": "prohibition-overrides", "effectiveTimeBehavior": "prospective" },
+      "compiledPolicy": { "compiledPolicyDigest": "urn:sha256:SYNTHETIC-compiled-seraphim-0001", "corpusManifestDigest": "urn:sha256:SYNTHETIC-corpus-seraphim-0001", "attestationId": "attest-synthetic-seraphim-0001", "evaluatorVersion": "dbx-eval/1.0.0", "profileDigest": "urn:sha256:SYNTHETIC-profile-seraphim-0001", "attestationStatus": "attested", "legalComplianceClaimed": false },
+      "legislativeCorpus": { "manifestDigest": "urn:sha256:SYNTHETIC-corpus-seraphim-0001", "entries": [] },
+      "legalBases": [ { "id": "lb-consent", "description": "Consent for case management (SYNTHETIC)." } ],
+      "declaredPurposes": [ { "id": "p-service-delivery", "description": "Welfare service delivery and case management (SYNTHETIC)." } ],
+      "retention": [ { "recordClass": "rc-case-note", "retentionDays": 2555, "deletionMode": "crypto-erase", "tombstoneOnExpiry": false } ],
+      "systemsOfRecord": [ { "id": "sor-seraphim", "label": "Seraphim Core", "recordClasses": [ "rc-case-note" ] } ],
+      "notifications": { "notificationFormat": "solid-notification/websocket", "receiptFormat": "vc-jose-cose/es256" },
+      "redress": { "stepUpSupported": true, "existenceVisibilityDefault": "visible", "correctionResponseDays": 30, "appealRoutes": [] }
+    };
+
+    const mockJwk = {
+      "kty": "EC",
+      "crv": "P-256",
+      "x": "oQQoBP_7TGokLmOSY76Kcshohk1gTCTjV3_JM6IM51E",
+      "y": "mCglNTjMscfg15aePByHpC8FHnE71VZeNg81TUxuUAw"
+    };
+
+    async function apiPost(path, body) {
+      const res = await fetch(`${FORGE_URL}${path}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${TOKEN}`
+        },
+        body: JSON.stringify(body)
+      });
+      if (!res.ok) {
+        const text = await res.text();
+        if (text.includes('already registered')) return { profileId: profile.profileId };
+        throw new Error(`API error ${res.status}: ${text}`);
+      }
+      return res.json();
+    }
+
+    
+    const megaMartProfile = {
+  "schemaVersion": "dbx-institution-profile/1.0.0",
+  "profileId": "prog-megamart-rewards-loyalty",
+  "profileVersion": "1.0.0",
+  "effectiveInterval": {
+    "effectiveFrom": "2026-01-01T00:00:00Z",
+    "effectiveUntil": "2027-01-01T00:00:00Z"
+  },
+  "synthetic": true,
+  "program": {
+    "principal": {
+      "id": "party-principal",
+      "legalName": "MegaMart Rewards Pty Ltd (SYNTHETIC — not a real organisation)",
+      "jurisdiction": "AU",
+      "contact": "mailto:privacy@megamart-rewards.example"
+    },
+    "accountableParty": {
+      "id": "party-accountable",
+      "legalName": "MegaMart Loyalty Program Office (SYNTHETIC)",
+      "jurisdiction": "AU"
+    }
+  },
+  "processors": [
+    {
+      "id": "proc-notify",
+      "legalName": "Synthetic Notification Processor Pty Ltd (SYNTHETIC)",
+      "jurisdiction": "AU",
+      "purposes": [ "p-account" ],
+      "readsPayload": false
+    },
+    {
+      "id": "proc-safety",
+      "legalName": "Synthetic Allergen & Recall Alerting Processor (SYNTHETIC)",
+      "jurisdiction": "AU",
+      "purposes": [ "p-safety" ],
+      "readsPayload": true
+    }
+  ],
+  "tenancy": {
+    "deploymentModel": "program-subdomain",
+    "origin": "https://databox.megamart-rewards.example/",
+    "tokenAudience": "https://databox.megamart-rewards.example/"
+  },
+  "crypto": {
+    "signingSuite": "ES256",
+    "signingKeyRef": "kms://program/megamart-rewards/signing/1",
+    "atRestEncryption": { "required": true, "perTenantKeys": true },
+    "applicationLevelEncryption": "optional"
+  },
+  "identityProviders": [
+    {
+      "id": "idp-mega-oidc",
+      "issuer": "https://id.megamart-rewards.example/",
+      "protocol": "solid-oidc",
+      "accreditation": "SYNTHETIC-FRAMEWORK:IP2",
+      "claimContract": [ "sub", "ial", "aal", "auth_time", "iss" ]
+    },
+    {
+      "id": "idp-govid",
+      "issuer": "https://id.govid.example/",
+      "protocol": "oidc",
+      "accreditation": "SYNTHETIC-TDIF:IP3",
+      "claimContract": [ "sub", "ial", "aal", "iss", "acr" ]
+    }
+  ],
+  "assuranceMappings": [
+    { "issuer": "idp-govid", "dimension": "identityProofing", "claim": "ial", "level": 3 },
+    { "issuer": "idp-mega-oidc", "dimension": "identityProofing", "claim": "ial", "level": 2 },
+    { "issuer": "idp-govid", "dimension": "authenticatorStrength", "claim": "aal", "level": 3 },
+    { "issuer": "idp-mega-oidc", "dimension": "authenticatorStrength", "claim": "aal", "level": 2 },
+    { "issuer": "idp-mega-oidc", "dimension": "authenticationFreshness", "claim": "auth_time", "level": 2 },
+    { "issuer": "idp-govid", "dimension": "federationTrust", "claim": "iss", "level": 2 },
+    { "issuer": "idp-mega-oidc", "dimension": "federationTrust", "claim": "iss", "level": 1 },
+    { "issuer": "idp-govid", "dimension": "stepUpState", "claim": "acr", "level": 1 }
+  ],
+  "tokenBroker": {
+    "adopted": true,
+    "brokerOrigin": "https://broker.megamart-rewards.example/",
+    "tokenExchange": "rfc8693",
+    "senderConstraint": "dpop"
+  },
+  "offlineGrantPolicy": {
+    "allowOffline": true,
+    "maxOfflineMinutes": 60
+  },
+  "recordClasses": [
+    {
+      "id": "rc-receipt",
+      "label": "Digital receipt (line items, product info, allergen metadata)",
+      "minimumAssurance": [
+        { "dimension": "identityProofing", "minLevel": 2 },
+        { "dimension": "authenticatorStrength", "minLevel": 2 },
+        { "dimension": "authenticationFreshness", "minLevel": 1 }
+      ],
+      "policyTemplate": "pt-records",
+      "legalBasis": "lb-contract",
+      "purposes": [ "p-account" ],
+      "existenceVisibility": "visible"
+    },
+    {
+      "id": "rc-warranty",
+      "label": "Warranty record",
+      "minimumAssurance": [
+        { "dimension": "identityProofing", "minLevel": 2 },
+        { "dimension": "authenticatorStrength", "minLevel": 2 }
+      ],
+      "policyTemplate": "pt-records",
+      "legalBasis": "lb-contract",
+      "purposes": [ "p-warranty" ],
+      "existenceVisibility": "visible"
+    },
+    {
+      "id": "rc-product-info",
+      "label": "Product information & allergen metadata",
+      "minimumAssurance": [
+        { "dimension": "identityProofing", "minLevel": 1 }
+      ],
+      "policyTemplate": "pt-records",
+      "legalBasis": "lb-legal-obligation",
+      "purposes": [ "p-safety" ],
+      "existenceVisibility": "visible"
+    },
+    {
+      "id": "rc-recall",
+      "label": "Product recall notice",
+      "minimumAssurance": [
+        { "dimension": "identityProofing", "minLevel": 1 }
+      ],
+      "policyTemplate": "pt-records",
+      "legalBasis": "lb-legal-obligation",
+      "purposes": [ "p-safety" ],
+      "existenceVisibility": "visible"
+    },
+    {
+      "id": "rc-rewards",
+      "label": "Rewards / loyalty points statement",
+      "minimumAssurance": [
+        { "dimension": "identityProofing", "minLevel": 1 },
+        { "dimension": "authenticatorStrength", "minLevel": 1 }
+      ],
+      "policyTemplate": "pt-records",
+      "legalBasis": "lb-contract",
+      "purposes": [ "p-rewards" ],
+      "existenceVisibility": "visible"
+    },
+    {
+      "id": "rc-disposition",
+      "label": "Review disposition (staff correction / warranty outcome)",
+      "minimumAssurance": [
+        { "dimension": "identityProofing", "minLevel": 2 },
+        { "dimension": "authenticatorStrength", "minLevel": 2 },
+        { "dimension": "stepUpState", "minLevel": 1 }
+      ],
+      "policyTemplate": "pt-records",
+      "legalBasis": "lb-contract",
+      "purposes": [ "p-correction" ],
+      "existenceVisibility": "suppressed"
+    }
+  ],
+  "submissionClasses": [
+    {
+      "id": "sc-correction",
+      "label": "Correction request",
+      "minimumAssurance": [
+        { "dimension": "identityProofing", "minLevel": 1 }
+      ],
+      "policyTemplate": "pt-submissions",
+      "purposes": [ "p-correction" ]
+    },
+    {
+      "id": "sc-warranty-claim",
+      "label": "Warranty claim",
+      "minimumAssurance": [
+        { "dimension": "identityProofing", "minLevel": 2 },
+        { "dimension": "authenticatorStrength", "minLevel": 1 }
+      ],
+      "policyTemplate": "pt-submissions",
+      "purposes": [ "p-warranty" ]
+    },
+    {
+      "id": "sc-dietary-pref",
+      "label": "Dietary / allergen warning preference",
+      "minimumAssurance": [
+        { "dimension": "identityProofing", "minLevel": 1 }
+      ],
+      "policyTemplate": "pt-submissions",
+      "purposes": [ "p-safety" ]
+    }
+  ],
+  "policies": {
+    "templates": [
+      { "id": "pt-records", "version": "1.0.0", "odrlProfile": "https://w3id.org/solid-databox/odrl-profile/v1" },
+      { "id": "pt-submissions", "version": "1.0.0", "odrlProfile": "https://w3id.org/solid-databox/odrl-profile/v1" }
+    ],
+    "conflictStrategy": "prohibition-overrides",
+    "effectiveTimeBehavior": "prospective"
+  },
+  "compiledPolicy": {
+    "compiledPolicyDigest": "urn:sha256:SYNTHETIC-compiled-loyalty-0001",
+    "corpusManifestDigest": "urn:sha256:SYNTHETIC-corpus-loyalty-0001",
+    "attestationId": "attest-synthetic-loyalty-0001",
+    "evaluatorVersion": "dbx-eval/1.0.0",
+    "profileDigest": "urn:sha256:SYNTHETIC-profile-loyalty-0001",
+    "attestationStatus": "attested",
+    "legalComplianceClaimed": false
+  },
+  "legislativeCorpus": {
+    "manifestDigest": "urn:sha256:SYNTHETIC-corpus-loyalty-0001",
+    "entries": [
+      {
+        "sourceUri": "https://legislation.example/synthetic/consumer-guarantees-act",
+        "jurisdiction": "AU",
+        "expressionVersion": "2025-01-01",
+        "retrievedAt": "2026-01-01T00:00:00Z",
+        "mediaType": "text/html",
+        "contentDigest": "urn:sha256:SYNTHETIC-source-consumer-0001"
+      },
+      {
+        "sourceUri": "https://legislation.example/synthetic/food-safety-standards",
+        "jurisdiction": "AU",
+        "expressionVersion": "2025-06-01",
+        "retrievedAt": "2026-01-01T00:00:00Z",
+        "mediaType": "text/html",
+        "contentDigest": "urn:sha256:SYNTHETIC-source-foodsafety-0001"
+      }
+    ]
+  },
+  "legalBases": [
+    { "id": "lb-contract", "description": "Performance of the loyalty-membership contract (SYNTHETIC)." },
+    { "id": "lb-legal-obligation", "description": "Product-safety / recall legal obligation (SYNTHETIC)." },
+    { "id": "lb-consent", "description": "Consent for dietary / allergen warning preferences (SYNTHETIC)." }
+  ],
+  "declaredPurposes": [
+    { "id": "p-account", "description": "Maintain the loyalty account relationship (SYNTHETIC)." },
+    { "id": "p-correction", "description": "Handle correction requests and their dispositions (SYNTHETIC)." },
+    { "id": "p-warranty", "description": "Warranty servicing and claims (SYNTHETIC)." },
+    { "id": "p-safety", "description": "Product safety, recall and allergen alerting (SYNTHETIC)." },
+    { "id": "p-rewards", "description": "Loyalty rewards administration (SYNTHETIC)." }
+  ],
+  "retention": [
+    { "recordClass": "rc-receipt", "retentionDays": 2555, "deletionMode": "tombstone", "tombstoneOnExpiry": true },
+    { "recordClass": "rc-warranty", "retentionDays": 3650, "deletionMode": "supersede", "tombstoneOnExpiry": false },
+    { "recordClass": "rc-product-info", "retentionDays": 1825, "deletionMode": "crypto-erase", "tombstoneOnExpiry": false },
+    { "recordClass": "rc-recall", "retentionDays": 3650, "deletionMode": "tombstone", "tombstoneOnExpiry": true },
+    { "recordClass": "rc-rewards", "retentionDays": 2555, "deletionMode": "supersede", "tombstoneOnExpiry": false },
+    { "recordClass": "rc-disposition", "retentionDays": 3650, "deletionMode": "tombstone", "tombstoneOnExpiry": true }
+  ],
+  "systemsOfRecord": [
+    { "id": "sor-pos", "label": "Point of sale", "recordClasses": [ "rc-receipt", "rc-warranty", "rc-rewards" ] },
+    { "id": "sor-catalog", "label": "Product catalogue & safety", "recordClasses": [ "rc-product-info", "rc-recall" ] },
+    { "id": "sor-care", "label": "Customer care review queue", "recordClasses": [ "rc-disposition" ] }
+  ],
+  "notifications": {
+    "notificationFormat": "solid-notification/websocket",
+    "receiptFormat": "vc-jose-cose/es256"
+  },
+  "redress": {
+    "stepUpSupported": true,
+    "existenceVisibilityDefault": "visible",
+    "correctionResponseDays": 30,
+    "appealRoutes": [
+      {
+        "id": "appeal-internal",
+        "responsibleBody": "MegaMart Rewards Internal Review (SYNTHETIC)",
+        "filingMethod": "https://appeal.megamart-rewards.example/file"
+      },
+      {
+        "id": "appeal-regulator",
+        "responsibleBody": "Synthetic Information Commissioner (SYNTHETIC — not a real regulator)",
+        "filingMethod": "https://appeal.regulator.example/file"
+      }
+    ]
+  }
+}
+;
+
+    async function provisionMegaMart() {
+      const btn = document.getElementById('btn-provision-loyalty');
+      const spinner = document.getElementById('spinner-provision-loyalty');
+      
+      btn.disabled = true;
+      spinner.style.display = 'inline-block';
+      
+      try {
+        throw new Error('Backend APIs are disabled on the static GitHub Pages deployment.');
+        throw new Error('Backend APIs are disabled on the static GitHub Pages deployment.');
+        const program = await apiPost('/programs', {
+          profile: megaMartProfile,
+          programUri: 'http://localhost:3000/megamart/program',
+          databoxBaseUrl: 'http://localhost:3000/megamart/boxes/'
+        });
+
+        const mapping = await apiPost('/mappings', {
+          profileId: program.profileId,
+          sourceSystem: 'sor-pos',
+          customerIdNamespace: 'loyalty',
+          customerId: 'SYNTHETIC-CUSTOMER-042',
+          pairwiseWebId: 'https://consumer-pod.example/profile/card#megamart',
+          holderPublicJwk: mockJwk
+        });
+
+        const deposit = await apiPost('/source-events', {
+          profileId: program.profileId,
+          sourceSystem: 'sor-pos',
+          eventType: 'digital-receipt',
+          sourceEventId: 'SYNTHETIC-EVENT-001' + Date.now(),
+          customerIdNamespace: 'loyalty',
+          customerId: 'SYNTHETIC-CUSTOMER-042',
+          recordClass: 'rc-receipt',
+          legalBasis: 'lb-contract',
+          purpose: 'p-account',
+          payload: { merchant: 'MegaMart Demo', total: '42.00', currency: 'AUD', items: ['Oat Milk', 'Apples'] }
+        });
+
+        if (deposit.status !== 'reconciled') {
+          throw new Error('Deposit was not reconciled: ' + (deposit.reconciliation?.reason || deposit.status));
+        }
+
+        const cred = mapping.credential.credential;
+        const conn = cred.credentialSubject.connection;
+        const pairwiseWebId = cred.credentialSubject.id;
+        const connectionId = mapping.credential.connectionId;
+
+        const connectUri = new URL('solid-databox://connect');
+        connectUri.searchParams.set('webid', pairwiseWebId);
+        connectUri.searchParams.set('issuer', cred.issuer);
+        connectUri.searchParams.set('program', conn.program);
+        connectUri.searchParams.set('databox', conn.databox);
+        connectUri.searchParams.set('storage', conn.storageDescription);
+        connectUri.searchParams.set('connection', connectionId);
+        connectUri.searchParams.set('grant', conn.accessGrant);
+        const connectionUri = connectUri.toString();
+
+        document.getElementById('qr-section-loyalty').classList.remove('hidden');
+        document.getElementById('connection-uri-loyalty').innerText = connectionUri;
+        document.getElementById('jws-string-loyalty').innerText = mapping.credential.jws;
+
+        document.getElementById('lbl-pair-webid-loyalty').innerText = pairwiseWebId;
+        document.getElementById('lbl-issuer-loyalty').innerText = cred.issuer;
+        document.getElementById('lbl-programme-loyalty').innerText = conn.program;
+        document.getElementById('lbl-databox-loyalty').innerText = conn.databox;
+        document.getElementById('lbl-storage-desc-loyalty').innerText = conn.storageDescription;
+        document.getElementById('lbl-conn-id-loyalty').innerText = connectionId;
+        
+        document.getElementById('qrcode-loyalty').innerHTML = '';
+        try {
+          new QRCode(document.getElementById("qrcode-loyalty"), {
+            text: connectionUri,
+            width: 280, height: 280,
+            colorDark : "#0f172a", colorLight : "#ffffff",
+            correctLevel : QRCode.CorrectLevel.L
+          });
+        } catch (qrErr) {
+          document.getElementById('qrcode-loyalty').innerHTML = '<p style="color: var(--text-secondary); font-size: 0.85rem;">QR code unavailable.</p>';
+        }
+
+        btn.querySelector('span:first-child').innerText = 'Provisioned Successfully!';
+
+      } catch (e) {
+        alert('Provisioning failed: ' + e.message);
+        btn.disabled = false;
+        btn.querySelector('span:first-child').innerText = 'Provision "Customer 042"';
+      } finally {
+        spinner.style.display = 'none';
+      }
+    }
+  
+
+    async function provisionCharles() {
+      const btn = document.getElementById('btn-provision');
+      const spinner = document.getElementById('spinner-provision');
+      
+      btn.disabled = true;
+      spinner.style.display = 'inline-block';
+      
+      try {
+        const program = await apiPost('/programs', {
+          profile,
+          programUri: 'http://localhost:3000/program',
+          databoxBaseUrl: 'http://localhost:3000/boxes/'
+        });
+
+        const mapping = await apiPost('/mappings', {
+          profileId: program.profileId,
+          sourceSystem: 'seraphim-intake',
+          customerIdNamespace: 'welfare',
+          customerId: 'CHARLES-JAMES-ID-001',
+          pairwiseWebId: 'https://v-8a7b6c5d.example/profile/card#seraphim',
+          holderPublicJwk: mockJwk
+        });
+
+        const deposit = await apiPost('/source-events', {
+          profileId: program.profileId,
+          sourceSystem: 'seraphim-intake',
+          eventType: 'welfare-checkin',
+          sourceEventId: 'SYNTHETIC-CHECKIN-001' + Date.now(),
+          customerIdNamespace: 'welfare',
+          customerId: 'CHARLES-JAMES-ID-001',
+          recordClass: 'rc-case-note',
+          legalBasis: 'lb-consent',
+          purpose: 'p-service-delivery',
+          payload: { notes: 'Initial intake completed. Immediate stability goals set.', status: 'active' }
+        });
+
+        if (deposit.status !== 'reconciled') {
+          throw new Error('Deposit was not reconciled: ' + (deposit.reconciliation?.reason || deposit.status));
+        }
+
+        // Extract credential fields for the connection URI
+        const cred = mapping.credential.credential;
+        const conn = cred.credentialSubject.connection;
+        const pairwiseWebId = cred.credentialSubject.id;
+        const connectionId = mapping.credential.connectionId;
+
+        // Build a connection URI that pairs the user's WebID with the org's programme
+        const connectUri = new URL('solid-databox://connect');
+        connectUri.searchParams.set('webid', pairwiseWebId);
+        connectUri.searchParams.set('issuer', cred.issuer);
+        connectUri.searchParams.set('program', conn.program);
+        connectUri.searchParams.set('databox', conn.databox);
+        connectUri.searchParams.set('storage', conn.storageDescription);
+        connectUri.searchParams.set('connection', connectionId);
+        connectUri.searchParams.set('grant', conn.accessGrant);
+        const connectionUri = connectUri.toString();
+
+        document.getElementById('qr-section').classList.remove('hidden');
+        document.getElementById('connection-uri').innerText = connectionUri;
+        document.getElementById('jws-string').innerText = mapping.credential.jws;
+
+        // Populate connection detail fields
+        document.getElementById('lbl-pair-webid').innerText = pairwiseWebId;
+        document.getElementById('lbl-issuer').innerText = cred.issuer;
+        document.getElementById('lbl-programme').innerText = conn.program;
+        document.getElementById('lbl-databox').innerText = conn.databox;
+        document.getElementById('lbl-storage-desc').innerText = conn.storageDescription;
+        document.getElementById('lbl-conn-id').innerText = connectionId;
+        
+        // Generate QR code from the connection URI (short enough for QR)
+        document.getElementById('qrcode').innerHTML = '';
+        try {
+          new QRCode(document.getElementById("qrcode"), {
+            text: connectionUri,
+            width: 280,
+            height: 280,
+            colorDark : "#0f172a",
+            colorLight : "#ffffff",
+            correctLevel : QRCode.CorrectLevel.L
+          });
+        } catch (qrErr) {
+          document.getElementById('qrcode').innerHTML = '<p style="color: var(--text-secondary); font-size: 0.85rem;">QR code unavailable — URI too large for QR encoding.</p>';
+        }
+
+        document.getElementById('admin-empty-state').classList.add('hidden');
+        document.getElementById('admin-data-state').classList.remove('hidden');
+        
+        document.getElementById('lbl-relationship').innerText = conn.relationship;
+        document.getElementById('lbl-pairwise').innerText = pairwiseWebId;
+        document.getElementById('lbl-resource').innerText = deposit.reconciliation.acceptedResource || 'N/A';
+        document.getElementById('lbl-receipt').innerText = deposit.receipt ? deposit.receipt.jws : 'N/A';
+
+        btn.querySelector('span:first-child').innerText = 'Provisioned Successfully!';
+
+      } catch (e) {
+        alert('Provisioning failed: ' + e.message);
+        btn.disabled = false;
+        btn.querySelector('span:first-child').innerText = 'Provision "Charles James"';
+      } finally {
+        spinner.style.display = 'none';
+      }
+    }
+
+    // --- Intersection Observer for Scroll Reveals ---
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.15
+    };
+    const observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // --- Three.js Background Animation ---
+    function initThreeJS() {
+      const canvas = document.getElementById('three-canvas');
+      if (!canvas || typeof THREE === 'undefined') return;
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+      const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+      // Create textures from emojis
+      function createEmojiTexture(emoji) {
+        const size = 64;
+        const texCanvas = document.createElement('canvas');
+        texCanvas.width = size;
+        texCanvas.height = size;
+        const ctx = texCanvas.getContext('2d');
+        ctx.font = '48px Arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(emoji, size/2, size/2 + 4);
+        return new THREE.CanvasTexture(texCanvas);
+      }
+
+      const emojis = ['👨', '👩', '🧒', '👧', '👴', '👵', '🧔', '👱‍♀️'];
+      const totalParticles = 700;
+      const particlesPerGroup = Math.floor(totalParticles / emojis.length);
+      const particleMeshes = [];
+
+      emojis.forEach((emoji) => {
+        const texture = createEmojiTexture(emoji);
+        const geometry = new THREE.BufferGeometry();
+        const posArray = new Float32Array(particlesPerGroup * 3);
+
+        for(let i = 0; i < particlesPerGroup * 3; i++) {
+          posArray[i] = (Math.random() - 0.5) * 25;
+        }
+        geometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+
+        const material = new THREE.PointsMaterial({
+          size: 0.35, // Larger size to see the emojis
+          map: texture,
+          transparent: true,
+          opacity: 0.65,
+          alphaTest: 0.1, // Discard empty pixels
+          sizeAttenuation: true
+        });
+
+        const mesh = new THREE.Points(geometry, material);
+        scene.add(mesh);
+        particleMeshes.push(mesh);
+      });
+
+      camera.position.z = 5;
+
+      // Mouse Interaction
+      let mouseX = 0;
+      let mouseY = 0;
+      let targetX = 0;
+      let targetY = 0;
+      const windowHalfX = window.innerWidth / 2;
+      const windowHalfY = window.innerHeight / 2;
+
+      document.addEventListener('mousemove', (event) => {
+        mouseX = (event.clientX - windowHalfX);
+        mouseY = (event.clientY - windowHalfY);
+      });
+
+      const clock = new THREE.Clock();
+
+      function animate() {
+        requestAnimationFrame(animate);
+        const elapsedTime = clock.getElapsedTime();
+
+        targetX = mouseX * 0.001;
+        targetY = mouseY * 0.001;
+
+        particleMeshes.forEach((mesh, index) => {
+          mesh.rotation.y += 0.001 + (index * 0.0001);
+          mesh.rotation.x += 0.0005 + (index * 0.00005);
+
+          // Subtle Parallax
+          mesh.rotation.y += 0.05 * (targetX - mesh.rotation.y);
+          mesh.rotation.x += 0.05 * (targetY - mesh.rotation.x);
+          
+          // Gentle vertical floating with slight offsets
+          mesh.position.y = Math.sin(elapsedTime * 0.5 + index) * 0.2;
+        });
+
+        renderer.render(scene, camera);
+      }
+      
+      animate();
+
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+    }
+
+    // Initialize Three.js after a brief delay to ensure layout is ready
+    setTimeout(initThreeJS, 100);
+  </script>
+</body>
+</html>
