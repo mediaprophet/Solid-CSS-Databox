@@ -1,5 +1,17 @@
 [
   {
+    "category": "Civics",
+    "slug": "electoral-engagement",
+    "title": "Civics: Electoral Engagement & Representative Communication",
+    "description": "A healthy democracy requires transparent, verifiable communication between citizens and their elected representatives. Integrating a Databox establishes a verified, bi-directional channel for electoral engagement. Members of an electorate can cryptographically prove they reside in a specific district without revealing their full identity, allowing them to engage in constituent polling, submit policy feedback, or securely share highly sensitive documents (such as whistleblower evidence or hardship claims) directly with their Member of Parliament. This eliminates Astroturfing by ensuring every interaction maps to a verified constituent, while simultaneously protecting the citizen's privacy."
+  },
+  {
+    "category": "Civics",
+    "slug": "volunteering",
+    "title": "Civics: Volunteering & Civic Participation",
+    "description": "Civic participation relies heavily on volunteers, yet their contributions often go unrecognized on formal resumes. The Databox architecture transforms volunteering into a quantifiable, verifiable asset. When individuals participate in community service, disaster relief, or local civic duties, organizations issue cryptographically signed micro-credentials directly to the volunteer's Pod. These verifiable claims aggregate to build a robust \"Civic Resume\" that can be securely shared with prospective employers or educational institutions, proving community engagement, leadership, and specific skills acquired during volunteer work."
+  },
+  {
     "category": "Commercial",
     "slug": "automotive",
     "title": "Commercial: Automotive & Vehicle Maintenance",
