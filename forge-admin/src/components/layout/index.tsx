@@ -56,6 +56,58 @@ export const Layout: React.FC<{ children?: React.ReactNode }> = ({ children }) =
           >
             Event Dispatcher
           </NavLink>
+          <NavLink
+            to="/setup"
+            className={({ isActive }) =>
+              `p-3 rounded-lg font-medium transition-all duration-300 ${
+                isActive
+                  ? "bg-[#d4af37]/15 text-[#d4af37] border-l-4 border-[#d4af37]"
+                  : "text-slate-400 hover:bg-white/5 hover:text-white"
+              }`
+            }
+          >
+            Organization Set-up
+          </NavLink>
+
+          <div className="mt-8 mb-2 px-3">
+            <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider">Consumer Rights (ADR-0023)</h3>
+          </div>
+          <NavLink
+            to="/access-requests"
+            className={({ isActive }) =>
+              `p-3 rounded-lg font-medium transition-all duration-300 ${
+                isActive
+                  ? "bg-[#d4af37]/15 text-[#d4af37] border-l-4 border-[#d4af37]"
+                  : "text-slate-400 hover:bg-white/5 hover:text-white"
+              }`
+            }
+          >
+            Access Requests
+          </NavLink>
+          <NavLink
+            to="/corrections"
+            className={({ isActive }) =>
+              `p-3 rounded-lg font-medium transition-all duration-300 ${
+                isActive
+                  ? "bg-[#d4af37]/15 text-[#d4af37] border-l-4 border-[#d4af37]"
+                  : "text-slate-400 hover:bg-white/5 hover:text-white"
+              }`
+            }
+          >
+            Correction Requests
+          </NavLink>
+          <NavLink
+            to="/consumer-ledger"
+            className={({ isActive }) =>
+              `p-3 rounded-lg font-medium transition-all duration-300 ${
+                isActive
+                  ? "bg-[#d4af37]/15 text-[#d4af37] border-l-4 border-[#d4af37]"
+                  : "text-slate-400 hover:bg-white/5 hover:text-white"
+              }`
+            }
+          >
+            Consumer Ledger
+          </NavLink>
         </nav>
       </div>
 

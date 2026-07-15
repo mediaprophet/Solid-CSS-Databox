@@ -1,0 +1,57 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix gtakeout: <https://ns.webcivics.net/platform/google-takeout#> .
+@prefix sfdc: <https://ns.webcivics.net/platform/salesforce#> .
+@prefix schema: <http://schema.org/> .
+
+# -------------------------------------------------------------------------
+# Platform Ingestion SHACL Validation Shapes
+# -------------------------------------------------------------------------
+# Used by the Databox AppendOnlyStore to strictly validate incoming JSON
+# payloads translated from Google Takeout and Salesforce.
+# -------------------------------------------------------------------------
+
+# =========================================================================
+# Google Pay Transaction Validation
+# =========================================================================
+<#GooglePayTransactionShape> a sh:NodeShape ;
+    sh:targetClass gtakeout:GooglePayTransaction ;
+    sh:property [
+        sh:path gtakeout:transactionTimeMs ;
+        sh:datatype xsd:long ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "A Google Pay Transaction must have exactly one transactionTimeMs (epoch)."@en ;
+    ] ;
+    sh:property [
+        sh:path gtakeout:transactionAmount ;
+        sh:datatype xsd:decimal ;
+        sh:minCount 1 ;
+        sh:message "A transaction must declare a decimal amount."@en ;
+    ] ;
+    sh:property [
+        sh:path gtakeout:currencyCode ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:pattern "^[A-Z]{3}$" ;
+        sh:message "Currency code must be a 3-letter ISO code (e.g., USD)."@en ;
+    ] .
+
+# =========================================================================
+# Salesforce Account Validation
+# =========================================================================
+<#SalesforceAccountShape> a sh:NodeShape ;
+    sh:targetClass sfdc:Account ;
+    sh:property [
+        sh:path sfdc:accountId ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxLength 18 ;
+        sh:message "Salesforce AccountId must be present and max 18 chars."@en ;
+    ] ;
+    sh:property [
+        sh:path sfdc:accountName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:message "Account must have a legal name."@en ;
+    ] .

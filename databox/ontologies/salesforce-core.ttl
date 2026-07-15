@@ -1,0 +1,82 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix schema: <http://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix sfdc: <https://ns.webcivics.net/platform/salesforce#> .
+
+# -------------------------------------------------------------------------
+# Salesforce (CRM) Platform Ontology Mapping
+# -------------------------------------------------------------------------
+# Translates Salesforce REST API standard objects (Account, Contact, 
+# Opportunity) into semantic Databox RDF fields.
+# -------------------------------------------------------------------------
+
+sfdc:Ontology rdf:type owl:Ontology ;
+    rdfs:label "Salesforce CRM Core Mapping Ontology"@en ;
+    rdfs:comment "Maps literal Salesforce standard objects to Databox semantic graphs."@en .
+
+# =========================================================================
+# 1. Account (Organization)
+# =========================================================================
+sfdc:Account rdf:type owl:Class ;
+    rdfs:subClassOf schema:Organization ;
+    rdfs:label "Salesforce Account"@en .
+
+sfdc:accountId rdf:type owl:DatatypeProperty ;
+    rdfs:domain sfdc:Account ;
+    rdfs:range xsd:string ;
+    rdfs:comment "SFDC literal 'Id' (e.g., '0015000000WWTZEAA5')."@en .
+
+sfdc:accountName rdf:type owl:DatatypeProperty ;
+    rdfs:domain sfdc:Account ;
+    rdfs:range xsd:string ;
+    owl:equivalentProperty schema:legalName .
+
+sfdc:annualRevenue rdf:type owl:DatatypeProperty ;
+    rdfs:domain sfdc:Account ;
+    rdfs:range xsd:decimal ;
+    rdfs:comment "SFDC literal 'AnnualRevenue'."@en .
+
+sfdc:industryCode rdf:type owl:DatatypeProperty ;
+    rdfs:domain sfdc:Account ;
+    rdfs:range xsd:string ;
+    rdfs:comment "SFDC literal 'Industry', ideally mapped to ANZSIC division URIs."@en .
+
+# =========================================================================
+# 2. Contact (Person)
+# =========================================================================
+sfdc:Contact rdf:type owl:Class ;
+    rdfs:subClassOf schema:Person ;
+    rdfs:label "Salesforce Contact"@en .
+
+sfdc:contactId rdf:type owl:DatatypeProperty ;
+    rdfs:domain sfdc:Contact ;
+    rdfs:range xsd:string .
+
+sfdc:accountIdRef rdf:type owl:ObjectProperty ;
+    rdfs:domain sfdc:Contact ;
+    rdfs:range sfdc:Account ;
+    rdfs:comment "SFDC literal 'AccountId' mapping to the parent organization."@en ;
+    owl:equivalentProperty schema:worksFor .
+
+sfdc:emailAddress rdf:type owl:DatatypeProperty ;
+    rdfs:domain sfdc:Contact ;
+    rdfs:range xsd:string ;
+    owl:equivalentProperty schema:email .
+
+# =========================================================================
+# 3. Opportunity (B2B Sales Pipeline)
+# =========================================================================
+sfdc:Opportunity rdf:type owl:Class ;
+    rdfs:label "Salesforce Opportunity"@en .
+
+sfdc:opportunityStage rdf:type owl:DatatypeProperty ;
+    rdfs:domain sfdc:Opportunity ;
+    rdfs:range xsd:string ;
+    rdfs:comment "SFDC literal 'StageName' (e.g., 'Closed Won', 'Prospecting')."@en .
+
+sfdc:probability rdf:type owl:DatatypeProperty ;
+    rdfs:domain sfdc:Opportunity ;
+    rdfs:range xsd:integer ;
+    rdfs:comment "SFDC literal 'Probability' (0-100)."@en .
