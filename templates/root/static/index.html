@@ -311,14 +311,18 @@
         document.getElementById('jws-string').innerText = mapping.credential.jws;
         
         document.getElementById('qrcode').innerHTML = '';
-        new QRCode(document.getElementById("qrcode"), {
-          text: mapping.credential.jws,
-          width: 250,
-          height: 250,
-          colorDark : "#0f172a",
-          colorLight : "#ffffff",
-          correctLevel : QRCode.CorrectLevel.M
-        });
+        try {
+          new QRCode(document.getElementById("qrcode"), {
+            text: mapping.credential.connectionId || mapping.credential.jws.substring(0, 500),
+            width: 250,
+            height: 250,
+            colorDark : "#0f172a",
+            colorLight : "#ffffff",
+            correctLevel : QRCode.CorrectLevel.L
+          });
+        } catch (qrErr) {
+          document.getElementById('qrcode').innerHTML = '<p style="color: var(--text-secondary); font-size: 0.85rem;">QR code unavailable — credential too large for QR encoding.<br>Use the JWS string below instead.</p>';
+        }
 
         document.getElementById('admin-empty-state').classList.add('hidden');
         document.getElementById('admin-data-state').classList.remove('hidden');
