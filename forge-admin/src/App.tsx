@@ -8,6 +8,7 @@ import { ProgramsList } from "./pages/programs/list";
 import { ProgramCreate } from "./pages/programs/create";
 import { MappingsSimulator } from "./pages/mappings/create";
 import { EventDispatcher } from "./pages/events/create";
+import { SetupPage } from "./pages/setup";
 import "./index.css";
 
 function App() {
@@ -30,6 +31,10 @@ function App() {
             name: "events",
             create: "/events",
           },
+          {
+            name: "setup",
+            create: "/setup",
+          },
         ]}
       >
         <Routes>
@@ -41,6 +46,7 @@ function App() {
             </Route>
             <Route path="/mappings" element={<MappingsSimulator />} />
             <Route path="/events" element={<EventDispatcher />} />
+            <Route path="/setup" element={<SetupPage />} />
           </Route>
         </Routes>
       </Refine>
