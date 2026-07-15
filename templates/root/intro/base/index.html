@@ -3,95 +3,341 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Community Solid Server</title>
+  <title>CSS DataBox - Solid for Organisations</title>
   <link rel="stylesheet" href="./.well-known/css/styles/main.css" type="text/css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
   <header>
-    <a href=".."><img src="./.well-known/css/images/solid.svg" alt="[Solid logo]" /></a>
-    <h1>Community Solid Server</h1>
+    <div class="logo-container">
+      <img src="./.well-known/css/images/solid.svg" alt="Solid Logo" />
+      <h1>CSS DataBox</h1>
+    </div>
   </header>
-  <main>
-    <h1>Welcome to Solid</h1>
-    <p>
-      This server implements
-      the <a href="https://solid.github.io/specification/protocol">Solid protocol</a>
-      so you can create your own <a href="https://solidproject.org/about">Solid Pod</a>
-      and identity.
-    </p>
+  
+  <main class="main-container">
+    <div class="hero-text">
+      <h2>Solid for Organisations</h2>
+      <p>A hypermedia communications service—like a modern-day postbox—acting as a private, two-way exchange point between one organisation program and its community.</p>
+    </div>
 
-    <h2 id="users">Getting started as a <em>user</em></h2>
-    <p>
-      <a id="registration-link" href="./.account/login/password/register/">Sign up for an account</a>
-      to get started with your own Pod and WebID.
-    </p>
-    <p>
-      The default configuration stores data only in memory.
-      If you want to keep data permanently,
-      choose a configuration that saves data to disk instead.
-    </p>
-    <p>
-      To learn more about how this server can be used,
-      have a look at the
-      <a href="https://github.com/CommunitySolidServer/tutorials/blob/main/getting-started.md">getting started tutorial</a>.
-    </p>
+    <!-- Marketing Section -->
+    <section class="info-card">
+      <h3>What is the CSS DataBox?</h3>
+      <p>
+        The Databox is not the person's general-purpose wallet. It is a relationship-specific post-box operated for a declared program. It enables the organisation to securely provide records, receipts, credentials, warranty information, and notices to the consumer, while enabling the consumer to return submissions, corrections, claims, preferences, or evidence.
+      </p>
+      
+      <div class="grid-2">
+        <div>
+          <h4 style="color: var(--text-accent); font-size: 1.25rem; margin-bottom: 1rem;">Key Features</h4>
+          <ul class="feature-list">
+            <li><strong>Isolated Security:</strong> Every program relationship is a separate security domain.</li>
+            <li><strong>Immutable Records:</strong> Accepted records are not silently overwritten; changes create linked, auditable events.</li>
+            <li><strong>Long-term Connections:</strong> Connection credentials are portable, rotatable, and holder-bound API keys.</li>
+            <li><strong>Cryptographic Receipts:</strong> Every accepted submission produces a signed receipt.</li>
+          </ul>
+        </div>
+        <div>
+          <h4 style="color: var(--text-accent); font-size: 1.25rem; margin-bottom: 1rem;">Developer Resources</h4>
+          <p style="margin-bottom: 2rem;">
+            To set up a Databox for your organisation, you must define an <em>Institution Profile</em> and connect it to the Databox Forge control plane.
+          </p>
+          <a href="https://github.com/CommunitySolidServer/CommunitySolidServer/tree/main/databox" target="_blank" class="action-btn">
+            Read the Documentation
+          </a>
+        </div>
+      </div>
+    </section>
 
-    <h2 id="developers">Getting started as a <em>developer</em></h2>
-    <p>
-      The default configuration includes
-      the <strong>ready-to-use root Pod</strong> you're currently looking at.
-      <br>
-      You can use any of the configurations in the <code>config</code> folder of the server
-      to set up an instance of this server with different features.
-      Besides the provided configurations,
-      you can also fine-tune your own custom configuration using the
-      <a href="https://communitysolidserver.github.io/configuration-generator/">configuration generator</a>.
-    </p>
-    <p>
-      You can easily choose any folder on your disk
-      to expose as the root Pod with file-based configurations.
-      <br>
-      Use the <code>--help</code> switch to learn more.
-    </p>
-    <p>
-      Due to certain restrictions in the Solid specification it is usually not allowed
-      to both allow data to be written to the root of the server,
-      and to enable the creation of new pods.
-      This configuration does allow both these options to allow a quick exploration of Solid,
-      but other configurations provided will only allow one of those two to be enabled.
-    </p>
+    <!-- ESG Section -->
+    <section class="info-card">
+      <h3 style="color: var(--success);">Transformational ESG Governance & Compliance</h3>
+      <p style="margin-bottom: 0;">
+        The Databox provides a globally standards-based method to transformationally improve the governance, delivery, and auditability of ESG (Environmental, Social, and Governance) obligations. It achieves this by encoding rights and obligations as versioned, machine-readable <strong>ODRL policies</strong> that produce auditable duties. Every transaction generates cryptographically signed receipts and immutable evidence ledgers, ensuring verifiable, zero-knowledge compliance with complex data privacy frameworks.
+      </p>
+    </section>
 
-    <h2>Have a wonderful Solid experience</h2>
-    <p>
-      <strong>Learn more about Solid
-        at <a href="https://solidproject.org/">solidproject.org</a>.</strong>
-    </p>
-    <p>
-      You are warmly invited
-      to <a href="https://github.com/CommunitySolidServer/CommunitySolidServer/discussions">share your experiences</a>
-      and to <a href="https://github.com/CommunitySolidServer/CommunitySolidServer/issues">report any bugs</a> you encounter.
-    </p>
+    <!-- Industry Applications Section -->
+    <div class="divider"></div>
+    <div class="hero-text">
+      <h2 style="font-size: 2.5rem;">Industry Applications</h2>
+      <p style="font-size: 1.15rem;">Discover how the Solid Databox fundamentally transforms data governance and relationships across every sector.</p>
+    </div>
+    
+    <div class="tabs" id="category-tabs" style="display: flex; flex-wrap: wrap;">
+      <!-- Category Tabs generated dynamically -->
+    </div>
+
+    <div id="use-cases-grid" class="record-grid" style="margin-bottom: 3rem;">
+      <!-- Use Case Cards generated dynamically -->
+      <div style="text-align: center; width: 100%; color: var(--text-secondary);">Loading applications...</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="hero-text">
+      <h2 style="font-size: 2.5rem;">Interactive Demonstrators</h2>
+      <p style="font-size: 1.15rem;">Explore the live integrations currently running on this Databox server instance.</p>
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn demo-tab active" onclick="switchTab('consumer')">Seraphim: Consumer Portal</button>
+      <button class="tab-btn demo-tab" onclick="switchTab('admin')">Seraphim: Admin Panel</button>
+    </div>
+
+    <!-- Consumer Tab -->
+    <div id="tab-consumer" class="tab-content active">
+      <div class="info-card" style="text-align: center; max-width: 800px; margin: 0 auto;">
+        <h3>Seraphim Welfare Demonstrator</h3>
+        <p style="max-width: 600px; margin: 0 auto 2.5rem auto;">
+          Generate a secure connection string for a new welfare consumer ("Charles James"). The consumer can scan this QR code with their mobile Databox app to establish a trust relationship.
+        </p>
+        
+        <button id="btn-provision" class="action-btn" onclick="provisionCharles()">
+          <span>Provision "Charles James"</span>
+          <span class="loading-spinner" id="spinner-provision"></span>
+        </button>
+
+        <div id="qr-section" class="qr-container hidden">
+          <div class="demo-banner">DEMO EXAMPLE - SYNTHETIC DATA</div>
+          <div id="qrcode"></div>
+          <p style="margin-bottom: 0.5rem;"><strong>Connection String (JWS):</strong></p>
+          <div class="code-block" id="jws-string"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Admin Tab -->
+    <div id="tab-admin" class="tab-content">
+      <div class="info-card">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
+          <h3 style="margin: 0;">Case Worker Dashboard</h3>
+          <span style="background: rgba(251, 191, 36, 0.15); color: var(--text-accent); padding: 0.5rem 1rem; border-radius: 99px; font-weight: 600; font-size: 0.9rem; border: 1px solid rgba(251, 191, 36, 0.3);">
+            Active Case: Charles James
+          </span>
+        </div>
+        
+        <p>This panel securely renders the cryptographic receipts and live references for the data physically committed to the Databox server.</p>
+        
+        <div id="admin-empty-state" style="text-align: center; padding: 4rem 2rem; background: rgba(0,0,0,0.2); border-radius: 16px; border: 1px dashed var(--border-light);">
+          <p style="margin: 0; color: var(--text-secondary); font-size: 1.25rem;">No case data provisioned yet. Please provision the consumer first.</p>
+        </div>
+
+        <div id="admin-data-state" class="hidden">
+          <div class="record-grid">
+            <div class="record-box">
+              <h4>Program Mapping</h4>
+              <p><strong>Relationship ID:</strong> <br/><span id="lbl-relationship"></span></p>
+              <p><strong>Pairwise WebID:</strong> <br/><span id="lbl-pairwise"></span></p>
+            </div>
+            <div class="record-box">
+              <h4 style="color: var(--success);">Case Note Dispatched</h4>
+              <p><strong>Status:</strong> Reconciled & Accepted</p>
+              <p><strong>Notes:</strong> Initial intake completed. Immediate stability goals set.</p>
+            </div>
+          </div>
+          
+          <h4 style="color: var(--text-accent); font-size: 1.25rem; margin-top: 3rem; margin-bottom: 0.5rem;">Live CSS Resource Locator</h4>
+          <p>The accepted resource has been physically committed to the CSS storage under the relationship root:</p>
+          <div class="code-block" id="lbl-resource"></div>
+
+          <h4 style="color: var(--text-accent); font-size: 1.25rem; margin-top: 3rem; margin-bottom: 0.5rem;">Cryptographic Receipt (JWS)</h4>
+          <p>The Forge issued this cryptographically signed receipt as proof of acceptance:</p>
+          <div class="code-block" id="lbl-receipt"></div>
+        </div>
+      </div>
+    </div>
   </main>
+
   <footer>
-    <p>
-      ©2019–2025 <a href="https://inrupt.com/">Inrupt Inc.</a>
-      and <a href="https://www.imec-int.com/">imec</a>
-    </p>
+    <p>Community Solid Server &middot; Databox Experimental Track B</p>
   </footer>
+
+  <script>
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn.demo-tab').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+      
+      event.target.classList.add('active');
+      document.getElementById('tab-' + tabId).classList.add('active');
+    }
+
+    let allUseCases = [];
+
+    async function loadUseCases() {
+      try {
+        const res = await fetch('/.well-known/css/scripts/use-cases.json');
+        if (!res.ok) throw new Error('Failed to load');
+        allUseCases = await res.json();
+        
+        // Extract unique categories
+        const categories = [...new Set(allUseCases.map(uc => uc.category))];
+        
+        // Build Tabs
+        const tabsContainer = document.getElementById('category-tabs');
+        tabsContainer.innerHTML = `<button class="tab-btn category-tab active" onclick="filterUseCases('All')">All</button>`;
+        categories.forEach(cat => {
+          tabsContainer.innerHTML += `<button class="tab-btn category-tab" onclick="filterUseCases('${cat}')">${cat}</button>`;
+        });
+        
+        filterUseCases('All');
+      } catch (e) {
+        document.getElementById('use-cases-grid').innerHTML = '<p style="color: #ef4444; text-align: center; width: 100%;">Failed to load industry applications.</p>';
+      }
+    }
+
+    function filterUseCases(category) {
+      // Update Tab Styles
+      document.querySelectorAll('.tab-btn.category-tab').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.innerText === category) btn.classList.add('active');
+      });
+
+      // Filter and Render Cards
+      const filtered = category === 'All' ? allUseCases : allUseCases.filter(uc => uc.category === category);
+      const grid = document.getElementById('use-cases-grid');
+      
+      grid.innerHTML = filtered.map(uc => `
+        <div class="record-box" style="display: flex; flex-direction: column;">
+          <span style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-accent); margin-bottom: 0.5rem; font-weight: 700;">${uc.category}</span>
+          <h4 style="color: white; font-size: 1.4rem; margin-bottom: 1rem; margin-top: 0;">${uc.title}</h4>
+          <p style="margin-bottom: 0; color: var(--text-secondary); flex: 1;">${uc.description}</p>
+        </div>
+      `).join('');
+    }
+
+    // Load use cases on boot
+    loadUseCases();
+
+    const FORGE_URL = 'http://localhost:3000/.databox/forge';
+    const TOKEN = '12345678901234567890123456789012';
+
+    const profile = {
+      "schemaVersion": "dbx-institution-profile/1.0.0",
+      "profileId": "prog-seraphim-welfare",
+      "profileVersion": "1.0.0",
+      "effectiveInterval": { "effectiveFrom": "2026-01-01T00:00:00Z", "effectiveUntil": "2027-01-01T00:00:00Z" },
+      "synthetic": true,
+      "program": {
+        "principal": { "id": "party-principal", "legalName": "Seraphim Welfare Demonstrator (SYNTHETIC)", "jurisdiction": "AU", "contact": "mailto:privacy@seraphim.example" },
+        "accountableParty": { "id": "party-accountable", "legalName": "Seraphim Case Management (SYNTHETIC)", "jurisdiction": "AU" }
+      },
+      "processors": [],
+      "tenancy": { "deploymentModel": "path-only", "origin": "https://localhost:3000/", "tokenAudience": "https://localhost:3000/" },
+      "crypto": { "signingSuite": "ES256", "signingKeyRef": "kms://program/seraphim/signing/1", "atRestEncryption": { "required": true, "perTenantKeys": true }, "applicationLevelEncryption": "optional" },
+      "identityProviders": [ { "id": "idp-govid", "issuer": "https://id.govid.example/", "protocol": "oidc", "accreditation": "SYNTHETIC-TDIF:IP3", "claimContract": [ "sub", "ial", "aal", "iss", "acr" ] } ],
+      "assuranceMappings": [ { "issuer": "idp-govid", "dimension": "identityProofing", "claim": "ial", "level": 3 } ],
+      "tokenBroker": { "adopted": true, "brokerOrigin": "https://broker.seraphim.example/", "tokenExchange": "rfc8693", "senderConstraint": "dpop" },
+      "offlineGrantPolicy": { "allowOffline": true, "maxOfflineMinutes": 60 },
+      "recordClasses": [ { "id": "rc-case-note", "label": "Case Note", "minimumAssurance": [ { "dimension": "identityProofing", "minLevel": 2 } ], "policyTemplate": "pt-records", "legalBasis": "lb-consent", "purposes": [ "p-service-delivery" ], "existenceVisibility": "visible" } ],
+      "submissionClasses": [],
+      "policies": { "templates": [ { "id": "pt-records", "version": "1.0.0", "odrlProfile": "https://w3id.org/solid-databox/odrl-profile/v1" } ], "conflictStrategy": "prohibition-overrides", "effectiveTimeBehavior": "prospective" },
+      "compiledPolicy": { "compiledPolicyDigest": "urn:sha256:SYNTHETIC-compiled-seraphim-0001", "corpusManifestDigest": "urn:sha256:SYNTHETIC-corpus-seraphim-0001", "attestationId": "attest-synthetic-seraphim-0001", "evaluatorVersion": "dbx-eval/1.0.0", "profileDigest": "urn:sha256:SYNTHETIC-profile-seraphim-0001", "attestationStatus": "attested", "legalComplianceClaimed": false },
+      "legislativeCorpus": { "manifestDigest": "urn:sha256:SYNTHETIC-corpus-seraphim-0001", "entries": [] },
+      "legalBases": [ { "id": "lb-consent", "description": "Consent for case management (SYNTHETIC)." } ],
+      "declaredPurposes": [ { "id": "p-service-delivery", "description": "Welfare service delivery and case management (SYNTHETIC)." } ],
+      "retention": [ { "recordClass": "rc-case-note", "retentionDays": 2555, "deletionMode": "crypto-erase", "tombstoneOnExpiry": false } ],
+      "systemsOfRecord": [ { "id": "sor-seraphim", "label": "Seraphim Core", "recordClasses": [ "rc-case-note" ] } ],
+      "notifications": { "notificationFormat": "solid-notification/websocket", "receiptFormat": "vc-jose-cose/es256" },
+      "redress": { "stepUpSupported": true, "existenceVisibilityDefault": "visible", "correctionResponseDays": 30, "appealRoutes": [] }
+    };
+
+    const mockJwk = {
+      "kty": "EC",
+      "crv": "P-256",
+      "x": "oQQoBP_7TGokLmOSY76Kcshohk1gTCTjV3_JM6IM51E",
+      "y": "mCglNTjMscfg15aePByHpC8FHnE71VZeNg81TUxuUAw"
+    };
+
+    async function apiPost(path, body) {
+      const res = await fetch(`${FORGE_URL}${path}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${TOKEN}`
+        },
+        body: JSON.stringify(body)
+      });
+      if (!res.ok) {
+        const text = await res.text();
+        if (text.includes('already registered')) return { profileId: profile.profileId };
+        throw new Error(`API error ${res.status}: ${text}`);
+      }
+      return res.json();
+    }
+
+    async function provisionCharles() {
+      const btn = document.getElementById('btn-provision');
+      const spinner = document.getElementById('spinner-provision');
+      
+      btn.disabled = true;
+      spinner.style.display = 'inline-block';
+      
+      try {
+        const program = await apiPost('/programs', {
+          profile,
+          programUri: 'http://localhost:3000/program',
+          databoxBaseUrl: 'http://localhost:3000/boxes/'
+        });
+
+        const mapping = await apiPost('/mappings', {
+          profileId: program.profileId,
+          sourceSystem: 'seraphim-intake',
+          customerIdNamespace: 'welfare',
+          customerId: 'CHARLES-JAMES-ID-001',
+          pairwiseWebId: 'https://v-8a7b6c5d.example/profile/card#seraphim',
+          holderPublicJwk: mockJwk
+        });
+
+        const deposit = await apiPost('/source-events', {
+          profileId: program.profileId,
+          sourceSystem: 'seraphim-intake',
+          eventType: 'welfare-checkin',
+          sourceEventId: 'SYNTHETIC-CHECKIN-001' + Date.now(),
+          customerIdNamespace: 'welfare',
+          customerId: 'CHARLES-JAMES-ID-001',
+          recordClass: 'rc-case-note',
+          legalBasis: 'lb-consent',
+          purpose: 'p-service-delivery',
+          payload: { notes: 'Initial intake completed. Immediate stability goals set.', status: 'active' }
+        });
+
+        if (deposit.status !== 'reconciled') {
+          throw new Error('Deposit was not reconciled: ' + (deposit.reconciliation?.reason || deposit.status));
+        }
+
+        document.getElementById('qr-section').classList.remove('hidden');
+        document.getElementById('jws-string').innerText = mapping.credential.jws;
+        
+        document.getElementById('qrcode').innerHTML = '';
+        new QRCode(document.getElementById("qrcode"), {
+          text: mapping.credential.jws,
+          width: 250,
+          height: 250,
+          colorDark : "#0f172a",
+          colorLight : "#ffffff",
+          correctLevel : QRCode.CorrectLevel.M
+        });
+
+        document.getElementById('admin-empty-state').classList.add('hidden');
+        document.getElementById('admin-data-state').classList.remove('hidden');
+        
+        document.getElementById('lbl-relationship').innerText = mapping.credential.credential.credentialSubject.connection.relationship;
+        document.getElementById('lbl-pairwise').innerText = mapping.credential.credential.credentialSubject.id;
+        document.getElementById('lbl-resource').innerText = deposit.reconciliation.acceptedResource || 'N/A';
+        document.getElementById('lbl-receipt').innerText = deposit.receipt ? deposit.receipt.jws : 'N/A';
+
+        btn.querySelector('span:first-child').innerText = 'Provisioned Successfully!';
+
+      } catch (e) {
+        alert('Provisioning failed: ' + e.message);
+        btn.disabled = false;
+        btn.querySelector('span:first-child').innerText = 'Provision "Charles James"';
+      } finally {
+        spinner.style.display = 'none';
+      }
+    }
+  </script>
 </body>
-
-<script>
-  (async() => {
-    // Since this page is in the root of the server, we can determine other URLs relative to the current URL
-    const res = await fetch('.account/');
-    const registrationUrl = (await res.json())?.controls?.html?.password?.register;
-    // We specifically want to check if the HTML page that we link to exists
-    const resRegistrationPage = await fetch(registrationUrl, { headers: { accept: 'text/html' } });
-    const registrationEnabled = registrationUrl && resRegistrationPage.status === 200;
-
-    document.getElementById('registration-enabled').classList[registrationEnabled ? 'remove' : 'add']('hidden');
-    document.getElementById('registration-disabled').classList[registrationEnabled ? 'add' : 'remove']('hidden');
-    document.getElementById('registration-link').href = registrationUrl;
-  })();
-</script>
 </html>
