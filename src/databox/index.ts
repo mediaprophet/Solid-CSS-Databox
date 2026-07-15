@@ -39,6 +39,9 @@ export * from './bridge/DataboxBridge';
 // Reference consumer agent (C20, DBX-24)
 export * from './agent/ReferenceConsumerAgent';
 
+// Submission review & disposition workflow (C17, DBX-23)
+export * from './review/DispositionWorkflow';
+
 // Institution/program profile schema (C10/C11 provisioning inputs, DBX-06)
 export * from './profile/InstitutionProfile';
 export * from './profile/InstitutionProfileSchema';
