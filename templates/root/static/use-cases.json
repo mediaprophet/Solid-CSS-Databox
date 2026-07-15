@@ -32,8 +32,8 @@
   {
     "category": "Commercial",
     "slug": "hospitality",
-    "title": "Commercial   Hospitality Applications",
-    "description": "Define applications and standards specific to this vertical here."
+    "title": "Commercial: Hospitality Applications",
+    "description": "The hospitality sector thrives on personalization, yet forcing guests to repeatedly disclose sensitive data—such as dietary requirements, severe allergies, or credit card details—creates massive friction and data-liability risks. By integrating with the Databox architecture, guests can securely provision a temporary, cryptographic \"Guest Profile\" to a hotel or restaurant. This ensures kitchens receive irrefutable, verified allergy profiles directly from the guest's Pod without storing them permanently. Furthermore, Databoxes revolutionize check-ins by allowing privacy-preserving age and identity verification for bookings or alcohol service, entirely eliminating the need for front-desk staff to photocopy vulnerable physical passports or driver's licenses."
   },
   {
     "category": "Commercial",
