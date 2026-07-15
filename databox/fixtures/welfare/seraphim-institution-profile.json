@@ -1,0 +1,113 @@
+{
+  "schemaVersion": "dbx-institution-profile/1.0.0",
+  "profileId": "prog-seraphim-welfare",
+  "profileVersion": "1.0.0",
+  "effectiveInterval": {
+    "effectiveFrom": "2026-01-01T00:00:00Z",
+    "effectiveUntil": "2027-01-01T00:00:00Z"
+  },
+  "synthetic": true,
+  "program": {
+    "principal": {
+      "id": "party-principal",
+      "legalName": "Seraphim Welfare Demonstrator (SYNTHETIC)",
+      "jurisdiction": "AU",
+      "contact": "mailto:privacy@seraphim.example"
+    },
+    "accountableParty": {
+      "id": "party-accountable",
+      "legalName": "Seraphim Case Management (SYNTHETIC)",
+      "jurisdiction": "AU"
+    }
+  },
+  "processors": [],
+  "tenancy": {
+    "deploymentModel": "path-only",
+    "origin": "https://localhost:3000/",
+    "tokenAudience": "https://localhost:3000/"
+  },
+  "crypto": {
+    "signingSuite": "ES256",
+    "signingKeyRef": "kms://program/seraphim/signing/1",
+    "atRestEncryption": { "required": true, "perTenantKeys": true },
+    "applicationLevelEncryption": "optional"
+  },
+  "identityProviders": [
+    {
+      "id": "idp-govid",
+      "issuer": "https://id.govid.example/",
+      "protocol": "oidc",
+      "accreditation": "SYNTHETIC-TDIF:IP3",
+      "claimContract": [ "sub", "ial", "aal", "iss", "acr" ]
+    }
+  ],
+  "assuranceMappings": [
+    { "issuer": "idp-govid", "dimension": "identityProofing", "claim": "ial", "level": 3 }
+  ],
+  "tokenBroker": {
+    "adopted": true,
+    "brokerOrigin": "https://broker.seraphim.example/",
+    "tokenExchange": "rfc8693",
+    "senderConstraint": "dpop"
+  },
+  "offlineGrantPolicy": {
+    "allowOffline": true,
+    "maxOfflineMinutes": 60
+  },
+  "recordClasses": [
+    {
+      "id": "rc-case-note",
+      "label": "Case Note",
+      "minimumAssurance": [
+        { "dimension": "identityProofing", "minLevel": 2 }
+      ],
+      "policyTemplate": "pt-records",
+      "legalBasis": "lb-consent",
+      "purposes": [ "p-service-delivery" ],
+      "existenceVisibility": "visible"
+    }
+  ],
+  "submissionClasses": [],
+  "policies": {
+    "templates": [
+      { "id": "pt-records", "version": "1.0.0", "odrlProfile": "https://w3id.org/solid-databox/odrl-profile/v1" }
+    ],
+    "conflictStrategy": "prohibition-overrides",
+    "effectiveTimeBehavior": "prospective"
+  },
+  "compiledPolicy": {
+    "compiledPolicyDigest": "urn:sha256:SYNTHETIC-compiled-seraphim-0001",
+    "corpusManifestDigest": "urn:sha256:SYNTHETIC-corpus-seraphim-0001",
+    "attestationId": "attest-synthetic-seraphim-0001",
+    "evaluatorVersion": "dbx-eval/1.0.0",
+    "profileDigest": "urn:sha256:SYNTHETIC-profile-seraphim-0001",
+    "attestationStatus": "attested",
+    "legalComplianceClaimed": false
+  },
+  "legislativeCorpus": {
+    "manifestDigest": "urn:sha256:SYNTHETIC-corpus-seraphim-0001",
+    "entries": []
+  },
+  "legalBases": [
+    { "id": "lb-consent", "description": "Consent for case management (SYNTHETIC)." }
+  ],
+  "declaredPurposes": [
+    { "id": "p-service-delivery", "description": "Welfare service delivery and case management (SYNTHETIC)." }
+  ],
+  "retention": [
+    { "recordClass": "rc-case-note", "retentionDays": 2555, "deletionMode": "crypto-erase", "tombstoneOnExpiry": false }
+  ],
+  "systemsOfRecord": [
+    { "id": "sor-seraphim", "label": "Seraphim Core", "recordClasses": [ "rc-case-note" ] }
+  ],
+  "notifications": {
+    "notificationFormat": "solid-notification/websocket",
+    "receiptFormat": "vc-jose-cose/es256"
+  },
+  "redress": {
+    "stepUpSupported": true,
+    "existenceVisibilityDefault": "visible",
+    "correctionResponseDays": 30,
+    "appealRoutes": []
+  }
+}

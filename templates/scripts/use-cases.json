@@ -1,0 +1,158 @@
+[
+  {
+    "category": "Commercial",
+    "slug": "clothing-and-footwear",
+    "title": "Commercial: Clothing and Footwear Applications",
+    "description": "This vertical focuses on the retail ecosystem for apparel, footwear, and related accessories. Integrating a Solid Databox in this sector allows consumers to maintain a secure, private, and portable profile that deeply enhances their shopping experience while respecting their data sovereignty."
+  },
+  {
+    "category": "Commercial",
+    "slug": "hospitality",
+    "title": "Commercial   Hospitality Applications",
+    "description": "Define applications and standards specific to this vertical here."
+  },
+  {
+    "category": "Commercial",
+    "slug": "recruitment",
+    "title": "Commercial: Recruitment Applications",
+    "description": "The recruitment vertical bridges the gap between job seekers, employment agencies, and hiring organizations. A Solid Databox fundamentally changes this ecosystem by allowing candidates to manage a secure, cryptographically verified portfolio of their professional lives, eliminating the need to repeatedly fill out background checks and disparate application forms."
+  },
+  {
+    "category": "Commercial",
+    "slug": "restaurants",
+    "title": "Commercial: Restaurant Applications",
+    "description": "The restaurant industry is characterized by high volume, fragmented customer loyalty, and increasingly stringent health and safety regulations. A Solid Databox empowers both the business and the consumer by providing verified identity and transaction data, creating a foundation of trust for everything from table reservations to food safety."
+  },
+  {
+    "category": "Commercial",
+    "slug": "retail-chains",
+    "title": "Commercial: Retail Chains Applications",
+    "description": "The retail chain sector—encompassing supermarkets, big-box retailers, and department stores—is currently defined by hyper-fragmented loyalty programs, aggressive data harvesting, and friction-heavy return processes. By integrating a Solid Databox, the industry can transition to a privacy-first, zero-party data model where the consumer explicitly controls their retail footprint."
+  },
+  {
+    "category": "Commercial",
+    "slug": "take-away",
+    "title": "Commercial: Take-Away Applications",
+    "description": "Take-away and quick-service restaurants are characterized by speed, order accuracy, and increasingly, the need to manage food safety, dietary requirements, and complex delivery logistics. Solid Databoxes streamline this process by providing a secure, instant-access ledger for customer preferences, health profiles, and transaction histories while seamlessly integrating with third-party delivery agents."
+  },
+  {
+    "category": "Commercial",
+    "slug": "telecommunications",
+    "title": "Commercial: Telecommunications",
+    "description": "The telecommunications sector is a critical infrastructure layer that handles vast amounts of highly sensitive personal data, from identity documents to real-time location metadata. By integrating a Solid Databox, Telcos can shift from maintaining massive, vulnerable central databases (honey-pots) to a decentralized, trust-centric model that enhances consumer privacy and radically simplifies regulatory compliance."
+  },
+  {
+    "category": "Commercial",
+    "slug": "utilities",
+    "title": "Commercial: Utilities",
+    "description": "The utilities sector—encompassing water, electricity, gas, and waste management—is characterized by high-volume, long-term contracts and critical infrastructure data that demands robust security. By leveraging Solid Databoxes, utility providers can dramatically reduce operational overhead, enhance billing accuracy, and empower consumers with unprecedented control over their resource consumption and identity verification."
+  },
+  {
+    "category": "Education",
+    "slug": "child-care",
+    "title": "Child-Care (Ages 0-4): Solid Databox Integration Architecture",
+    "description": "While the general public often lumps child-care and pre-school together, from an enterprise IT and data compliance perspective, they are two entirely different worlds."
+  },
+  {
+    "category": "Education",
+    "slug": "high-school",
+    "title": "Secondary Schools (High School): Solid Databox Integration Architecture",
+    "description": "In the K-12 and secondary school sector, integrating with decentralized data architectures like the Solid Databox follows a foundational pattern similar to higher education: the strict separation of identity management and the academic data record. However, the software vendors, synchronization methods, and the nature of the credentials issued differ significantly."
+  },
+  {
+    "category": "Education",
+    "slug": "pre-school",
+    "title": "Pre-School / Kindergarten (Ages 4-5): Solid Databox Integration Architecture",
+    "description": "Pre-school serves as the critical bridge between early childhood care and formal schooling. From an IT architecture and data governance perspective, it exists in a unique hybrid zone depending on how the institution is structured."
+  },
+  {
+    "category": "Education",
+    "slug": "primary-school",
+    "title": "Primary Schools: Solid Databox Integration Architecture",
+    "description": "Extending the Solid Databox ecosystem to primary schools (K-6 or K-8) completes the educational lifecycle. While the foundational IT architecture remains nearly identical to secondary schools—operating under the same district or state-level umbrellas—the shift to early childhood education introduces massive changes in data governance, parental delegation, and the types of Verifiable Credentials issued."
+  },
+  {
+    "category": "Education",
+    "slug": "tafe",
+    "title": "Education: TAFE & Vocational Training",
+    "description": "Technical and Further Education (TAFE) providers and vocational training institutions serve a unique student demographic—often working adults seeking specific, immediately applicable job skills. In this sector, the Solid Databox functions as a \"portable skills wallet,\" enabling learners to aggregate credentials from diverse sources (including formal courses, apprenticeships, and short courses) into a single, verifiable portfolio."
+  },
+  {
+    "category": "Education",
+    "slug": "universities",
+    "title": "Universities: Solid Databox Integration Architecture",
+    "description": "In the tertiary education sector, integrating with decentralized data architectures like the Solid Databox requires bridging the gap between legacy institutional systems and modern semantic web standards. This document outlines the architectural patterns needed to provide students with cryptographically secure, portable records of their academic achievements and micro-credentials."
+  },
+  {
+    "category": "Government",
+    "slug": "courts-of-law",
+    "title": "Courts of Law Applications",
+    "description": "Define applications and standards specific to courts of law here."
+  },
+  {
+    "category": "Government",
+    "slug": "federal",
+    "title": "Government: Federal Applications",
+    "description": "At the federal level, government agencies are responsible for issuing the most critical forms of identity and qualification credentials, managing national databases, and administering complex social programs. By integrating with Solid Databoxes, federal agencies can transition from centralized, privacy-invasive legacy systems to a decentralized architecture that preserves national security while empowering citizens with absolute control over their personal information."
+  },
+  {
+    "category": "Government",
+    "slug": "health-and-emergency",
+    "title": "Government: Health & Emergency Services Applications",
+    "description": "The intersection of public health and emergency response is one of the most critical environments for instant, secure data sharing. In an emergency, first responders and hospital triage units often operate with zero context about the patient in front of them, losing critical minutes attempting to identify medical histories or locate family members."
+  },
+  {
+    "category": "Government",
+    "slug": "justice",
+    "title": "Justice Applications",
+    "description": "Define applications and standards specific to the justice vertical here."
+  },
+  {
+    "category": "Government",
+    "slug": "local",
+    "title": "Government   Local Applications",
+    "description": "Define applications and standards specific to this vertical here."
+  },
+  {
+    "category": "Government",
+    "slug": "social-security",
+    "title": "Social Security Applications",
+    "description": "Define applications and standards specific to this vertical here."
+  },
+  {
+    "category": "Government",
+    "slug": "state",
+    "title": "Government   State Applications",
+    "description": "Define applications and standards specific to this vertical here."
+  },
+  {
+    "category": "Ngos",
+    "slug": "community-organisations",
+    "title": "Ngos   Community Organisations Applications",
+    "description": "Define applications and standards specific to this vertical here."
+  },
+  {
+    "category": "Ngos",
+    "slug": "financial-services",
+    "title": "NGOs: Financial Counselling & Welfare Services",
+    "description": "Financial counselling and pro-bono financial services assist individuals facing bankruptcy, severe debt, or economic abuse. These services require deep, invasive access to a client's financial reality to negotiate with creditors or access hardship funds. Traditionally, this involves insecurely handing over boxes of paper receipts or raw login credentials to bank accounts. A Solid Databox standardizes and secures this process."
+  },
+  {
+    "category": "Ngos",
+    "slug": "housing-providers",
+    "title": "NGOs & Commercial: Housing Providers Applications",
+    "description": "The housing sector—spanning private rentals, share-housing, and welfare-driven accommodation—is notoriously burdensome and invasive for applicants. Renters are forced to repeatedly surrender highly sensitive identity, financial, and behavioral data to disparate real estate agents and landlords, creating massive data-breach honey-pots."
+  },
+  {
+    "category": "Ngos",
+    "slug": "legal-services",
+    "title": "NGOs: Community & Pro-Bono Legal Services",
+    "description": "Community legal centers and pro-bono legal services provide critical access to justice for vulnerable individuals. Operating on limited resources, these services must rapidly verify a client's eligibility, gather complex legal histories, and manage highly privileged information securely."
+  },
+  {
+    "category": "Ngos",
+    "slug": "social-work",
+    "title": "NGOs & Social Care: Social Work Applications",
+    "description": "Social work and crisis intervention operate in some of the most sensitive, high-stakes data environments in society. Vulnerable individuals are frequently forced to repeatedly recount their trauma, medical history, and financial destitution to multiple disconnected agencies simply to receive holistic care."
+  }
+]
