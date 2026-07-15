@@ -75,6 +75,105 @@ describe('ComplianceEngine', (): void => {
     expect(result.assessment.unresolvedFacts).toEqual(expect.arrayContaining([ 'isAppEntity', 'isCdrParticipant' ]));
   });
 
+  it('fails closed when nested organization applicability facts are unresolved.', (): void => {
+    const result = new ComplianceEngine().publicationGate({
+      facts: {
+        jurisdiction: 'AU',
+        isAppEntity: true,
+        handlesPersonalInformation: true,
+        isCdrParticipant: true,
+      },
+      controlTests: [],
+      evidence: [],
+      attestations: [],
+      now: NOW,
+    });
+    expect(result.allowed).toBe(false);
+    expect(result.assessment.unresolvedFacts).toEqual(expect.arrayContaining([ 'disclosesOverseas', 'operatesConsumerDashboard' ]));
+  });
+
+  it('resolves applicability correctly for non-AU jurisdictions and false flags.', (): void => {
+    const engine = new ComplianceEngine();
+    
+    // Jurisdiction not AU -> not-applicable
+    let result = engine.evaluate({
+      facts: { jurisdiction: 'US' },
+      controlTests: [],
+      evidence: [],
+      attestations: [],
+      now: NOW,
+    });
+    expect(result.mappings.every(m => m.outcome === 'not-applicable')).toBe(true);
+
+    // AU but false flags
+    result = engine.evaluate({
+      facts: {
+        jurisdiction: 'AU',
+        isAppEntity: false,
+        handlesPersonalInformation: false,
+        isCdrParticipant: false,
+      },
+      controlTests: [],
+      evidence: [],
+      attestations: [],
+      now: NOW,
+    });
+    expect(result.mappings.every(m => m.outcome === 'not-applicable')).toBe(true);
+
+    // True flags (applicable)
+    result = engine.evaluate({
+      facts: {
+        jurisdiction: 'AU',
+        isAppEntity: true,
+        handlesPersonalInformation: true,
+        isCdrParticipant: true,
+        disclosesOverseas: true,
+        operatesConsumerDashboard: true,
+      },
+      controlTests: [],
+      evidence: [],
+      attestations: [],
+      now: NOW,
+    });
+    // With true flags and no controls provided, everything should be indeterminate.
+    expect(result.mappings.every(m => m.outcome === 'indeterminate')).toBe(true);
+
+    // True participant, but false dashboard
+    result = engine.evaluate({
+      facts: {
+        jurisdiction: 'AU',
+        isCdrParticipant: true,
+        operatesConsumerDashboard: false,
+      },
+      controlTests: [],
+      evidence: [],
+      attestations: [],
+      now: NOW,
+    });
+    // Dashboard should be not-applicable
+    expect(result.mappings.some(m => m.mappingId === 'cdr-consumer-dashboard' && m.outcome === 'not-applicable')).toBe(true);
+  });
+
+  it('covers all unresolvedFacts branches directly.', (): void => {
+    const emptyFacts = {};
+    const fullFacts = {
+      isAppEntity: true,
+      handlesPersonalInformation: true,
+      isCdrParticipant: true,
+      disclosesOverseas: true,
+      operatesConsumerDashboard: true,
+    };
+    
+    for (const profile of AU_APPLICABILITY_PROFILES) {
+      if (profile.unresolvedFacts) {
+        // Trigger the undefined branches
+        expect(profile.unresolvedFacts(emptyFacts).length).toBeGreaterThan(0);
+        // Trigger the defined (empty array) branches
+        expect(profile.unresolvedFacts(fullFacts).length).toBe(0);
+      }
+    }
+  });
+
   it('blocks publication when controls or evidence are missing.', (): void => {
     const input = completeInput();
     const result = new ComplianceEngine().publicationGate({ ...input, controlTests: [], evidence: []});
