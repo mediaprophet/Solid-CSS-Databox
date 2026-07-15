@@ -32,12 +32,37 @@ body {
     radial-gradient(at 0% 0%, rgba(251, 191, 36, 0.1) 0px, transparent 50%),
     radial-gradient(at 100% 0%, rgba(226, 232, 240, 0.1) 0px, transparent 50%),
     radial-gradient(at 100% 100%, rgba(217, 119, 6, 0.1) 0px, transparent 50%);
+  background-size: 200% 200%;
+  animation: gradientBG 15s ease infinite;
   background-attachment: fixed;
   color: var(--text-primary);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   line-height: 1.6;
+  overflow-x: hidden;
+}
+
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-base);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(251, 191, 36, 0.2);
+  border-radius: 10px;
+  border: 2px solid var(--bg-base);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(251, 191, 36, 0.5);
 }
 
 header {
@@ -109,15 +134,22 @@ header {
 /* Feature Cards */
 .info-card {
   background: var(--bg-surface-elevated);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   border: 1px solid var(--border-light);
   border-radius: 24px;
   padding: 3rem;
   margin-bottom: 3rem;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
   position: relative;
   overflow: hidden;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease, border-color 0.4s ease;
+}
+
+.info-card:hover {
+  transform: translateY(-8px) scale(1.01);
+  box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.6), 0 0 20px rgba(251, 191, 36, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  border-color: rgba(251, 191, 36, 0.3);
 }
 
 .info-card::before {
@@ -369,4 +401,16 @@ footer {
   border-top: 1px solid var(--border-light);
   background: rgba(6, 9, 19, 0.8);
   margin-top: auto;
+}
+
+/* Reveal Animations */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
 }

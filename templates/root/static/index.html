@@ -6,8 +6,10 @@
   <title>CSS DataBox - Solid for Organisations</title>
   <link rel="stylesheet" href="./.well-known/css/styles/main.css" type="text/css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
 </head>
 <body>
+  <canvas id="three-canvas" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; opacity: 0.5;"></canvas>
   <header>
     <div class="logo-container">
       <img src="./.well-known/css/images/solid.svg" alt="Solid Logo" />
@@ -22,7 +24,7 @@
     </div>
 
     <!-- Marketing Section -->
-    <section class="info-card">
+    <section class="info-card reveal">
       <h3>What is the CSS DataBox?</h3>
       <p>
         The Databox is not the person's general-purpose wallet. It is a relationship-specific post-box operated for a declared program. It enables the organisation to securely provide records, receipts, credentials, warranty information, and notices to the consumer, while enabling the consumer to return submissions, corrections, claims, preferences, or evidence.
@@ -51,7 +53,7 @@
     </section>
 
     <!-- ESG Section -->
-    <section class="info-card">
+    <section class="info-card reveal">
       <h3 style="color: var(--success);">Transformational ESG Governance & Compliance</h3>
       <p style="margin-bottom: 0;">
         The Databox provides a globally standards-based method to transformationally improve the governance, delivery, and auditability of ESG (Environmental, Social, and Governance) obligations. It achieves this by encoding rights and obligations as versioned, machine-readable <strong>ODRL policies</strong> that produce auditable duties. Every transaction generates cryptographically signed receipts and immutable evidence ledgers, ensuring verifiable, zero-knowledge compliance with complex data privacy frameworks.
@@ -60,7 +62,7 @@
 
     <!-- Industry Applications Section -->
     <div class="divider"></div>
-    <div class="hero-text">
+    <div class="hero-text reveal">
       <h2 style="font-size: 2.5rem;">Industry Applications</h2>
       <p style="font-size: 1.15rem;">Discover how the Solid Databox fundamentally transforms data governance and relationships across every sector.</p>
     </div>
@@ -69,14 +71,14 @@
       <!-- Category Tabs generated dynamically -->
     </div>
 
-    <div id="use-cases-grid" class="record-grid" style="margin-bottom: 3rem;">
+    <div id="use-cases-grid" class="record-grid reveal" style="margin-bottom: 3rem;">
       <!-- Use Case Cards generated dynamically -->
       <div style="text-align: center; width: 100%; color: var(--text-secondary);">Loading applications...</div>
     </div>
 
     <div class="divider"></div>
 
-    <div class="hero-text">
+    <div class="hero-text reveal">
       <h2 style="font-size: 2.5rem;">Interactive Demonstrators</h2>
       <p style="font-size: 1.15rem;">Explore the live integrations currently running on this Databox server instance.</p>
     </div>
@@ -87,7 +89,7 @@
     </div>
 
     <!-- Consumer Tab -->
-    <div id="tab-consumer" class="tab-content active">
+    <div id="tab-consumer" class="tab-content active reveal">
       <div class="info-card" style="text-align: center; max-width: 800px; margin: 0 auto;">
         <h3>Seraphim Welfare Demonstrator</h3>
         <p style="max-width: 600px; margin: 0 auto 2.5rem auto;">
@@ -125,7 +127,7 @@
     </div>
 
     <!-- Admin Tab -->
-    <div id="tab-admin" class="tab-content">
+    <div id="tab-admin" class="tab-content reveal">
       <div class="info-card">
         <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
           <h3 style="margin: 0;">Case Worker Dashboard</h3>
@@ -385,6 +387,106 @@
         spinner.style.display = 'none';
       }
     }
+
+    // --- Intersection Observer for Scroll Reveals ---
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.15
+    };
+    const observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // --- Three.js Background Animation ---
+    function initThreeJS() {
+      const canvas = document.getElementById('three-canvas');
+      if (!canvas || typeof THREE === 'undefined') return;
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+      const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+      // Particles
+      const particlesGeometry = new THREE.BufferGeometry();
+      const particlesCount = 700;
+      const posArray = new Float32Array(particlesCount * 3);
+
+      for(let i = 0; i < particlesCount * 3; i++) {
+        // Spread particles across a wide area
+        posArray[i] = (Math.random() - 0.5) * 25;
+      }
+      particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+
+      // Material
+      const material = new THREE.PointsMaterial({
+        size: 0.05,
+        color: 0xfbbf24, // Gold color
+        transparent: true,
+        opacity: 0.8,
+        blending: THREE.AdditiveBlending
+      });
+
+      // Mesh
+      const particlesMesh = new THREE.Points(particlesGeometry, material);
+      scene.add(particlesMesh);
+      camera.position.z = 5;
+
+      // Mouse Interaction
+      let mouseX = 0;
+      let mouseY = 0;
+      let targetX = 0;
+      let targetY = 0;
+      const windowHalfX = window.innerWidth / 2;
+      const windowHalfY = window.innerHeight / 2;
+
+      document.addEventListener('mousemove', (event) => {
+        mouseX = (event.clientX - windowHalfX);
+        mouseY = (event.clientY - windowHalfY);
+      });
+
+      const clock = new THREE.Clock();
+
+      function animate() {
+        requestAnimationFrame(animate);
+        const elapsedTime = clock.getElapsedTime();
+
+        targetX = mouseX * 0.001;
+        targetY = mouseY * 0.001;
+
+        particlesMesh.rotation.y += 0.001;
+        particlesMesh.rotation.x += 0.0005;
+
+        // Subtle Parallax
+        particlesMesh.rotation.y += 0.05 * (targetX - particlesMesh.rotation.y);
+        particlesMesh.rotation.x += 0.05 * (targetY - particlesMesh.rotation.x);
+        
+        // Gentle vertical floating
+        particlesMesh.position.y = Math.sin(elapsedTime * 0.5) * 0.2;
+
+        renderer.render(scene, camera);
+      }
+      
+      animate();
+
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+    }
+
+    // Initialize Three.js after a brief delay to ensure layout is ready
+    setTimeout(initThreeJS, 100);
   </script>
 </body>
 </html>
