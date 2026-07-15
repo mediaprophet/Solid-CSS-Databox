@@ -5,8 +5,18 @@ import { NotImplementedHttpError } from '../../util/errors/NotImplementedHttpErr
  * ADR-0019). The evidence ledger is the append-only, external-to-Pod, hash-chained source of truth
  * and the commit anchor of the §7.0 commit protocol. Nothing of this exists in CSS 7.1.9 (build).
  *
- * Types + interfaces only here; the durable ledger and commit protocol are DBX-18/DBX-19.
+ * This module keeps the original DBX-09 seam ({@link EvidenceEvent}/{@link AcceptanceReceipt}/
+ * {@link EvidenceLedger} + the fail-closed {@link NotImplementedEvidenceLedger}) AND re-exports the real
+ * DBX-19 ledger: the hash chain ({@link ./EvidenceChain}), the bound audit record + verified-context binder
+ * ({@link ./AuditEvidence}), the append-only hash-chained ledger store + DBX-17 sink
+ * ({@link ./EvidenceLedgerStore}) and the minimised consumer audit projection ({@link ./AuditProjection}).
+ * The barrel line `export * from './evidence/Evidence'` therefore covers every DBX-19 symbol too.
  */
+
+export * from './EvidenceChain';
+export * from './AuditEvidence';
+export * from './EvidenceLedgerStore';
+export * from './AuditProjection';
 
 /**
  * A single append-only evidence event (receipt, audit event, duty transition, key-history entry).
