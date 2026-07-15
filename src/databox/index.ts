@@ -39,6 +39,9 @@ export * from './profile/InstitutionProfileValidator';
 export * from './odrl/terms';
 export * from './odrl/TermSupport';
 
+// ODRL evaluator & obligation engine (C12, DBX-20)
+export * from './policy/PolicyEngine';
+
 // Deposit/submission gateway (C7, DBX-15)
 export * from './gateway/DepositSubmissionGateway';
 
