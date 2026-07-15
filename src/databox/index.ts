@@ -42,6 +42,12 @@ export * from './agent/ReferenceConsumerAgent';
 // Submission review & disposition workflow (C17, DBX-23)
 export * from './review/DispositionWorkflow';
 
+// Business mapping forge control plane and demo API
+export * from './forge/MappingForgeHttpApi';
+
+// Live CSS integration (DBX-25)
+export * from './integration/LiveDataboxHttpHandler';
+
 // Institution/program profile schema (C10/C11 provisioning inputs, DBX-06)
 export * from './profile/InstitutionProfile';
 export * from './profile/InstitutionProfileSchema';

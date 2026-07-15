@@ -92,10 +92,22 @@ export interface IssuedConnectionCredential {
 export const DEFAULT_CREDENTIAL_LIFETIME_MS = 365 * 24 * 60 * 60 * 1000;
 
 function requireAbsoluteHttps(value: unknown, field: string): string {
-  if (typeof value !== 'string' || !/^https:\/\/\S+$/u.test(value)) {
-    throw new BadRequestHttpError(`Connection credential field '${field}' must be an absolute https URL.`);
+  try {
+    if (typeof value !== 'string') {
+      throw new TypeError('not a string');
+    }
+    const parsed = new URL(value);
+    const loopback = parsed.protocol === 'http:' &&
+      (parsed.hostname === 'localhost' || parsed.hostname === '127.0.0.1' || parsed.hostname === '::1');
+    if (parsed.protocol !== 'https:' && !loopback) {
+      throw new TypeError('not secure');
+    }
+    return value;
+  } catch {
+    throw new BadRequestHttpError(
+      `Connection credential field '${field}' must be an absolute HTTPS URL or HTTP loopback URL.`,
+    );
   }
-  return value;
 }
 
 function requireNonEmpty(value: unknown, field: string): string {

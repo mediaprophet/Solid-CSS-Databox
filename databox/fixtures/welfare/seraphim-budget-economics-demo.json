@@ -1,0 +1,230 @@
+{
+  "@context": "https://dev.linkeddata.au/def/welfare/context.jsonld",
+  "syntheticFixture": true,
+  "warning": "Synthetic demonstration only. Contains no real person, payment account, secret, expense, or government report.",
+  "paymentGateway": {
+    "id": "urn:uuid:seraphim-stripe-test-connection",
+    "type": "welfare:PaymentGatewayConnection",
+    "provider": "stripe",
+    "gatewayMode": "test",
+    "gatewayAccountReference": "acct_TEST_OPAQUE_SERAPHIM",
+    "secretReference": "secret-manager://seraphim-demo/stripe/test-api-key",
+    "webhookSecretReference": "secret-manager://seraphim-demo/stripe/test-webhook-secret",
+    "containsSecretMaterial": false,
+    "organizationOwnsAccount": true,
+    "checkoutMode": "stripe-hosted-checkout-session",
+    "settlementAuthority": "verified-webhook-only",
+    "metadataAllowlist": [ "opaque-contribution-reference", "broad-pool-code" ],
+    "metadataDenylist": [ "participant", "case", "health", "demographic", "referral", "disputed-record" ]
+  },
+  "personalBudget": {
+    "id": "urn:uuid:charles-budget-2026-07",
+    "type": "welfare:BudgetPlan",
+    "owner": "Charles James (synthetic)",
+    "storageDomain": "charles-independent-personal-pod",
+    "seraphimDefaultAccess": false,
+    "currency": "AUD",
+    "period": {
+      "id": "urn:uuid:charles-budget-period-2026-07",
+      "type": "welfare:BudgetPeriod",
+      "start": "2026-07-01",
+      "end": "2026-07-31"
+    },
+    "entries": [
+      {
+        "id": "urn:uuid:budget-income-support-payment",
+        "type": "welfare:IncomeEntry",
+        "category": "income/support-payment",
+        "plannedAmount": "1180.00",
+        "actualAmount": "1180.00",
+        "currency": "AUD"
+      },
+      {
+        "id": "urn:uuid:budget-expense-temporary-accommodation",
+        "type": "welfare:ExpenseEntry",
+        "expenseCategory": "https://dev.linkeddata.au/def/welfare/expense/temporary-accommodation",
+        "plannedAmount": "520.00",
+        "actualAmount": "560.00",
+        "currency": "AUD",
+        "evidencedBy": "urn:uuid:receipt-temporary-accommodation-demo"
+      },
+      {
+        "id": "urn:uuid:budget-expense-food",
+        "type": "welfare:ExpenseEntry",
+        "expenseCategory": "https://dev.linkeddata.au/def/welfare/expense/food",
+        "plannedAmount": "310.00",
+        "actualAmount": "294.35",
+        "currency": "AUD",
+        "evidencedBy": "urn:uuid:receipt-food-demo"
+      },
+      {
+        "id": "urn:uuid:budget-expense-transport",
+        "type": "welfare:ExpenseEntry",
+        "expenseCategory": "https://dev.linkeddata.au/def/welfare/expense/transport",
+        "plannedAmount": "95.00",
+        "actualAmount": "87.20",
+        "currency": "AUD"
+      }
+    ],
+    "summary": {
+      "plannedIncome": "1180.00",
+      "plannedExpense": "925.00",
+      "actualIncome": "1180.00",
+      "actualExpense": "941.55",
+      "actualBalanceBeforeOtherCosts": "238.45"
+    },
+    "receiptEvidence": [
+      {
+        "id": "urn:uuid:receipt-temporary-accommodation-demo",
+        "type": "welfare:ReceiptEvidence",
+        "source": "camera-capture",
+        "mediaType": "image/jpeg",
+        "sha256": "synthetic-demo-digest-accommodation",
+        "merchant": "Synthetic Temporary Accommodation Provider",
+        "date": "2026-07-08",
+        "amount": "140.00",
+        "currency": "AUD",
+        "ocrState": "human-confirmed-synthetic"
+      },
+      {
+        "id": "urn:uuid:receipt-food-demo",
+        "type": "welfare:ReceiptEvidence",
+        "source": "file-selection",
+        "mediaType": "application/pdf",
+        "sha256": "synthetic-demo-digest-food",
+        "merchant": "Synthetic Food Provider",
+        "date": "2026-07-11",
+        "amount": "48.35",
+        "currency": "AUD",
+        "ocrState": "human-confirmed-synthetic"
+      }
+    ],
+    "exampleDisclosure": {
+      "id": "urn:uuid:charles-accommodation-cost-disclosure",
+      "type": "welfare:CostDisclosure",
+      "recipient": "https://seraphim.example/id/organization",
+      "purpose": "assess-temporary-accommodation-support",
+      "includedFields": [ "temporary-accommodation-monthly-total", "selected-receipt" ],
+      "excludedFields": [ "income-detail", "food", "transport", "complete-budget" ],
+      "validUntil": "2026-08-15T00:00:00Z"
+    }
+  },
+  "seraphimCaseEconomics": {
+    "storageDomain": "seraphim-relationship-and-finance-ledgers",
+    "entries": [
+      {
+        "id": "urn:uuid:staff-time-intake-demo",
+        "type": "welfare:StaffTimeEntry",
+        "relationshipSubject": "urn:uuid:opaque-charles-relationship-subject",
+        "stage": "urn:uuid:stage-immediate-safety",
+        "activity": "intake-and-needs-assessment",
+        "staffRole": "case-coordinator",
+        "staffDurationMinutes": 75,
+        "loadedRateVersion": "synthetic-rate-card-2026-v1",
+        "actualCost": "112.50",
+        "currency": "AUD"
+      },
+      {
+        "id": "urn:uuid:case-cost-accommodation-voucher-demo",
+        "type": "welfare:CaseCostEntry",
+        "relationshipSubject": "urn:uuid:opaque-charles-relationship-subject",
+        "stage": "urn:uuid:stage-immediate-safety",
+        "costKind": "actual-voucher-redemption",
+        "actualCost": "420.00",
+        "currency": "AUD",
+        "evidencedBy": "urn:uuid:synthetic-provider-redemption-receipt"
+      },
+      {
+        "id": "urn:uuid:case-cost-in-kind-meals-demo",
+        "type": "welfare:CaseCostEntry",
+        "relationshipSubject": "urn:uuid:opaque-charles-relationship-subject",
+        "stage": "urn:uuid:stage-immediate-safety",
+        "costKind": "in-kind-value",
+        "actualCost": "90.00",
+        "currency": "AUD",
+        "valuationMethod": "synthetic-standard-meal-value-2026-v1"
+      }
+    ]
+  },
+  "governmentContractRelease": {
+    "id": "urn:uuid:seraphim-contract-report-2026-q3-demo",
+    "type": "welfare:MetricRelease",
+    "reportingProfile": {
+      "id": "urn:uuid:synthetic-act-contract-profile",
+      "type": "welfare:ReportingProfile",
+      "principal": "Synthetic ACT Government Principal",
+      "contractReference": "SYNTHETIC-CONTRACT-2026-01",
+      "calculationVersion": "seraphim-metrics-2026-v1"
+    },
+    "cohort": {
+      "id": "urn:uuid:seraphim-active-cohort-2026-q3",
+      "type": "welfare:ReportingCohort",
+      "period": "2026-Q3",
+      "geography": "Australian Capital Territory",
+      "cohortSize": 48,
+      "containsIndividualIdentifiers": false
+    },
+    "counts": {
+      "participantsActive": 48,
+      "participantsNew": 17,
+      "casesClosed": 9,
+      "temporaryAccommodationPlacements": 21,
+      "stableHousingMilestones": 8,
+      "referralsMade": 63,
+      "referralsAccepted": 41,
+      "serviceContacts": 184
+    },
+    "timeAndCost": {
+      "staffHours": "612.50",
+      "directActualCost": "78450.00",
+      "inKindValue": "12300.00",
+      "averageWaitingDaysForTemporaryAccommodation": "3.8",
+      "costPerStableHousingMilestone": "9806.25",
+      "currency": "AUD",
+      "avoidedCostIncluded": false
+    },
+    "basicDemographics": [
+      {
+        "dimension": "age-band",
+        "values": [
+          { "value": "18-24", "count": 7 },
+          { "value": "25-44", "count": 22 },
+          { "value": "45-64", "count": 14 },
+          { "value": "65-plus", "count": 5 }
+        ],
+        "suppressionStatus": "released"
+      },
+      {
+        "dimension": "self-described-gender",
+        "values": [
+          { "value": "woman", "count": 18 },
+          { "value": "man", "count": 23 },
+          { "value": "another-self-description", "count": null },
+          { "value": "prefer-not-to-say-or-unknown", "count": 7 }
+        ],
+        "suppressionStatus": "rare-cell-combined-or-withheld"
+      },
+      {
+        "dimension": "current-housing-situation-broad",
+        "values": [
+          { "value": "rough-sleeping", "count": 11 },
+          { "value": "temporary-or-crisis-accommodation", "count": 26 },
+          { "value": "other-or-unknown", "count": 11 }
+        ],
+        "suppressionStatus": "released"
+      },
+      {
+        "dimension": "age-band-by-gender",
+        "values": null,
+        "suppressionStatus": "withheld-intersection-risk"
+      }
+    ],
+    "privacyControls": {
+      "minimumCellCount": 5,
+      "immutableSnapshot": true,
+      "differencingReview": "passed-synthetic-demo",
+      "individualPodAccessGranted": false,
+      "donorVisible": false
+    }
+  }
+}

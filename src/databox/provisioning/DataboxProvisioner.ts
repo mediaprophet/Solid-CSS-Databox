@@ -157,14 +157,17 @@ export class DataboxProvisioner {
   }
 
   private validateWebId(pairwiseWebId: string): void {
-    let protocol: string;
     try {
-      protocol = new URL(pairwiseWebId).protocol;
+      const parsed = new URL(pairwiseWebId);
+      const loopback = parsed.protocol === 'http:' &&
+        (parsed.hostname === 'localhost' || parsed.hostname === '127.0.0.1' || parsed.hostname === '::1');
+      if (parsed.protocol !== 'https:' && !loopback) {
+        throw new Error('not secure');
+      }
     } catch {
-      throw new BadRequestHttpError('Pairwise WebID must be an absolute https URL (fail closed).');
-    }
-    if (protocol !== 'https:') {
-      throw new BadRequestHttpError('Pairwise WebID must be an absolute https URL (fail closed).');
+      throw new BadRequestHttpError(
+        'Pairwise WebID must be an absolute HTTPS URL or HTTP loopback URL (fail closed).',
+      );
     }
   }
 

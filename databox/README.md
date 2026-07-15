@@ -82,9 +82,13 @@ under `config/databox/`). Progress follows the ordered prompts in the
 [prompt implementation plan](prompt-implementation-plan.md); each prompt records a handoff under
 [`handoffs/`](handoffs) and consumes the binding decisions in the [decision register](decisions/README.md).
 
-**Completed: DBX-01 through DBX-21 of the 28-prompt plan** (Waves A–D). Remaining: Wave E (DBX-22 synthetic
-bridge, DBX-23 review/disposition workflow, DBX-24 reference consumer agent) and Wave F (DBX-25 integration,
-DBX-26 adversarial, DBX-27 conformance, DBX-28 release readiness).
+**Completed: DBX-01 through DBX-24 of the 28-prompt plan** (Waves A–E). DBX-25 is active: its
+[live CSS integration slice](live-css-integration.md) now mounts the Forge in Components.js, provisions opaque
+WAC-protected Databox resources, commits exact accepted bytes to CSS storage before receipt issuance, and proves
+authenticated DPoP retrieval through the normal Solid HTTP route. The broader two-program lifecycle scenario remains
+before DBX-25 can be marked complete. DBX-26 adversarial, DBX-27 conformance and DBX-28 release readiness follow it.
+A separate [Forge productization plan](forge-plan/README.md) defines the polished demo, reusable organisation/industry
+backplane and optional public-information adoption studio.
 
 | Wave | Prompts | What landed |
 |---|---|---|
@@ -92,16 +96,17 @@ DBX-26 adversarial, DBX-27 conformance, DBX-28 release readiness).
 | B — schemas, policy & scaffold | 06–09 | Institution-profile schema, Databox vocabulary + ODRL profile, synthetic loyalty profile, extension scaffold |
 | C — provisioning, identity & authorization | 10–14 | Opaque provisioning, tenant isolation, authenticated context + assurance, VC connection credential, composed authorizer |
 | D — exchange, policy execution & evidence | 15–21 | Deposit/submission gateway, record-proof validation, append-only + tombstone, signed receipts, evidence ledger, ODRL evaluator + duty engine, outbox + SSRF-guarded notification + cursor recovery |
+| E — integration endpoints | 22–24 | Synthetic institutional bridge, governed review/disposition workflow, reference consumer-pod agent |
 
-**How to read the code state:** the extension is a **reference implementation**. Every subsystem is
-fail-closed and 100% unit-test covered, but (a) durable substrates are in-memory reference stores in this
-slice — production needs a WORM/signed evidence ledger, KMS-held keys, and durable outbox/feed/registry
-stores; (b) the Databox classes are **not yet wired** into a live Components.js config (DI wiring is
-deferred to the integration prompts, so they are excluded from component generation); and (c) every
-security/cryptography/legal-policy prompt carries a **residual human-review gate** recorded in its handoff
-that has **not** been independently certified here. Two protocol bindings remain provisional pending their
-decisions: the RFC 8693 token-exchange wire format ([ADR-0005](decisions/ADR-0005-authorization-server-broker-and-idp-trust.md))
-and record/credential/crosswalk signature verification against a pinned key.
+**How to read the code state:** the extension is a **reference implementation**. Every subsystem is fail-closed and
+unit tested. The experimental live preset is wired into Components.js, but its Forge registries, keys, outbox and
+digest confirmation index are still process-local; production needs durable registries, a WORM/signed evidence
+ledger, KMS-held keys, and durable outbox/feed storage. The live preset's control bearer is a demonstration boundary,
+not organisation IAM. Every security, cryptography and legal-policy prompt also carries a residual human-review gate
+recorded in its handoff that has not been independently certified here. Two protocol bindings remain provisional:
+the RFC 8693 token-exchange wire format
+([ADR-0005](decisions/ADR-0005-authorization-server-broker-and-idp-trust.md)) and record, credential and crosswalk
+signature verification against a pinned key.
 
 ## Documents
 
@@ -114,6 +119,7 @@ and record/credential/crosswalk signature verification against a pinned key.
 - [Conformance requirements (DBX-05)](dbx-05-conformance-requirements.md) and
   [test-identification scheme](dbx-05-test-identification-scheme.md).
 - [Prompt handoffs](handoffs) — one per completed prompt (inputs, decisions, tests, residual gates).
+- [Live CSS integration](live-css-integration.md) — run instructions, HTTP surface and current DBX-25 boundary.
 
 ### Design specifications
 
@@ -139,6 +145,8 @@ and record/credential/crosswalk signature verification against a pinned key.
   applies the CDR Rules and Privacy Act structure to record visibility, correction and downstream propagation without
   claiming that the broader legal mapping is complete.
 - [Prompt implementation plan](prompt-implementation-plan.md) provides the ordered, agent-level implementation prompts.
+- [Forge productization plan](forge-plan/README.md) defines MFG-01 through MFG-22 for the polished demo, tailoring
+  backplane, industry packs, adoption studio, and independent readiness gates.
 
 ## Terminology
 

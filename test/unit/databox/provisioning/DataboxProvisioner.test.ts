@@ -191,6 +191,12 @@ describe('A DataboxProvisioner', (): void => {
         .rejects.toThrow(BadRequestHttpError);
       await expect(provisioner.provision(freshProfile(), key(), 'not a url')).rejects.toThrow(BadRequestHttpError);
     });
+
+    it('allows an HTTP pairwise WebID only on loopback for live integration tests.', async(): Promise<void> => {
+      const { provisioner } = makeProvisioner();
+      await expect(provisioner.provision(freshProfile(), key(), 'http://127.0.0.1:3456/profile/card#me'))
+        .resolves.toBeDefined();
+    });
   });
 
   describe('TOCTOU safety (T-54): a concurrent create wins atomically', (): void => {
