@@ -45,6 +45,9 @@ export * from './gateway/DepositSubmissionGateway';
 // Verifiable record proof validation (C7/C16, DBX-16)
 export * from './proof/RecordProofValidator';
 
+// Signed acceptance receipts (C7/C13, DBX-18)
+export * from './receipt/AcceptanceReceiptSigner';
+
 // Connection credential lifecycle (C7/C9/C16, DBX-13)
 export * from './credential/BitstringStatusList';
 export * from './credential/ConnectionCredentialIssuer';
