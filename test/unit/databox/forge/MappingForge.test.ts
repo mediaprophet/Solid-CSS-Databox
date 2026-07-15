@@ -127,4 +127,14 @@ describe('MappingForge', (): void => {
       databoxBaseUrl: 'http://127.0.0.1:3456/databox/relationships/',
     })).not.toThrow();
   });
+
+  it('blocks a legal-compliance publication that has not passed the compliance gate.', (): void => {
+    const forge = makeForge();
+    expect((): unknown => forge.registerProgram({
+      profile,
+      programUri: 'https://rewards.megamart.example/program',
+      databoxBaseUrl: 'https://databox.megamart.example/boxes/',
+      claimsLegalCompliance: true,
+    })).toThrow('requires a compliance assessment');
+  });
 });

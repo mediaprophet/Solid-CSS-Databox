@@ -13,6 +13,8 @@ import { InstitutionalRecordBuilder } from '../bridge/InstitutionalRecordBuilder
 import { KeyedHmacRelationshipResolver } from '../bridge/RelationshipResolver';
 import { InMemorySourceOutbox } from '../bridge/SourceOutbox';
 import { StatusListManager } from '../credential/BitstringStatusList';
+import { ComplianceEngine } from '../compliance/ComplianceEngine';
+import type { ComplianceEvaluationInput } from '../compliance/ComplianceEngine';
 import { ConnectionCredentialIssuer } from '../credential/ConnectionCredentialIssuer';
 import type { IssuedConnectionCredential } from '../credential/ConnectionCredentialIssuer';
 import type { PublicJwk } from '../credential/ConnectionCredentialTypes';
@@ -36,6 +38,9 @@ export interface ForgeProgramInput {
   readonly programUri: string;
   readonly databoxBaseUrl: string;
   readonly issuer?: string;
+  /** A legal claim is blocked unless the compliance publication gate passes. */
+  readonly claimsLegalCompliance?: boolean;
+  readonly compliance?: ComplianceEvaluationInput;
 }
 
 export interface ForgeProgramSummary {
@@ -45,6 +50,7 @@ export interface ForgeProgramSummary {
   readonly databoxBaseUrl: string;
   readonly recordClasses: readonly string[];
   readonly submissionClasses: readonly string[];
+  readonly legalComplianceClaimed: boolean;
 }
 
 export interface ForgeMappingInput {
@@ -95,6 +101,7 @@ export interface MappingForgeOptions {
   readonly durableCommit?: DurableCommitConfirmer;
   /** Creates the Solid container/ACL surface after a relationship is provisioned. */
   readonly provision?: (result: ProvisionResult) => Promise<void>;
+  readonly complianceEngine?: ComplianceEngine;
 }
 
 /** Control plane for validating profiles, forging mappings, issuing credentials, and bridging source events. */
@@ -106,6 +113,7 @@ export class MappingForge {
   private readonly secretFactory: () => Buffer;
   private readonly durableCommit?: DurableCommitConfirmer;
   private readonly provision?: (result: ProvisionResult) => Promise<void>;
+  private readonly complianceEngine: ComplianceEngine;
 
   public constructor(options: MappingForgeOptions = {}) {
     this.now = options.now ?? ((): string => new Date().toISOString());
@@ -114,10 +122,20 @@ export class MappingForge {
     this.secretFactory = options.secretFactory ?? ((): Buffer => randomBytes(32));
     this.durableCommit = options.durableCommit;
     this.provision = options.provision;
+    this.complianceEngine = options.complianceEngine ?? new ComplianceEngine();
   }
 
   public registerProgram(input: ForgeProgramInput): ForgeProgramSummary {
     const profile = loadInstitutionProfile(input.profile);
+    if (input.claimsLegalCompliance === true) {
+      if (!input.compliance) {
+        throw new BadRequestHttpError('A legal-compliance publication requires a compliance assessment.');
+      }
+      const gate = this.complianceEngine.publicationGate(input.compliance);
+      if (!gate.allowed) {
+        throw new BadRequestHttpError(`Compliance publication blocked: ${gate.blockers.join(' ')}`);
+      }
+    }
     if (this.programs.has(profile.profileId)) {
       throw new BadRequestHttpError(`Program '${profile.profileId}' is already registered.`);
     }
@@ -170,6 +188,7 @@ export class MappingForge {
       databoxBaseUrl: input.databoxBaseUrl,
       recordClasses: profile.recordClasses.map((entry): string => entry.id),
       submissionClasses: profile.submissionClasses.map((entry): string => entry.id),
+      legalComplianceClaimed: input.claimsLegalCompliance === true,
     };
     const statusListCredential = `${issuer}/status/1`;
     this.programs.set(profile.profileId, {

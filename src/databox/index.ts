@@ -60,6 +60,13 @@ export * from './odrl/TermSupport';
 // ODRL evaluator & obligation engine (C12, DBX-20)
 export * from './policy/PolicyEngine';
 
+// Human-reviewed, corpus-grounded compliance decision support (DBX-26)
+export * from './compliance/AustralianComplianceRegistry';
+export * from './compliance/ComplianceDigest';
+export * from './compliance/ComplianceEngine';
+export * from './compliance/ComplianceTypes';
+export * from './compliance/ComplianceViews';
+
 // Deposit/submission gateway (C7, DBX-15)
 export * from './gateway/DepositSubmissionGateway';
 
