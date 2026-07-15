@@ -1,0 +1,91 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix schema: <http://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix fibo-fnd-acc-aeq: <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/AccountingEquity/> .
+@prefix gtakeout: <https://ns.webcivics.net/platform/google-takeout#> .
+
+# -------------------------------------------------------------------------
+# Google Takeout Platform Ontology Mapping
+# -------------------------------------------------------------------------
+# This vocabulary rigorously maps the nested, raw JSON output of a 
+# Google Takeout export into the Databox standard graph.
+# -------------------------------------------------------------------------
+
+gtakeout:Ontology rdf:type owl:Ontology ;
+    rdfs:label "Google Takeout Exhaustive Mapping Ontology"@en ;
+    rdfs:comment "Maps literal Google Takeout JSON structures to Databox RDF schemas."@en .
+
+# =========================================================================
+# 1. Google Pay (Checkout) / Transactions
+# File: Takeout/Google Pay/Transactions/Transactions.json
+# =========================================================================
+
+gtakeout:GooglePayTransaction rdf:type owl:Class ;
+    rdfs:subClassOf schema:PaymentTransaction ;
+    rdfs:subClassOf fibo-fnd-acc-aeq:FinancialTransaction ;
+    rdfs:label "Google Pay Transaction"@en ;
+    rdfs:comment "Represents a single transaction object from the Google Pay Takeout export."@en .
+
+# Mapping literal JSON keys from the Google Pay payload
+gtakeout:merchantName rdf:type owl:DatatypeProperty ;
+    rdfs:domain gtakeout:GooglePayTransaction ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Maps to the literal 'Merchant Name' or 'Description' field in the JSON."@en ;
+    owl:equivalentProperty schema:seller .
+
+gtakeout:transactionTimeMs rdf:type owl:DatatypeProperty ;
+    rdfs:domain gtakeout:GooglePayTransaction ;
+    rdfs:range xsd:long ;
+    rdfs:comment "Maps to 'Time' (epoch ms) in JSON."@en ;
+    owl:equivalentProperty schema:paymentDue .
+
+gtakeout:transactionAmount rdf:type owl:DatatypeProperty ;
+    rdfs:domain gtakeout:GooglePayTransaction ;
+    rdfs:range xsd:decimal ;
+    rdfs:comment "Maps to 'Amount' numeric string."@en .
+
+gtakeout:currencyCode rdf:type owl:DatatypeProperty ;
+    rdfs:domain gtakeout:GooglePayTransaction ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Maps to 'Currency' (e.g., 'USD', 'AUD')."@en ;
+    owl:equivalentProperty schema:priceCurrency .
+
+gtakeout:paymentInstrumentType rdf:type owl:DatatypeProperty ;
+    rdfs:domain gtakeout:GooglePayTransaction ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Maps to the 'Payment Instrument' field (e.g., 'Visa ending in 1234')."@en .
+
+# =========================================================================
+# 2. Location History (Timeline)
+# File: Takeout/Location History/Records.json
+# =========================================================================
+
+gtakeout:LocationRecord rdf:type owl:Class ;
+    rdfs:subClassOf schema:Place ;
+    rdfs:label "Location History Record"@en ;
+    rdfs:comment "Represents a raw GPS coordinate ping from Google Location Services."@en .
+
+gtakeout:latitudeE7 rdf:type owl:DatatypeProperty ;
+    rdfs:domain gtakeout:LocationRecord ;
+    rdfs:range xsd:long ;
+    rdfs:comment "Literal 'latitudeE7' from JSON. Divide by 10^7 for standard lat."@en .
+
+gtakeout:longitudeE7 rdf:type owl:DatatypeProperty ;
+    rdfs:domain gtakeout:LocationRecord ;
+    rdfs:range xsd:long ;
+    rdfs:comment "Literal 'longitudeE7' from JSON. Divide by 10^7 for standard lng."@en .
+
+gtakeout:accuracyE7 rdf:type owl:DatatypeProperty ;
+    rdfs:domain gtakeout:LocationRecord ;
+    rdfs:range xsd:integer ;
+    rdfs:comment "GPS accuracy radius in literal JSON format."@en .
+
+gtakeout:inferredActivity rdf:type owl:ObjectProperty ;
+    rdfs:domain gtakeout:LocationRecord ;
+    rdfs:range gtakeout:ActivityType ;
+    rdfs:comment "Maps to the 'activity' nested array (e.g., STILL, WALKING, IN_VEHICLE) and its algorithmic confidence score."@en .
+
+gtakeout:ActivityType rdf:type owl:Class ;
+    rdfs:label "Inferred Activity"@en .

@@ -1,6 +1,7 @@
 // @ts-nocheck
 import React, { useState, useEffect } from "react";
 import { useCreate } from "@refinedev/core";
+import { PLATFORM_ONTOLOGIES } from "./platformData";
 
 const ANZSIC_DIVISIONS = [
   { id: "A", name: "Agriculture, Forestry and Fishing" },
@@ -35,9 +36,10 @@ const ALL_CAPABILITIES = [
   { id: "cap-qual", name: "Portable Qualifications" },
   { id: "cap-enrol", name: "Enrolment Records" },
   { id: "cap-membership", name: "Membership" },
-  { id: "cap-access", name: "Time-bound Access" },
   { id: "cap-notification", name: "Service Notifications" },
 ];
+
+// Removed hardcoded PLATFORM_ONTOLOGIES array.
 
 const recommendCapabilities = (divisionId: string) => {
   switch (divisionId) {
@@ -71,6 +73,7 @@ export const SetupPage = () => {
   });
   
   const [selectedCapabilities, setSelectedCapabilities] = useState<string[]>([]);
+  const [selectedOntologies, setSelectedOntologies] = useState<string[]>([]);
   const [result, setResult] = useState<any>(null);
 
   // When industry changes, automatically recommend capabilities
@@ -83,6 +86,14 @@ export const SetupPage = () => {
       setSelectedCapabilities(selectedCapabilities.filter(id => id !== capId));
     } else {
       setSelectedCapabilities([...selectedCapabilities, capId]);
+    }
+  };
+
+  const toggleOntology = (ontId: string) => {
+    if (selectedOntologies.includes(ontId)) {
+      setSelectedOntologies(selectedOntologies.filter(id => id !== ontId));
+    } else {
+      setSelectedOntologies([...selectedOntologies, ontId]);
     }
   };
 
@@ -100,7 +111,8 @@ export const SetupPage = () => {
             "schema:name": formData.orgName,
             "schema:url": formData.orgUrl,
             "schema:knowsAbout": `https://w3id.org/anzsic/2006/role/${formData.industry}`,
-            "capabilities": selectedCapabilities
+            "capabilities": selectedCapabilities,
+            "ontologyMappings": selectedOntologies
           },
         },
       },
@@ -202,6 +214,34 @@ export const SetupPage = () => {
           </div>
         </div>
       </form>
+
+      {/* Full Width Row: Platform Ontology Registry */}
+      <div className="mt-8 glass-panel p-6 rounded-xl shadow-lg">
+        <h2 className="text-xl font-bold text-white mb-2 border-b border-white/10 pb-2">Ontology Mapping Registry</h2>
+        <p className="text-sm text-slate-400 mb-6">Select the third-party platforms your organization uses. The Databox will automatically pull down the raw SHACL constraints and exhaustive RDF schema mappings to ensure seamless Data Portability compliance.</p>
+        
+        <div className="max-h-[500px] overflow-y-auto pr-2 custom-scrollbar">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {PLATFORM_ONTOLOGIES.map(ont => {
+              const isChecked = selectedOntologies.includes(ont.id);
+              return (
+                <div key={ont.id} 
+                  className={`flex flex-col gap-2 p-4 rounded-lg cursor-pointer transition-all ${isChecked ? 'bg-blue-500/20 border border-blue-500/50' : 'glass-input hover:bg-white/5'}`}
+                  onClick={() => toggleOntology(ont.id)}
+                >
+                  <div className="flex justify-between items-start">
+                    <span className={`text-xs font-bold uppercase tracking-wider ${isChecked ? 'text-blue-300' : 'text-slate-500'}`}>{ont.category}</span>
+                    <div className={`w-5 h-5 rounded-md flex items-center justify-center border shrink-0 ${isChecked ? 'bg-blue-500 border-blue-500' : 'border-slate-500'}`}>
+                      {isChecked && <svg className="w-3 h-3 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>}
+                    </div>
+                  </div>
+                  <span className={`text-sm ${isChecked ? 'text-white font-semibold' : 'text-slate-300'}`}>{ont.name}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
 
       <div className="mt-6 flex justify-end">
         <button onClick={handleSubmit} disabled={isLoading} className="action-btn text-lg px-8 py-3">

@@ -19,6 +19,113 @@ const fetchWithAuth = async (url: string, options: RequestInit = {}) => {
   return data;
 };
 
+// Mock data for corrections
+let mockCorrections = [
+  {
+    id: "req-1001",
+    consumerUrn: "urn:uuid:1111-2222-3333-4444",
+    targetRecord: "https://synthetic-corp.example/profiles/derived/ad_propensity",
+    field: "derived:advertising_profile:income_bracket",
+    currentValue: "$150k+",
+    requestedCorrection: "$80k-$100k",
+    status: "pending",
+    submittedAt: new Date(Date.now() - 2 * 86400000).toISOString(),
+    dueDate: new Date(Date.now() + 8 * 86400000).toISOString(),
+    dispositionReason: "",
+  },
+  {
+    id: "req-1002",
+    consumerUrn: "urn:uuid:5555-6666-7777-8888",
+    targetRecord: "https://synthetic-corp.example/financial/ledger/tx-999",
+    field: "financial:ledger:transaction_amount",
+    currentValue: "50.00",
+    requestedCorrection: "5.00",
+    status: "more-information-required",
+    submittedAt: new Date(Date.now() - 5 * 86400000).toISOString(),
+    dueDate: new Date(Date.now() + 5 * 86400000).toISOString(),
+    dispositionReason: "Please provide a copy of the receipt.",
+  },
+  {
+    id: "req-1003",
+    consumerUrn: "urn:uuid:9999-0000-1111-2222",
+    targetRecord: "https://synthetic-corp.example/identity/core",
+    field: "identity:core:legal_name",
+    currentValue: "John Doe",
+    requestedCorrection: "Jonathan Doe",
+    status: "corrected",
+    submittedAt: new Date(Date.now() - 15 * 86400000).toISOString(),
+    dueDate: new Date(Date.now() - 5 * 86400000).toISOString(),
+    dispositionReason: "Name updated successfully.",
+  }
+];
+
+// Mock data for access requests
+let mockAccessRequests = [
+  {
+    id: "ar-2001",
+    consumerUrn: "urn:uuid:1111-2222-3333-4444",
+    scope: [
+      "behavioral:location_history",
+      "behavioral:search_history",
+      "derived:advertising_profile",
+      "social:graph_connections"
+    ],
+    status: "pending",
+    submittedAt: new Date(Date.now() - 3 * 86400000).toISOString(),
+    dueDate: new Date(Date.now() + 7 * 86400000).toISOString(),
+    regulatoryBasis: "CDR Rules Schedule 4, rule 7.22",
+    dispositionReason: "",
+  },
+  {
+    id: "ar-2002",
+    consumerUrn: "urn:uuid:5555-6666-7777-8888",
+    scope: [
+      "identity:core",
+      "financial:payment_instruments",
+      "financial:transaction_ledger",
+      "ugc:media_files"
+    ],
+    status: "granted",
+    submittedAt: new Date(Date.now() - 12 * 86400000).toISOString(),
+    dueDate: new Date(Date.now() - 2 * 86400000).toISOString(),
+    regulatoryBasis: "Privacy Act 1988, APP 12",
+    dispositionReason: "Payload packaged and delivered via Databox broker.",
+  },
+  {
+    id: "ar-2003",
+    consumerUrn: "urn:uuid:9999-0000-1111-2222",
+    scope: ["health:biometrics:sleep_data", "health:biometrics:heart_rate"],
+    status: "refused",
+    submittedAt: new Date(Date.now() - 5 * 86400000).toISOString(),
+    dueDate: new Date(Date.now() + 5 * 86400000).toISOString(),
+    regulatoryBasis: "Privacy Act 1988, APP 12",
+    dispositionReason: "Exception 12.3(a) - Access would pose a serious threat to the life, health or safety of any individual.",
+  }
+];
+
+// Mock data for consumer ledger
+let mockLedger = [
+  {
+    id: "urn:uuid:1111-2222-3333-4444",
+    consumerName: "Alice Smith",
+    dataPoints: [
+      { field: "behavioral:location_history", value: "[124,532 GPS points retained]", source: "Mobile App Telemetry", policy: "Consent: Service Provision" },
+      { field: "derived:advertising_profile", value: "{ income: 'High', propensity_score: 0.84, segments: ['Tech', 'Travel'] }", source: "Algorithmic Inference Engine", policy: "Consent: Marketing" },
+      { field: "social:graph_connections", value: "[482 Edge connections]", source: "Social Feed", policy: "Consent: Service Provision" }
+    ],
+    lastActive: new Date().toISOString(),
+  },
+  {
+    id: "urn:uuid:5555-6666-7777-8888",
+    consumerName: "Bob Jones",
+    dataPoints: [
+      { field: "financial:transaction_ledger", value: "[$14,203.44 lifetime spend across 42 orders]", source: "Payment Gateway", policy: "Legal Obligation (Tax Retention)" },
+      { field: "financial:payment_instruments", value: "[Tokenized Visa ending in 4422]", source: "Vault", policy: "Contractual Obligation" },
+    ],
+    lastActive: new Date(Date.now() - 1 * 86400000).toISOString(),
+  }
+];
+
 export const dataProvider = {
   getList: async ({ resource }) => {
     if (resource === "programs") {
@@ -35,11 +142,79 @@ export const dataProvider = {
         total: formattedItems.length,
       };
     }
+    
+    if (resource === "corrections") {
+      return {
+        data: mockCorrections,
+        total: mockCorrections.length,
+      };
+    }
+    
+    if (resource === "access-requests") {
+      return {
+        data: mockAccessRequests,
+        total: mockAccessRequests.length,
+      };
+    }
+
+    if (resource === "consumer-ledger") {
+      return {
+        data: mockLedger,
+        total: mockLedger.length,
+      };
+    }
+
     throw new Error(`Unsupported getList resource: ${resource}`);
   },
 
-  getOne: async () => {
+  getOne: async ({ resource, id }) => {
+    if (resource === "corrections") {
+      const record = mockCorrections.find((c) => c.id === id);
+      if (!record) throw new Error("Correction not found");
+      return { data: record };
+    }
+    
+    if (resource === "access-requests") {
+      const record = mockAccessRequests.find((r) => r.id === id);
+      if (!record) throw new Error("Access request not found");
+      return { data: record };
+    }
+
+    if (resource === "consumer-ledger") {
+      const record = mockLedger.find((l) => l.id === id);
+      if (!record) throw new Error("Consumer ledger not found");
+      return { data: record };
+    }
+    
     throw new Error("getOne not implemented for Forge API");
+  },
+
+  update: async ({ resource, id, variables }) => {
+    if (resource === "corrections") {
+      const index = mockCorrections.findIndex((c) => c.id === id);
+      if (index === -1) throw new Error("Correction not found");
+      
+      mockCorrections[index] = {
+        ...mockCorrections[index],
+        ...variables,
+      };
+      
+      return { data: mockCorrections[index] };
+    }
+    
+    if (resource === "access-requests") {
+      const index = mockAccessRequests.findIndex((r) => r.id === id);
+      if (index === -1) throw new Error("Access request not found");
+      
+      mockAccessRequests[index] = {
+        ...mockAccessRequests[index],
+        ...variables,
+      };
+      
+      return { data: mockAccessRequests[index] };
+    }
+    
+    throw new Error("update not implemented for Forge API");
   },
 
   create: async ({ resource, variables }) => {
