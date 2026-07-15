@@ -25,6 +25,12 @@
   },
   {
     "category": "Commercial",
+    "slug": "delivery-services",
+    "title": "Commercial: Delivery Services & Reputation Management",
+    "description": "The \"gig economy\" and delivery sector is currently dominated by centralized platforms that extract exorbitant fees and monopolize customer data. Integrating Databoxes enables a decentralized delivery ecosystem where local delivery providers establish direct, secure relationships with their customers. Furthermore, the Databox issues cryptographically verifiable credentials for drivers (e.g., proof of insurance, background checks, or consistent delivery times). This allows independent delivery providers to prove their assurance and manage a portable, un-censorable reputation across the entire ecosystem, completely freeing them from the lock-in of traditional aggregator apps."
+  },
+  {
+    "category": "Commercial",
     "slug": "festivals-and-events",
     "title": "Commercial: Festivals & Events",
     "description": "The festivals and live events industry suffers from rampant ticket scalping, fragmented communication, and liability risks related to age-restricted zones. Integrating the Databox architecture transforms the event experience. Rather than insecure PDFs, event tickets are issued as Verifiable Credentials directly to a patron's Pod. This enables highly secure, frictionless age verification for alcohol purchases (proving age without revealing birthdate or identity) and cryptographically enforces access control to VIP or green-room areas. Furthermore, artist information, dynamic schedule updates, and emergency notifications can be securely broadcast directly to attendees via their Databox connection."
@@ -34,6 +40,12 @@
     "slug": "hospitality",
     "title": "Commercial: Hospitality Applications",
     "description": "The hospitality sector thrives on personalization, yet forcing guests to repeatedly disclose sensitive data—such as dietary requirements, severe allergies, or credit card details—creates massive friction and data-liability risks. By integrating with the Databox architecture, guests can securely provision a temporary, cryptographic \"Guest Profile\" to a hotel or restaurant. This ensures kitchens receive irrefutable, verified allergy profiles directly from the guest's Pod without storing them permanently. Furthermore, Databoxes revolutionize check-ins by allowing privacy-preserving age and identity verification for bookings or alcohol service, entirely eliminating the need for front-desk staff to photocopy vulnerable physical passports or driver's licenses."
+  },
+  {
+    "category": "Commercial",
+    "slug": "loyalty-relationships",
+    "title": "Commercial: Loyalty Relationships & Community Engagement",
+    "description": "Modern businesses are often held hostage by the algorithms of massive social media platforms or exploitative marketplace apps (like food delivery services) just to communicate with their own customers. The Databox architecture liberates businesses by enabling direct, peer-to-peer loyalty relationships. A local cafe or large retail chain can issue a verifiable \"Loyalty Credential\" directly to a customer's Pod. Through this direct connection, the business can securely broadcast exclusive offers, event invitations, or community updates straight to the consumer's Databox—entirely bypassing algorithmic news feeds, ad-spend, and third-party data aggregators."
   },
   {
     "category": "Commercial",
