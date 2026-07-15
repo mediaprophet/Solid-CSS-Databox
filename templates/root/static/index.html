@@ -835,7 +835,9 @@
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText(emoji, size/2, size/2 + 4);
-        return new THREE.CanvasTexture(texCanvas);
+        const texture = new THREE.CanvasTexture(texCanvas);
+        texture.flipY = false;
+        return texture;
       }
 
       const emojis = ['👨', '👩', '🧒', '👧', '👴', '👵', '🧔', '👱‍♀️'];
