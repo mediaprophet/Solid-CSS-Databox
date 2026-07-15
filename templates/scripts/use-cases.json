@@ -117,7 +117,7 @@
     "category": "Government",
     "slug": "social-security",
     "title": "Social Security Applications",
-    "description": "Define applications and standards specific to this vertical here."
+    "description": "The Databox architecture transforms social security and welfare from a complex, friction-heavy bureaucracy into a proactive, privacy-preserving service network. Key applications include the issuance of dynamic Digital Concession Cards that can be instantly verified by third parties (transit authorities, pharmacies) without revealing the underlying condition or benefit amount. It also automates accommodation and rent assistance—by securely pairing the citizen's Databox with their landlord or real estate agent's systems, rental changes are seamlessly and cryptographically reported to social security, ensuring payments are accurate in real-time. This extends to automated income reporting and child care subsidy management, vastly reducing overpayment debts and administrative burdens."
   },
   {
     "category": "Government",
