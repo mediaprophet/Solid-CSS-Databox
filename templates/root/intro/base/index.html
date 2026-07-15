@@ -416,29 +416,49 @@
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-      // Particles
-      const particlesGeometry = new THREE.BufferGeometry();
-      const particlesCount = 700;
-      const posArray = new Float32Array(particlesCount * 3);
-
-      for(let i = 0; i < particlesCount * 3; i++) {
-        // Spread particles across a wide area
-        posArray[i] = (Math.random() - 0.5) * 25;
+      // Create textures from emojis
+      function createEmojiTexture(emoji) {
+        const size = 64;
+        const texCanvas = document.createElement('canvas');
+        texCanvas.width = size;
+        texCanvas.height = size;
+        const ctx = texCanvas.getContext('2d');
+        ctx.font = '48px Arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(emoji, size/2, size/2 + 4);
+        return new THREE.CanvasTexture(texCanvas);
       }
-      particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
 
-      // Material
-      const material = new THREE.PointsMaterial({
-        size: 0.05,
-        color: 0xfbbf24, // Gold color
-        transparent: true,
-        opacity: 0.8,
-        blending: THREE.AdditiveBlending
+      const emojis = ['👨', '👩', '🧒', '👧', '👴', '👵', '🧔', '👱‍♀️'];
+      const totalParticles = 700;
+      const particlesPerGroup = Math.floor(totalParticles / emojis.length);
+      const particleMeshes = [];
+
+      emojis.forEach((emoji) => {
+        const texture = createEmojiTexture(emoji);
+        const geometry = new THREE.BufferGeometry();
+        const posArray = new Float32Array(particlesPerGroup * 3);
+
+        for(let i = 0; i < particlesPerGroup * 3; i++) {
+          posArray[i] = (Math.random() - 0.5) * 25;
+        }
+        geometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+
+        const material = new THREE.PointsMaterial({
+          size: 0.35, // Larger size to see the emojis
+          map: texture,
+          transparent: true,
+          opacity: 0.65,
+          alphaTest: 0.1, // Discard empty pixels
+          sizeAttenuation: true
+        });
+
+        const mesh = new THREE.Points(geometry, material);
+        scene.add(mesh);
+        particleMeshes.push(mesh);
       });
 
-      // Mesh
-      const particlesMesh = new THREE.Points(particlesGeometry, material);
-      scene.add(particlesMesh);
       camera.position.z = 5;
 
       // Mouse Interaction
@@ -463,15 +483,17 @@
         targetX = mouseX * 0.001;
         targetY = mouseY * 0.001;
 
-        particlesMesh.rotation.y += 0.001;
-        particlesMesh.rotation.x += 0.0005;
+        particleMeshes.forEach((mesh, index) => {
+          mesh.rotation.y += 0.001 + (index * 0.0001);
+          mesh.rotation.x += 0.0005 + (index * 0.00005);
 
-        // Subtle Parallax
-        particlesMesh.rotation.y += 0.05 * (targetX - particlesMesh.rotation.y);
-        particlesMesh.rotation.x += 0.05 * (targetY - particlesMesh.rotation.x);
-        
-        // Gentle vertical floating
-        particlesMesh.position.y = Math.sin(elapsedTime * 0.5) * 0.2;
+          // Subtle Parallax
+          mesh.rotation.y += 0.05 * (targetX - mesh.rotation.y);
+          mesh.rotation.x += 0.05 * (targetY - mesh.rotation.x);
+          
+          // Gentle vertical floating with slight offsets
+          mesh.position.y = Math.sin(elapsedTime * 0.5 + index) * 0.2;
+        });
 
         renderer.render(scene, camera);
       }
