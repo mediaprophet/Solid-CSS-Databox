@@ -43,6 +43,13 @@ export const dataProvider = {
   },
 
   create: async ({ resource, variables }) => {
+    if (resource === "programs") {
+      const data = await fetchWithAuth(`${API_URL}/programs`, {
+        method: "POST",
+        body: JSON.stringify(variables),
+      });
+      return { data: { id: Date.now(), ...data } as any };
+    }
     if (resource === "mappings") {
       const data = await fetchWithAuth(`${API_URL}/mappings`, {
         method: "POST",
