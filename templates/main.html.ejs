@@ -65,11 +65,13 @@
     ];
 
     document.addEventListener('DOMContentLoaded', () => {
-      const titleText = document.title || '';
-      const h1Text = document.querySelector('h1')?.innerText || '';
+      const titleText = (document.title || '').toLowerCase();
+      const mainH1Text = (document.querySelector('main h1')?.innerText || '').toLowerCase();
       
-      // Look for error indicators in the title or the first h1
-      if (titleText.includes('404') || h1Text.includes('404') || titleText.includes('Error') || h1Text.includes('Error') || h1Text.includes('NotFound')) {
+      // Look for error indicators in the title or the first h1 inside main
+      if (titleText.includes('404') || mainH1Text.includes('404') || 
+          titleText.includes('error') || mainH1Text.includes('error') || 
+          titleText.includes('not found') || mainH1Text.includes('not found')) {
         const mainElement = document.querySelector('main');
         
         if (mainElement) {
