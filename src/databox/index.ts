@@ -30,6 +30,9 @@ export * from './evidence/Evidence';
 // Cursor feed (C15)
 export * from './feed/CursorFeed';
 
+// Transactional outbox & notification delivery (C14, DBX-21)
+export * from './notification/NotificationDelivery';
+
 // Institution/program profile schema (C10/C11 provisioning inputs, DBX-06)
 export * from './profile/InstitutionProfile';
 export * from './profile/InstitutionProfileSchema';
