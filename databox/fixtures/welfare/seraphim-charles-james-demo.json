@@ -14,7 +14,7 @@
   "consumer": {
     "displayName": "Charles James",
     "relationshipSubject": "urn:uuid:opaque-charles-relationship-subject",
-    "personalPod": "https://charles-vault.example/private/"
+    "personalPod": "https://v-8a7b6c5d.example/private/"
   },
   "disputedRecord": {
     "id": "urn:uuid:synthetic-false-intake-note",
