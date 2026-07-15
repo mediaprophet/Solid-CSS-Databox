@@ -30,7 +30,7 @@ export const AU_INSTRUMENTS: readonly InstrumentRecord[] = [
     officialSource: 'https://www.legislation.gov.au/F2025C00572',
     corpusSource: 'https://ns.webcivics.net/institutions/au-fed-legislation/F2025C00572.n3',
     sourcePdfSha256: '41c43134efa21c780f61d5484d6fe700f8aaa5656887a0fa32896ab02fa83e8c',
-    corpusSha256: 'c62faadd119dcb20a62bbafa4c2c0a948cb368e25c41b69055c4a5d165cfa435',
+    corpusSha256: 'c8abfd0bd3fe9597976cd9f86b58eb1b8d721b68ca15565e16698c36362841be',
     corpusCurationStatus: 'proposed',
     capturedAt: '2026-07-15',
   },
