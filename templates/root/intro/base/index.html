@@ -101,9 +101,25 @@
 
         <div id="qr-section" class="qr-container hidden">
           <div class="demo-banner">DEMO EXAMPLE - SYNTHETIC DATA</div>
+          <p style="margin-bottom: 0.75rem; color: var(--text-secondary); font-size: 0.9rem;">
+            Scan this QR code with a Solid pod app to pair your WebID with the organisation's programme.
+          </p>
           <div id="qrcode"></div>
-          <p style="margin-bottom: 0.5rem;"><strong>Connection String (JWS):</strong></p>
-          <div class="code-block" id="jws-string"></div>
+          <p style="margin: 1rem 0 0.25rem; font-size: 0.85rem;"><strong>Connection URI:</strong></p>
+          <div class="code-block" id="connection-uri" style="word-break: break-all; font-size: 0.75rem;"></div>
+          <details style="margin-top: 1rem;">
+            <summary style="cursor: pointer; color: var(--text-accent); font-weight: 600; font-size: 0.9rem;">Connection Details</summary>
+            <div style="margin-top: 0.75rem; font-size: 0.85rem; line-height: 1.7;">
+              <p><strong>Pairwise WebID:</strong> <span id="lbl-pair-webid" style="color: var(--text-secondary);"></span></p>
+              <p><strong>Organisation (Issuer):</strong> <span id="lbl-issuer" style="color: var(--text-secondary);"></span></p>
+              <p><strong>Programme:</strong> <span id="lbl-programme" style="color: var(--text-secondary);"></span></p>
+              <p><strong>Databox Root:</strong> <span id="lbl-databox" style="color: var(--text-secondary);"></span></p>
+              <p><strong>Storage Description:</strong> <span id="lbl-storage-desc" style="color: var(--text-secondary);"></span></p>
+              <p><strong>Connection ID:</strong> <span id="lbl-conn-id" style="color: var(--text-secondary);"></span></p>
+            </div>
+            <p style="margin-top: 0.75rem; font-size: 0.85rem;"><strong>Securing JWS:</strong></p>
+            <div class="code-block" id="jws-string" style="max-height: 120px; overflow-y: auto; font-size: 0.7rem;"></div>
+          </details>
         </div>
       </div>
     </div>
@@ -307,28 +323,55 @@
           throw new Error('Deposit was not reconciled: ' + (deposit.reconciliation?.reason || deposit.status));
         }
 
+        // Extract credential fields for the connection URI
+        const cred = mapping.credential.credential;
+        const conn = cred.credentialSubject.connection;
+        const pairwiseWebId = cred.credentialSubject.id;
+        const connectionId = mapping.credential.connectionId;
+
+        // Build a connection URI that pairs the user's WebID with the org's programme
+        const connectUri = new URL('solid-databox://connect');
+        connectUri.searchParams.set('webid', pairwiseWebId);
+        connectUri.searchParams.set('issuer', cred.issuer);
+        connectUri.searchParams.set('program', conn.program);
+        connectUri.searchParams.set('databox', conn.databox);
+        connectUri.searchParams.set('storage', conn.storageDescription);
+        connectUri.searchParams.set('connection', connectionId);
+        connectUri.searchParams.set('grant', conn.accessGrant);
+        const connectionUri = connectUri.toString();
+
         document.getElementById('qr-section').classList.remove('hidden');
+        document.getElementById('connection-uri').innerText = connectionUri;
         document.getElementById('jws-string').innerText = mapping.credential.jws;
+
+        // Populate connection detail fields
+        document.getElementById('lbl-pair-webid').innerText = pairwiseWebId;
+        document.getElementById('lbl-issuer').innerText = cred.issuer;
+        document.getElementById('lbl-programme').innerText = conn.program;
+        document.getElementById('lbl-databox').innerText = conn.databox;
+        document.getElementById('lbl-storage-desc').innerText = conn.storageDescription;
+        document.getElementById('lbl-conn-id').innerText = connectionId;
         
+        // Generate QR code from the connection URI (short enough for QR)
         document.getElementById('qrcode').innerHTML = '';
         try {
           new QRCode(document.getElementById("qrcode"), {
-            text: mapping.credential.connectionId || mapping.credential.jws.substring(0, 500),
-            width: 250,
-            height: 250,
+            text: connectionUri,
+            width: 280,
+            height: 280,
             colorDark : "#0f172a",
             colorLight : "#ffffff",
             correctLevel : QRCode.CorrectLevel.L
           });
         } catch (qrErr) {
-          document.getElementById('qrcode').innerHTML = '<p style="color: var(--text-secondary); font-size: 0.85rem;">QR code unavailable — credential too large for QR encoding.<br>Use the JWS string below instead.</p>';
+          document.getElementById('qrcode').innerHTML = '<p style="color: var(--text-secondary); font-size: 0.85rem;">QR code unavailable — URI too large for QR encoding.</p>';
         }
 
         document.getElementById('admin-empty-state').classList.add('hidden');
         document.getElementById('admin-data-state').classList.remove('hidden');
         
-        document.getElementById('lbl-relationship').innerText = mapping.credential.credential.credentialSubject.connection.relationship;
-        document.getElementById('lbl-pairwise').innerText = mapping.credential.credential.credentialSubject.id;
+        document.getElementById('lbl-relationship').innerText = conn.relationship;
+        document.getElementById('lbl-pairwise').innerText = pairwiseWebId;
         document.getElementById('lbl-resource').innerText = deposit.reconciliation.acceptedResource || 'N/A';
         document.getElementById('lbl-receipt').innerText = deposit.receipt ? deposit.receipt.jws : 'N/A';
 
