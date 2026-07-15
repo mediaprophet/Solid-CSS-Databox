@@ -51,6 +51,8 @@
     "docker:setup": "./test/docker/docker-setup.sh",
     "docker:start": "./test/docker/docker-start.sh",
     "docker:stop": "./test/docker/docker-stop.sh",
+    "demo:databox-forge": "ts-node ./scripts/databoxMappingForgeDemo.ts",
+    "start:databox-live": "node ./bin/server.js -c config/databox/live.json",
     "typedocs": "typedoc --customCss ./documentation/typedoc.css",
     "jest": "jest --coverageReporters text-summary --",
     "lint": "npm run lint:eslint && npm run lint:markdown",

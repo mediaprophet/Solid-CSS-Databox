@@ -1,0 +1,22 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server/^7.0.0/components/context.jsonld",
+  "import": [
+    "css:config/databox/live.json"
+  ],
+  "@graph": [
+    {
+      "@id": "urn:solid-server:test:Instances",
+      "@type": "RecordObject",
+      "record": [
+        {
+          "RecordObject:_record_key": "app",
+          "RecordObject:_record_value": { "@id": "urn:solid-server:default:App" }
+        },
+        {
+          "RecordObject:_record_key": "store",
+          "RecordObject:_record_value": { "@id": "urn:solid-server:default:ResourceStore" }
+        }
+      ]
+    }
+  ]
+}

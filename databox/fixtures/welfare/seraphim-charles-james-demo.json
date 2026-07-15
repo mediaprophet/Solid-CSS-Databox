@@ -1,0 +1,132 @@
+{
+  "@context": [
+    "https://dev.linkeddata.au/def/welfare/context.jsonld"
+  ],
+  "id": "urn:uuid:seraphim-charles-james-demo",
+  "type": "welfare:SupportCase",
+  "syntheticFixture": true,
+  "warning": "Entirely synthetic demonstrator data. Not a real person, entitlement, provider decision, or credential.",
+  "organization": {
+    "id": "https://seraphim.example/id/organization",
+    "name": "Seraphim (synthetic)",
+    "relationshipPod": "https://seraphim.example/databox/relationships/opaque-charles/"
+  },
+  "consumer": {
+    "displayName": "Charles James",
+    "relationshipSubject": "urn:uuid:opaque-charles-relationship-subject",
+    "personalPod": "https://charles-vault.example/private/"
+  },
+  "disputedRecord": {
+    "id": "urn:uuid:synthetic-false-intake-note",
+    "type": "welfare:DisputedRecord",
+    "sensitivityClass": "welfare:HighlyRestricted",
+    "disputeStatus": "disputed",
+    "assertion": "Charles was removed from accommodation for violent conduct and is barred from supported housing.",
+    "truthStatusForFixture": "deliberately-false",
+    "notice": "Synthetic defamatory-style allegation included only to demonstrate correction and redress.",
+    "correction": {
+      "id": "urn:uuid:charles-correction-request",
+      "type": "welfare:CorrectionRequest",
+      "statement": "I dispute this allegation. No violence finding or supported-housing ban exists.",
+      "evidenceOptions": [ "local-file-upload", "https-uri" ],
+      "expectedDisposition": "accepted-and-superseded"
+    }
+  },
+  "mockCredentials": [
+    {
+      "id": "urn:uuid:mock-act-residency",
+      "type": "welfare:ResidencyCredential",
+      "mockCredential": true,
+      "issuer": "https://mock-act.example/id/residency-issuer",
+      "claim": "ACT resident",
+      "validUntil": "2027-07-15T00:00:00Z"
+    },
+    {
+      "id": "urn:uuid:mock-healthcare-concession",
+      "type": "welfare:ConcessionCredential",
+      "mockCredential": true,
+      "issuer": "https://mock-social-security.example/id/issuer",
+      "claim": "Healthcare concession status active",
+      "validUntil": "2027-01-31T00:00:00Z"
+    },
+    {
+      "id": "urn:uuid:mock-disability-support-pension",
+      "type": "welfare:BenefitCredential",
+      "mockCredential": true,
+      "issuer": "https://mock-social-security.example/id/issuer",
+      "claim": "Disability Support Pension status active",
+      "validUntil": "2027-01-31T00:00:00Z"
+    },
+    {
+      "id": "urn:uuid:mock-functional-needs",
+      "type": "welfare:FunctionalNeedsCredential",
+      "mockCredential": true,
+      "issuer": "https://mock-clinic.example/id/clinician-issuer",
+      "sensitivityClass": "welfare:HighlyRestricted",
+      "claim": "Step-free accommodation and reliable medication refrigeration are required.",
+      "validUntil": "2026-10-15T00:00:00Z"
+    }
+  ],
+  "stages": [
+    {
+      "id": "urn:uuid:stage-immediate-stability",
+      "label": "Immediate stability",
+      "state": "active",
+      "goals": [ "safe temporary shelter", "food", "connectivity", "identity continuity" ]
+    },
+    {
+      "id": "urn:uuid:stage-housing",
+      "label": "Stable housing",
+      "state": "planned",
+      "dependencies": [{ "kind": "supports", "stage": "urn:uuid:stage-immediate-stability" }]
+    },
+    {
+      "id": "urn:uuid:stage-health",
+      "label": "Health access and treatment",
+      "state": "active",
+      "dependencies": [
+        { "kind": "parallel", "stage": "urn:uuid:stage-housing" },
+        { "kind": "urgentOverride", "rationale": "Urgent care must not wait for housing." }
+      ]
+    },
+    {
+      "id": "urn:uuid:stage-recovery",
+      "label": "Stabilization and recovery",
+      "state": "planned",
+      "dependencies": [
+        { "kind": "supports", "stage": "urn:uuid:stage-housing" },
+        { "kind": "supports", "stage": "urn:uuid:stage-health" }
+      ]
+    }
+  ],
+  "tasks": [
+    { "id": "urn:uuid:task-register", "label": "Complete Seraphim registration", "state": "done" },
+    { "id": "urn:uuid:task-correction", "label": "Submit correction evidence", "state": "to-do" },
+    { "id": "urn:uuid:task-housing", "label": "Choose housing referral", "state": "to-do" },
+    { "id": "urn:uuid:task-clinic", "label": "Confirm clinic appointment", "state": "waiting" }
+  ],
+  "voucherScopes": [
+    "temporary-accommodation",
+    "camping-or-caravan-site",
+    "prepared-food",
+    "groceries",
+    "clothing",
+    "transport",
+    "connectivity",
+    "essential-equipment"
+  ],
+  "proposedReferrals": [
+    {
+      "id": "urn:uuid:referral-housing",
+      "serviceCategory": "housing-and-case-management",
+      "provider": "urn:uuid:unverified-provider-placeholder",
+      "consentState": "awaiting-charles-selection"
+    },
+    {
+      "id": "urn:uuid:referral-disability",
+      "serviceCategory": "disability-support-navigation",
+      "provider": "urn:uuid:unverified-provider-placeholder-2",
+      "consentState": "awaiting-charles-selection"
+    }
+  ]
+}

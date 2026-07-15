@@ -628,6 +628,7 @@ export * from './databox/feed/CursorFeed';
 export * from './databox/identifiers/OpaqueIdentifierGenerator';
 export * from './databox/storage/AppendOnlyStore';
 export * from './databox/tenant/TenantResolver';
+export * from './databox/integration/LiveDataboxHttpHandler';
 
 // Util
 export * from './util/ContentTypes';

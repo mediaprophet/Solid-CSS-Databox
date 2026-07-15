@@ -1,0 +1,182 @@
+{
+  "@context": "https://dev.linkeddata.au/def/welfare/context.jsonld",
+  "syntheticFixture": true,
+  "warning": "Synthetic demonstration only. No real organizations, vouchers, claims, resources, payments, or people.",
+  "addressBook": {
+    "id": "urn:uuid:seraphim-organization-address-book",
+    "type": "dbx:OrganizationAddressBook",
+    "owner": "https://seraphim.example/id/organization",
+    "entries": [
+      {
+        "id": "urn:uuid:address-entry-community-food-coop",
+        "type": "dbx:OrganizationEntry",
+        "displayName": "Community Food Cooperative (synthetic)",
+        "organizationIdentifier": "https://food-coop.example/id/organization",
+        "sourceObservation": "urn:uuid:imported-provider-observation-food-coop",
+        "verificationStatus": "verified-synthetic-demo",
+        "verifiedAt": "2026-07-15T03:00:00Z",
+        "channel": "databox",
+        "serviceIdentity": "https://food-coop.example/id/databox-service",
+        "endpoints": [
+          {
+            "id": "https://food-coop.example/databox/capabilities/resource-exchange",
+            "type": "dbx:CapabilityEndpoint",
+            "endpointUrl": "https://food-coop.example/databox/exchange/inbox",
+            "supportsCapability": [
+              "https://dev.linkeddata.au/profile/resource-offer/v1",
+              "https://dev.linkeddata.au/profile/redemption-claim/v1",
+              "https://dev.linkeddata.au/profile/settlement-reconciliation/v1"
+            ],
+            "capabilityVersion": "1.0"
+          }
+        ]
+      },
+      {
+        "id": "urn:uuid:address-entry-manual-caravan-park",
+        "type": "dbx:OrganizationEntry",
+        "displayName": "Example Caravan Park (synthetic)",
+        "organizationIdentifier": "https://caravan-park.example/id/organization",
+        "verificationStatus": "contact-reviewed-no-databox",
+        "channel": "manual",
+        "databoxCapabilities": [],
+        "notice": "Cannot receive Databox messages or claim Databox provenance."
+      }
+    ]
+  },
+  "agreement": {
+    "id": "urn:uuid:agreement-seraphim-food-coop-2026",
+    "type": "dbx:InterOrganizationAgreement",
+    "agreementReference": "PAIRWISE-AGREEMENT-DEMO-001",
+    "parties": [
+      "https://seraphim.example/id/organization",
+      "https://food-coop.example/id/organization"
+    ],
+    "purpose": "meal-support-resource-fulfilment",
+    "profiles": [
+      "https://dev.linkeddata.au/profile/resource-offer/v1",
+      "https://dev.linkeddata.au/profile/redemption-claim/v1",
+      "https://dev.linkeddata.au/profile/settlement-reconciliation/v1"
+    ],
+    "validFrom": "2026-07-15T00:00:00Z",
+    "validUntil": "2026-12-31T13:00:00Z",
+    "bilateralAcknowledgement": true,
+    "participantDataPermitted": false,
+    "freeTextPermitted": false,
+    "settlementKind": "in-kind-acquittal"
+  },
+  "resourceOffer": {
+    "id": "urn:uuid:food-coop-offer-100-meals",
+    "type": "welfare:ResourceOffer",
+    "messageReference": "PAIRWISE-MSG-OFFER-001",
+    "offeredBy": "https://food-coop.example/id/organization",
+    "acceptedIntoPool": "urn:uuid:pool-food",
+    "governedByAgreement": "urn:uuid:agreement-seraphim-food-coop-2026",
+    "resourceCategory": "prepared-meal",
+    "resourceUnits": "100",
+    "unit": "meal",
+    "validUntil": "2026-09-30T13:59:59Z",
+    "messageDigest": "synthetic-digest-resource-offer",
+    "signatureState": "verified-synthetic-demo"
+  },
+  "delegation": {
+    "id": "urn:uuid:food-coop-delegation-seraphim",
+    "type": "welfare:ResourceDelegation",
+    "delegatesProgram": "urn:uuid:meal-voucher-program-2026",
+    "delegator": "https://food-coop.example/id/organization",
+    "delegate": "https://seraphim.example/id/organization",
+    "delegationLimit": "80",
+    "unit": "meal",
+    "issuedUnits": "32",
+    "remainingDelegationUnits": "48"
+  },
+  "privateSeraphimAllocation": {
+    "storageDomain": "seraphim-restricted-allocation-ledger",
+    "relationshipSubject": "urn:uuid:opaque-charles-relationship-subject",
+    "voucherReference": "urn:uuid:seraphim-private-voucher-record-charles-meal",
+    "merchantCanAccess": false
+  },
+  "merchantVisibleVoucherPresentation": {
+    "program": "urn:uuid:meal-voucher-program-2026",
+    "audience": "https://food-coop.example/id/organization",
+    "resourceCategory": "prepared-meal",
+    "remainingUnitsBeforeRedemption": "3",
+    "oneTimeToken": "PAIRWISE-OPAQUE-TOKEN-DEMO-001",
+    "statusReference": "https://seraphim.example/databox/vouchers/status/demo-list",
+    "validUntil": "2026-08-01T13:59:59Z",
+    "excluded": [
+      "participant name",
+      "case identifier",
+      "personal Pod URL",
+      "relationship Pod URL",
+      "health or disability data",
+      "donor identity"
+    ]
+  },
+  "redemptionClaim": {
+    "id": "urn:uuid:food-coop-redemption-claim-001",
+    "type": "welfare:RedemptionClaim",
+    "claimReference": "PAIRWISE-CLAIM-001",
+    "voucherReference": "PAIRWISE-OPAQUE-TOKEN-DEMO-001",
+    "claimForProgram": "urn:uuid:meal-voucher-program-2026",
+    "governedByAgreement": "urn:uuid:agreement-seraphim-food-coop-2026",
+    "resourceUnits": "1",
+    "unit": "meal",
+    "claimAmount": "15.00",
+    "currency": "AUD",
+    "redemptionOccurredAt": "2026-07-15T04:12:00Z",
+    "fulfilmentLocationReference": "PAIRWISE-LOCATION-CIVIC-01",
+    "evidenceReference": "PAIRWISE-FULFILMENT-EVIDENCE-001",
+    "idempotencyReference": "PAIRWISE-IDEMPOTENCY-001",
+    "messageDigest": "synthetic-digest-redemption-claim",
+    "containsParticipantIdentifier": false,
+    "signatureState": "verified-synthetic-demo"
+  },
+  "claimDisposition": {
+    "id": "urn:uuid:seraphim-claim-disposition-001",
+    "type": "welfare:ClaimDisposition",
+    "dispositionForClaim": "urn:uuid:food-coop-redemption-claim-001",
+    "acknowledgesMessage": "urn:uuid:food-coop-redemption-claim-001",
+    "messageReference": "PAIRWISE-DISPOSITION-001",
+    "claimState": "accepted",
+    "acceptedUnits": "1",
+    "remainingVoucherUnits": "2",
+    "duplicateSubmissionBehavior": "return-this-original-disposition",
+    "signatureState": "verified-synthetic-demo"
+  },
+  "acquittalBatch": {
+    "id": "urn:uuid:food-coop-acquittal-2026-07-a",
+    "type": "welfare:SettlementBatch",
+    "batchKind": "in-kind-acquittal",
+    "claimCount": 17,
+    "acceptedUnits": "25",
+    "acceptedValue": "375.00",
+    "currency": "AUD",
+    "reconciliationState": "matched-synthetic-demo",
+    "containsParticipantIdentifiers": false
+  },
+  "resourceInventorySnapshot": {
+    "id": "urn:uuid:meal-resource-snapshot-2026-07-15",
+    "type": "welfare:ResourceInventorySnapshot",
+    "asAt": "2026-07-15T05:00:00Z",
+    "basis": "event-derived-immutable-projection",
+    "program": "urn:uuid:meal-voucher-program-2026",
+    "offeredUnits": "100",
+    "acceptedUnits": "100",
+    "delegatedUnits": "80",
+    "issuedUnits": "32",
+    "reservedNotRedeemedUnits": "7",
+    "redeemedUnits": "25",
+    "expiredUnits": "0",
+    "cancelledUnits": "0",
+    "reversedUnits": "0",
+    "disputedUnits": "0",
+    "remainingProviderCommitmentUnits": "75",
+    "remainingDelegatedIssuanceUnits": "48",
+    "outstandingClaimCount": 0,
+    "acceptedClaimCount": 17,
+    "replayAttemptsRejected": 1,
+    "overRedemptionAttemptsRejected": 1,
+    "reconciliationDifferenceUnits": "0",
+    "snapshotState": "reconciled-synthetic-demo"
+  }
+}

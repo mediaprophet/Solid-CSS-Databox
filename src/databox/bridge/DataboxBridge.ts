@@ -34,6 +34,14 @@ export interface DurableCommitInput {
   readonly committedAt: string;
   /** `urn:sha256:<hex>` of the exact deposited payload. */
   readonly payloadDigest: string;
+  /** Final assigned Solid resource URI. */
+  readonly resource: string;
+  /** Container the accepted resource belongs to. */
+  readonly target: string;
+  /** Exact accepted bytes; a durable adapter MUST store these bytes unchanged. */
+  readonly body: Buffer;
+  /** Media type of {@link body}. */
+  readonly mediaType: string;
 }
 
 /**
@@ -42,7 +50,7 @@ export interface DurableCommitInput {
  * testable: a throw leaves the deposit accepted-at-gateway but un-receipted, so the drain resumes it and
  * exactly one logical receipt is ever issued (ADR-0016/0019 §Failure — never a receipt before durable commit).
  */
-export type DurableCommitConfirmer = (input: DurableCommitInput) => DurableCommit;
+export type DurableCommitConfirmer = (input: DurableCommitInput) => DurableCommit | Promise<DurableCommit>;
 
 /** The disposition of one deposit attempt: a reconciled receipt, an unresolved mapping, or a failure. */
 export type BridgeDepositReport = {
@@ -248,16 +256,24 @@ export class DataboxBridge {
   }
 
   /** Durably commit the accepted deposit and issue + retain its signed acceptance receipt. */
-  private retainReceipt(
+  private async retainReceipt(
     event: SourceEvent,
     relationship: RelationshipRecord,
     signed: SignedInstitutionalRecord,
     acceptance: GatewayAcceptance,
     odrlProfile: string,
-  ): BridgeDepositReport {
+  ): Promise<BridgeDepositReport> {
     const payloadDigest = `urn:sha256:${signed.payloadDigest}`;
     const committedAt = this.clock();
-    const commit = this.durableCommit({ eventId: event.sourceEventId, committedAt, payloadDigest });
+    const commit = await this.durableCommit({
+      eventId: event.sourceEventId,
+      committedAt,
+      payloadDigest,
+      resource: signed.record.resource,
+      target: signed.target,
+      body: signed.body,
+      mediaType: signed.mediaType,
+    });
 
     const request: AcceptanceReceiptRequest = {
       transaction: `txn-${relationship.relationshipId}-${event.sourceEventId}`,

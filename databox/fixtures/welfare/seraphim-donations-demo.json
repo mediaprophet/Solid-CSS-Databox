@@ -1,0 +1,52 @@
+{
+  "@context": "https://dev.linkeddata.au/def/welfare/context.jsonld",
+  "syntheticFixture": true,
+  "warning": "Synthetic demonstration only. No real donation, donor, entitlement, recipient, or tax receipt.",
+  "pools": [
+    { "id": "urn:uuid:pool-accommodation", "type": "welfare:ResourcePool", "category": "temporary-accommodation" },
+    { "id": "urn:uuid:pool-food", "type": "welfare:ResourcePool", "category": "food-and-meals" },
+    { "id": "urn:uuid:pool-clothing", "type": "welfare:ResourcePool", "category": "clothing" },
+    { "id": "urn:uuid:pool-unrestricted", "type": "welfare:ResourcePool", "category": "unrestricted-support" }
+  ],
+  "contributions": [
+    {
+      "id": "urn:uuid:contribution-individual-demo",
+      "type": "welfare:Contribution",
+      "accountType": "individual",
+      "attribution": "private",
+      "contributedTo": "urn:uuid:pool-accommodation",
+      "value": { "amount": "250.00", "currency": "AUD" },
+      "receipt": "urn:uuid:donor-receipt-individual-demo"
+    },
+    {
+      "id": "urn:uuid:contribution-organization-demo",
+      "type": "welfare:Contribution",
+      "accountType": "organization",
+      "attribution": "pseudonymous",
+      "contributedTo": "urn:uuid:pool-food",
+      "resources": { "category": "prepared-meal-vouchers", "quantity": 50 },
+      "receipt": "urn:uuid:donor-receipt-organization-demo"
+    }
+  ],
+  "restrictedAllocation": {
+    "id": "urn:uuid:restricted-allocation-charles-demo",
+    "type": "welfare:RestrictedAllocation",
+    "access": "seraphim-resource-coordinator-and-auditor-only",
+    "pool": "urn:uuid:pool-accommodation",
+    "relationshipSubject": "urn:uuid:opaque-charles-relationship-subject",
+    "distribution": "urn:uuid:charles-accommodation-voucher-demo"
+  },
+  "donorVisibleImpactRelease": {
+    "id": "urn:uuid:impact-release-2026-q3-accommodation",
+    "type": "welfare:ImpactReportRelease",
+    "reportingPeriod": "2026-Q3",
+    "coarseGeography": "Australian Capital Territory",
+    "resourceCategory": "temporary-accommodation",
+    "distributionCount": 7,
+    "roundedValue": "2000.00",
+    "minimumCohort": 5,
+    "releaseAfter": "2026-10-08T00:00:00Z",
+    "privacyReviewStatus": "approved-synthetic-demo",
+    "excluded": [ "recipient identifiers", "providers", "exact locations", "exact times", "health data", "case narratives" ]
+  }
+}

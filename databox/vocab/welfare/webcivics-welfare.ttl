@@ -1,0 +1,191 @@
+@prefix welfare: <https://dev.linkeddata.au/def/welfare#> .
+@prefix dbx: <https://dev.linkeddata.au/def/solid-databox#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://dev.linkeddata.au/def/welfare> a owl:Ontology ;
+  dcterms:title "WebCivics welfare coordination vocabulary"@en ;
+  dcterms:description "Terms for relationship-scoped welfare coordination and the Seraphim synthetic demonstrator."@en ;
+  dcterms:created "2026-07-15"^^xsd:date ;
+  owl:versionInfo "0.1.0-draft" .
+
+dbx:RelationshipPod a owl:Class ;
+  rdfs:label "organization relationship Pod"@en ;
+  skos:definition "A Solid-compatible data space controlled by an organization for one bounded relationship."@en .
+
+dbx:PersonalDataSpace a owl:Class ;
+  rdfs:label "personal data space"@en ;
+  skos:definition "An independently controlled Solid Pod, vault, personal operating system, or knowledge environment."@en .
+
+dbx:OrganizationAddressBook a owl:Class ; rdfs:label "organization address book"@en .
+dbx:OrganizationEntry a owl:Class ; rdfs:label "organization address-book entry"@en .
+dbx:CapabilityEndpoint a owl:Class ; rdfs:label "capability endpoint"@en .
+dbx:InterOrganizationAgreement a owl:Class ; rdfs:label "inter-organizational agreement"@en .
+dbx:ExchangeMessage a owl:Class ; rdfs:subClassOf prov:Entity ; rdfs:label "inter-organizational exchange message"@en .
+dbx:ExchangeAcknowledgement a owl:Class ; rdfs:subClassOf dbx:ExchangeMessage ; rdfs:label "exchange acknowledgement"@en .
+
+welfare:SupportCase a owl:Class ; rdfs:label "support case"@en .
+welfare:CaseStage a owl:Class ; rdfs:label "case stage"@en .
+welfare:Goal a owl:Class ; rdfs:label "goal"@en .
+welfare:Task a owl:Class ; rdfs:label "task"@en .
+welfare:DiaryEntry a owl:Class ; rdfs:label "diary entry"@en .
+welfare:CaseEvent a owl:Class ; rdfs:subClassOf prov:Entity ; rdfs:label "case event"@en .
+welfare:DisputedRecord a owl:Class ; rdfs:label "disputed record"@en .
+welfare:CorrectionRequest a owl:Class ; rdfs:label "correction request"@en .
+welfare:CorrectionDisposition a owl:Class ; rdfs:label "correction disposition"@en .
+welfare:EvidenceItem a owl:Class ; rdfs:subClassOf prov:Entity ; rdfs:label "evidence item"@en .
+welfare:Referral a owl:Class ; rdfs:label "service referral"@en .
+welfare:ConsentGrant a owl:Class ; rdfs:label "purpose-bound consent grant"@en .
+welfare:PrivacySelection a owl:Class ; rdfs:label "record privacy selection"@en .
+welfare:Provider a owl:Class ; rdfs:label "support provider"@en .
+welfare:ServiceOffer a owl:Class ; rdfs:label "service offer"@en .
+welfare:ProviderObservation a owl:Class ; rdfs:label "provider-directory observation"@en .
+welfare:BenefitCredential a owl:Class ; rdfs:label "benefit credential"@en .
+welfare:ResidencyCredential a owl:Class ; rdfs:subClassOf welfare:BenefitCredential ; rdfs:label "residency credential"@en .
+welfare:ConcessionCredential a owl:Class ; rdfs:subClassOf welfare:BenefitCredential ; rdfs:label "concession credential"@en .
+welfare:FunctionalNeedsCredential a owl:Class ; rdfs:subClassOf welfare:BenefitCredential ; rdfs:label "functional-needs credential"@en .
+welfare:VoucherCredential a owl:Class ; rdfs:subClassOf welfare:BenefitCredential ; rdfs:label "voucher credential"@en .
+welfare:UrgencyAssessment a owl:Class ; rdfs:label "human-reviewed urgency assessment"@en .
+welfare:StageDependency a owl:Class ; rdfs:label "stage dependency"@en .
+welfare:DonorAccount a owl:Class ; rdfs:label "donor account"@en .
+welfare:Contribution a owl:Class ; rdfs:label "contribution"@en .
+welfare:ResourcePool a owl:Class ; rdfs:label "resource pool"@en .
+welfare:PoolLot a owl:Class ; rdfs:label "resource pool lot"@en .
+welfare:RestrictedAllocation a owl:Class ; rdfs:label "restricted resource allocation"@en .
+welfare:Distribution a owl:Class ; rdfs:label "resource distribution"@en .
+welfare:DonorReceipt a owl:Class ; rdfs:label "donor receipt"@en .
+welfare:ImpactReport a owl:Class ; rdfs:label "privacy-reviewed donor impact report"@en .
+welfare:ImpactReportRelease a owl:Class ; rdfs:label "impact report release"@en .
+welfare:PaymentGatewayConnection a owl:Class ; rdfs:label "payment gateway connection"@en .
+welfare:BudgetPlan a owl:Class ; rdfs:label "personal budget plan"@en .
+welfare:BudgetPeriod a owl:Class ; rdfs:label "budget period"@en .
+welfare:BudgetEntry a owl:Class ; rdfs:label "budget entry"@en .
+welfare:IncomeEntry a owl:Class ; rdfs:subClassOf welfare:BudgetEntry ; rdfs:label "income entry"@en .
+welfare:ExpenseEntry a owl:Class ; rdfs:subClassOf welfare:BudgetEntry ; rdfs:label "expense entry"@en .
+welfare:ReceiptEvidence a owl:Class ; rdfs:subClassOf welfare:EvidenceItem ; rdfs:label "receipt evidence"@en .
+welfare:CostDisclosure a owl:Class ; rdfs:label "selective cost disclosure"@en .
+welfare:StaffTimeEntry a owl:Class ; rdfs:label "staff time entry"@en .
+welfare:CaseCostEntry a owl:Class ; rdfs:label "case cost entry"@en .
+welfare:OutcomeMeasure a owl:Class ; rdfs:label "outcome measure"@en .
+welfare:ReportingProfile a owl:Class ; rdfs:label "contract reporting profile"@en .
+welfare:ReportingCohort a owl:Class ; rdfs:label "reporting cohort"@en .
+welfare:DemographicObservation a owl:Class ; rdfs:label "purpose-specific demographic observation"@en .
+welfare:MetricRelease a owl:Class ; rdfs:label "privacy-reviewed metric release"@en .
+welfare:ResourceOffer a owl:Class ; rdfs:subClassOf dbx:ExchangeMessage ; rdfs:label "resource offer"@en .
+welfare:ResourceDelegation a owl:Class ; rdfs:label "resource delegation"@en .
+welfare:VoucherProgram a owl:Class ; rdfs:label "voucher program"@en .
+welfare:RedemptionClaim a owl:Class ; rdfs:subClassOf dbx:ExchangeMessage ; rdfs:label "redemption claim"@en .
+welfare:ClaimDisposition a owl:Class ; rdfs:subClassOf dbx:ExchangeAcknowledgement ; rdfs:label "claim disposition"@en .
+welfare:SettlementBatch a owl:Class ; rdfs:label "settlement or acquittal batch"@en .
+welfare:ResourceInventorySnapshot a owl:Class ; rdfs:label "resource inventory snapshot"@en .
+
+welfare:relationshipSubject a owl:ObjectProperty ;
+  rdfs:label "relationship subject"@en ;
+  skos:definition "Opaque subject reference scoped to one relationship; never a global customer identifier."@en .
+welfare:hasStage a owl:ObjectProperty ; rdfs:domain welfare:SupportCase ; rdfs:range welfare:CaseStage .
+welfare:hasGoal a owl:ObjectProperty ; rdfs:range welfare:Goal .
+welfare:hasTask a owl:ObjectProperty ; rdfs:range welfare:Task .
+welfare:hasEvent a owl:ObjectProperty ; rdfs:range welfare:CaseEvent .
+welfare:hasEvidence a owl:ObjectProperty ; rdfs:range welfare:EvidenceItem .
+welfare:disputesRecord a owl:ObjectProperty ; rdfs:domain welfare:CorrectionRequest .
+welfare:supersedesRecord a owl:ObjectProperty ; rdfs:domain welfare:CorrectionDisposition .
+welfare:referredTo a owl:ObjectProperty ; rdfs:domain welfare:Referral ; rdfs:range welfare:Provider .
+welfare:forService a owl:ObjectProperty ; rdfs:range welfare:ServiceOffer .
+welfare:authorizedBy a owl:ObjectProperty ; rdfs:range welfare:ConsentGrant .
+welfare:dependsOn a owl:ObjectProperty ; rdfs:range welfare:StageDependency .
+welfare:sourceObservation a owl:ObjectProperty ; rdfs:range welfare:ProviderObservation .
+welfare:contributedTo a owl:ObjectProperty ; rdfs:domain welfare:Contribution ; rdfs:range welfare:ResourcePool .
+welfare:hasPoolLot a owl:ObjectProperty ; rdfs:domain welfare:ResourcePool ; rdfs:range welfare:PoolLot .
+welfare:allocatedFrom a owl:ObjectProperty ; rdfs:domain welfare:RestrictedAllocation ; rdfs:range welfare:PoolLot .
+welfare:resultedInDistribution a owl:ObjectProperty ;
+  rdfs:domain welfare:RestrictedAllocation ; rdfs:range welfare:Distribution .
+welfare:reportedBy a owl:ObjectProperty ; rdfs:domain welfare:ImpactReportRelease ; rdfs:range welfare:ImpactReport .
+welfare:budgetPeriod a owl:ObjectProperty ; rdfs:domain welfare:BudgetEntry ; rdfs:range welfare:BudgetPeriod .
+welfare:evidencedBy a owl:ObjectProperty ; rdfs:range welfare:EvidenceItem .
+welfare:stage a owl:ObjectProperty ; rdfs:range welfare:CaseStage .
+dbx:hasOrganizationEntry a owl:ObjectProperty ; rdfs:domain dbx:OrganizationAddressBook ; rdfs:range dbx:OrganizationEntry .
+dbx:hasCapabilityEndpoint a owl:ObjectProperty ; rdfs:domain dbx:OrganizationEntry ; rdfs:range dbx:CapabilityEndpoint .
+dbx:governedByAgreement a owl:ObjectProperty ; rdfs:range dbx:InterOrganizationAgreement .
+dbx:acknowledgesMessage a owl:ObjectProperty ; rdfs:domain dbx:ExchangeAcknowledgement ; rdfs:range dbx:ExchangeMessage .
+welfare:offeredBy a owl:ObjectProperty ; rdfs:domain welfare:ResourceOffer ; rdfs:range welfare:Provider .
+welfare:acceptedIntoPool a owl:ObjectProperty ; rdfs:domain welfare:ResourceOffer ; rdfs:range welfare:ResourcePool .
+welfare:delegatesProgram a owl:ObjectProperty ; rdfs:domain welfare:ResourceDelegation ; rdfs:range welfare:VoucherProgram .
+welfare:claimForProgram a owl:ObjectProperty ; rdfs:domain welfare:RedemptionClaim ; rdfs:range welfare:VoucherProgram .
+welfare:dispositionForClaim a owl:ObjectProperty ; rdfs:domain welfare:ClaimDisposition ; rdfs:range welfare:RedemptionClaim .
+welfare:includedInBatch a owl:ObjectProperty ; rdfs:domain welfare:RedemptionClaim ; rdfs:range welfare:SettlementBatch .
+
+welfare:taskState a owl:DatatypeProperty ; rdfs:range xsd:string .
+welfare:stageState a owl:DatatypeProperty ; rdfs:range xsd:string .
+welfare:dependencyKind a owl:DatatypeProperty ;
+  skos:definition "One of supports, blocks, parallel, or urgentOverride; never an inferred clinical rule."@en .
+welfare:declaredPurpose a owl:DatatypeProperty ; rdfs:range xsd:anyURI .
+welfare:validFrom a owl:DatatypeProperty ; rdfs:range xsd:dateTime .
+welfare:validUntil a owl:DatatypeProperty ; rdfs:range xsd:dateTime .
+welfare:verificationStatus a owl:DatatypeProperty ; rdfs:range xsd:string .
+welfare:sourceDataset a owl:DatatypeProperty ; rdfs:range xsd:string .
+welfare:sourceRow a owl:DatatypeProperty ; rdfs:range xsd:integer .
+welfare:disputeStatus a owl:DatatypeProperty ; rdfs:range xsd:string .
+welfare:sensitivityClass a owl:DatatypeProperty ; rdfs:range xsd:string .
+welfare:urgencyRationale a owl:DatatypeProperty ; rdfs:domain welfare:UrgencyAssessment ; rdfs:range xsd:string .
+welfare:humanReviewed a owl:DatatypeProperty ; rdfs:range xsd:boolean .
+welfare:permittedRecordCategory a owl:DatatypeProperty ; rdfs:domain welfare:ConsentGrant ; rdfs:range xsd:anyURI .
+welfare:resourceCategory a owl:DatatypeProperty ; rdfs:range xsd:anyURI .
+welfare:contributionReference a owl:DatatypeProperty ;
+  skos:definition "Pseudonymous contribution reference that is never exposed in participant records."@en .
+welfare:reportingPeriod a owl:DatatypeProperty ; rdfs:domain welfare:ImpactReport ; rdfs:range xsd:string .
+welfare:coarseGeography a owl:DatatypeProperty ; rdfs:domain welfare:ImpactReport ; rdfs:range xsd:string .
+welfare:distributionCount a owl:DatatypeProperty ; rdfs:domain welfare:ImpactReport ; rdfs:range xsd:integer .
+welfare:roundedValue a owl:DatatypeProperty ; rdfs:domain welfare:ImpactReport ; rdfs:range xsd:decimal .
+welfare:minimumCohort a owl:DatatypeProperty ; rdfs:domain welfare:ImpactReportRelease ; rdfs:range xsd:integer .
+welfare:releaseAfter a owl:DatatypeProperty ; rdfs:domain welfare:ImpactReportRelease ; rdfs:range xsd:dateTime .
+welfare:privacyReviewStatus a owl:DatatypeProperty ; rdfs:domain welfare:ImpactReportRelease ; rdfs:range xsd:string .
+welfare:gatewayAccountReference a owl:DatatypeProperty ; rdfs:domain welfare:PaymentGatewayConnection ; rdfs:range xsd:string ;
+  skos:definition "Opaque provider reference; never a secret or participant identifier."@en .
+welfare:gatewayMode a owl:DatatypeProperty ; rdfs:domain welfare:PaymentGatewayConnection ; rdfs:range xsd:string .
+welfare:secretReference a owl:DatatypeProperty ; rdfs:domain welfare:PaymentGatewayConnection ; rdfs:range xsd:string ;
+  skos:definition "Handle for an external secret provider; never secret material."@en .
+welfare:plannedAmount a owl:DatatypeProperty ; rdfs:domain welfare:BudgetEntry ; rdfs:range xsd:decimal .
+welfare:actualAmount a owl:DatatypeProperty ; rdfs:domain welfare:BudgetEntry ; rdfs:range xsd:decimal .
+welfare:currency a owl:DatatypeProperty ; rdfs:range xsd:string .
+welfare:expenseCategory a owl:DatatypeProperty ; rdfs:domain welfare:ExpenseEntry ; rdfs:range xsd:anyURI .
+welfare:staffDurationMinutes a owl:DatatypeProperty ; rdfs:domain welfare:StaffTimeEntry ; rdfs:range xsd:integer .
+welfare:loadedRateVersion a owl:DatatypeProperty ; rdfs:domain welfare:StaffTimeEntry ; rdfs:range xsd:string .
+welfare:costKind a owl:DatatypeProperty ; rdfs:domain welfare:CaseCostEntry ; rdfs:range xsd:string .
+welfare:measureDefinition a owl:DatatypeProperty ; rdfs:domain welfare:OutcomeMeasure ; rdfs:range xsd:anyURI .
+welfare:numerator a owl:DatatypeProperty ; rdfs:domain welfare:MetricRelease ; rdfs:range xsd:decimal .
+welfare:denominator a owl:DatatypeProperty ; rdfs:domain welfare:MetricRelease ; rdfs:range xsd:decimal .
+welfare:calculationVersion a owl:DatatypeProperty ; rdfs:range xsd:string .
+welfare:cohortSize a owl:DatatypeProperty ; rdfs:domain welfare:ReportingCohort ; rdfs:range xsd:integer .
+welfare:demographicDimension a owl:DatatypeProperty ; rdfs:domain welfare:DemographicObservation ; rdfs:range xsd:anyURI .
+welfare:demographicValue a owl:DatatypeProperty ; rdfs:domain welfare:DemographicObservation ; rdfs:range xsd:string .
+welfare:suppressionStatus a owl:DatatypeProperty ; rdfs:domain welfare:MetricRelease ; rdfs:range xsd:string .
+welfare:contractReference a owl:DatatypeProperty ; rdfs:domain welfare:ReportingProfile ; rdfs:range xsd:string .
+dbx:organizationIdentifier a owl:DatatypeProperty ; rdfs:domain dbx:OrganizationEntry ; rdfs:range xsd:anyURI .
+dbx:endpointUrl a owl:DatatypeProperty ; rdfs:domain dbx:CapabilityEndpoint ; rdfs:range xsd:anyURI .
+dbx:supportsCapability a owl:DatatypeProperty ; rdfs:domain dbx:CapabilityEndpoint ; rdfs:range xsd:anyURI .
+dbx:capabilityVersion a owl:DatatypeProperty ; rdfs:domain dbx:CapabilityEndpoint ; rdfs:range xsd:string .
+dbx:agreementReference a owl:DatatypeProperty ; rdfs:domain dbx:InterOrganizationAgreement ; rdfs:range xsd:string .
+dbx:messageReference a owl:DatatypeProperty ; rdfs:domain dbx:ExchangeMessage ; rdfs:range xsd:string ;
+  skos:definition "Pairwise opaque exchange reference; never a reusable person identifier."@en .
+dbx:messageDigest a owl:DatatypeProperty ; rdfs:domain dbx:ExchangeMessage ; rdfs:range xsd:string .
+welfare:delegationLimit a owl:DatatypeProperty ; rdfs:domain welfare:ResourceDelegation ; rdfs:range xsd:decimal .
+welfare:voucherReference a owl:DatatypeProperty ; rdfs:domain welfare:RedemptionClaim ; rdfs:range xsd:string ;
+  skos:definition "Pairwise opaque voucher handle that contains no participant identifier."@en .
+welfare:claimReference a owl:DatatypeProperty ; rdfs:domain welfare:RedemptionClaim ; rdfs:range xsd:string .
+welfare:resourceUnits a owl:DatatypeProperty ; rdfs:range xsd:decimal .
+welfare:claimAmount a owl:DatatypeProperty ; rdfs:domain welfare:RedemptionClaim ; rdfs:range xsd:decimal .
+welfare:redemptionOccurredAt a owl:DatatypeProperty ; rdfs:domain welfare:RedemptionClaim ; rdfs:range xsd:dateTime .
+welfare:claimState a owl:DatatypeProperty ; rdfs:range xsd:string .
+welfare:idempotencyReference a owl:DatatypeProperty ; rdfs:domain welfare:RedemptionClaim ; rdfs:range xsd:string .
+welfare:snapshotState a owl:DatatypeProperty ; rdfs:domain welfare:ResourceInventorySnapshot ; rdfs:range xsd:string .
+
+welfare:Unverified a skos:Concept ; skos:prefLabel "unverified"@en .
+welfare:Verified a skos:Concept ; skos:prefLabel "verified"@en .
+welfare:Disputed a skos:Concept ; skos:prefLabel "disputed"@en .
+welfare:Restricted a skos:Concept ; skos:prefLabel "restricted"@en .
+welfare:HighlyRestricted a skos:Concept ; skos:prefLabel "highly restricted"@en .
