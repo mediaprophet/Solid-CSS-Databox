@@ -1,0 +1,94 @@
+@prefix dbxc: <https://dev.linkeddata.au/def/solid-databox-compliance#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://dev.linkeddata.au/def/solid-databox-compliance> a owl:Ontology ;
+  dct:title "Solid Databox compliance decision-support vocabulary"@en ;
+  dct:description "Terms and executable SHACL constraints for reviewed legal-to-control mappings."@en .
+
+dbxc:Instrument a rdfs:Class .
+dbxc:Provision a rdfs:Class .
+dbxc:ApplicabilityProfile a rdfs:Class .
+dbxc:ObligationControlMapping a rdfs:Class .
+dbxc:EvidenceRequirement a rdfs:Class .
+dbxc:ControlTestResult a rdfs:Class .
+dbxc:LegalAttestation a rdfs:Class .
+
+dbxc:identifier a rdf:Property .
+dbxc:jurisdiction a rdf:Property .
+dbxc:officialSource a rdf:Property .
+dbxc:corpusDigest a rdf:Property .
+dbxc:provision a rdf:Property .
+dbxc:control a rdf:Property .
+dbxc:evidenceRequirement a rdf:Property .
+dbxc:reviewStatus a rdf:Property .
+dbxc:mappingDigest a rdf:Property .
+dbxc:reviewedAt a rdf:Property .
+dbxc:validUntil a rdf:Property .
+
+dbxc:InstrumentShape a sh:NodeShape ;
+  sh:targetClass dbxc:Instrument ;
+  sh:property [
+    sh:path dbxc:identifier ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:datatype xsd:string ;
+  ], [
+    sh:path dbxc:jurisdiction ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:datatype xsd:string ;
+  ], [
+    sh:path dbxc:officialSource ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:nodeKind sh:IRI ;
+  ], [
+    sh:path dbxc:corpusDigest ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:datatype xsd:string ;
+    sh:pattern "^[a-f0-9]{64}$" ;
+  ] .
+
+dbxc:ObligationControlMappingShape a sh:NodeShape ;
+  sh:targetClass dbxc:ObligationControlMapping ;
+  sh:property [
+    sh:path dbxc:provision ;
+    sh:minCount 1 ;
+    sh:nodeKind sh:IRI ;
+  ], [
+    sh:path dbxc:control ;
+    sh:minCount 1 ;
+  ], [
+    sh:path dbxc:evidenceRequirement ;
+    sh:minCount 1 ;
+  ], [
+    sh:path dbxc:reviewStatus ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:in ( "proposed" "in-review" "attested" "rejected" "superseded" ) ;
+  ] .
+
+dbxc:LegalAttestationShape a sh:NodeShape ;
+  sh:targetClass dbxc:LegalAttestation ;
+  sh:property [
+    sh:path dbxc:mappingDigest ;
+    sh:minCount 1 ;
+    sh:datatype xsd:string ;
+    sh:pattern "^[a-f0-9]{64}$" ;
+  ], [
+    sh:path dbxc:reviewedAt ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:datatype xsd:dateTime ;
+  ], [
+    sh:path dbxc:validUntil ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:datatype xsd:dateTime ;
+  ] .
