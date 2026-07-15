@@ -13,6 +13,12 @@
   },
   {
     "category": "Commercial",
+    "slug": "festivals-and-events",
+    "title": "Commercial: Festivals & Events",
+    "description": "The festivals and live events industry suffers from rampant ticket scalping, fragmented communication, and liability risks related to age-restricted zones. Integrating the Databox architecture transforms the event experience. Rather than insecure PDFs, event tickets are issued as Verifiable Credentials directly to a patron's Pod. This enables highly secure, frictionless age verification for alcohol purchases (proving age without revealing birthdate or identity) and cryptographically enforces access control to VIP or green-room areas. Furthermore, artist information, dynamic schedule updates, and emergency notifications can be securely broadcast directly to attendees via their Databox connection."
+  },
+  {
+    "category": "Commercial",
     "slug": "hospitality",
     "title": "Commercial   Hospitality Applications",
     "description": "Define applications and standards specific to this vertical here."
@@ -52,6 +58,42 @@
     "slug": "utilities",
     "title": "Commercial: Utilities",
     "description": "The utilities sector—encompassing water, electricity, gas, and waste management—is characterized by high-volume, long-term contracts and critical infrastructure data that demands robust security. By leveraging Solid Databoxes, utility providers can dramatically reduce operational overhead, enhance billing accuracy, and empower consumers with unprecedented control over their resource consumption and identity verification."
+  },
+  {
+    "category": "Community",
+    "slug": "community-organisations",
+    "title": "Community: Community Organisations Applications",
+    "description": "Define applications and standards specific to this vertical here."
+  },
+  {
+    "category": "Community",
+    "slug": "financial-services",
+    "title": "Community: Financial Counselling & Welfare Services",
+    "description": "Financial counselling and pro-bono financial services assist individuals facing bankruptcy, severe debt, or economic abuse. These services require deep, invasive access to a client's financial reality to negotiate with creditors or access hardship funds. Traditionally, this involves insecurely handing over boxes of paper receipts or raw login credentials to bank accounts. A Solid Databox standardizes and secures this process."
+  },
+  {
+    "category": "Community",
+    "slug": "health",
+    "title": "Community: Health Records & Care Applications",
+    "description": "Navigating community health services, allied health networks, and clinical specialists often requires patients to repeatedly fill out complex medical histories on vulnerable paper clipboards. By leveraging a Databox, individuals can easily and securely share their health records—including pathology results, vaccination certificates, and ongoing care plans—with authorized community health practitioners. This consent-driven architecture allows patients to revoke access instantly and ensures their most intimate medical data is never siloed in insecure, third-party databases prone to data breaches."
+  },
+  {
+    "category": "Community",
+    "slug": "housing-providers",
+    "title": "Community & Commercial: Housing Providers Applications",
+    "description": "The housing sector—spanning private rentals, share-housing, and welfare-driven accommodation—is notoriously burdensome and invasive for applicants. Renters are forced to repeatedly surrender highly sensitive identity, financial, and behavioral data to disparate real estate agents and landlords, creating massive data-breach honey-pots."
+  },
+  {
+    "category": "Community",
+    "slug": "legal-services",
+    "title": "Community: Pro-Bono Legal Services",
+    "description": "Community legal centers and pro-bono legal services provide critical access to justice for vulnerable individuals. Operating on limited resources, these services must rapidly verify a client's eligibility, gather complex legal histories, and manage highly privileged information securely."
+  },
+  {
+    "category": "Community",
+    "slug": "social-work",
+    "title": "Community & Social Care: Social Work Applications",
+    "description": "Social work and crisis intervention operate in some of the most sensitive, high-stakes data environments in society. Vulnerable individuals are frequently forced to repeatedly recount their trauma, medical history, and financial destitution to multiple disconnected agencies simply to receive holistic care."
   },
   {
     "category": "Education",
@@ -130,35 +172,5 @@
     "slug": "state",
     "title": "Government: State Applications",
     "description": "State and provincial governments are responsible for managing the core foundational registries of a citizen's life. The Databox architecture enables state agencies to issue highly secure, globally verifiable credentials for identity and ownership. This transforms how states manage Digital Driver's Licenses, Birth/Death/Marriage registries, vehicle registrations, and Land Titles. Instead of maintaining fragmented, vulnerable central databases, the state issues cryptographically verifiable claims directly to a citizen's Databox. This allows citizens to seamlessly prove their identity, age, or property ownership across state borders or to private entities with complete privacy-preserving consent mechanisms."
-  },
-  {
-    "category": "Ngos",
-    "slug": "community-organisations",
-    "title": "Ngos   Community Organisations Applications",
-    "description": "Define applications and standards specific to this vertical here."
-  },
-  {
-    "category": "Ngos",
-    "slug": "financial-services",
-    "title": "NGOs: Financial Counselling & Welfare Services",
-    "description": "Financial counselling and pro-bono financial services assist individuals facing bankruptcy, severe debt, or economic abuse. These services require deep, invasive access to a client's financial reality to negotiate with creditors or access hardship funds. Traditionally, this involves insecurely handing over boxes of paper receipts or raw login credentials to bank accounts. A Solid Databox standardizes and secures this process."
-  },
-  {
-    "category": "Ngos",
-    "slug": "housing-providers",
-    "title": "NGOs & Commercial: Housing Providers Applications",
-    "description": "The housing sector—spanning private rentals, share-housing, and welfare-driven accommodation—is notoriously burdensome and invasive for applicants. Renters are forced to repeatedly surrender highly sensitive identity, financial, and behavioral data to disparate real estate agents and landlords, creating massive data-breach honey-pots."
-  },
-  {
-    "category": "Ngos",
-    "slug": "legal-services",
-    "title": "NGOs: Community & Pro-Bono Legal Services",
-    "description": "Community legal centers and pro-bono legal services provide critical access to justice for vulnerable individuals. Operating on limited resources, these services must rapidly verify a client's eligibility, gather complex legal histories, and manage highly privileged information securely."
-  },
-  {
-    "category": "Ngos",
-    "slug": "social-work",
-    "title": "NGOs & Social Care: Social Work Applications",
-    "description": "Social work and crisis intervention operate in some of the most sensitive, high-stakes data environments in society. Vulnerable individuals are frequently forced to repeatedly recount their trauma, medical history, and financial destitution to multiple disconnected agencies simply to receive holistic care."
   }
 ]
