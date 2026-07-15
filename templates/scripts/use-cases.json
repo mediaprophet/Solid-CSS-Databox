@@ -1,6 +1,12 @@
 [
   {
     "category": "Commercial",
+    "slug": "automotive",
+    "title": "Commercial: Automotive & Vehicle Maintenance",
+    "description": "By integrating a Databox, vehicle owners can aggregate a complete, immutable lifecycle record of their car in one secure location. Instead of disjointed paper receipts and siloed databases, every service center, tire shop, and fuel station issues cryptographically signed receipts and service records directly to the owner's Databox. This unified view simplifies managing automotive repairs, insurance renewals, state registrations, and fuel expenses. Furthermore, a verifiable chain of maintenance increases the vehicle's resale value and enables automated, predictive service reminders without locking the consumer into a single dealership's ecosystem."
+  },
+  {
+    "category": "Commercial",
     "slug": "clothing-and-footwear",
     "title": "Commercial: Clothing and Footwear Applications",
     "description": "This vertical focuses on the retail ecosystem for apparel, footwear, and related accessories. Integrating a Solid Databox in this sector allows consumers to maintain a secure, private, and portable profile that deeply enhances their shopping experience while respecting their data sovereignty."
