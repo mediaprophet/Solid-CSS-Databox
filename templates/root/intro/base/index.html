@@ -613,8 +613,8 @@
       try {
         const program = await apiPost('/programs', {
           profile: megaMartProfile,
-          programUri: 'https://rewards.megamart.example/program',
-          databoxBaseUrl: 'https://databox.megamart.example/boxes/'
+          programUri: 'http://localhost:3000/megamart/program',
+          databoxBaseUrl: 'http://localhost:3000/megamart/boxes/'
         });
 
         const mapping = await apiPost('/mappings', {
