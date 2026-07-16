@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-  ignores: [ 'node_modules/', 'LICENSE.md', 'databox/' ],
+  ignores: [ 'node_modules/', '**/node_modules/', 'LICENSE.md', 'CREDITS.md', 'databox/', 'forge-admin/' ],
 
   globs: [ '**/*.md' ],
 

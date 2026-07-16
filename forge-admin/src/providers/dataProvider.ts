@@ -126,6 +126,40 @@ let mockLedger = [
   }
 ];
 
+// Mock data for OUTBOUND data-portability requests.
+// These are requests WE (an organisation acting as a consumer, or a natural
+// person) send TO a third-party platform to pull our own data back into the
+// Databox. This is the inverse of `access-requests`, which are inbound
+// requests other parties make about data we hold.
+let mockOutboundRequests = [
+  {
+    id: "obr-3001",
+    platformId: "con-google",
+    platformName: "Google",
+    category: "Consumer",
+    persona: "natural-person",
+    requesterId: "urn:uuid:9999-0000-1111-2222",
+    scope: ["behavioral:location_history", "behavioral:search_history", "identity:core"],
+    regulatoryBasis: "GDPR Art. 20 (Data Portability)",
+    status: "sent",
+    submittedAt: new Date(Date.now() - 4 * 86400000).toISOString(),
+    dueDate: new Date(Date.now() + 26 * 86400000).toISOString(),
+  },
+  {
+    id: "obr-3002",
+    platformId: "ent-salesforce",
+    platformName: "Salesforce",
+    category: "Enterprise",
+    persona: "organisation",
+    requesterId: "urn:uuid:org-forge-0001",
+    scope: ["identity:core", "financial:transaction_ledger"],
+    regulatoryBasis: "CDR (Consumer Data Right)",
+    status: "pending",
+    submittedAt: new Date(Date.now() - 1 * 86400000).toISOString(),
+    dueDate: new Date(Date.now() + 29 * 86400000).toISOString(),
+  }
+];
+
 export const dataProvider = {
   getList: async ({ resource }) => {
     if (resource === "programs") {
@@ -164,6 +198,13 @@ export const dataProvider = {
       };
     }
 
+    if (resource === "outbound-requests") {
+      return {
+        data: mockOutboundRequests,
+        total: mockOutboundRequests.length,
+      };
+    }
+
     throw new Error(`Unsupported getList resource: ${resource}`);
   },
 
@@ -185,7 +226,13 @@ export const dataProvider = {
       if (!record) throw new Error("Consumer ledger not found");
       return { data: record };
     }
-    
+
+    if (resource === "outbound-requests") {
+      const record = mockOutboundRequests.find((r) => r.id === id);
+      if (!record) throw new Error("Outbound request not found");
+      return { data: record };
+    }
+
     throw new Error("getOne not implemented for Forge API");
   },
 
@@ -210,10 +257,22 @@ export const dataProvider = {
         ...mockAccessRequests[index],
         ...variables,
       };
-      
+
       return { data: mockAccessRequests[index] };
     }
-    
+
+    if (resource === "outbound-requests") {
+      const index = mockOutboundRequests.findIndex((r) => r.id === id);
+      if (index === -1) throw new Error("Outbound request not found");
+
+      mockOutboundRequests[index] = {
+        ...mockOutboundRequests[index],
+        ...variables,
+      };
+
+      return { data: mockOutboundRequests[index] };
+    }
+
     throw new Error("update not implemented for Forge API");
   },
 
@@ -239,11 +298,20 @@ export const dataProvider = {
       });
       return { data: { id: Date.now(), ...data } as any };
     }
+    if (resource === "outbound-requests") {
+      const now = Date.now();
+      const record = {
+        id: `obr-${now}`,
+        status: "pending",
+        ...variables,
+        submittedAt: new Date(now).toISOString(),
+        // Statutory portability responses are typically due within ~30 days.
+        dueDate: new Date(now + 30 * 86400000).toISOString(),
+      };
+      mockOutboundRequests = [record, ...mockOutboundRequests];
+      return { data: record };
+    }
     throw new Error(`Unsupported create resource: ${resource}`);
-  },
-
-  update: async () => {
-    throw new Error("update not implemented for Forge API");
   },
 
   deleteOne: async () => {

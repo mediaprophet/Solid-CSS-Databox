@@ -6,7 +6,7 @@ export const Layout: React.FC<{ children?: React.ReactNode }> = ({ children }) =
     <div className="flex h-screen w-full bg-[#020617] text-[#f8fafc]">
       {/* Sidebar */}
       <div className="w-64 flex-shrink-0 glass-panel border-r border-white/5 p-6 z-10 flex flex-col">
-        <h2 className="text-[#d4af37] text-2xl font-bold mb-8 text-center">Forge Admin</h2>
+        <h2 className="text-[#d4af37] text-2xl font-bold mb-8 text-center">Admin</h2>
         <nav className="flex flex-col gap-2">
           <NavLink
             to="/programs"
@@ -67,6 +67,18 @@ export const Layout: React.FC<{ children?: React.ReactNode }> = ({ children }) =
             }
           >
             Organization Set-up
+          </NavLink>
+          <NavLink
+            to="/data-portability"
+            className={({ isActive }) =>
+              `p-3 rounded-lg font-medium transition-all duration-300 ${
+                isActive
+                  ? "bg-[#d4af37]/15 text-[#d4af37] border-l-4 border-[#d4af37]"
+                  : "text-slate-400 hover:bg-white/5 hover:text-white"
+              }`
+            }
+          >
+            Data Portability
           </NavLink>
 
           <div className="mt-8 mb-2 px-3">
