@@ -94,7 +94,7 @@ describe('ComplianceEngine', (): void => {
 
   it('resolves applicability correctly for non-AU jurisdictions and false flags.', (): void => {
     const engine = new ComplianceEngine();
-    
+
     // Jurisdiction not AU -> not-applicable
     let result = engine.evaluate({
       facts: { jurisdiction: 'US' },
@@ -163,14 +163,13 @@ describe('ComplianceEngine', (): void => {
       disclosesOverseas: true,
       operatesConsumerDashboard: true,
     };
-    
+
     for (const profile of AU_APPLICABILITY_PROFILES) {
-      if (profile.unresolvedFacts) {
-        // Trigger the undefined branches
-        expect(profile.unresolvedFacts(emptyFacts).length).toBeGreaterThan(0);
-        // Trigger the defined (empty array) branches
-        expect(profile.unresolvedFacts(fullFacts).length).toBe(0);
-      }
+      // Every profile defines `unresolvedFacts`, so it is always callable
+      // Trigger the undefined branches
+      expect(profile.unresolvedFacts(emptyFacts).length).toBeGreaterThan(0);
+      // Trigger the defined (empty array) branches
+      expect(profile.unresolvedFacts(fullFacts)).toHaveLength(0);
     }
   });
 

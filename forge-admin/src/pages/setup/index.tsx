@@ -1,7 +1,9 @@
 // @ts-nocheck
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { useCreate } from "@refinedev/core";
-import { PLATFORM_ONTOLOGIES } from "./platformData";
+import { InformationCategories } from "./InformationCategories";
+import { INFO_CATEGORIES, recommendCategories, vocabFor } from "../../data/informationCategories";
 
 const ANZSIC_DIVISIONS = [
   { id: "A", name: "Agriculture, Forestry and Fishing" },
@@ -25,43 +27,6 @@ const ANZSIC_DIVISIONS = [
   { id: "S", name: "Other Services" },
 ];
 
-const ALL_CAPABILITIES = [
-  { id: "cap-receipt", name: "Digital Receipts" },
-  { id: "cap-warranty", name: "Warranty Claims" },
-  { id: "cap-recall", name: "Recalls" },
-  { id: "cap-usage", name: "Usage Statements" },
-  { id: "cap-invoice", name: "Invoices" },
-  { id: "cap-menu", name: "Menu Ordering" },
-  { id: "cap-diet", name: "Dietary Preferences" },
-  { id: "cap-qual", name: "Portable Qualifications" },
-  { id: "cap-enrol", name: "Enrolment Records" },
-  { id: "cap-membership", name: "Membership" },
-  { id: "cap-notification", name: "Service Notifications" },
-];
-
-// Removed hardcoded PLATFORM_ONTOLOGIES array.
-
-const recommendCapabilities = (divisionId: string) => {
-  switch (divisionId) {
-    case "D":
-      return ["cap-usage", "cap-invoice", "cap-notification"];
-    case "G":
-      return ["cap-receipt", "cap-warranty", "cap-recall"];
-    case "H":
-      return ["cap-menu", "cap-diet", "cap-receipt"];
-    case "K":
-      return ["cap-receipt", "cap-access"];
-    case "P":
-      return ["cap-qual", "cap-enrol"];
-    case "Q":
-      return ["cap-access", "cap-invoice"];
-    case "R":
-      return ["cap-membership", "cap-qual", "cap-access"];
-    default:
-      return ["cap-receipt", "cap-invoice"];
-  }
-};
-
 export const SetupPage = () => {
   const { mutate, isLoading } = useCreate();
   const [formData, setFormData] = useState({
@@ -72,30 +37,14 @@ export const SetupPage = () => {
     industry: "G",
   });
   
-  const [selectedCapabilities, setSelectedCapabilities] = useState<string[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>(recommendCategories("G"));
   const [selectedOntologies, setSelectedOntologies] = useState<string[]>([]);
   const [result, setResult] = useState<any>(null);
 
-  // When industry changes, automatically recommend capabilities
+  // When industry changes, refresh the recommended information categories.
   useEffect(() => {
-    setSelectedCapabilities(recommendCapabilities(formData.industry));
+    setSelectedCategories(recommendCategories(formData.industry));
   }, [formData.industry]);
-
-  const toggleCapability = (capId: string) => {
-    if (selectedCapabilities.includes(capId)) {
-      setSelectedCapabilities(selectedCapabilities.filter(id => id !== capId));
-    } else {
-      setSelectedCapabilities([...selectedCapabilities, capId]);
-    }
-  };
-
-  const toggleOntology = (ontId: string) => {
-    if (selectedOntologies.includes(ontId)) {
-      setSelectedOntologies(selectedOntologies.filter(id => id !== ontId));
-    } else {
-      setSelectedOntologies([...selectedOntologies, ontId]);
-    }
-  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -111,7 +60,25 @@ export const SetupPage = () => {
             "schema:name": formData.orgName,
             "schema:url": formData.orgUrl,
             "schema:knowsAbout": `https://w3id.org/anzsic/2006/role/${formData.industry}`,
-            "capabilities": selectedCapabilities,
+            "capabilities": selectedCategories,
+            "informationCategories": selectedCategories
+              .map((id) => {
+                const c = INFO_CATEGORIES.find((x) => x.id === id);
+                return (
+                  c && {
+                    id: c.id,
+                    name: c.name,
+                    group: c.group,
+                    direction: c.direction,
+                    portability: !!c.portability,
+                    sensitive: !!c.sensitive,
+                    rightType: c.rightType,
+                    basis: c.basis,
+                    standards: vocabFor(c.rightType),
+                  }
+                );
+              })
+              .filter(Boolean),
             "ontologyMappings": selectedOntologies
           },
         },
@@ -124,9 +91,9 @@ export const SetupPage = () => {
   };
 
   return (
-    <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-4xl">
+    <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-6xl">
       <h1 className="text-3xl font-bold mb-2">Organization Set-up</h1>
-      <p className="text-slate-400 mb-8">Define your organization type and supported communication channels.</p>
+      <p className="text-slate-400 mb-8">Define your organization type and the information you are obliged to make available to people.</p>
 
       <form onSubmit={handleSubmit} className="glass-panel p-6 rounded-xl shadow-lg flex flex-col md:flex-row gap-8">
         
@@ -171,10 +138,10 @@ export const SetupPage = () => {
           </div>
         </div>
 
-        {/* Right Column: Taxonomy & Capabilities */}
+        {/* Right Column: Classification */}
         <div className="flex-1 flex flex-col gap-4">
-          <h2 className="text-xl font-bold text-white mb-2 border-b border-white/10 pb-2">Classification & Capabilities</h2>
-          
+          <h2 className="text-xl font-bold text-white mb-2 border-b border-white/10 pb-2">Classification</h2>
+
           <div>
             <label className="block text-sm text-[#d4af37] mb-1 font-semibold">Industry Segment (ANZSIC)</label>
             <select
@@ -190,57 +157,41 @@ export const SetupPage = () => {
             </select>
           </div>
 
-          <div className="mt-4">
-            <label className="block text-sm text-slate-400 mb-3">Supported Communications</label>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {ALL_CAPABILITIES.map(cap => {
-                const isChecked = selectedCapabilities.includes(cap.id);
-                return (
-                  <div key={cap.id} 
-                    className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all ${isChecked ? 'bg-[#d4af37]/20 border border-[#d4af37]/50' : 'glass-input'}`}
-                    onClick={() => toggleCapability(cap.id)}
-                  >
-                    <div className={`w-5 h-5 rounded-md flex items-center justify-center border ${isChecked ? 'bg-[#d4af37] border-[#d4af37]' : 'border-slate-500'}`}>
-                      {isChecked && <svg className="w-3 h-3 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>}
-                    </div>
-                    <span className={`text-sm ${isChecked ? 'text-white font-medium' : 'text-slate-400'}`}>{cap.name}</span>
-                  </div>
-                );
-              })}
-            </div>
-            <p className="text-xs text-slate-500 mt-4 italic">
-              * Changing your industry segment automatically recommends a standard set of capabilities.
+          <div className="mt-2 glass-input p-4 rounded-lg">
+            <p className="text-sm text-slate-300">
+              Your industry determines which{" "}
+              <span className="text-[#d4af37] font-medium">information &amp; data categories</span> you are obliged
+              to make available to people.
+            </p>
+            <p className="text-xs text-slate-500 mt-2 italic">
+              Changing it refreshes the recommended set below. Review and tailor them, and switch the
+              AU / Multi-jurisdiction / Standards view to see the legal basis.
             </p>
           </div>
         </div>
       </form>
 
-      {/* Full Width Row: Platform Ontology Registry */}
-      <div className="mt-8 glass-panel p-6 rounded-xl shadow-lg">
-        <h2 className="text-xl font-bold text-white mb-2 border-b border-white/10 pb-2">Ontology Mapping Registry</h2>
-        <p className="text-sm text-slate-400 mb-6">Select the third-party platforms your organization uses. The Databox will automatically pull down the raw SHACL constraints and exhaustive RDF schema mappings to ensure seamless Data Portability compliance.</p>
-        
-        <div className="max-h-[500px] overflow-y-auto pr-2 custom-scrollbar">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {PLATFORM_ONTOLOGIES.map(ont => {
-              const isChecked = selectedOntologies.includes(ont.id);
-              return (
-                <div key={ont.id} 
-                  className={`flex flex-col gap-2 p-4 rounded-lg cursor-pointer transition-all ${isChecked ? 'bg-blue-500/20 border border-blue-500/50' : 'glass-input hover:bg-white/5'}`}
-                  onClick={() => toggleOntology(ont.id)}
-                >
-                  <div className="flex justify-between items-start">
-                    <span className={`text-xs font-bold uppercase tracking-wider ${isChecked ? 'text-blue-300' : 'text-slate-500'}`}>{ont.category}</span>
-                    <div className={`w-5 h-5 rounded-md flex items-center justify-center border shrink-0 ${isChecked ? 'bg-blue-500 border-blue-500' : 'border-slate-500'}`}>
-                      {isChecked && <svg className="w-3 h-3 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>}
-                    </div>
-                  </div>
-                  <span className={`text-sm ${isChecked ? 'text-white font-semibold' : 'text-slate-300'}`}>{ont.name}</span>
-                </div>
-              );
-            })}
-          </div>
+      {/* Full-width: expansive information & data categories taxonomy. */}
+      <div className="mt-8">
+        <InformationCategories
+          industry={formData.industry}
+          selected={selectedCategories}
+          setSelected={setSelectedCategories}
+        />
+      </div>
+
+      {/* Platform Ontology Registry now lives in its own top-level tab. */}
+      <div className="mt-8 glass-panel p-6 rounded-xl shadow-lg flex flex-col sm:flex-row sm:items-center gap-4 justify-between">
+        <div>
+          <h2 className="text-xl font-bold text-white mb-1">Platform Integrations & Data Portability</h2>
+          <p className="text-sm text-slate-400 max-w-2xl">
+            The Ontology Mapping Registry has moved to its own workspace. Browse the platform directory,
+            pull down SHACL/RDF mappings, and request your own data back — as an organisation or a natural person.
+          </p>
         </div>
+        <Link to="/data-portability" className="action-btn px-6 py-3 shrink-0 text-center whitespace-nowrap">
+          Open Registry →
+        </Link>
       </div>
 
       <div className="mt-6 flex justify-end">
@@ -259,7 +210,7 @@ export const SetupPage = () => {
           <div className="bg-black/40 p-4 rounded-lg font-mono text-sm break-all mb-4 border border-white/10 mt-2">
             {result.programUri}
           </div>
-          <p className="text-sm text-slate-400">Your organization taxonomy and communication capabilities have been written to the databox ledger.</p>
+          <p className="text-sm text-slate-400">Your organization taxonomy and information-provision obligations have been written to the databox ledger.</p>
         </div>
       )}
     </div>

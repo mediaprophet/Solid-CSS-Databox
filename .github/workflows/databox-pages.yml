@@ -1,0 +1,61 @@
+# Builds the DataBox landing site + the forge-admin "Admin" demo and publishes
+# them to GitHub Pages. The Admin demo is (re)built fresh here — the version
+# committed under docs/admin/ is only a convenience snapshot, so the deployed
+# demo can never drift from the forge-admin source.
+#
+# REQUIRED once, in the repo: Settings → Pages → Source → "GitHub Actions".
+# (This deploys the docs/ folder; it is independent of the mkdocs workflow,
+# which publishes the versioned CSS docs to the gh-pages branch.)
+name: Deploy DataBox site (Pages)
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - docs/**
+      - forge-admin/**
+      - scripts/build-databox-demo.mjs
+      - .github/workflows/databox-pages.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never run two Pages deploys at once; let a newer push supersede an older run.
+concurrency:
+  group: databox-pages
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+
+      - name: Install forge-admin dependencies
+        run: npm ci
+        working-directory: forge-admin
+
+      - name: Build the Admin demo into docs/admin
+        run: node scripts/build-databox-demo.mjs
+
+      - uses: actions/configure-pages@v5
+
+      - name: Upload docs/ as the Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+
+      - name: Deploy to GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v4

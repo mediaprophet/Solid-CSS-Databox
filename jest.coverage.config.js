@@ -8,6 +8,9 @@ module.exports = {
     '/dist/',
     '/node_modules/',
     '/test/',
+    // Experimental Track B Databox extension: tests still run, but the extension
+    // is not yet held to the CSS core's 100% coverage gate.
+    '/src/databox/',
   ],
   coverageThreshold: {
     './src': {

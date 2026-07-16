@@ -1,11 +1,12 @@
-const fs = require('fs');
-const path = require('path');
+/* eslint-disable no-console, no-sync -- CLI script: console output is intended; sync fs is appropriate here. */
+const fs = require('node:fs');
+const path = require('node:path');
 
 const loyaltyProfile = fs.readFileSync(path.join(__dirname, '../databox/fixtures/loyalty-institution-profile.json'), 'utf8');
 
 const filesToPatch = [
   path.join(__dirname, '../templates/root/static/index.html'),
-  path.join(__dirname, '../templates/root/intro/base/index.html')
+  path.join(__dirname, '../templates/root/intro/base/index.html'),
 ];
 
 for (const filePath of filesToPatch) {
@@ -14,7 +15,7 @@ for (const filePath of filesToPatch) {
   if (!content.includes('MegaMart: Loyalty Forge')) {
     content = content.replace(
       `<button class="tab-btn demo-tab" onclick="switchTab('admin')">Seraphim: Admin Panel</button>`,
-      `<button class="tab-btn demo-tab" onclick="switchTab('admin')">Seraphim: Admin Panel</button>\n      <button class="tab-btn demo-tab" onclick="switchTab('loyalty')">MegaMart: Loyalty Forge</button>`
+      `<button class="tab-btn demo-tab" onclick="switchTab('admin')">Seraphim: Admin Panel</button>\n      <button class="tab-btn demo-tab" onclick="switchTab('loyalty')">MegaMart: Loyalty Forge</button>`,
     );
   }
 
@@ -61,7 +62,7 @@ for (const filePath of filesToPatch) {
   if (!content.includes('id="tab-loyalty"')) {
     content = content.replace(
       `<!-- Admin Tab -->`,
-      `${loyaltyTabHtml}\n\n    <!-- Admin Tab -->`
+      `${loyaltyTabHtml}\n\n    <!-- Admin Tab -->`,
     );
   }
 
@@ -161,10 +162,10 @@ for (const filePath of filesToPatch) {
   if (!content.includes('function provisionMegaMart()')) {
     content = content.replace(
       `async function provisionCharles() {`,
-      `${provisionMegaMartFn}\n\n    async function provisionCharles() {`
+      `${provisionMegaMartFn}\n\n    async function provisionCharles() {`,
     );
   }
 
   fs.writeFileSync(filePath, content, 'utf8');
 }
-console.log("HTML successfully patched.");
+console.log('HTML successfully patched.');

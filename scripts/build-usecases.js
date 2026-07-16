@@ -1,5 +1,6 @@
-const fs = require('fs');
-const path = require('path');
+/* eslint-disable no-console, no-sync -- CLI build script: console output is intended; sync fs is appropriate here. */
+const fs = require('node:fs');
+const path = require('node:path');
 
 const baseDir = path.join('C:', 'Projects', 'webcivics', 'solid-databox', 'industry-applications');
 const outputFile = path.join(__dirname, '..', 'templates', 'scripts', 'use-cases.json');
@@ -19,16 +20,16 @@ if (fs.existsSync(baseDir)) {
 
     for (const subDir of subDirs) {
       const readmePath = path.join(categoryPath, subDir, 'README.md');
-      
+
       if (fs.existsSync(readmePath)) {
         const content = fs.readFileSync(readmePath, 'utf8');
         const lines = content.split('\n');
-        
+
         let title = '';
         let description = '';
-        
-        for (let i = 0; i < lines.length; i++) {
-          const line = lines[i].trim();
+
+        for (const line_ of lines) {
+          const line = line_.trim();
           if (line.startsWith('# ') && !title) {
             title = line.replace('# ', '').trim();
           } else if (line.length > 0 && !line.startsWith('#') && !line.startsWith('-') && !line.startsWith('>') && !title.includes(line) && !description) {
@@ -41,10 +42,10 @@ if (fs.existsSync(baseDir)) {
 
         if (title || subDir) {
           useCases.push({
-            category: category.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
+            category: category.replaceAll('-', ' ').replaceAll(/\b\w/gu, c => c.toUpperCase()),
             slug: subDir,
-            title: title || subDir.replace(/-/g, ' '),
-            description: description || 'No description available.'
+            title: title || subDir.replaceAll('-', ' '),
+            description: description || 'No description available.',
           });
         }
       }

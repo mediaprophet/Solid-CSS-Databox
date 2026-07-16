@@ -1,5 +1,6 @@
-const fs = require('fs');
-const path = require('path');
+/* eslint-disable no-console, no-sync -- CLI build script: console output is intended; sync fs is appropriate here. */
+const fs = require('node:fs');
+const path = require('node:path');
 
 const UI_HTML = `<!DOCTYPE html>
 <html lang="en">
@@ -437,11 +438,13 @@ const UI_HTML = `<!DOCTYPE html>
 const targets = [
   path.join(__dirname, '../templates/root/static/forge'),
   path.join(__dirname, '../templates/root/intro/base/forge'),
-  path.join(__dirname, '../templates/root/prefilled/base/forge')
+  path.join(__dirname, '../templates/root/prefilled/base/forge'),
 ];
 
 for (const dir of targets) {
-  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
   fs.writeFileSync(path.join(dir, 'index.html'), UI_HTML, 'utf8');
 }
 console.log('Forge UI built to all static locations.');

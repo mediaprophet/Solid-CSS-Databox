@@ -3,9 +3,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { publicJwkFromKeyObject } from '../src/databox/credential/Es256';
 import type { BridgeDepositReport } from '../src/databox/bridge/DataboxBridge';
-import { MappingForgeHttpApi } from '../src/databox/forge/MappingForgeHttpApi';
 import type { ForgeMappingResult, ForgeProgramSummary } from '../src/databox/forge/MappingForge';
-import { MappingForge } from '../src/databox/forge/MappingForge';
 
 async function post<T>(baseUrl: string, path: string, body: unknown): Promise<T> {
   const headers = new Headers();
