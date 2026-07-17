@@ -3,7 +3,8 @@ import React from "react";
 import { useList, useNavigation } from "@refinedev/core";
 
 export const AccessRequestsList = () => {
-  const { data, isLoading } = useList({ resource: "access-requests" });
+  const { result, query } = useList({ resource: "access-requests" });
+  const { isLoading } = query;
   const { show } = useNavigation();
 
   const getStatusBadge = (status: string) => {
@@ -41,7 +42,7 @@ export const AccessRequestsList = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
-              {data?.data.map((record) => (
+              {result?.data.map((record) => (
                 <tr key={record.id} className="hover:bg-white/5 transition-colors group">
                   <td className="p-4 font-mono text-xs text-slate-400">{record.id}</td>
                   <td className="p-4 font-mono text-xs text-slate-400">{record.consumerUrn}</td>
@@ -69,7 +70,7 @@ export const AccessRequestsList = () => {
               ))}
             </tbody>
           </table>
-          {(!data?.data || data.data.length === 0) && (
+          {(!result?.data || result.data.length === 0) && (
             <div className="p-8 text-center text-slate-500">No access requests found.</div>
           )}
         </div>

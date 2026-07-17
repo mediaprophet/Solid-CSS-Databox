@@ -3,12 +3,10 @@ import React, { useState, useEffect } from "react";
 import { useShow, useUpdate, useNavigation } from "@refinedev/core";
 
 export const CorrectionShow = () => {
-  const { queryResult } = useShow({ resource: "corrections" });
-  const { data, isLoading } = queryResult;
-  const { mutate, isLoading: isUpdating } = useUpdate();
+  const { result: record, query } = useShow({ resource: "corrections" });
+  const { isLoading } = query;
+  const { mutate, isPending: isUpdating } = useUpdate();
   const { list } = useNavigation();
-
-  const record = data?.data;
 
   const [disposition, setDisposition] = useState("");
   const [reason, setReason] = useState("");

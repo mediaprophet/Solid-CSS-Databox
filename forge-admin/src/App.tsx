@@ -1,6 +1,6 @@
 import { Refine } from "@refinedev/core";
 import { BrowserRouter, HashRouter, Route, Routes } from "react-router-dom";
-import routerProvider from "@refinedev/react-router-v6";
+import routerProvider from "@refinedev/react-router";
 
 import { dataProvider } from "./providers/dataProvider";
 import { demoDataProvider } from "./providers/demoDataProvider";
@@ -32,6 +32,10 @@ function App() {
       <Refine
         dataProvider={activeDataProvider}
         routerProvider={routerProvider}
+        // Refine reports provider names, its version and a resource count to
+        // telemetry.refine.dev on load. A data-sovereignty demo must not send
+        // anything anywhere the operator did not ask for.
+        options={{ disableTelemetry: true }}
         resources={[
           {
             name: "programs",

@@ -3,11 +3,9 @@ import React from "react";
 import { useShow, useNavigation } from "@refinedev/core";
 
 export const ConsumerLedgerShow = () => {
-  const { queryResult } = useShow({ resource: "consumer-ledger" });
-  const { data, isLoading } = queryResult;
+  const { result: record, query } = useShow({ resource: "consumer-ledger" });
+  const { isLoading } = query;
   const { list } = useNavigation();
-
-  const record = data?.data;
 
   if (isLoading) return <div className="p-8 text-slate-400">Loading ledger details...</div>;
   if (!record) return <div className="p-8 text-red-400">Ledger not found.</div>;

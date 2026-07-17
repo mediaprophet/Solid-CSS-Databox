@@ -52,11 +52,12 @@ const statusBadge = (status: string) => {
 };
 
 export const DataPortabilityRegistry = () => {
-  const { mutate, isLoading: isCreating } = useCreate();
-  const { data: outbound, refetch } = useList({
+  const { mutate, isPending: isCreating } = useCreate();
+  const { result: outbound, query: outboundQuery } = useList({
     resource: "outbound-requests",
     pagination: { pageSize: 100 },
   });
+  const { refetch } = outboundQuery;
 
   // Requester context (top control bar) ------------------------------------
   const [persona, setPersona] = useState<"organisation" | "natural-person">("organisation");

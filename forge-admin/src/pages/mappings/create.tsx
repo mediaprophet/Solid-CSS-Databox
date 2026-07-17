@@ -17,8 +17,8 @@ async function generateHolderJwk() {
 }
 
 export const MappingsSimulator = () => {
-  const { mutate, isLoading } = useCreate();
-  const { data: programsData } = useList({ resource: "programs" });
+  const { mutate, isPending: isLoading } = useCreate();
+  const { result: programsData } = useList({ resource: "programs" });
   const programs = programsData?.data ?? [];
 
   const [formData, setFormData] = useState({

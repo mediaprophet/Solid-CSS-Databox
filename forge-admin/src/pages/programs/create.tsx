@@ -6,7 +6,7 @@ import { buildSyntheticProfile, BASELINE_PROFILE } from "../../data/institutionP
 type Mode = "scaffold" | "authored";
 
 export const ProgramCreate = () => {
-  const { mutate, isLoading } = useCreate();
+  const { mutate, isPending: isLoading } = useCreate();
   const [mode, setMode] = useState<Mode>("scaffold");
   const [formData, setFormData] = useState({
     profileId: "prog-synthetic-" + crypto.randomUUID().slice(0, 8),

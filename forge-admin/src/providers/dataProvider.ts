@@ -1,5 +1,12 @@
 // @ts-nocheck
+//
+// NOTE on the @ts-nocheck above (pre-existing): Refine's `DataProvider` methods are
+// generic over a caller-chosen `TData extends BaseRecord`, so no concrete provider can
+// satisfy them without casts at every return. The `DataProvider` annotation below
+// declares the contract this object implements (and is what `<Refine>` typechecks
+// against in App.tsx).
 
+import type { DataProvider } from "@refinedev/core";
 
 // Defaults target the local Track B preset; override for a server on another
 // origin. The token is the preset's demonstration control boundary, not IAM.
@@ -162,7 +169,7 @@ let mockOutboundRequests = [
   }
 ];
 
-export const dataProvider = {
+export const dataProvider: DataProvider = {
   getList: async ({ resource }) => {
     if (resource === "programs") {
       const data = await fetchWithAuth(`${API_URL}/programs`);

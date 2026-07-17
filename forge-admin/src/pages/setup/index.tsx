@@ -28,7 +28,7 @@ const ANZSIC_DIVISIONS = [
 ];
 
 export const SetupPage = () => {
-  const { mutate, isLoading } = useCreate();
+  const { mutate, isPending: isLoading } = useCreate();
   const [formData, setFormData] = useState({
     profileId: "urn:uuid:" + crypto.randomUUID(),
     databoxBaseUrl: "http://localhost:3000/",
