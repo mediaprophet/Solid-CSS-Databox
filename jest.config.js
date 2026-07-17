@@ -27,6 +27,16 @@ function jestGithubRunnerSpecs() {
 
 // ESM libraries that need to be transformed so Jest can handle them
 const esModules = [
+  // `jose` v6 and `uuid` v14 are ESM-only ("type": "module", no CJS build).
+  // The `@inrupt/solid-client-authn-*` packages depend on those versions, while this project uses
+  // jose v4 / uuid v9, so npm nests the ESM copies inside those packages' own `node_modules`.
+  // `transformIgnorePatterns` is matched against the full path, and would match at the *first*
+  // `/node_modules/` segment (followed by `@inrupt/`), so the `@inrupt` packages have to be listed
+  // here as well for the nested ESM dependencies to be reached and transformed.
+  'jose',
+  'uuid',
+  '@inrupt/solid-client-authn-core',
+  '@inrupt/solid-client-authn-node',
   'oidc-provider',
   'nanoid',
   'got',

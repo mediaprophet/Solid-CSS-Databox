@@ -76,7 +76,7 @@ describe('live Databox integration in Community Solid Server', (): void => {
       throw new Error(`Could not obtain holder access token: ${await token.text()}`);
     }
     const { access_token: accessToken } = await token.json() as { access_token: string };
-    holderFetch = await buildAuthenticatedFetch(accessToken, { dpopKey });
+    holderFetch = buildAuthenticatedFetch(accessToken, { dpopKey });
     const ownPod = await holderFetch(holderPod);
     if (ownPod.status !== 200) {
       throw new Error(`Holder authentication check failed (${ownPod.status}): ${await ownPod.text()}`);
