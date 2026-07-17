@@ -90,22 +90,28 @@ npm start -- # add parameters if needed
 
 ### Via Docker
 
-Docker allows you to run the server without having Node.js installed. Images are built on each tagged version and hosted
-on [Docker Hub](https://hub.docker.com/r/solidproject/community-server).
+Docker allows you to run the server without having Node.js installed. Solid Databox does not publish a
+prebuilt image — you build your own from the `Dockerfile` in the repository. (Do not pull
+`solidproject/community-server`: that is upstream Community Solid Server and does not include the Databox
+extension.)
 
 ```shell
-# Clone the repo to get access to the configs
-git clone https://github.com/CommunitySolidServer/CommunitySolidServer.git
-cd CommunitySolidServer
+# Clone the repo to get access to the configs and the Dockerfile
+git clone https://github.com/mediaprophet/Solid-CSS-Databox.git
+cd Solid-CSS-Databox
+# Build a local image
+docker build -t solid-databox .
 # Run the image, serving your `~/Solid` directory on `http://localhost:3000`
-docker run --rm -v ~/Solid:/data -p 3000:3000 -it solidproject/community-server:latest
+docker run --rm -v ~/Solid:/data -p 3000:3000 -it solid-databox
 # Or use one of the built-in configurations
-docker run --rm -p 3000:3000 -it solidproject/community-server -c config/default.json
+docker run --rm -p 3000:3000 -it solid-databox -c config/default.json
 # Or use your own configuration mapped to the right directory
-docker run --rm -v ~/solid-config:/config -p 3000:3000 -it solidproject/community-server -c /config/my-config.json
-# Or use environment variables to configure your css instance
-docker run --rm -v ~/Solid:/data -p 3000:3000 -it -e CSS_CONFIG=config/file-no-setup.json -e CSS_LOGGING_LEVEL=debug solidproject/community-server
+docker run --rm -v ~/solid-config:/config -p 3000:3000 -it solid-databox -c /config/my-config.json
 ```
+
+**Publishing an image is up to you.** If you deploy Solid Databox for your own customers or business, push
+your locally built image to a registry of your choosing under your own image name and credentials — this
+repository intentionally ships no registry-publish workflow.
 
 ### Using a Helm Chart
 
