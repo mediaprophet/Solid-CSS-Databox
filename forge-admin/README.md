@@ -76,7 +76,8 @@ The left sidebar (`src/components/layout/index.tsx`) groups the routes:
 
 **Prerequisites**
 
-- Node.js **20.19+** (or 22.12+) — required by Vite 8.
+- Node.js **24.0+**, per the [repository's engines field](../package.json). (Vite 8 itself only requires
+  20.19+ / 22.12+, but this repository's floor is higher.)
 - For [live mode](#two-run-modes-live-vs-demo): a running **CSS – Databox** server with the Databox Forge mounted
   (default `http://localhost:3000/`). See the [live CSS integration guide](../databox/live-css-integration.md).
 

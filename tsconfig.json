@@ -1,8 +1,7 @@
 {
-  "extends": "@tsconfig/node18/tsconfig.json",
+  "extends": "@tsconfig/node24/tsconfig.json",
   "compilerOptions": {
     "incremental": true,
-    "lib": [ "es2021" ],
     "moduleResolution": "node16",
     "declaration": true,
     "inlineSources": true,

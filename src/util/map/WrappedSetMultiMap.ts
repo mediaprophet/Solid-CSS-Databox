@@ -102,11 +102,11 @@ export class WrappedSetMultiMap<TKey, TVal> implements SetMultiMap<TKey, TVal> {
     return this.map;
   }
 
-  public [Symbol.iterator](): IterableIterator<[TKey, TVal]> {
+  public [Symbol.iterator](): MapIterator<[TKey, TVal]> {
     return this.entries();
   }
 
-  public* entries(): IterableIterator<[TKey, TVal]> {
+  public* entries(): MapIterator<[TKey, TVal]> {
     for (const [ key, set ] of this.map) {
       for (const value of set) {
         yield [ key, value ];
@@ -118,7 +118,7 @@ export class WrappedSetMultiMap<TKey, TVal> implements SetMultiMap<TKey, TVal> {
     yield* this.map.entries();
   }
 
-  public* keys(): IterableIterator<TKey> {
+  public* keys(): MapIterator<TKey> {
     for (const [ key ] of this.entries()) {
       yield key;
     }
@@ -128,7 +128,7 @@ export class WrappedSetMultiMap<TKey, TVal> implements SetMultiMap<TKey, TVal> {
     return this.map.keys();
   }
 
-  public* values(): IterableIterator<TVal> {
+  public* values(): MapIterator<TVal> {
     for (const [ , value ] of this.entries()) {
       yield value;
     }

@@ -17,12 +17,12 @@ import { readableToQuads } from '../../../../src/util/StreamUtil';
 const { quad, namedNode } = DataFactory;
 
 describe('An RdfPatcher,', (): void => {
+  const identifier: ResourceIdentifier = { path: 'http://test.com/foo' };
+  const patch = new BasicRepresentation() as Patch;
   let patcher: jest.Mocked<RepresentationPatcher<RdfDatasetRepresentation>>;
   let startQuads: Quad[];
   let rdfPatcher: RdfPatcher;
-  let identifier: ResourceIdentifier;
   let representation: Representation;
-  let patch: Patch;
 
   beforeEach((): void => {
     startQuads = [ quad(

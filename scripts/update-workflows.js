@@ -15,7 +15,8 @@ for (const file of files) {
     content = content.replaceAll(/actions\/setup-node@v[\d.]+/gu, 'actions/setup-node@v4');
     content = content.replaceAll(/actions\/setup-python@v[\d.]+/gu, 'actions/setup-python@v5');
     content = content.replaceAll(/actions\/upload-artifact@v[\d.]+/gu, 'actions/upload-artifact@v4');
-    content = content.replaceAll(/node-version:\s*16\.x/gu, 'node-version: 20.x');
+    // Bump any Node pin older than the supported floor (see the `engines` field in package.json)
+    content = content.replaceAll(/node-version:\s*(?:1\d|2[0-3])\.x/gu, 'node-version: 24.x');
 
     fs.writeFileSync(filePath, content, 'utf8');
   }

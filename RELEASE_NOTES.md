@@ -1,5 +1,12 @@
 # Community Solid Server release notes
 
+## v8.0.0
+
+### New features
+
+- The minimum supported Node version is now v24.18.0.
+  Node v18, v20 and v22 are no longer supported.
+
 ## v7.0.0
 
 ### New features
