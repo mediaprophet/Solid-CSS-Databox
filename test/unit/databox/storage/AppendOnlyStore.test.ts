@@ -57,17 +57,17 @@ describe('An AppendOnlyStore', (): void => {
       source.hasResource.mockResolvedValueOnce(true);
       await expect(store.setRepresentation({ path: 'existing' }, {} as Representation))
         .rejects.toThrow(ForbiddenHttpError);
-      expect(source.setRepresentation).toHaveBeenCalledTimes(0);
+      expect(source.setRepresentation).not.toHaveBeenCalled();
     });
 
     it('rejects deleteResource.', async(): Promise<void> => {
       await expect(store.deleteResource({ path: 'existing' })).rejects.toThrow(ForbiddenHttpError);
-      expect(source.deleteResource).toHaveBeenCalledTimes(0);
+      expect(source.deleteResource).not.toHaveBeenCalled();
     });
 
     it('rejects modifyResource.', async(): Promise<void> => {
       await expect(store.modifyResource({ path: 'existing' }, {} as Patch)).rejects.toThrow(ForbiddenHttpError);
-      expect(source.modifyResource).toHaveBeenCalledTimes(0);
+      expect(source.modifyResource).not.toHaveBeenCalled();
     });
   });
 

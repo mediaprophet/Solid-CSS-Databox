@@ -9,11 +9,11 @@ import { WebSocketServerConfigurator } from '../../../src/server/WebSocketServer
 import { flushPromises } from '../../util/Util';
 
 jest.mock('ws', (): any => ({
-  WebSocketServer: jest.fn().mockImplementation((): any => ({
+  WebSocketServer: jest.fn().mockReturnValue({
     handleUpgrade(upgradeRequest: any, socket: any, head: any, callback: any): void {
       callback(socket, upgradeRequest);
     },
-  })),
+  }),
 }));
 
 jest.mock('../../../src/logging/LogUtil', (): any => {
@@ -63,7 +63,7 @@ describe('A WebSocketServerConfigurator', (): void => {
 
     expect(handler.handleSafe).toHaveBeenCalledTimes(1);
     expect(handler.handleSafe).toHaveBeenLastCalledWith({ webSocket, upgradeRequest });
-    expect(logger.error).toHaveBeenCalledTimes(0);
+    expect(logger.error).not.toHaveBeenCalled();
   });
 
   it('logs an error if something went wrong handling the connection.', async(): Promise<void> => {

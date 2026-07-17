@@ -139,7 +139,7 @@ describe('A WrappedExpiringStorage', (): void => {
     });
 
     // Make sure interval is created correctly
-    expect(mockInterval.mock.calls).toHaveLength(1);
+    expect(mockInterval).toHaveBeenCalledTimes(1);
     expect(mockInterval.mock.calls[0]).toHaveLength(2);
     expect(mockInterval.mock.calls[0][1]).toBe(60 * 1000);
 

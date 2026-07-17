@@ -16,9 +16,7 @@ describe('LazyLoggerFactory', (): void => {
   });
 
   it('does not allow reading the internal factory before it is set.', (): void => {
-    expect((): void => {
-      expect(lazyLoggerFactory.loggerFactory).toBeNull();
-    }).toThrow('Logger factory not yet set.');
+    expect((): LoggerFactory => lazyLoggerFactory.loggerFactory).toThrow('Logger factory not yet set.');
   });
 
   it('allows setting the internal factory.', (): void => {

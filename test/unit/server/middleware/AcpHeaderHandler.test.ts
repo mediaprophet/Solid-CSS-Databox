@@ -18,7 +18,7 @@ describe('an AcpHeaderHandler', (): void => {
   let handler: AcpHeaderHandler;
 
   beforeEach(async(): Promise<void> => {
-    response = createResponse() as HttpResponse;
+    response = createResponse();
     targetExtractor = {
       handleSafe: jest.fn().mockResolvedValue({ path: 'http://example.org/foo/bar' }),
     } as any;

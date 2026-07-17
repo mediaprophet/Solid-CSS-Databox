@@ -19,9 +19,9 @@ import {
   WebhookChannel2023Type,
 } from '../../../../../src/server/notifications/WebhookChannel2023/WebhookChannel2023Type';
 import { NOTIFY, RDF } from '../../../../../src/util/Vocabularies';
-import quad = DataFactory.quad;
-import blankNode = DataFactory.blankNode;
-import namedNode = DataFactory.namedNode;
+
+// eslint-disable-next-line jest/unbound-method -- n3 factory fns never use `this`
+const { quad, blankNode, namedNode } = DataFactory;
 
 jest.mock('../../../../../src/logging/LogUtil', (): any => {
   const logger: Logger =

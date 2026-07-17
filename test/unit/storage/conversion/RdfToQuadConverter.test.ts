@@ -14,6 +14,7 @@ import { RdfToQuadConverter } from '../../../../src/storage/conversion/RdfToQuad
 import { INTERNAL_QUADS } from '../../../../src/util/ContentTypes';
 import { BadRequestHttpError } from '../../../../src/util/errors/BadRequestHttpError';
 
+// eslint-disable-next-line jest/unbound-method -- n3 factory fns never use `this`
 const { namedNode, triple, literal, quad } = DataFactory;
 
 // All of this is necessary to not break the cross-fetch imports that happen in `rdf-parse`

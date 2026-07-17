@@ -32,7 +32,9 @@ describe('InteractionUtil', (): void => {
 
   describe('#assertOidcInteraction', (): void => {
     it('does nothing if the interaction is defined.', async(): Promise<void> => {
-      expect(assertOidcInteraction(oidcInteraction)).toBeUndefined();
+      expect((): void => {
+        assertOidcInteraction(oidcInteraction);
+      }).not.toThrow();
     });
 
     it('throws an error if there is no interaction.', async(): Promise<void> => {
@@ -97,7 +99,6 @@ describe('InteractionUtil', (): void => {
       await expect(forgetWebId(provider, oidcInteraction)).resolves.toBeUndefined();
       expect(provider.Session.find).toHaveBeenCalledTimes(1);
       expect(provider.Session.find).toHaveBeenLastCalledWith('cookie');
-      // eslint-disable-next-line jest/unbound-method
       const session = await jest.mocked(provider.Session.find).mock.results[0].value;
       expect(session.accountId).toBeUndefined();
       expect(session.persist).toHaveBeenCalledTimes(1);
@@ -109,7 +110,6 @@ describe('InteractionUtil', (): void => {
       await expect(forgetWebId(provider, oidcInteraction)).resolves.toBeUndefined();
       expect(provider.Grant.find).toHaveBeenCalledTimes(1);
       expect(provider.Grant.find).toHaveBeenLastCalledWith('grantId');
-      // eslint-disable-next-line jest/unbound-method
       const grant = await jest.mocked(provider.Grant.find).mock.results[0].value;
       expect(grant.destroy).toHaveBeenCalledTimes(1);
     });

@@ -8,7 +8,12 @@ import { NotFoundHttpError } from '../../../../src/util/errors/NotFoundHttpError
 import type { SystemError } from '../../../../src/util/errors/SystemError';
 import { getModuleRoot, joinFilePath } from '../../../../src/util/PathUtil';
 
+// This is the default implementation for every test below, and each of them consumes the
+// returned stream. `mockReturnValue` would construct a single Readable here and hand that same
+// exhausted instance to every call, so the implementation must stay lazy to yield a fresh
+// stream per call. The rule only inspects the arrow body and cannot see that requirement.
 const createReadStream = jest.spyOn(fs, 'createReadStream')
+  // eslint-disable-next-line jest/prefer-mock-return-shorthand
   .mockImplementation((): any => Readable.from([ 'file contents' ]));
 
 describe('A StaticAssetHandler', (): void => {
@@ -244,7 +249,7 @@ describe('A StaticAssetHandler', (): void => {
   });
 
   it('automatically expands root folder mappings to explicit files.', async(): Promise<void> => {
-    createReadStream.mockImplementationOnce((): any => Readable.from([ 'file contents' ]));
+    createReadStream.mockReturnValueOnce(Readable.from([ 'file contents' ]) as any);
     const readdirSpy = jest.spyOn(fs, 'readdirSync').mockReturnValue([
       {
         name: 'app.js',
@@ -286,7 +291,7 @@ describe('A StaticAssetHandler', (): void => {
   });
 
   it('keeps catch-all behavior for non-root folder mappings.', async(): Promise<void> => {
-    createReadStream.mockImplementationOnce((): any => Readable.from([ 'dynamic file' ]));
+    createReadStream.mockReturnValueOnce(Readable.from([ 'dynamic file' ]) as any);
     const readdirSpy = jest.spyOn(fs, 'readdirSync');
 
     const catchAllHandler = new StaticAssetHandler(

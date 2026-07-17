@@ -302,7 +302,7 @@ export class WrappedIndexedStorage<T extends IndexTypeCollection<T>> implements 
       // We know there always is an index on the identifier key
       const indexKey = this.getIndexKey(type, INDEX_ID_KEY, id);
       const indexResult = await this.indexStorage.get(indexKey);
-      if (!indexResult || indexResult.length !== 1) {
+      if (indexResult?.length !== 1) {
         return;
       }
       rootId = indexResult[0];

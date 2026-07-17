@@ -76,7 +76,7 @@ describe('A RoutingAuxiliaryStrategy', (): void => {
     jest.spyOn(sources[1], 'addMetadata').mockImplementation();
     const metadata = new RepresentationMetadata(dummy2Id);
     await expect(strategy.addMetadata(metadata)).resolves.toBeUndefined();
-    expect(sources[0].addMetadata).toHaveBeenCalledTimes(0);
+    expect(sources[0].addMetadata).not.toHaveBeenCalled();
     expect(sources[1].addMetadata).toHaveBeenCalledTimes(1);
     expect(sources[1].addMetadata).toHaveBeenLastCalledWith(metadata);
   });
@@ -85,7 +85,7 @@ describe('A RoutingAuxiliaryStrategy', (): void => {
     jest.spyOn(sources[0], 'usesOwnAuthorization').mockImplementation();
     jest.spyOn(sources[1], 'usesOwnAuthorization').mockImplementation();
     strategy.usesOwnAuthorization(dummy2Id);
-    expect(sources[0].usesOwnAuthorization).toHaveBeenCalledTimes(0);
+    expect(sources[0].usesOwnAuthorization).not.toHaveBeenCalled();
     expect(sources[1].usesOwnAuthorization).toHaveBeenCalledTimes(1);
     expect(sources[1].usesOwnAuthorization).toHaveBeenLastCalledWith(dummy2Id);
   });
@@ -94,7 +94,7 @@ describe('A RoutingAuxiliaryStrategy', (): void => {
     jest.spyOn(sources[0], 'isRequiredInRoot').mockImplementation();
     jest.spyOn(sources[1], 'isRequiredInRoot').mockImplementation();
     strategy.isRequiredInRoot(dummy2Id);
-    expect(sources[0].isRequiredInRoot).toHaveBeenCalledTimes(0);
+    expect(sources[0].isRequiredInRoot).not.toHaveBeenCalled();
     expect(sources[1].isRequiredInRoot).toHaveBeenCalledTimes(1);
     expect(sources[1].isRequiredInRoot).toHaveBeenLastCalledWith(dummy2Id);
   });
@@ -106,7 +106,7 @@ describe('A RoutingAuxiliaryStrategy', (): void => {
     let metadata = new RepresentationMetadata(dummy1Id);
     await expect(strategy.validate({ metadata } as any)).resolves.toBeUndefined();
     expect(sources[0].validate).toHaveBeenCalledTimes(1);
-    expect(sources[1].validate).toHaveBeenCalledTimes(0);
+    expect(sources[1].validate).not.toHaveBeenCalled();
 
     metadata = new RepresentationMetadata(dummy2Id);
     await expect(strategy.validate({ metadata } as any)).resolves.toBeUndefined();

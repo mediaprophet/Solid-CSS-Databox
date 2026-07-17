@@ -70,6 +70,6 @@ describe('ServerInitializer', (): void => {
 
   it('only tries to stop the server if it was initialized.', async(): Promise<void> => {
     await expect(initializer.finalize()).resolves.toBeUndefined();
-    expect(server.close).toHaveBeenCalledTimes(0);
+    expect(server.close).not.toHaveBeenCalled();
   });
 });

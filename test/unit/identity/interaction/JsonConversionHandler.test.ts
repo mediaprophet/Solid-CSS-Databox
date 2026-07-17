@@ -59,7 +59,6 @@ describe('A JsonConversionHandler', (): void => {
 
   it('calls the source with the generated JSON and converts the output back.', async(): Promise<void> => {
     const output = await handler.handle({ operation, accountId, oidcInteraction });
-    expect(output).toBeDefined();
     await expect(readJsonStream(output.data)).resolves.toEqual({ output: 'data' });
     expect(output.metadata.contentType).toBe('application/json');
     expect(converter.handle).toHaveBeenCalledTimes(1);
@@ -82,10 +81,9 @@ describe('A JsonConversionHandler', (): void => {
   it('does not call the converter if the body is empty.', async(): Promise<void> => {
     operation.body = new BasicRepresentation();
     const output = await handler.handle({ operation, accountId, oidcInteraction });
-    expect(output).toBeDefined();
     await expect(readJsonStream(output.data)).resolves.toEqual({ output: 'data' });
     expect(output.metadata.contentType).toBe('application/json');
-    expect(converter.handle).toHaveBeenCalledTimes(0);
+    expect(converter.handle).not.toHaveBeenCalled();
     expect(source.handleSafe).toHaveBeenCalledTimes(1);
     expect(source.handleSafe).toHaveBeenLastCalledWith({
       method: operation.method,

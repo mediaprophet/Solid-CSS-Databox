@@ -82,7 +82,7 @@ describe('A BaseWebIdStore', (): void => {
     await expect(store.create(webId, accountId)).rejects.toThrow(BadRequestHttpError);
     expect(storage.find).toHaveBeenCalledTimes(1);
     expect(storage.find).toHaveBeenLastCalledWith(STORAGE_TYPE, { webId, accountId });
-    expect(storage.create).toHaveBeenCalledTimes(0);
+    expect(storage.create).not.toHaveBeenCalled();
   });
 
   it('can delete a link.', async(): Promise<void> => {

@@ -21,7 +21,7 @@ describe('TimerUtil', (): void => {
 
       expect(callback).toHaveBeenCalledTimes(1);
       expect(callback).toHaveBeenLastCalledWith('argument');
-      expect(logger.error).toHaveBeenCalledTimes(0);
+      expect(logger.error).not.toHaveBeenCalled();
 
       clearInterval(timer);
     });

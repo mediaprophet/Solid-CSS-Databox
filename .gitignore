@@ -7,4 +7,5 @@
 /dist
 /node_modules
 /test/tmp
+/typedocs
 /work-files

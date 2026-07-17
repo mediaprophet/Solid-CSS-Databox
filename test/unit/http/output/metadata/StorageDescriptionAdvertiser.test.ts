@@ -46,13 +46,13 @@ describe('A StorageDescriptionAdvertiser', (): void => {
   it('only handles results with resource metadata.', async(): Promise<void> => {
     metadata.removeAll(RDF.terms.type);
     await expect(advertiser.handle(input)).resolves.toBeUndefined();
-    expect(response.setHeader).toHaveBeenCalledTimes(0);
+    expect(response.setHeader).not.toHaveBeenCalled();
   });
 
   it('does nothing if it cannot find a storage root.', async(): Promise<void> => {
     // No storage container will be found
     strategy.getStorageIdentifier.mockRejectedValue(new BadRequestHttpError('bad identifier'));
     await expect(advertiser.handle(input)).resolves.toBeUndefined();
-    expect(response.setHeader).toHaveBeenCalledTimes(0);
+    expect(response.setHeader).not.toHaveBeenCalled();
   });
 });

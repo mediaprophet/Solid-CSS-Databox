@@ -79,7 +79,7 @@ describe('A BasePasswordStore', (): void => {
       .rejects.toThrow('There already is a login for this e-mail address.');
     expect(storage.find).toHaveBeenCalledTimes(1);
     expect(storage.find).toHaveBeenLastCalledWith(STORAGE_TYPE, { email: lowercase });
-    expect(storage.create).toHaveBeenCalledTimes(0);
+    expect(storage.create).not.toHaveBeenCalled();
   });
 
   it('can get the login information.', async(): Promise<void> => {
@@ -112,7 +112,7 @@ describe('A BasePasswordStore', (): void => {
     await expect(store.confirmVerification(id)).rejects.toThrow('Login does not exist.');
     expect(storage.has).toHaveBeenCalledTimes(1);
     expect(storage.has).toHaveBeenLastCalledWith(STORAGE_TYPE, id);
-    expect(storage.setField).toHaveBeenCalledTimes(0);
+    expect(storage.setField).not.toHaveBeenCalled();
   });
 
   it('can verify a login.', async(): Promise<void> => {
@@ -154,7 +154,7 @@ describe('A BasePasswordStore', (): void => {
     await expect(store.update(id, password)).rejects.toThrow('Login does not exist.');
     expect(storage.has).toHaveBeenCalledTimes(1);
     expect(storage.has).toHaveBeenLastCalledWith(STORAGE_TYPE, id);
-    expect(storage.setField).toHaveBeenCalledTimes(0);
+    expect(storage.setField).not.toHaveBeenCalled();
   });
 
   it('can change the password.', async(): Promise<void> => {

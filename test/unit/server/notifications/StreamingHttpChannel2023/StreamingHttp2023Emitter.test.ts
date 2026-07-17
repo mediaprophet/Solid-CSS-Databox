@@ -39,7 +39,7 @@ describe('A StreamingHttp2023Emitter', (): void => {
   it('destroys the representation if there is no matching Stream.', async(): Promise<void> => {
     const spy = jest.spyOn(stream, 'write');
     await expect(emitter.handle({ channel, representation })).resolves.toBeUndefined();
-    expect(spy).toHaveBeenCalledTimes(0);
+    expect(spy).not.toHaveBeenCalled();
     expect(representation.data.destroyed).toBe(true);
   });
 

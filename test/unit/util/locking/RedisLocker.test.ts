@@ -97,6 +97,11 @@ const redis: jest.Mocked<Redis & RedisResourceLock & RedisReadWriteLock> = {
     store.releaseLock(key)),
 } as any;
 
+// Jest hoists this factory above the `redis` declaration above, so the mock may only dereference
+// it once it is actually called. Switching to `mockReturnValue` would read `redis` eagerly while
+// it is still in its temporal dead zone, failing the suite with
+// "Cannot access 'redis' before initialization".
+// eslint-disable-next-line jest/prefer-mock-return-shorthand
 jest.mock('ioredis', (): any => jest.fn().mockImplementation((): Redis => redis));
 
 /* eslint-disable @typescript-eslint/no-floating-promises */
@@ -127,8 +132,10 @@ describe('A RedisLocker', (): void => {
     });
 
     it('will fill in default arguments when constructed with empty arguments.', (): void => {
-      expect((): ReadWriteLocker => new RedisLocker()).toBeDefined();
+      // Asserting the arrow function itself is defined would always pass without ever constructing a
+      // locker, so assert on the instance the default constructor actually produces.
       expect((): ReadWriteLocker => new RedisLocker()).not.toThrow();
+      expect(new RedisLocker()).toBeInstanceOf(RedisLocker);
     });
 
     it('errors when instantiated with incorrect arguments.', (): void => {
@@ -158,12 +165,13 @@ describe('A RedisLocker', (): void => {
 
       const unlocks = [ 0, 1, 2 ].map((num): any => new Promise((resolve): any =>
         emitter.on(`release${num}`, resolve)));
-      const promises = [ 0, 1, 2 ].map((num): any => locker.withReadLock(resource1, async(): Promise<number> => {
-        order.push(`start ${num}`);
-        await unlocks[num];
-        order.push(`finish ${num}`);
-        return num;
-      }));
+      const promises = [ 0, 1, 2 ].map(async(num): Promise<number> =>
+        locker.withReadLock(resource1, async(): Promise<number> => {
+          order.push(`start ${num}`);
+          await unlocks[num];
+          order.push(`finish ${num}`);
+          return num;
+        }));
 
       // Allow time to attach listeners
       await flushPromises();
@@ -214,12 +222,13 @@ describe('A RedisLocker', (): void => {
 
       const resources = [ resource1, resource2 ];
       const unlocks = [ 0, 1 ].map((num): any => new Promise((resolve): any => emitter.on(`release${num}`, resolve)));
-      const promises = [ 0, 1 ].map((num): any => locker.withWriteLock(resources[num], async(): Promise<number> => {
-        order.push(`start ${num}`);
-        await unlocks[num];
-        order.push(`finish ${num}`);
-        return num;
-      }));
+      const promises = [ 0, 1 ].map(async(num): Promise<number> =>
+        locker.withWriteLock(resources[num], async(): Promise<number> => {
+          order.push(`start ${num}`);
+          await unlocks[num];
+          order.push(`finish ${num}`);
+          return num;
+        }));
 
       // Allow time to attach listeners
       await flushPromises();
@@ -413,7 +422,7 @@ describe('A RedisLocker', (): void => {
     });
 
     it('throws error if Redis answers unexpectedly.', async(): Promise<void> => {
-      redis.acquireWriteLock.mockResolvedValueOnce('unexpected' as any);
+      redis.acquireWriteLock.mockResolvedValueOnce('unexpected');
       const promise = locker.withWriteLock(resource1, (): any => ({}));
       await expect(promise).rejects.toThrow('Unexpected Redis answer received! (unexpected)');
     });
@@ -446,8 +455,10 @@ describe('A RedisLocker', (): void => {
     });
 
     it('will fill in default arguments when constructed with empty arguments.', (): void => {
-      expect((): ResourceLocker => new RedisLocker()).toBeDefined();
+      // Asserting the arrow function itself is defined would always pass without ever constructing a
+      // locker, so assert on the instance the default constructor actually produces.
       expect((): ResourceLocker => new RedisLocker()).not.toThrow();
+      expect(new RedisLocker()).toBeInstanceOf(RedisLocker);
     });
 
     it('can lock and unlock a resource.', async(): Promise<void> => {

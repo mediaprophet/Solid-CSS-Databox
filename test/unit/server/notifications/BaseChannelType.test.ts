@@ -10,10 +10,9 @@ import type { NotificationChannel } from '../../../../src/server/notifications/N
 import { UnprocessableEntityHttpError } from '../../../../src/util/errors/UnprocessableEntityHttpError';
 import { IdentifierSetMultiMap } from '../../../../src/util/map/IdentifierMap';
 import { NOTIFY, RDF, XSD } from '../../../../src/util/Vocabularies';
-import namedNode = DataFactory.namedNode;
-import quad = DataFactory.quad;
-import blankNode = DataFactory.blankNode;
-import literal = DataFactory.literal;
+
+// eslint-disable-next-line jest/unbound-method -- n3 factory fns never use `this`
+const { namedNode, quad, blankNode, literal } = DataFactory;
 
 const dummyType = namedNode('http://example.com/DummyType');
 class DummyChannelType extends BaseChannelType {

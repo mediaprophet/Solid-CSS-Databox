@@ -54,7 +54,7 @@ describe('A ConvertingNotificationSerializer', (): void => {
 
   it('returns the source result if there is no accept value.', async(): Promise<void> => {
     await expect(serializer.handle({ channel, notification })).resolves.toBe(representation);
-    expect(converter.handleSafe).toHaveBeenCalledTimes(0);
+    expect(converter.handleSafe).not.toHaveBeenCalled();
   });
 
   it('converts the source result if there is an accept value.', async(): Promise<void> => {

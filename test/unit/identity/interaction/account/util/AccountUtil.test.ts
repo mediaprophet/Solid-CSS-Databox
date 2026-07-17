@@ -10,7 +10,7 @@ import { NotFoundHttpError } from '../../../../../../src/util/errors/NotFoundHtt
 describe('AccountUtil', (): void => {
   describe('#assertAccountId', (): void => {
     it('does nothing if the accountId is defined.', async(): Promise<void> => {
-      expect(assertAccountId('id')).toBeUndefined();
+      expect((): void => assertAccountId('id')).not.toThrow();
     });
 
     it('throws an error if the accountId is undefined.', async(): Promise<void> => {
@@ -39,7 +39,7 @@ describe('AccountUtil', (): void => {
 
   describe('#verifyAccountId', (): void => {
     it('does nothing if the values match.', async(): Promise<void> => {
-      expect(verifyAccountId('id', 'id')).toBeUndefined();
+      expect((): void => verifyAccountId('id', 'id')).not.toThrow();
     });
 
     it('throws an error if the values do not match.', async(): Promise<void> => {

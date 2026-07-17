@@ -87,7 +87,7 @@ describe('ResourceUtil', (): void => {
 
     it('adds the ETag to the representation if the conditions are undefined.', async(): Promise<void> => {
       expect((): any => assertReadConditions(representation, eTagHandler)).not.toThrow();
-      expect(data.destroy).toHaveBeenCalledTimes(0);
+      expect(data.destroy).not.toHaveBeenCalled();
       expect(representation.metadata.get(HH.terms.etag)?.value).toBe('ETag');
     });
 
@@ -96,7 +96,7 @@ describe('ResourceUtil', (): void => {
         matchesMetadata: (): boolean => true,
       };
       expect((): any => assertReadConditions(representation, eTagHandler, conditions)).not.toThrow();
-      expect(data.destroy).toHaveBeenCalledTimes(0);
+      expect(data.destroy).not.toHaveBeenCalled();
       expect(representation.metadata.get(HH.terms.etag)?.value).toBe('ETag');
     });
 

@@ -67,7 +67,7 @@ describe('A SeededAccountInitializer', (): void => {
   it('does not generate any accounts or pods if no config file is specified.', async(): Promise<void> => {
     await expect(new SeededAccountInitializer({ accountStore, passwordStore, podCreator }).handle())
       .resolves.toBeUndefined();
-    expect(accountStore.create).toHaveBeenCalledTimes(0);
+    expect(accountStore.create).not.toHaveBeenCalled();
   });
 
   it('errors if the seed file is invalid.', async(): Promise<void> => {
@@ -97,6 +97,6 @@ describe('A SeededAccountInitializer', (): void => {
     expect(accountStore.create).toHaveBeenCalledTimes(2);
     // Steps for first account will be skipped due to error
     expect(passwordStore.create).toHaveBeenCalledTimes(1);
-    expect(podCreator.handleSafe).toHaveBeenCalledTimes(0);
+    expect(podCreator.handleSafe).not.toHaveBeenCalled();
   });
 });

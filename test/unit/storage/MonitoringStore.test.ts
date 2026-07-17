@@ -64,9 +64,9 @@ describe('A MonitoringStore', (): void => {
   });
 
   it('does not fire a change event after getRepresentation.', async(): Promise<void> => {
-    expect(changedCallback).toHaveBeenCalledTimes(0);
+    expect(changedCallback).not.toHaveBeenCalled();
     await store.getRepresentation(id, {});
-    expect(changedCallback).toHaveBeenCalledTimes(0);
+    expect(changedCallback).not.toHaveBeenCalled();
   });
 
   it('calls addResource directly from the source.', async(): Promise<void> => {
@@ -78,7 +78,7 @@ describe('A MonitoringStore', (): void => {
 
   it('fires appropriate events according to the return value of source.addResource.', async(): Promise<void> => {
     const result = store.addResource(id, {} as Representation);
-    expect(changedCallback).toHaveBeenCalledTimes(0);
+    expect(changedCallback).not.toHaveBeenCalled();
     await result;
     expect(changedCallback).toHaveBeenCalledTimes(2);
     expect(changedCallback).toHaveBeenCalledWith(id, AS.terms.Update, addResourceReturnMock.get(id));
@@ -87,7 +87,7 @@ describe('A MonitoringStore', (): void => {
     expect(createdCallback).toHaveBeenCalledWith(idNew, addResourceReturnMock.get(idNew));
     expect(updatedCallback).toHaveBeenCalledTimes(1);
     expect(updatedCallback).toHaveBeenCalledWith(id, addResourceReturnMock.get(id));
-    expect(deletedCallback).toHaveBeenCalledTimes(0);
+    expect(deletedCallback).not.toHaveBeenCalled();
   });
 
   it('calls setRepresentation directly from the source.', async(): Promise<void> => {
@@ -99,14 +99,14 @@ describe('A MonitoringStore', (): void => {
 
   it('fires appropriate events according to the return value of source.setRepresentation.', async(): Promise<void> => {
     const result = store.setRepresentation(id, {} as Representation);
-    expect(changedCallback).toHaveBeenCalledTimes(0);
+    expect(changedCallback).not.toHaveBeenCalled();
     await result;
     expect(changedCallback).toHaveBeenCalledTimes(1);
     expect(changedCallback).toHaveBeenCalledWith(idNew, AS.terms.Update, setRepresentationReturnMock.get(idNew));
-    expect(createdCallback).toHaveBeenCalledTimes(0);
+    expect(createdCallback).not.toHaveBeenCalled();
     expect(updatedCallback).toHaveBeenCalledTimes(1);
     expect(updatedCallback).toHaveBeenCalledWith(idNew, setRepresentationReturnMock.get(idNew));
-    expect(deletedCallback).toHaveBeenCalledTimes(0);
+    expect(deletedCallback).not.toHaveBeenCalled();
   });
 
   it('calls deleteResource directly from the source.', async(): Promise<void> => {
@@ -118,12 +118,12 @@ describe('A MonitoringStore', (): void => {
 
   it('fires appropriate events according to the return value of source.deleteResource.', async(): Promise<void> => {
     const result = store.deleteResource(id);
-    expect(changedCallback).toHaveBeenCalledTimes(0);
+    expect(changedCallback).not.toHaveBeenCalled();
     await result;
     expect(changedCallback).toHaveBeenCalledTimes(2);
     expect(changedCallback).toHaveBeenCalledWith(id, AS.terms.Update, deleteResourceReturnMock.get(id));
     expect(changedCallback).toHaveBeenCalledWith(idNew, AS.terms.Delete, deleteResourceReturnMock.get(idNew));
-    expect(createdCallback).toHaveBeenCalledTimes(0);
+    expect(createdCallback).not.toHaveBeenCalled();
     expect(updatedCallback).toHaveBeenCalledTimes(1);
     expect(updatedCallback).toHaveBeenCalledWith(id, deleteResourceReturnMock.get(id));
     expect(deletedCallback).toHaveBeenCalledTimes(1);
@@ -139,7 +139,7 @@ describe('A MonitoringStore', (): void => {
 
   it('fires appropriate events according to the return value of source.modifyResource.', async(): Promise<void> => {
     const result = store.modifyResource(id, {} as Patch);
-    expect(changedCallback).toHaveBeenCalledTimes(0);
+    expect(changedCallback).not.toHaveBeenCalled();
     await result;
     expect(changedCallback).toHaveBeenCalledTimes(3);
     expect(changedCallback).toHaveBeenCalledWith(idNew, AS.terms.Create, modifyResourceReturnMock.get(idNew));
@@ -166,9 +166,9 @@ describe('A MonitoringStore', (): void => {
 
     await store.addResource(id, {} as Patch);
 
-    expect(changedCallback).toHaveBeenCalledTimes(0);
-    expect(createdCallback).toHaveBeenCalledTimes(0);
-    expect(updatedCallback).toHaveBeenCalledTimes(0);
-    expect(deletedCallback).toHaveBeenCalledTimes(0);
+    expect(changedCallback).not.toHaveBeenCalled();
+    expect(createdCallback).not.toHaveBeenCalled();
+    expect(updatedCallback).not.toHaveBeenCalled();
+    expect(deletedCallback).not.toHaveBeenCalled();
   });
 });

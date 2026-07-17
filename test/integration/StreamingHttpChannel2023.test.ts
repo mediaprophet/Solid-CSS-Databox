@@ -13,7 +13,9 @@ import {
   instantiateFromConfig,
   removeFolder,
 } from './Config';
-import namedNode = DataFactory.namedNode;
+
+// eslint-disable-next-line jest/unbound-method -- n3 factory fns never use `this`
+const { namedNode } = DataFactory;
 
 const port = getPort('StreamingHTTPChannel2023');
 const baseUrl = `http://localhost:${port}/`;

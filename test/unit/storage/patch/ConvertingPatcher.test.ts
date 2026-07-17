@@ -111,7 +111,7 @@ describe('A ConvertingPatcher', (): void => {
     expect(result.metadata.contentType).toBe(patchResult.metadata.contentType);
 
     // Patch
-    expect(converter.handle).toHaveBeenCalledTimes(0);
+    expect(converter.handle).not.toHaveBeenCalled();
     expect(patcher.handle).toHaveBeenCalledTimes(1);
     expect(patcher.handle).toHaveBeenLastCalledWith(args);
   });
@@ -123,7 +123,7 @@ describe('A ConvertingPatcher', (): void => {
     expect(result.metadata.contentType).toBe(patchResult.metadata.contentType);
 
     // Patch
-    expect(converter.handle).toHaveBeenCalledTimes(0);
+    expect(converter.handle).not.toHaveBeenCalled();
     expect(patcher.handle).toHaveBeenCalledTimes(1);
     expect(patcher.handle).toHaveBeenLastCalledWith(args);
   });

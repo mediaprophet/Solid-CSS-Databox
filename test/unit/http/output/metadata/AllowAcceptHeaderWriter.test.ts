@@ -1,6 +1,5 @@
 import { createResponse } from 'node-mocks-http';
 import { AllowAcceptHeaderWriter } from '../../../../../src/http/output/metadata/AllowAcceptHeaderWriter';
-import type { MetadataRecord } from '../../../../../src/http/representation/RepresentationMetadata';
 import { RepresentationMetadata } from '../../../../../src/http/representation/RepresentationMetadata';
 import type { HttpResponse } from '../../../../../src/server/HttpResponse';
 import { MethodNotAllowedHttpError } from '../../../../../src/util/errors/MethodNotAllowedHttpError';
@@ -27,7 +26,7 @@ describe('An AllowAcceptHeaderWriter', (): void => {
       [RDF.type]: [ LDP.terms.Resource, LDP.terms.Container ],
       [LDP.contains]: [ document.identifier ],
       // Typescript doesn't find the correct constructor without the cast
-    } as MetadataRecord,
+    },
   );
   const storageContainer = new RepresentationMetadata(
     { path: 'http://example.com/foo/' },
@@ -50,7 +49,7 @@ describe('An AllowAcceptHeaderWriter', (): void => {
   let writer: AllowAcceptHeaderWriter;
 
   beforeEach(async(): Promise<void> => {
-    response = createResponse() as HttpResponse;
+    response = createResponse();
 
     writer = new AllowAcceptHeaderWriter(
       [ 'OPTIONS', 'GET', 'HEAD', 'PUT', 'POST', 'PATCH', 'DELETE' ],

@@ -38,6 +38,6 @@ describe('A DeletePasswordHandler', (): void => {
     await expect(handler.handle({ target, accountId: 'otherId' } as any)).rejects.toThrow(NotFoundHttpError);
     expect(store.get).toHaveBeenCalledTimes(1);
     expect(store.get).toHaveBeenLastCalledWith(id);
-    expect(store.delete).toHaveBeenCalledTimes(0);
+    expect(store.delete).not.toHaveBeenCalled();
   });
 });

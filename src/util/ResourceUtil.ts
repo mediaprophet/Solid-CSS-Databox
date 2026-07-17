@@ -9,7 +9,9 @@ import { NotModifiedHttpError } from './errors/NotModifiedHttpError';
 import { guardedStreamFrom } from './StreamUtil';
 import { toLiteral } from './TermUtil';
 import { CONTENT_TYPE_TERM, DC, HH, LDP, RDF, SOLID_META, XSD } from './Vocabularies';
-import namedNode = DataFactory.namedNode;
+
+// eslint-disable-next-line @typescript-eslint/unbound-method -- n3 factory fns never use `this`
+const { namedNode } = DataFactory;
 
 /**
  * Helper function to generate type quads for a Container or Resource.

@@ -1,7 +1,7 @@
 import type { Patch } from '../../../src/http/representation/Patch';
 import type { PatchHandler } from '../../../src/storage/patch/PatchHandler';
 import { PatchingStore } from '../../../src/storage/PatchingStore';
-import type { ResourceStore } from '../../../src/storage/ResourceStore';
+import type { ChangeMap, ResourceStore } from '../../../src/storage/ResourceStore';
 import { NotImplementedHttpError } from '../../../src/util/errors/NotImplementedHttpError';
 
 describe('A PatchingStore', (): void => {
@@ -34,7 +34,12 @@ describe('A PatchingStore', (): void => {
     await expect(store.modifyResource({ path: 'modifyPath' }, {} as Patch)).resolves.toBe('patcher');
     expect(source.modifyResource).toHaveBeenCalledTimes(1);
     expect(source.modifyResource).toHaveBeenLastCalledWith({ path: 'modifyPath' }, {}, undefined);
-    await expect(source.modifyResource.mock.results[0].value).rejects.toThrow(NotImplementedHttpError);
+    // Narrow the `MockResult` union so the subject is the typed `Promise` the source returned:
+    // `results[0].value` is `any` on the raw union, which hides the rejection from the assertion.
+    const returned = source.modifyResource.mock.results
+      .filter((result): result is jest.MockResultReturn<Promise<ChangeMap>> => result.type === 'return');
+    expect(returned).toHaveLength(1);
+    await expect(returned[0].value).rejects.toThrow(NotImplementedHttpError);
     expect(handleSafeFn).toHaveBeenCalledTimes(1);
     expect(handleSafeFn).toHaveBeenLastCalledWith({ source, identifier: { path: 'modifyPath' }, patch: {}});
   });
@@ -46,6 +51,6 @@ describe('A PatchingStore', (): void => {
     await expect(store.modifyResource({ path: 'modifyPath' }, {} as Patch)).rejects.toThrow('dummy');
     expect(source.modifyResource).toHaveBeenCalledTimes(1);
     expect(source.modifyResource).toHaveBeenLastCalledWith({ path: 'modifyPath' }, {}, undefined);
-    expect(handleSafeFn).toHaveBeenCalledTimes(0);
+    expect(handleSafeFn).not.toHaveBeenCalled();
   });
 });

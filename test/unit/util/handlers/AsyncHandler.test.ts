@@ -35,6 +35,6 @@ describe('An AsyncHandler', (): void => {
     handlerFalse.handle = handleFn;
     await expect(handlerFalse.handleSafe('test')).rejects.toThrow(Error);
     expect(canHandleFn).toHaveBeenCalledTimes(1);
-    expect(handleFn).toHaveBeenCalledTimes(0);
+    expect(handleFn).not.toHaveBeenCalled();
   });
 });

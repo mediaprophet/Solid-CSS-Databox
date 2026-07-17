@@ -37,9 +37,10 @@ describe('A ContainerInitializer', (): void => {
     } as any;
 
     const map = new Map();
+    // Async like the KeyValueStorage interface they stand in for, so a missing `await` would be caught.
     storage = {
-      get: jest.fn((id: string): any => map.get(id)),
-      set: jest.fn((id: string, value: any): any => map.set(id, value)),
+      get: jest.fn(async(id: string): Promise<any> => map.get(id)),
+      set: jest.fn(async(id: string, value: any): Promise<any> => map.set(id, value)),
     } as any;
 
     initializer = new ContainerInitializer({
@@ -58,7 +59,7 @@ describe('A ContainerInitializer', (): void => {
     await expect(initializer.handle()).resolves.toBeUndefined();
     expect(generator.generate).toHaveBeenCalledTimes(1);
     expect(store.setRepresentation).toHaveBeenCalledTimes(2);
-    expect(storage.get(storageKey)).toBe(true);
+    await expect(storage.get(storageKey)).resolves.toBe(true);
   });
 
   it('logs warnings if there was a problem creating a resource.', async(): Promise<void> => {

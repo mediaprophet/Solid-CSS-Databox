@@ -25,7 +25,7 @@ export class SparqlUpdateBodyParser extends BodyParser {
 
   public async handle({ request, metadata }: BodyParserArgs): Promise<SparqlUpdatePatch> {
     const sparql = await readableToString(request);
-    let algebra: Algebra.Operation;
+    let algebra: Algebra.Update;
     try {
       algebra = translate(sparql, { quads: true, baseIRI: metadata.identifier.value }) as Algebra.Update;
     } catch (error: unknown) {

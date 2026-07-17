@@ -1,5 +1,6 @@
 // These two eslint lines are needed to store 'this' in a variable so it can be used
 // in the PassThrough of createQuotaGuard
+import type { TransformCallback } from 'node:stream';
 import { PassThrough } from 'node:stream';
 import type { RepresentationMetadata } from '../../http/representation/RepresentationMetadata';
 import type { ResourceIdentifier } from '../../http/representation/ResourceIdentifier';
@@ -91,17 +92,26 @@ export abstract class QuotaStrategy {
     const { reporter } = this;
 
     return guardStream(new PassThrough({
-      async transform(this, chunk: unknown, enc: string, done: () => void): Promise<void> {
-        total += await reporter.calculateChunkSize(chunk);
-        const availableSpace = await that.getAvailableSpace(identifier);
-        if (availableSpace.amount < total) {
-          this.destroy(new PayloadHttpError(
-            `Quota exceeded by ${total - availableSpace.amount} ${availableSpace.unit} during write`,
-          ));
-        }
+      // The handler catches everything and reports through `done`, so the returned promise never
+      // rejects. The rule only sees a promise-returning function in a void position, not that contract.
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
+      async transform(this, chunk: unknown, enc: string, done: TransformCallback): Promise<void> {
+        try {
+          total += await reporter.calculateChunkSize(chunk);
+          const availableSpace = await that.getAvailableSpace(identifier);
+          if (availableSpace.amount < total) {
+            this.destroy(new PayloadHttpError(
+              `Quota exceeded by ${total - availableSpace.amount} ${availableSpace.unit} during write`,
+            ));
+          }
 
-        this.push(chunk);
-        done();
+          this.push(chunk);
+          done();
+        } catch (error: unknown) {
+          // Without this, a rejection would be unhandled and `done` would never be called,
+          // causing the stream to stall indefinitely.
+          done(error as Error);
+        }
       },
     }));
   }

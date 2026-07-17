@@ -10,6 +10,7 @@ import { ConflictHttpError } from '../../../../src/util/errors/ConflictHttpError
 import { InternalServerError } from '../../../../src/util/errors/InternalServerError';
 import { NotImplementedHttpError } from '../../../../src/util/errors/NotImplementedHttpError';
 
+// eslint-disable-next-line jest/unbound-method -- n3 factory fns never use `this`
 const { blankNode, namedNode, quad, variable } = DataFactory;
 
 describe('An N3Patcher', (): void => {

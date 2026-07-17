@@ -46,7 +46,7 @@ describe('A LinkWebIdHandler', (): void => {
 
     storageStrategy = {
       getStorageIdentifier: jest.fn().mockReturnValue({ path: podUrl }),
-    } satisfies Partial<StorageLocationStrategy> as any;
+    } satisfies Partial<StorageLocationStrategy>;
 
     handler = new LinkWebIdHandler({
       podStore,
@@ -85,7 +85,7 @@ describe('A LinkWebIdHandler', (): void => {
     expect(podStore.findByBaseUrl).toHaveBeenLastCalledWith(podUrl);
     expect(webIdStore.create).toHaveBeenCalledTimes(1);
     expect(webIdStore.create).toHaveBeenLastCalledWith(webId, accountId);
-    expect(ownershipValidator.handleSafe).toHaveBeenCalledTimes(0);
+    expect(ownershipValidator.handleSafe).not.toHaveBeenCalled();
   });
 
   it('throws an error if the WebID is already registered to this account.', async(): Promise<void> => {
@@ -93,9 +93,9 @@ describe('A LinkWebIdHandler', (): void => {
     await expect(handler.handle({ accountId, json } as any)).rejects.toThrow(BadRequestHttpError);
     expect(webIdStore.isLinked).toHaveBeenCalledTimes(1);
     expect(webIdStore.isLinked).toHaveBeenLastCalledWith(webId, accountId);
-    expect(storageStrategy.getStorageIdentifier).toHaveBeenCalledTimes(0);
-    expect(podStore.findByBaseUrl).toHaveBeenCalledTimes(0);
-    expect(webIdStore.create).toHaveBeenCalledTimes(0);
+    expect(storageStrategy.getStorageIdentifier).not.toHaveBeenCalled();
+    expect(podStore.findByBaseUrl).not.toHaveBeenCalled();
+    expect(webIdStore.create).not.toHaveBeenCalled();
   });
 
   it('calls the ownership validator if the account did not create the pod the WebID is in.', async(): Promise<void> => {

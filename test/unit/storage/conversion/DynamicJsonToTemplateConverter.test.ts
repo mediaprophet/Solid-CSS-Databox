@@ -9,7 +9,9 @@ import { NotImplementedHttpError } from '../../../../src/util/errors/NotImplemen
 import { readableToString } from '../../../../src/util/StreamUtil';
 import type { TemplateEngine } from '../../../../src/util/templates/TemplateEngine';
 import { CONTENT_TYPE_TERM, SOLID_META } from '../../../../src/util/Vocabularies';
-import namedNode = DataFactory.namedNode;
+
+// eslint-disable-next-line jest/unbound-method -- n3 factory fns never use `this`
+const { namedNode } = DataFactory;
 
 describe('A DynamicJsonToTemplateConverter', (): void => {
   const templateFile = '/path/to/template.html.ejs';

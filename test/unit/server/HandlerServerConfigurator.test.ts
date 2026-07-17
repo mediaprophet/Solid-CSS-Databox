@@ -58,9 +58,9 @@ describe('A HandlerServerConfigurator', (): void => {
     expect(handler.handleSafe).toHaveBeenCalledTimes(1);
     expect(handler.handleSafe).toHaveBeenLastCalledWith({ request, response });
 
-    expect(response.setHeader).toHaveBeenCalledTimes(0);
-    expect(response.writeHead).toHaveBeenCalledTimes(0);
-    expect(response.end).toHaveBeenCalledTimes(0);
+    expect(response.setHeader).not.toHaveBeenCalled();
+    expect(response.writeHead).not.toHaveBeenCalled();
+    expect(response.end).not.toHaveBeenCalled();
   });
 
   it('returns a 404 when the handler does not do anything.', async(): Promise<void> => {
@@ -68,7 +68,7 @@ describe('A HandlerServerConfigurator', (): void => {
     server.emit('request', request, response);
     await flushPromises();
 
-    expect(response.setHeader).toHaveBeenCalledTimes(0);
+    expect(response.setHeader).not.toHaveBeenCalled();
     expect(response.writeHead).toHaveBeenCalledTimes(1);
     expect(response.writeHead).toHaveBeenLastCalledWith(404);
     expect(response.end).toHaveBeenCalledTimes(1);
@@ -94,8 +94,8 @@ describe('A HandlerServerConfigurator', (): void => {
     server.emit('request', request, response);
     await flushPromises();
 
-    expect(response.setHeader).toHaveBeenCalledTimes(0);
-    expect(response.writeHead).toHaveBeenCalledTimes(0);
+    expect(response.setHeader).not.toHaveBeenCalled();
+    expect(response.writeHead).not.toHaveBeenCalled();
     expect(response.end).toHaveBeenCalledTimes(1);
     expect(response.end).toHaveBeenLastCalledWith();
   });

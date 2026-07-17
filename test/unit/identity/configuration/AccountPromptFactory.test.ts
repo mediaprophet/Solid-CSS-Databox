@@ -5,6 +5,16 @@ import type { CookieStore } from '../../../../src/identity/interaction/account/u
 import type { WebIdStore } from '../../../../src/identity/interaction/webid/util/WebIdStore';
 import DefaultPolicy = interactionPolicy.DefaultPolicy;
 import Prompt = interactionPolicy.Prompt;
+import Check = interactionPolicy.Check;
+
+/**
+ * The `check` field of a {@link Check} is typed as being allowed to return its result synchronously,
+ * even though the checks created by the factory are all asynchronous.
+ * This normalizes such a call to a promise so its result can be asserted.
+ */
+async function runCheck(check: Check, ctx: KoaContextWithOIDC): Promise<boolean> {
+  return check.check(ctx);
+}
 
 describe('An AccountPromptFactory', (): void => {
   let ctx: KoaContextWithOIDC;
@@ -55,7 +65,7 @@ describe('An AccountPromptFactory', (): void => {
       // The first check is added automatically because the prompt is requestable
       expect(prompt.checks).toHaveLength(2);
       const check = prompt.checks[1];
-      await expect(check.check(ctx)).resolves.toBe(false);
+      await expect(runCheck(check, ctx)).resolves.toBe(false);
     });
 
     it('returns true if there is no cookie.', async(): Promise<void> => {
@@ -63,7 +73,7 @@ describe('An AccountPromptFactory', (): void => {
       await expect(factory.handle(policy)).resolves.toBeUndefined();
       const prompt = policy.add.mock.calls[0][0];
       const check = prompt.checks[1];
-      await expect(check.check(ctx)).resolves.toBe(true);
+      await expect(runCheck(check, ctx)).resolves.toBe(true);
     });
 
     it('returns true if there is no matching account.', async(): Promise<void> => {
@@ -72,7 +82,7 @@ describe('An AccountPromptFactory', (): void => {
       await expect(factory.handle(policy)).resolves.toBeUndefined();
       const prompt = policy.add.mock.calls[0][0];
       const check = prompt.checks[1];
-      await expect(check.check(ctx)).resolves.toBe(true);
+      await expect(runCheck(check, ctx)).resolves.toBe(true);
     });
   });
 
@@ -83,7 +93,7 @@ describe('An AccountPromptFactory', (): void => {
       expect(policy.get).toHaveBeenLastCalledWith('login');
       const prompt = policy.get.mock.results[0].value;
       const check = prompt.checks[0];
-      await expect(check.check(ctx)).resolves.toBe(false);
+      await expect(runCheck(check, ctx)).resolves.toBe(false);
     });
 
     it('triggers if the account does not own the WebID.', async(): Promise<void> => {
@@ -91,7 +101,7 @@ describe('An AccountPromptFactory', (): void => {
       await expect(factory.handle(policy)).resolves.toBeUndefined();
       const prompt = policy.get.mock.results[0].value;
       const check = prompt.checks[0];
-      await expect(check.check(ctx)).resolves.toBe(true);
+      await expect(runCheck(check, ctx)).resolves.toBe(true);
     });
 
     it('does not trigger if there is no session with an accountId.', async(): Promise<void> => {
@@ -99,7 +109,7 @@ describe('An AccountPromptFactory', (): void => {
       await expect(factory.handle(policy)).resolves.toBeUndefined();
       const prompt = policy.get.mock.results[0].value;
       const check = prompt.checks[0];
-      await expect(check.check(ctx)).resolves.toBe(false);
+      await expect(runCheck(check, ctx)).resolves.toBe(false);
     });
 
     it('does not trigger if there is no internal account ID in the context.', async(): Promise<void> => {
@@ -107,7 +117,7 @@ describe('An AccountPromptFactory', (): void => {
       await expect(factory.handle(policy)).resolves.toBeUndefined();
       const prompt = policy.get.mock.results[0].value;
       const check = prompt.checks[0];
-      await expect(check.check(ctx)).resolves.toBe(false);
+      await expect(runCheck(check, ctx)).resolves.toBe(false);
     });
 
     it('errors if the login prompt could not be found.', async(): Promise<void> => {

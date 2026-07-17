@@ -2,9 +2,13 @@ import { importOidcProvider } from '../../../src/identity/IdentityUtil';
 
 describe('IdentityUtil', (): void => {
   it('avoids dynamic imports when testing with Jest.', async(): Promise<void> => {
-    const oidc = await importOidcProvider();
-    expect(oidc.default).toBeDefined();
-    expect(oidc.interactionPolicy).toBeDefined();
+    // `jest.requireActual` returns the module itself, while a dynamic import returns a promise
+    const result = importOidcProvider();
+    expect(result).not.toBeInstanceOf(Promise);
+
+    const oidc = await result;
+    expect(typeof oidc.default).toBe('function');
+    expect(typeof oidc.interactionPolicy).toBe('object');
   });
 
   it('imports the oidc-provider package when not running jest.', async(): Promise<void> => {
@@ -14,11 +18,17 @@ describe('IdentityUtil', (): void => {
     delete process.env.JEST_WORKER_ID;
     delete process.env.NODE_ENV;
 
-    const oidc = await importOidcProvider();
-    expect(oidc.default).toBeDefined();
-    expect(oidc.interactionPolicy).toBeDefined();
+    try {
+      const result = importOidcProvider();
+      expect(result).toBeInstanceOf(Promise);
 
-    process.env.JEST_WORKER_ID = jestWorkerId;
-    process.env.NODE_ENV = nodeEnv;
+      const oidc = await result;
+      expect(typeof oidc.default).toBe('function');
+      expect(typeof oidc.interactionPolicy).toBe('object');
+    } finally {
+      // Restore the environment even if an expectation above fails
+      process.env.JEST_WORKER_ID = jestWorkerId;
+      process.env.NODE_ENV = nodeEnv;
+    }
   });
 });

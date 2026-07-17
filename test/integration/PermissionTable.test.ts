@@ -169,7 +169,7 @@ type AuthFunctionType = (
   store: ResourceStore,
   target: string,
   permissions: AclPermissionSet,
-  childPermissions: AclPermissionSet
+  childPermissions: AclPermissionSet,
 ) => Promise<void>;
 
 const rootFilePath = getTestFolder('permissionTable');

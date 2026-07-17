@@ -59,7 +59,7 @@ describe('An IntermediateCreateExtractor', (): void => {
     const resultMap = new IdentifierSetMultiMap([[ identifier, AccessMode.read ]]);
 
     compareMaps(await extractor.handle(operation), resultMap);
-    expect(resourceSet.hasResource).toHaveBeenCalledTimes(0);
+    expect(resourceSet.hasResource).not.toHaveBeenCalled();
   });
 
   it('requests create permissions for all parent containers that do not exist.', async(): Promise<void> => {

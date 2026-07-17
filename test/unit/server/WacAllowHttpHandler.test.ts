@@ -174,9 +174,9 @@ describe('A WacAllowHttpHandler', (): void => {
     operation.method = 'DELETE';
     await expect(handler.handle({ operation, request, response })).resolves.toEqual(output);
     expect(source.handleSafe).toHaveBeenCalledTimes(1);
-    expect(credentialsExtractor.handleSafe).toHaveBeenCalledTimes(0);
-    expect(modesExtractor.handleSafe).toHaveBeenCalledTimes(0);
-    expect(permissionReader.handleSafe).toHaveBeenCalledTimes(0);
+    expect(credentialsExtractor.handleSafe).not.toHaveBeenCalled();
+    expect(modesExtractor.handleSafe).not.toHaveBeenCalled();
+    expect(permissionReader.handleSafe).not.toHaveBeenCalled();
   });
 
   it('immediately returns the source output if the output response has no metadata.', async(): Promise<void> => {
@@ -184,8 +184,8 @@ describe('A WacAllowHttpHandler', (): void => {
     source.handleSafe.mockResolvedValue(output);
     await expect(handler.handle({ operation, request, response })).resolves.toEqual(output);
     expect(source.handleSafe).toHaveBeenCalledTimes(1);
-    expect(credentialsExtractor.handleSafe).toHaveBeenCalledTimes(0);
-    expect(modesExtractor.handleSafe).toHaveBeenCalledTimes(0);
-    expect(permissionReader.handleSafe).toHaveBeenCalledTimes(0);
+    expect(credentialsExtractor.handleSafe).not.toHaveBeenCalled();
+    expect(modesExtractor.handleSafe).not.toHaveBeenCalled();
+    expect(permissionReader.handleSafe).not.toHaveBeenCalled();
   });
 });

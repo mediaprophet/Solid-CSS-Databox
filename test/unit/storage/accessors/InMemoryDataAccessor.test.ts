@@ -12,6 +12,7 @@ import { guardedStreamFrom, readableToString } from '../../../../src/util/Stream
 import { toLiteral } from '../../../../src/util/TermUtil';
 import { CONTENT_TYPE, DC, LDP, POSIX, RDF, XSD } from '../../../../src/util/Vocabularies';
 
+// eslint-disable-next-line jest/unbound-method -- n3 factory fns never use `this`
 const { namedNode } = DataFactory;
 
 class DummyStrategy extends BaseIdentifierStrategy {
@@ -247,7 +248,10 @@ describe('An InMemoryDataAccessor', (): void => {
       extraMetadata.addQuad(namedNode('a'), namedNode('b'), namedNode('c'));
       await expect(accessor.writeMetadata(resourceIdentifier, extraMetadata)).resolves.toBeUndefined();
 
-      await expect(accessor.getMetadata(resourceIdentifier)).resolves.toStrictEqual(extraMetadata);
+      const resultMetadata = await accessor.getMetadata(resourceIdentifier);
+      expect(resultMetadata.identifier.value).toBe(resourceIdentifier.path);
+      expect(resultMetadata.quads()).toHaveLength(1);
+      expect(resultMetadata.quads()).toEqualRdfQuadArray(extraMetadata.quads());
     });
   });
 

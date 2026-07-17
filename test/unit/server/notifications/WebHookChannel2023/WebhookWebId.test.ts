@@ -7,6 +7,7 @@ import { WebhookWebId } from '../../../../../src/server/notifications/WebhookCha
 import { readableToString } from '../../../../../src/util/StreamUtil';
 import { SOLID } from '../../../../../src/util/Vocabularies';
 
+// eslint-disable-next-line jest/unbound-method -- n3 factory fns never use `this`
 const { namedNode, quad } = DataFactory;
 
 describe('A WebhookWebId', (): void => {

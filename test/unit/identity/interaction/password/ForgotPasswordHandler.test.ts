@@ -70,8 +70,8 @@ describe('A ForgotPasswordHandler', (): void => {
     await expect(handler.handle({ json } as any)).resolves.toEqual({ json: { email }});
     expect(passwordStore.findByEmail).toHaveBeenCalledTimes(1);
     expect(passwordStore.findByEmail).toHaveBeenLastCalledWith(email);
-    expect(forgotPasswordStore.generate).toHaveBeenCalledTimes(0);
-    expect(emailSender.handleSafe).toHaveBeenCalledTimes(0);
+    expect(forgotPasswordStore.generate).not.toHaveBeenCalled();
+    expect(emailSender.handleSafe).not.toHaveBeenCalled();
   });
 
   it('sends a mail if a ForgotPassword record could be generated.', async(): Promise<void> => {

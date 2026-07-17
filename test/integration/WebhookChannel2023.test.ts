@@ -19,7 +19,9 @@ import {
   instantiateFromConfig,
   removeFolder,
 } from './Config';
-import quad = DataFactory.quad;
+
+// eslint-disable-next-line jest/unbound-method -- n3 factory fns never use `this`
+const { quad } = DataFactory;
 
 const port = getPort('WebhookChannel2023');
 const baseUrl = `http://localhost:${port}/`;

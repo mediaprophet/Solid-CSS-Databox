@@ -79,12 +79,13 @@ describe('A BaseReadWriteLocker', (): void => {
     const emitter = new EventEmitter();
 
     const unlocks = [ 0, 1, 2 ].map((num): any => new Promise((resolve): any => emitter.on(`release${num}`, resolve)));
-    const promises = [ 0, 1, 2 ].map((num): any => locker.withReadLock(resourceId, async(): Promise<number> => {
-      order.push(`start ${num}`);
-      await unlocks[num];
-      order.push(`finish ${num}`);
-      return num;
-    }));
+    const promises = [ 0, 1, 2 ].map(async(num): Promise<number> =>
+      locker.withReadLock(resourceId, async(): Promise<number> => {
+        order.push(`start ${num}`);
+        await unlocks[num];
+        order.push(`finish ${num}`);
+        return num;
+      }));
 
     // Allow time to attach listeners
     await flushPromises();
@@ -133,12 +134,13 @@ describe('A BaseReadWriteLocker', (): void => {
 
     const resources = [ resourceId, resource2Id ];
     const unlocks = [ 0, 1 ].map((num): any => new Promise((resolve): any => emitter.on(`release${num}`, resolve)));
-    const promises = [ 0, 1 ].map((num): any => locker.withWriteLock(resources[num], async(): Promise<number> => {
-      order.push(`start ${num}`);
-      await unlocks[num];
-      order.push(`finish ${num}`);
-      return num;
-    }));
+    const promises = [ 0, 1 ].map(async(num): Promise<number> =>
+      locker.withWriteLock(resources[num], async(): Promise<number> => {
+        order.push(`start ${num}`);
+        await unlocks[num];
+        order.push(`finish ${num}`);
+        return num;
+      }));
 
     // Allow time to attach listeners
     await flushPromises();

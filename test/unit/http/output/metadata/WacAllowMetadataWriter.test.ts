@@ -9,7 +9,7 @@ describe('A WacAllowMetadataWriter', (): void => {
   let response: HttpResponse;
 
   beforeEach(async(): Promise<void> => {
-    response = createResponse() as HttpResponse;
+    response = createResponse();
   });
 
   it('adds no header if there is no relevant metadata.', async(): Promise<void> => {

@@ -12,6 +12,7 @@ import { UnsupportedMediaTypeHttpError } from '../../../../../src/util/errors/Un
 import { ContentType } from '../../../../../src/util/Header';
 import { guardedStreamFrom } from '../../../../../src/util/StreamUtil';
 
+// eslint-disable-next-line jest/unbound-method -- n3 factory fns never use `this`
 const { namedNode, quad } = DataFactory;
 
 describe('A SparqlUpdateBodyParser', (): void => {

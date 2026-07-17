@@ -21,7 +21,7 @@ describe('An OidcHttpHandler', (): void => {
 
     providerFactory = {
       getProvider: jest.fn().mockResolvedValue(provider),
-    } as any;
+    };
 
     handler = new OidcHttpHandler(providerFactory);
   });

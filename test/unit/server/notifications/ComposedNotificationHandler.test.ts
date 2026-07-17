@@ -80,7 +80,7 @@ describe('A ComposedNotificationHandler', (): void => {
     await expect(handler.handle({ channel, topic })).resolves.toBeUndefined();
     expect(generator.handle).toHaveBeenCalledTimes(1);
     expect(generator.handle).toHaveBeenLastCalledWith({ channel, topic });
-    expect(serializer.handleSafe).toHaveBeenCalledTimes(0);
-    expect(emitter.handleSafe).toHaveBeenCalledTimes(0);
+    expect(serializer.handleSafe).not.toHaveBeenCalled();
+    expect(emitter.handleSafe).not.toHaveBeenCalled();
   });
 });

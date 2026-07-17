@@ -41,7 +41,7 @@ export class BinarySliceResourceStore<T extends ResourceStore = ResourceStore> e
   ): Promise<Representation> {
     const result = await this.source.getRepresentation(identifier, preferences, conditions);
 
-    if (!preferences.range || preferences.range.unit !== 'bytes' || preferences.range.parts.length === 0) {
+    if (preferences.range?.unit !== 'bytes' || preferences.range.parts.length === 0) {
       return result;
     }
     if (result.metadata.has(SOLID_HTTP.unit)) {

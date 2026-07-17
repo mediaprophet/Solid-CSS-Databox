@@ -9,6 +9,7 @@ import { BadRequestHttpError } from '../../../../../src/util/errors/BadRequestHt
 import { UnsupportedMediaTypeHttpError } from '../../../../../src/util/errors/UnsupportedMediaTypeHttpError';
 import { guardedStreamFrom } from '../../../../../src/util/StreamUtil';
 
+// eslint-disable-next-line jest/unbound-method -- n3 factory fns never use `this`
 const { defaultGraph, literal, namedNode, quad, variable } = DataFactory;
 
 describe('An N3PatchBodyParser', (): void => {

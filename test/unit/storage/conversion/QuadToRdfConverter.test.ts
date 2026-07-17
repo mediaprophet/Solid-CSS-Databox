@@ -10,6 +10,7 @@ import { INTERNAL_QUADS } from '../../../../src/util/ContentTypes';
 import { readableToString } from '../../../../src/util/StreamUtil';
 import { DC, PREFERRED_PREFIX_TERM, SOLID_META } from '../../../../src/util/Vocabularies';
 
+// eslint-disable-next-line jest/unbound-method -- n3 factory fns never use `this`
 const { namedNode, triple, quad } = DataFactory;
 
 describe('A QuadToRdfConverter', (): void => {

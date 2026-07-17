@@ -2,9 +2,9 @@ import 'jest-rdf';
 import { DataFactory, Store } from 'n3';
 import { parseQuads, serializeQuads, solveBgp, termToInt, uniqueQuads } from '../../../src/util/QuadUtil';
 import { guardedStreamFrom, readableToString } from '../../../src/util/StreamUtil';
-import variable = DataFactory.variable;
 
-const { literal, namedNode, quad } = DataFactory;
+// eslint-disable-next-line jest/unbound-method -- n3 factory fns never use `this`
+const { literal, namedNode, quad, variable } = DataFactory;
 
 describe('QuadUtil', (): void => {
   describe('#serializeQuads', (): void => {

@@ -120,13 +120,13 @@ describe('A ConsentHandler', (): void => {
     await expect(handler.handle({ json: {}, oidcInteraction } as any)).rejects.toThrow(FoundHttpError);
     expect(grantFn).toHaveBeenCalledTimes(1);
     expect(grantFn).toHaveBeenLastCalledWith({ accountId, clientId });
-    expect(grantFn.find).toHaveBeenCalledTimes(0);
+    expect(grantFn.find).not.toHaveBeenCalled();
   });
 
   it('reuses existing Grant objects.', async(): Promise<void> => {
     oidcInteraction.grantId = '123456';
     await expect(handler.handle({ json: {}, oidcInteraction } as any)).rejects.toThrow(FoundHttpError);
-    expect(grantFn).toHaveBeenCalledTimes(0);
+    expect(grantFn).not.toHaveBeenCalled();
     expect(grantFn.find).toHaveBeenCalledTimes(1);
     expect(grantFn.find).toHaveBeenLastCalledWith('123456');
   });

@@ -2,12 +2,13 @@ import cluster from 'node:cluster';
 import EventEmitter from 'node:events';
 import { cpus } from 'node:os';
 import { ClusterManager } from '../../../../src';
+import type { Logger } from '../../../../src/logging/Logger';
 import * as LogUtil from '../../../../src/logging/LogUtil';
 
 jest.mock('node:cluster');
 jest.mock('node:os', (): any => ({
   ...jest.requireActual('node:os'),
-  cpus: jest.fn().mockImplementation((): any => [{}, {}, {}, {}, {}, {}]),
+  cpus: jest.fn().mockReturnValue([{}, {}, {}, {}, {}, {}]),
 }));
 
 const mockWorker = new EventEmitter() as any;
@@ -16,12 +17,20 @@ mockWorker.process = { pid: 666 };
 describe('A ClusterManager', (): void => {
   const emitter = new EventEmitter();
   const mockCluster = jest.requireMock('node:cluster');
-  const mockLogger = { info: jest.fn(), warn: jest.fn() };
-  jest.spyOn(LogUtil, 'getLoggerFor').mockImplementation((): any => mockLogger);
+  const mockLogger: jest.Mocked<Logger> = {
+    log: jest.fn(),
+    error: jest.fn(),
+    warn: jest.fn(),
+    info: jest.fn(),
+    verbose: jest.fn(),
+    debug: jest.fn(),
+    silly: jest.fn(),
+  };
+  jest.spyOn(LogUtil, 'getLoggerFor').mockReturnValue(mockLogger);
 
   beforeAll((): void => {
     Object.assign(mockCluster, {
-      fork: jest.fn().mockImplementation((): any => mockWorker),
+      fork: jest.fn().mockReturnValue(mockWorker),
       on: jest.fn().mockImplementation(emitter.on.bind(emitter)),
       emit: jest.fn().mockImplementation(emitter.emit.bind(emitter)),
       isMaster: true,
@@ -46,12 +55,12 @@ describe('A ClusterManager', (): void => {
   });
 
   it('errors on invalid workers amount.', (): void => {
-    expect((): ClusterManager => new ClusterManager(10)).toBeDefined();
-    expect((): ClusterManager => new ClusterManager(2)).toBeDefined();
-    expect((): ClusterManager => new ClusterManager(1)).toBeDefined();
-    expect((): ClusterManager => new ClusterManager(0)).toBeDefined();
-    expect((): ClusterManager => new ClusterManager(-1)).toBeDefined();
-    expect((): ClusterManager => new ClusterManager(-5)).toBeDefined();
+    expect((): ClusterManager => new ClusterManager(10)).not.toThrow();
+    expect((): ClusterManager => new ClusterManager(2)).not.toThrow();
+    expect((): ClusterManager => new ClusterManager(1)).not.toThrow();
+    expect((): ClusterManager => new ClusterManager(0)).not.toThrow();
+    expect((): ClusterManager => new ClusterManager(-1)).not.toThrow();
+    expect((): ClusterManager => new ClusterManager(-5)).not.toThrow();
     expect((): ClusterManager => new ClusterManager(-6)).toThrow('Invalid workers value');
     expect((): ClusterManager => new ClusterManager(-10)).toThrow('Invalid workers value');
   });

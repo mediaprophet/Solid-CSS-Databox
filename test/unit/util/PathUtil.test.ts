@@ -235,8 +235,10 @@ describe('PathUtil', (): void => {
   describe('#createSubdomainRegexp', (): void => {
     it('creates a regex to match the URL and extract a subdomain.', (): void => {
       const regex = createSubdomainRegexp('http://test.com/foo/');
-      expect(regex.exec('http://test.com/foo/')![1]).toBeUndefined();
-      expect(regex.exec('http://test.com/foo/bar')![1]).toBeUndefined();
+      // The subdomain group is `undefined` when nothing matched it, which the `string` index type of
+      // `RegExpExecArray` hides. Spreading the match asserts the full result, absent capture group included.
+      expect([ ...regex.exec('http://test.com/foo/')! ]).toEqual([ 'http://test.com/foo/', undefined ]);
+      expect([ ...regex.exec('http://test.com/foo/bar')! ]).toEqual([ 'http://test.com/foo/', undefined ]);
       expect(regex.exec('http://alice.test.com/foo/')![1]).toBe('alice');
       expect(regex.exec('http://alice.bob.test.com/foo/')![1]).toBe('alice.bob');
       expect(regex.exec('http://test.com/')).toBeNull();

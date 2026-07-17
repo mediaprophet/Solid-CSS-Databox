@@ -7,7 +7,9 @@ import { parseLinkHeader } from '../../../util/HeaderUtil';
 import { SOLID_META } from '../../../util/Vocabularies';
 import type { RepresentationMetadata } from '../../representation/RepresentationMetadata';
 import { MetadataParser } from './MetadataParser';
-import namedNode = DataFactory.namedNode;
+
+// eslint-disable-next-line @typescript-eslint/unbound-method -- n3 factory fns never use `this`
+const { namedNode } = DataFactory;
 
 /**
  * Parses Link headers with a specific `rel` value and adds them as metadata with the given predicate.

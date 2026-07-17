@@ -156,7 +156,7 @@ export class BaseLoginAccountStorage<T extends IndexTypeCollection<T>> implement
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     const timer = setTimeout(async(): Promise<void> => {
       const account = await this.storage.get(ACCOUNT_TYPE, id);
-      if (account && account[LOGIN_COUNT] === 0) {
+      if (account?.[LOGIN_COUNT] === 0) {
         this.logger.debug(`Removing account with no login methods ${id}`);
         await this.storage.delete(ACCOUNT_TYPE, id);
       }

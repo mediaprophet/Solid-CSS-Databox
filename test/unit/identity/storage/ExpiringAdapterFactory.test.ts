@@ -77,7 +77,7 @@ describe('An ExpiringAdapterFactory', (): void => {
 
   it('does not do anything if revokeByGrantId finds no matching grant.', async(): Promise<void> => {
     await expect(adapter.revokeByGrantId(grantId)).resolves.toBeUndefined();
-    expect(storage.delete).toHaveBeenCalledTimes(0);
+    expect(storage.delete).not.toHaveBeenCalled();
   });
 
   it('can store multiple ids for a single grant.', async(): Promise<void> => {

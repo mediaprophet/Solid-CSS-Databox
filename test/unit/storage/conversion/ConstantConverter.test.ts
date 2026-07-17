@@ -136,7 +136,7 @@ describe('A ConstantConverter', (): void => {
 
     await expect(converter.handle(args)).rejects.toThrow('Unable to access file used for constant conversion.');
     expect(representation.data.destroy).toHaveBeenCalledTimes(1);
-    expect(createReadStream).toHaveBeenCalledTimes(0);
+    expect(createReadStream).not.toHaveBeenCalled();
   });
 
   it('defaults to the most permissive options.', async(): Promise<void> => {

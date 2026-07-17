@@ -55,14 +55,14 @@ describe('A ConvertingOperationHttpHandler', (): void => {
   it('does not convert if there are no type preferences.', async(): Promise<void> => {
     delete operation.preferences.type;
     await expect(handler.handle({ request, response, operation })).resolves.toBe(handlerResponse);
-    expect(converter.handleSafe).toHaveBeenCalledTimes(0);
+    expect(converter.handleSafe).not.toHaveBeenCalled();
   });
 
   it('does not convert if there is no output data.', async(): Promise<void> => {
     const emptyResponse = new ResponseDescription(200);
     operationHandler.handle.mockResolvedValueOnce(emptyResponse);
     await expect(handler.handle({ request, response, operation })).resolves.toBe(emptyResponse);
-    expect(converter.handleSafe).toHaveBeenCalledTimes(0);
+    expect(converter.handleSafe).not.toHaveBeenCalled();
   });
 
   it('converts the response if requested.', async(): Promise<void> => {

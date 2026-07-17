@@ -174,7 +174,7 @@ export class BinaryEvidenceQuarantine {
    */
   public retrieve(id: string): Buffer | GatewayRejection {
     const entry = this.entries.get(id);
-    if (!entry || entry.record.state !== 'released') {
+    if (entry?.record.state !== 'released') {
       return gatewayRejection(
         DATABOX_GATEWAY_CODES.quarantineWithheld,
         'Binary evidence is not released from quarantine.',

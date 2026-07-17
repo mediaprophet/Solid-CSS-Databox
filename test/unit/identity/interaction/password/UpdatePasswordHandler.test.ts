@@ -61,14 +61,14 @@ describe('An UpdatePasswordHandler', (): void => {
     expect(store.get).toHaveBeenLastCalledWith(id);
     expect(store.authenticate).toHaveBeenCalledTimes(1);
     expect(store.authenticate).toHaveBeenLastCalledWith(email, oldPassword);
-    expect(store.update).toHaveBeenCalledTimes(0);
+    expect(store.update).not.toHaveBeenCalled();
   });
 
   it('throws a 404 if the authenticated accountId is not the owner.', async(): Promise<void> => {
     await expect(handler.handle({ target, json, accountId: 'otherId' } as any)).rejects.toThrow(NotFoundHttpError);
     expect(store.get).toHaveBeenCalledTimes(1);
     expect(store.get).toHaveBeenLastCalledWith(id);
-    expect(store.authenticate).toHaveBeenCalledTimes(0);
-    expect(store.update).toHaveBeenCalledTimes(0);
+    expect(store.authenticate).not.toHaveBeenCalled();
+    expect(store.update).not.toHaveBeenCalled();
   });
 });

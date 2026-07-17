@@ -14,7 +14,7 @@ const mockResource: Resource = {
   property: { type: { value: '#ViolatingClass' }},
 } as any;
 
-const myExpandTerm = jest.fn().mockImplementation((): any => 'http://myFullIRI');
+const myExpandTerm = jest.fn().mockReturnValue('http://myFullIRI');
 
 function mockComponentsManagerFn(length: number): jest.Mocked<ComponentsManager<any>> {
   const resources: Resource[] = Array.from<Resource>({ length }).fill(mockResource);
@@ -22,20 +22,20 @@ function mockComponentsManagerFn(length: number): jest.Mocked<ComponentsManager<
 }
 
 jest.mock('jsonld-context-parser/lib/ContextParser', (): any => ({
-  ContextParser: jest.fn().mockImplementation((): any => ({
+  ContextParser: jest.fn().mockReturnValue({
     parse: jest.fn(async(): Promise<any> => ({
       expandTerm: jest.fn((): any => myExpandTerm()),
     })),
-  })),
+  }),
 }));
 
 jest.mock('componentsjs', (): any => ({
   ComponentsManager: {
     build: jest.fn(async(props: any): Promise<ComponentsManager<any>> => mockComponentsManagerFn(props.length)),
   },
-  PrefetchedDocumentLoader: jest.fn().mockImplementation((): any => ({
+  PrefetchedDocumentLoader: jest.fn().mockReturnValue({
     load: jest.fn(),
-  })),
+  }),
 }));
 
 describe('A SingleThreaded', (): void => {

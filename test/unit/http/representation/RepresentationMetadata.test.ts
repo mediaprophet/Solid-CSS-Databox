@@ -6,6 +6,7 @@ import { RepresentationMetadata } from '../../../../src/http/representation/Repr
 import { ContentType } from '../../../../src/util/Header';
 import { CONTENT_TYPE_TERM, RDFS, SOLID_META } from '../../../../src/util/Vocabularies';
 
+// eslint-disable-next-line jest/unbound-method -- n3 factory fns never use `this`
 const { defaultGraph, literal, namedNode, quad } = DataFactory;
 
 // Helper functions to filter quads
@@ -353,6 +354,10 @@ describe('A RepresentationMetadata', (): void => {
       });
       metadata.contentType = undefined;
       expect(metadata.contentType).toBeUndefined();
+      // False positive: `contentType` and `contentTypeObject` are accessor pairs over the same quads, but
+      // TypeScript keeps the narrowing from the `contentTypeObject` assignment above and does not reset it
+      // when `contentType` is cleared. The subject is genuinely `undefined` here -- that is what this asserts.
+      // eslint-disable-next-line jest/no-unnecessary-assertion
       expect(metadata.contentTypeObject).toBeUndefined();
       expect(metadata.quads(null, SOLID_META.terms.contentTypeParameter, null, null)).toHaveLength(0);
       expect(metadata.quads(null, SOLID_META.terms.value, null, null)).toHaveLength(0);

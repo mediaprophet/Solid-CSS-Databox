@@ -27,6 +27,7 @@ import { guardedStreamFrom } from '../../../src/util/StreamUtil';
 import { AS, CONTENT_TYPE, DC, LDP, PIM, RDF, SOLID_AS, SOLID_HTTP, SOLID_META } from '../../../src/util/Vocabularies';
 import { SimpleSuffixStrategy } from '../../util/SimpleSuffixStrategy';
 
+// eslint-disable-next-line jest/unbound-method -- n3 factory fns never use `this`
 const { namedNode, quad, literal } = DataFactory;
 
 const GENERATED_PREDICATE = namedNode('generated');
@@ -107,7 +108,7 @@ describe('A DataAccessorBasedStore', (): void => {
   const metadataStrategy = new SimpleSuffixStrategy('.meta');
 
   beforeEach(async(): Promise<void> => {
-    mockDate = jest.spyOn(globalThis, 'Date').mockReturnValue(now as any);
+    mockDate = jest.spyOn(globalThis, 'Date').mockReturnValue(now);
 
     accessor = new SimpleDataAccessor();
 
@@ -271,8 +272,9 @@ describe('A DataAccessorBasedStore', (): void => {
       expect(result.size).toBe(2);
       expect(result.get(resourceID)?.get(SOLID_AS.terms.activity)).toEqual(AS.terms.Add);
 
-      const generatedID = [ ...result.keys() ].find((id): boolean => id.path !== resourceID.path)!;
-      expect(generatedID).toBeDefined();
+      const generatedIDs = [ ...result.keys() ].filter((id): boolean => id.path !== resourceID.path);
+      expect(generatedIDs).toHaveLength(1);
+      const [ generatedID ] = generatedIDs;
       expect(generatedID.path).toMatch(new RegExp(`^${root}[^/]+/$`, 'u'));
     });
 
@@ -284,11 +286,12 @@ describe('A DataAccessorBasedStore', (): void => {
       expect(result.size).toBe(2);
       expect(result.get(resourceID)?.get(SOLID_AS.terms.activity)).toEqual(AS.terms.Add);
 
-      const generatedID = [ ...result.keys() ].find((id): boolean => id.path !== resourceID.path)!;
-      expect(generatedID).toBeDefined();
+      const generatedIDs = [ ...result.keys() ].filter((id): boolean => id.path !== resourceID.path);
+      expect(generatedIDs).toHaveLength(1);
+      const [ generatedID ] = generatedIDs;
       expect(generatedID.path).toMatch(new RegExp(`^${root}[^/]+$`, 'u'));
 
-      expect(accessor.data[generatedID.path]).toBeDefined();
+      expect(Object.keys(accessor.data)).toContain(generatedID.path);
       await expect(arrayifyStream(accessor.data[generatedID.path].data)).resolves.toEqual([ resourceData ]);
       expect(accessor.data[generatedID.path].metadata.get(DC.terms.modified)?.value).toBe(now.toISOString());
       expect(result.get(generatedID)?.get(SOLID_AS.terms.activity)).toEqual(AS.terms.Create);
@@ -304,11 +307,12 @@ describe('A DataAccessorBasedStore', (): void => {
       expect(result.size).toBe(2);
       expect(result.get(resourceID)?.get(SOLID_AS.terms.activity)).toEqual(AS.terms.Add);
 
-      const generatedID = [ ...result.keys() ].find((id): boolean => id.path !== resourceID.path)!;
-      expect(generatedID).toBeDefined();
+      const generatedIDs = [ ...result.keys() ].filter((id): boolean => id.path !== resourceID.path);
+      expect(generatedIDs).toHaveLength(1);
+      const [ generatedID ] = generatedIDs;
       expect(generatedID.path).toMatch(new RegExp(`^${root}[^/]*/$`, 'u'));
 
-      expect(accessor.data[generatedID.path]).toBeDefined();
+      expect(Object.keys(accessor.data)).toContain(generatedID.path);
       expect(accessor.data[generatedID.path].metadata.contentType).toBeUndefined();
       expect(result.get(generatedID)?.get(SOLID_AS.terms.activity)).toEqual(AS.terms.Create);
 
@@ -786,7 +790,7 @@ describe('A DataAccessorBasedStore', (): void => {
       expect(result.get({ path: root })?.get(SOLID_AS.terms.activity)).toEqual(AS.terms.Remove);
       expect(result.get({ path: root })?.get(AS.terms.object)?.value).toEqual(resourceID.path);
       expect(result.get(resourceID)?.get(SOLID_AS.terms.activity)).toEqual(AS.terms.Delete);
-      expect(accessor.data[resourceID.path]).toBeUndefined();
+      expect(Object.keys(accessor.data)).not.toContain(resourceID.path);
       expect(accessor.data[root].metadata.get(DC.terms.modified)?.value).toBe(now.toISOString());
       expect(accessor.data[root].metadata.get(GENERATED_PREDICATE)).toBeUndefined();
     });
@@ -796,7 +800,7 @@ describe('A DataAccessorBasedStore', (): void => {
       const result = await store.deleteResource({ path: root });
       expect(result.size).toBe(1);
       expect(result.get({ path: root })?.get(SOLID_AS.terms.activity)).toEqual(AS.terms.Delete);
-      expect(accessor.data[root]).toBeUndefined();
+      expect(Object.keys(accessor.data)).not.toContain(root);
     });
 
     it('will delete a root storage auxiliary resource of a non-root container.', async(): Promise<void> => {
@@ -810,7 +814,7 @@ describe('A DataAccessorBasedStore', (): void => {
       expect(result.size).toBe(2);
       expect(result.get(resourceID)?.get(SOLID_AS.terms.activity)).toEqual(AS.terms.Remove);
       expect(result.get(auxResourceID)?.get(SOLID_AS.terms.activity)).toEqual(AS.terms.Delete);
-      expect(accessor.data[auxResourceID.path]).toBeUndefined();
+      expect(Object.keys(accessor.data)).not.toContain(auxResourceID.path);
     });
 
     it('will delete related auxiliary resources.', async(): Promise<void> => {
@@ -824,8 +828,8 @@ describe('A DataAccessorBasedStore', (): void => {
       expect(result.get({ path: root })?.get(SOLID_AS.terms.activity)).toEqual(AS.terms.Remove);
       expect(result.get(resourceID)?.get(SOLID_AS.terms.activity)).toEqual(AS.terms.Delete);
       expect(result.get(auxResourceID)?.get(SOLID_AS.terms.activity)).toEqual(AS.terms.Delete);
-      expect(accessor.data[resourceID.path]).toBeUndefined();
-      expect(accessor.data[auxResourceID.path]).toBeUndefined();
+      expect(Object.keys(accessor.data)).not.toContain(resourceID.path);
+      expect(Object.keys(accessor.data)).not.toContain(auxResourceID.path);
     });
 
     it('will still delete a resource if deleting auxiliary resources causes errors.', async(): Promise<void> => {
@@ -847,8 +851,8 @@ describe('A DataAccessorBasedStore', (): void => {
       expect(result.size).toBe(2);
       expect(result.get({ path: root })?.get(SOLID_AS.terms.activity)).toEqual(AS.terms.Remove);
       expect(result.get(resourceID)?.get(SOLID_AS.terms.activity)).toEqual(AS.terms.Delete);
-      expect(accessor.data[resourceID.path]).toBeUndefined();
-      expect(accessor.data[auxResourceID.path]).toBeDefined();
+      expect(Object.keys(accessor.data)).not.toContain(resourceID.path);
+      expect(Object.keys(accessor.data)).toContain(auxResourceID.path);
       expect(logger.error).toHaveBeenCalledTimes(1);
       expect(logger.error).toHaveBeenLastCalledWith(
         'Error deleting auxiliary resource http://test.com/resource.dummy: auxiliary error!',

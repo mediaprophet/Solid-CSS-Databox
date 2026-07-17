@@ -1,6 +1,5 @@
 import { RoutingAuxiliaryStrategy } from '../../src/http/auxiliary/RoutingAuxiliaryStrategy';
 import { BasicRepresentation } from '../../src/http/representation/BasicRepresentation';
-import type { Representation } from '../../src/http/representation/Representation';
 import { RepresentationMetadata } from '../../src/http/representation/RepresentationMetadata';
 import { InMemoryDataAccessor } from '../../src/storage/accessors/InMemoryDataAccessor';
 import { DataAccessorBasedStore } from '../../src/storage/DataAccessorBasedStore';
@@ -59,7 +58,7 @@ describe('A LockingResourceStore', (): void => {
     // Spy on a real ResourceLocker and ResourceStore instance
     getRepresentationSpy = jest.spyOn(source, 'getRepresentation');
     getRepresentationSpy.mockReturnValue(new Promise((resolve): any => resolve({ data:
-        guardedStreamFrom([ 1, 2, 3 ]) } as Representation)));
+        guardedStreamFrom([ 1, 2, 3 ]) })));
 
     // Make sure something is in the store before we read from it in our tests.
     await source.setRepresentation({ path }, new BasicRepresentation([ 1, 2, 3 ], APPLICATION_OCTET_STREAM));

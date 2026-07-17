@@ -91,7 +91,7 @@ describe('A WebSocket2023Storer', (): void => {
 
     expect(webSocket.close).toHaveBeenCalledTimes(1);
     expect(webSocket2.close).toHaveBeenCalledTimes(1);
-    expect(webSocketOther.close).toHaveBeenCalledTimes(0);
+    expect(webSocketOther.close).not.toHaveBeenCalled();
 
     jest.useRealTimers();
   });

@@ -7,6 +7,7 @@ import rdfDereferencer from 'rdf-dereference';
 import { RdfToQuadConverter } from '../../../src/storage/conversion/RdfToQuadConverter';
 import { fetchDataset, responseToDataset } from '../../../src/util/FetchUtil';
 
+// eslint-disable-next-line jest/unbound-method -- n3 factory fns never use `this`
 const { namedNode, quad } = DataFactory;
 
 jest.mock('rdf-dereference', (): any => ({

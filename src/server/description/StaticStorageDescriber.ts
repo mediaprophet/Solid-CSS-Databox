@@ -3,8 +3,9 @@ import { DataFactory } from 'n3';
 import { stringToTerm } from 'rdf-string';
 import type { ResourceIdentifier } from '../../http/representation/ResourceIdentifier';
 import { StorageDescriber } from './StorageDescriber';
-import quad = DataFactory.quad;
-import namedNode = DataFactory.namedNode;
+
+// eslint-disable-next-line @typescript-eslint/unbound-method -- n3 factory fns never use `this`
+const { quad, namedNode } = DataFactory;
 
 /**
  * Adds a fixed set of triples to the storage description resource,
