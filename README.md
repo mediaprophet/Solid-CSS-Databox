@@ -1,4 +1,4 @@
-# CSS – Databox
+# Solid Databox
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE.md)
 [![Node.js](https://img.shields.io/badge/Node.js-%3E%3D24-43853d.svg)](package.json)
@@ -9,14 +9,14 @@
 [Forge control panel](https://mediaprophet.github.io/Solid-CSS-Databox/forge/) ·
 [Developer guide](databox/guide/README.md)
 
-CSS – Databox is an organisation-focused Linked Data exchange platform built by refactoring and extending
+Solid Databox is an organisation-focused Linked Data exchange platform built by refactoring and extending
 [Community Solid Server](https://github.com/CommunitySolidServer/CommunitySolidServer) (CSS) 7.1.9.
 
 It gives an organisation a governed, relationship-specific Solid data space for providing information to a person
 and receiving deliberate, purpose-bound information from that person. The person connects through an independent
 Solid Pod, vault, wallet or compatible personal knowledge environment of their choice.
 
-CSS – Databox is not an official upstream Community Solid Server distribution. It retains the modular CSS runtime,
+Solid Databox is not an official upstream Community Solid Server distribution. It retains the modular CSS runtime,
 Solid HTTP surface and Components.js composition while adding the Databox identity, policy, evidence, exchange and
 organisation-tailoring layers in this repository.
 
