@@ -20,9 +20,23 @@ The Databox lives behind a **separate top-level configuration**, not a runtime f
 single-process integration preset:
 
 ```sh
-npm run start:databox-live
-# equivalent to: node ./bin/server.js -c config/databox/live.json
+# Supply a control token of at least 32 bytes — the preset fails closed without one:
+npm run start:databox-live -- --databoxControlToken <32-byte-token>
+# or: CSS_DATABOX_CONTROL_TOKEN=<32-byte-token> npm run start:databox-live
 ```
+
+To run the demo pages bundled with this server (the root page's Seraphim and MegaMart demos, and the
+Admin console), use the token those pages are built against, or their calls get `401`:
+
+```sh
+npm run start:databox-demo
+# node ./bin/server.js -c config/databox/live.json --databoxControlToken 12345678901234567890123456789012
+```
+
+> Starting the server **without** `-c config/databox/live.json` (for example plain `npm start` or
+> `node bin/server.js`) yields a stock CSS server with no Databox extension. It boots normally, but the
+> Forge is absent, so every `/.databox/forge/*` call returns `404` and the demos report
+> "Provisioning failed".
 
 The server starts on `http://localhost:3000/`. Two surfaces are now available:
 
