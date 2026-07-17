@@ -1,3 +1,10 @@
+# Solid Databox container image.
+#
+# This repository ships no registry-publish workflow. Build this image yourself
+# (`docker build -t solid-databox .`) and, if you deploy for your own customers or
+# business, push it to a registry under your own image name and credentials.
+# See documentation/markdown/usage/starting-server.md.
+
 # Build stage
 FROM node:24-alpine AS build
 
@@ -15,8 +22,8 @@ RUN npm ci --unsafe-perm && npm run build
 # Runtime stage
 FROM node:24-alpine
 
-# Add contact informations for questions about the container
-LABEL maintainer="Solid Community Server Docker Image Maintainer <thomas.dupont@ugent.be>"
+# Contact for questions about this image
+LABEL maintainer="Solid Databox <https://github.com/mediaprophet/Solid-CSS-Databox/issues>"
 
 # Container config & data dir for volume sharing
 # Defaults to filestorage with /data directory (passed through CMD below)
