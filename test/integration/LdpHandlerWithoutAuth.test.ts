@@ -726,9 +726,12 @@ describe.each(stores)('An LDP handler allowing all requests %s', (name, { storeC
     });
     expect(preserveResource.status).toBe(205);
 
+    // The metadata is serialized relative to the document URL,
+    // so parse it against that base instead of matching the raw syntax.
     const metadataResponse = await fetch(metaUrl);
-    const metadata = await metadataResponse.text();
-    expect(metadata).toContain(`<${baseUrl}a> <${baseUrl}b> <${baseUrl}c>.`);
+    await expectQuads(metadataResponse, [
+      quad(namedNode(`${baseUrl}a`), namedNode(`${baseUrl}b`), namedNode(`${baseUrl}c`)),
+    ]);
 
     // DELETE
     await deleteResource(resourceUrl);
