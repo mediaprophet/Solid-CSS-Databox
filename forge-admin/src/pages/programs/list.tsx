@@ -3,12 +3,13 @@ import React from "react";
 import { useList } from "@refinedev/core";
 
 export const ProgramsList = () => {
-  const { data, isLoading, isError } = useList({ resource: "programs" });
+  const { result, query } = useList({ resource: "programs" });
+  const { isLoading, isError } = query;
 
   if (isLoading) return <div>Loading programs...</div>;
   if (isError) return <div className="text-red-500">Error fetching programs. Ensure CSS backend is running on port 3000.</div>;
 
-  const programs = data?.data || [];
+  const programs = result?.data || [];
 
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">

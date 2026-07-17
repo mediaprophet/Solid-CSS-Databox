@@ -1,11 +1,19 @@
 // @ts-nocheck
 //
+// NOTE on the @ts-nocheck above (pre-existing): Refine's `DataProvider` methods are
+// generic over a caller-chosen `TData extends BaseRecord`, so no concrete provider can
+// satisfy them without casts at every return. The `DataProvider` annotation below
+// declares the contract this object implements (and is what `<Refine>` typechecks
+// against in App.tsx); runtime conformance is covered by driving the app.
+//
 // DEMO data provider — a fully in-memory, backend-free implementation used ONLY
 // for the static GitHub Pages demo build (selected via VITE_DEMO in App.tsx).
 //
 // It never talks to the CSS Databox Forge. The live app keeps using the real
 // `dataProvider.ts` (which posts to http://localhost:3000/.databox/forge); this
 // file does not modify or import it. Everything here is synthetic sample data.
+
+import type { DataProvider } from "@refinedev/core";
 
 const SYNTHETIC_JWS =
   "eyJhbGciOiJFUzI1NiIsImtpZCI6ImRlbW8ja2V5LTEifQ." +
@@ -74,7 +82,7 @@ let mockOutboundRequests = [
 
 const list = (data: unknown[]) => ({ data, total: data.length });
 
-export const demoDataProvider = {
+export const demoDataProvider: DataProvider = {
   getList: async ({ resource }: any) => {
     switch (resource) {
       case "programs": return list(mockPrograms);
