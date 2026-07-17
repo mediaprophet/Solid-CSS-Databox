@@ -1,10 +1,8 @@
-import { types } from 'node:util';
-
 /**
  * Checks if the input is an {@link Error}.
  */
 export function isError(error: unknown): error is Error {
-  return types.isNativeError(error) ||
+  return Error.isError(error) ||
     (Boolean(error) &&
       typeof (error as Error).name === 'string' &&
       typeof (error as Error).message === 'string' &&

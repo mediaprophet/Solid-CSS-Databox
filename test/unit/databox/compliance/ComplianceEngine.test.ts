@@ -155,8 +155,9 @@ describe('ComplianceEngine', (): void => {
   });
 
   it('covers all unresolvedFacts branches directly.', (): void => {
-    const emptyFacts = {};
+    const emptyFacts = { jurisdiction: 'AU' };
     const fullFacts = {
+      jurisdiction: 'AU',
       isAppEntity: true,
       handlesPersonalInformation: true,
       isCdrParticipant: true,

@@ -1,7 +1,7 @@
 # CSS – Databox
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE.md)
-[![Node.js](https://img.shields.io/badge/Node.js-%3E%3D18-43853d.svg)](package.json)
+[![Node.js](https://img.shields.io/badge/Node.js-%3E%3D24-43853d.svg)](package.json)
 [![Solid](https://img.shields.io/badge/Built_on-Solid-7C4DFF.svg)](https://solidproject.org/)
 
 **Live demo:** [Landing](https://mediaprophet.github.io/Solid-CSS-Databox/) ·
