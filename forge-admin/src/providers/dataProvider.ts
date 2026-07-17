@@ -1,8 +1,10 @@
 // @ts-nocheck
 
 
-const API_URL = "http://localhost:3000/.databox/forge";
-const TOKEN = "12345678901234567890123456789012";
+// Defaults target the local Track B preset; override for a server on another
+// origin. The token is the preset's demonstration control boundary, not IAM.
+const API_URL = import.meta.env.VITE_FORGE_API_URL ?? "http://localhost:3000/.databox/forge";
+const TOKEN = import.meta.env.VITE_FORGE_TOKEN ?? "12345678901234567890123456789012";
 
 const fetchWithAuth = async (url: string, options: RequestInit = {}) => {
   const headers = new Headers(options.headers);
@@ -164,8 +166,9 @@ export const dataProvider = {
   getList: async ({ resource }) => {
     if (resource === "programs") {
       const data = await fetchWithAuth(`${API_URL}/programs`);
-      // Databox returns { programs: [...] }
-      const items = data.programs || [];
+      // GET /programs serializes listPrograms() directly, so the body is a bare
+      // array. Older/proxied deployments may wrap it as { programs: [...] }.
+      const items = Array.isArray(data) ? data : data.programs ?? [];
       // Refine requires an 'id' field for each record
       const formattedItems = items.map((p: any) => ({
         ...p,
@@ -282,7 +285,8 @@ export const dataProvider = {
         method: "POST",
         body: JSON.stringify(variables),
       });
-      return { data: { id: Date.now(), ...data } as any };
+      // Refine keys records by `id`; the Forge's stable key is profileId.
+      return { data: { ...data, id: data.profileId } as any };
     }
     if (resource === "mappings") {
       const data = await fetchWithAuth(`${API_URL}/mappings`, {

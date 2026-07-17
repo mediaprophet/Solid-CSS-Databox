@@ -43,13 +43,31 @@ export interface ForgeProgramInput {
   readonly compliance?: ComplianceEvaluationInput;
 }
 
+/**
+ * The declared legal basis and purposes a record class is bound to. A deposit naming any other
+ * basis or purpose is refused (`legal-basis-mismatch` / `purpose-not-permitted`), so publishing the
+ * bindings lets a source system compose a valid deposit instead of guessing at profile-internal ids.
+ */
+export interface ForgeRecordClassBinding {
+  readonly id: string;
+  readonly label: string;
+  readonly legalBasis: string;
+  readonly purposes: readonly string[];
+}
+
 export interface ForgeProgramSummary {
   readonly profileId: string;
   readonly profileVersion: string;
+  /** Public legal name of the program principal, for operator-facing display. */
+  readonly principalLegalName: string;
+  /** Jurisdiction the principal is accountable in. */
+  readonly principalJurisdiction: string;
   readonly programUri: string;
   readonly databoxBaseUrl: string;
   readonly recordClasses: readonly string[];
   readonly submissionClasses: readonly string[];
+  /** Per-record-class legal basis / purpose bindings (see {@link ForgeRecordClassBinding}). */
+  readonly recordClassBindings: readonly ForgeRecordClassBinding[];
   readonly legalComplianceClaimed: boolean;
 }
 
@@ -184,10 +202,18 @@ export class MappingForge {
     const summary: ForgeProgramSummary = {
       profileId: profile.profileId,
       profileVersion: profile.profileVersion,
+      principalLegalName: profile.program.principal.legalName,
+      principalJurisdiction: profile.program.principal.jurisdiction,
       programUri: input.programUri,
       databoxBaseUrl: input.databoxBaseUrl,
       recordClasses: profile.recordClasses.map((entry): string => entry.id),
       submissionClasses: profile.submissionClasses.map((entry): string => entry.id),
+      recordClassBindings: profile.recordClasses.map((entry): ForgeRecordClassBinding => ({
+        id: entry.id,
+        label: entry.label,
+        legalBasis: entry.legalBasis,
+        purposes: entry.purposes,
+      })),
       legalComplianceClaimed: input.claimsLegalCompliance === true,
     };
     const statusListCredential = `${issuer}/status/1`;
