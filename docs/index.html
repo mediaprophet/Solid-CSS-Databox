@@ -810,7 +810,9 @@
     const observerOptions = {
       root: null,
       rootMargin: '0px',
-      threshold: 0.15
+      // Any part visible reveals the element. A positive threshold can never fire
+      // for a section taller than the viewport, which silently hides it.
+      threshold: 0
     };
     const observer = new IntersectionObserver((entries, observer) => {
       entries.forEach(entry => {
