@@ -17,21 +17,33 @@ let mockPrograms = [
   {
     id: "prog-seraphim-welfare",
     profileId: "prog-seraphim-welfare",
+    principalLegalName: "Seraphim Welfare Demonstrator (SYNTHETIC)",
+    principalJurisdiction: "AU",
     programUri: "https://databox.demo.example/seraphim/program",
     databoxBaseUrl: "https://databox.demo.example/seraphim/boxes/",
-    profile: { "schema:name": "Seraphim Welfare Demonstrator (SYNTHETIC)" },
     recordClasses: ["rc-case-note"],
     submissionClasses: [],
+    recordClassBindings: [
+      { id: "rc-case-note", label: "Case note", legalBasis: "lb-public-task", purposes: ["p-casework"] },
+    ],
     legalComplianceClaimed: false,
   },
   {
     id: "prog-megamart-rewards-loyalty",
     profileId: "prog-megamart-rewards-loyalty",
+    principalLegalName: "MegaMart Rewards Pty Ltd (SYNTHETIC)",
+    principalJurisdiction: "AU",
     programUri: "https://databox.demo.example/megamart/program",
     databoxBaseUrl: "https://databox.demo.example/megamart/boxes/",
-    profile: { "schema:name": "MegaMart Rewards Pty Ltd (SYNTHETIC)" },
     recordClasses: ["rc-receipt", "rc-warranty", "rc-recall", "rc-rewards"],
     submissionClasses: ["sc-correction", "sc-warranty-claim", "sc-dietary-pref"],
+    // Mirrors the loyalty profile's record-class → legal basis / purpose bindings.
+    recordClassBindings: [
+      { id: "rc-receipt", label: "Digital receipt", legalBasis: "lb-contract", purposes: ["p-account"] },
+      { id: "rc-warranty", label: "Warranty record", legalBasis: "lb-contract", purposes: ["p-warranty"] },
+      { id: "rc-recall", label: "Product recall notice", legalBasis: "lb-legal-obligation", purposes: ["p-safety"] },
+      { id: "rc-rewards", label: "Rewards statement", legalBasis: "lb-contract", purposes: ["p-rewards"] },
+    ],
     legalComplianceClaimed: false,
   },
 ];
@@ -91,15 +103,26 @@ export const demoDataProvider = {
 
   create: async ({ resource, variables }: any) => {
     if (resource === "programs") {
-      const profileId = variables.profileId || `prog-demo-${Date.now()}`;
+      // Mirrors the Forge: the profile is the source of truth for id and principal.
+      const profile = variables.profile ?? {};
+      const profileId = profile.profileId || `prog-demo-${Date.now()}`;
+      const principal = profile.program?.principal ?? {};
       const record = {
         id: profileId,
         profileId,
+        profileVersion: profile.profileVersion || "1.0.0",
+        principalLegalName: principal.legalName || "New Demo Program (SYNTHETIC)",
+        principalJurisdiction: principal.jurisdiction || "AU",
         programUri: variables.programUri || `https://databox.demo.example/programs/${encodeURIComponent(profileId)}`,
         databoxBaseUrl: variables.databoxBaseUrl || "https://databox.demo.example/boxes/",
-        profile: variables.profile || { "schema:name": "New Demo Program (SYNTHETIC)" },
-        recordClasses: [],
-        submissionClasses: [],
+        recordClasses: (profile.recordClasses ?? []).map((r: any) => r.id ?? r),
+        submissionClasses: (profile.submissionClasses ?? []).map((s: any) => s.id ?? s),
+        recordClassBindings: (profile.recordClasses ?? []).map((r: any) => ({
+          id: r.id ?? r,
+          label: r.label ?? r.id ?? r,
+          legalBasis: r.legalBasis ?? "",
+          purposes: r.purposes ?? [],
+        })),
         legalComplianceClaimed: false,
       };
       mockPrograms = [record, ...mockPrograms.filter((p) => p.profileId !== profileId)];

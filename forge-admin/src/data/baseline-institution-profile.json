@@ -1,0 +1,274 @@
+{
+  "schemaVersion": "dbx-institution-profile/1.0.0",
+  "profileId": "prog-megamart-rewards-loyalty",
+  "profileVersion": "1.0.0",
+  "effectiveInterval": {
+    "effectiveFrom": "2026-01-01T00:00:00Z",
+    "effectiveUntil": "2027-01-01T00:00:00Z"
+  },
+  "synthetic": true,
+  "program": {
+    "principal": {
+      "id": "party-principal",
+      "legalName": "MegaMart Rewards Pty Ltd (SYNTHETIC — not a real organisation)",
+      "jurisdiction": "AU",
+      "contact": "mailto:privacy@megamart-rewards.example"
+    },
+    "accountableParty": {
+      "id": "party-accountable",
+      "legalName": "MegaMart Loyalty Program Office (SYNTHETIC)",
+      "jurisdiction": "AU"
+    }
+  },
+  "processors": [
+    {
+      "id": "proc-notify",
+      "legalName": "Synthetic Notification Processor Pty Ltd (SYNTHETIC)",
+      "jurisdiction": "AU",
+      "purposes": [ "p-account" ],
+      "readsPayload": false
+    },
+    {
+      "id": "proc-safety",
+      "legalName": "Synthetic Allergen & Recall Alerting Processor (SYNTHETIC)",
+      "jurisdiction": "AU",
+      "purposes": [ "p-safety" ],
+      "readsPayload": true
+    }
+  ],
+  "tenancy": {
+    "deploymentModel": "program-subdomain",
+    "origin": "https://databox.megamart-rewards.example/",
+    "tokenAudience": "https://databox.megamart-rewards.example/"
+  },
+  "crypto": {
+    "signingSuite": "ES256",
+    "signingKeyRef": "kms://program/megamart-rewards/signing/1",
+    "atRestEncryption": { "required": true, "perTenantKeys": true },
+    "applicationLevelEncryption": "optional"
+  },
+  "identityProviders": [
+    {
+      "id": "idp-mega-oidc",
+      "issuer": "https://id.megamart-rewards.example/",
+      "protocol": "solid-oidc",
+      "accreditation": "SYNTHETIC-FRAMEWORK:IP2",
+      "claimContract": [ "sub", "ial", "aal", "auth_time", "iss" ]
+    },
+    {
+      "id": "idp-govid",
+      "issuer": "https://id.govid.example/",
+      "protocol": "oidc",
+      "accreditation": "SYNTHETIC-TDIF:IP3",
+      "claimContract": [ "sub", "ial", "aal", "iss", "acr" ]
+    }
+  ],
+  "assuranceMappings": [
+    { "issuer": "idp-govid", "dimension": "identityProofing", "claim": "ial", "level": 3 },
+    { "issuer": "idp-mega-oidc", "dimension": "identityProofing", "claim": "ial", "level": 2 },
+    { "issuer": "idp-govid", "dimension": "authenticatorStrength", "claim": "aal", "level": 3 },
+    { "issuer": "idp-mega-oidc", "dimension": "authenticatorStrength", "claim": "aal", "level": 2 },
+    { "issuer": "idp-mega-oidc", "dimension": "authenticationFreshness", "claim": "auth_time", "level": 2 },
+    { "issuer": "idp-govid", "dimension": "federationTrust", "claim": "iss", "level": 2 },
+    { "issuer": "idp-mega-oidc", "dimension": "federationTrust", "claim": "iss", "level": 1 },
+    { "issuer": "idp-govid", "dimension": "stepUpState", "claim": "acr", "level": 1 }
+  ],
+  "tokenBroker": {
+    "adopted": true,
+    "brokerOrigin": "https://broker.megamart-rewards.example/",
+    "tokenExchange": "rfc8693",
+    "senderConstraint": "dpop"
+  },
+  "offlineGrantPolicy": {
+    "allowOffline": true,
+    "maxOfflineMinutes": 60
+  },
+  "recordClasses": [
+    {
+      "id": "rc-receipt",
+      "label": "Digital receipt (line items, product info, allergen metadata)",
+      "minimumAssurance": [
+        { "dimension": "identityProofing", "minLevel": 2 },
+        { "dimension": "authenticatorStrength", "minLevel": 2 },
+        { "dimension": "authenticationFreshness", "minLevel": 1 }
+      ],
+      "policyTemplate": "pt-records",
+      "legalBasis": "lb-contract",
+      "purposes": [ "p-account" ],
+      "existenceVisibility": "visible"
+    },
+    {
+      "id": "rc-warranty",
+      "label": "Warranty record",
+      "minimumAssurance": [
+        { "dimension": "identityProofing", "minLevel": 2 },
+        { "dimension": "authenticatorStrength", "minLevel": 2 }
+      ],
+      "policyTemplate": "pt-records",
+      "legalBasis": "lb-contract",
+      "purposes": [ "p-warranty" ],
+      "existenceVisibility": "visible"
+    },
+    {
+      "id": "rc-product-info",
+      "label": "Product information & allergen metadata",
+      "minimumAssurance": [
+        { "dimension": "identityProofing", "minLevel": 1 }
+      ],
+      "policyTemplate": "pt-records",
+      "legalBasis": "lb-legal-obligation",
+      "purposes": [ "p-safety" ],
+      "existenceVisibility": "visible"
+    },
+    {
+      "id": "rc-recall",
+      "label": "Product recall notice",
+      "minimumAssurance": [
+        { "dimension": "identityProofing", "minLevel": 1 }
+      ],
+      "policyTemplate": "pt-records",
+      "legalBasis": "lb-legal-obligation",
+      "purposes": [ "p-safety" ],
+      "existenceVisibility": "visible"
+    },
+    {
+      "id": "rc-rewards",
+      "label": "Rewards / loyalty points statement",
+      "minimumAssurance": [
+        { "dimension": "identityProofing", "minLevel": 1 },
+        { "dimension": "authenticatorStrength", "minLevel": 1 }
+      ],
+      "policyTemplate": "pt-records",
+      "legalBasis": "lb-contract",
+      "purposes": [ "p-rewards" ],
+      "existenceVisibility": "visible"
+    },
+    {
+      "id": "rc-disposition",
+      "label": "Review disposition (staff correction / warranty outcome)",
+      "minimumAssurance": [
+        { "dimension": "identityProofing", "minLevel": 2 },
+        { "dimension": "authenticatorStrength", "minLevel": 2 },
+        { "dimension": "stepUpState", "minLevel": 1 }
+      ],
+      "policyTemplate": "pt-records",
+      "legalBasis": "lb-contract",
+      "purposes": [ "p-correction" ],
+      "existenceVisibility": "suppressed"
+    }
+  ],
+  "submissionClasses": [
+    {
+      "id": "sc-correction",
+      "label": "Correction request",
+      "minimumAssurance": [
+        { "dimension": "identityProofing", "minLevel": 1 }
+      ],
+      "policyTemplate": "pt-submissions",
+      "purposes": [ "p-correction" ]
+    },
+    {
+      "id": "sc-warranty-claim",
+      "label": "Warranty claim",
+      "minimumAssurance": [
+        { "dimension": "identityProofing", "minLevel": 2 },
+        { "dimension": "authenticatorStrength", "minLevel": 1 }
+      ],
+      "policyTemplate": "pt-submissions",
+      "purposes": [ "p-warranty" ]
+    },
+    {
+      "id": "sc-dietary-pref",
+      "label": "Dietary / allergen warning preference",
+      "minimumAssurance": [
+        { "dimension": "identityProofing", "minLevel": 1 }
+      ],
+      "policyTemplate": "pt-submissions",
+      "purposes": [ "p-safety" ]
+    }
+  ],
+  "policies": {
+    "templates": [
+      { "id": "pt-records", "version": "1.0.0", "odrlProfile": "https://w3id.org/solid-databox/odrl-profile/v1" },
+      { "id": "pt-submissions", "version": "1.0.0", "odrlProfile": "https://w3id.org/solid-databox/odrl-profile/v1" }
+    ],
+    "conflictStrategy": "prohibition-overrides",
+    "effectiveTimeBehavior": "prospective"
+  },
+  "compiledPolicy": {
+    "compiledPolicyDigest": "urn:sha256:SYNTHETIC-compiled-loyalty-0001",
+    "corpusManifestDigest": "urn:sha256:SYNTHETIC-corpus-loyalty-0001",
+    "attestationId": "attest-synthetic-loyalty-0001",
+    "evaluatorVersion": "dbx-eval/1.0.0",
+    "profileDigest": "urn:sha256:SYNTHETIC-profile-loyalty-0001",
+    "attestationStatus": "attested",
+    "legalComplianceClaimed": false
+  },
+  "legislativeCorpus": {
+    "manifestDigest": "urn:sha256:SYNTHETIC-corpus-loyalty-0001",
+    "entries": [
+      {
+        "sourceUri": "https://legislation.example/synthetic/consumer-guarantees-act",
+        "jurisdiction": "AU",
+        "expressionVersion": "2025-01-01",
+        "retrievedAt": "2026-01-01T00:00:00Z",
+        "mediaType": "text/html",
+        "contentDigest": "urn:sha256:SYNTHETIC-source-consumer-0001"
+      },
+      {
+        "sourceUri": "https://legislation.example/synthetic/food-safety-standards",
+        "jurisdiction": "AU",
+        "expressionVersion": "2025-06-01",
+        "retrievedAt": "2026-01-01T00:00:00Z",
+        "mediaType": "text/html",
+        "contentDigest": "urn:sha256:SYNTHETIC-source-foodsafety-0001"
+      }
+    ]
+  },
+  "legalBases": [
+    { "id": "lb-contract", "description": "Performance of the loyalty-membership contract (SYNTHETIC)." },
+    { "id": "lb-legal-obligation", "description": "Product-safety / recall legal obligation (SYNTHETIC)." },
+    { "id": "lb-consent", "description": "Consent for dietary / allergen warning preferences (SYNTHETIC)." }
+  ],
+  "declaredPurposes": [
+    { "id": "p-account", "description": "Maintain the loyalty account relationship (SYNTHETIC)." },
+    { "id": "p-correction", "description": "Handle correction requests and their dispositions (SYNTHETIC)." },
+    { "id": "p-warranty", "description": "Warranty servicing and claims (SYNTHETIC)." },
+    { "id": "p-safety", "description": "Product safety, recall and allergen alerting (SYNTHETIC)." },
+    { "id": "p-rewards", "description": "Loyalty rewards administration (SYNTHETIC)." }
+  ],
+  "retention": [
+    { "recordClass": "rc-receipt", "retentionDays": 2555, "deletionMode": "tombstone", "tombstoneOnExpiry": true },
+    { "recordClass": "rc-warranty", "retentionDays": 3650, "deletionMode": "supersede", "tombstoneOnExpiry": false },
+    { "recordClass": "rc-product-info", "retentionDays": 1825, "deletionMode": "crypto-erase", "tombstoneOnExpiry": false },
+    { "recordClass": "rc-recall", "retentionDays": 3650, "deletionMode": "tombstone", "tombstoneOnExpiry": true },
+    { "recordClass": "rc-rewards", "retentionDays": 2555, "deletionMode": "supersede", "tombstoneOnExpiry": false },
+    { "recordClass": "rc-disposition", "retentionDays": 3650, "deletionMode": "tombstone", "tombstoneOnExpiry": true }
+  ],
+  "systemsOfRecord": [
+    { "id": "sor-pos", "label": "Point of sale", "recordClasses": [ "rc-receipt", "rc-warranty", "rc-rewards" ] },
+    { "id": "sor-catalog", "label": "Product catalogue & safety", "recordClasses": [ "rc-product-info", "rc-recall" ] },
+    { "id": "sor-care", "label": "Customer care review queue", "recordClasses": [ "rc-disposition" ] }
+  ],
+  "notifications": {
+    "notificationFormat": "solid-notification/websocket",
+    "receiptFormat": "vc-jose-cose/es256"
+  },
+  "redress": {
+    "stepUpSupported": true,
+    "existenceVisibilityDefault": "visible",
+    "correctionResponseDays": 30,
+    "appealRoutes": [
+      {
+        "id": "appeal-internal",
+        "responsibleBody": "MegaMart Rewards Internal Review (SYNTHETIC)",
+        "filingMethod": "https://appeal.megamart-rewards.example/file"
+      },
+      {
+        "id": "appeal-regulator",
+        "responsibleBody": "Synthetic Information Commissioner (SYNTHETIC — not a real regulator)",
+        "filingMethod": "https://appeal.regulator.example/file"
+      }
+    ]
+  }
+}

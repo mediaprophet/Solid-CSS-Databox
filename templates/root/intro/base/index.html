@@ -320,7 +320,12 @@
       });
       if (!res.ok) {
         const text = await res.text();
-        if (text.includes('already registered')) return { profileId: profile.profileId };
+        // Re-running a demo against a server that still holds the program is fine:
+        // reuse the program this call actually registered, never an unrelated one —
+        // returning the wrong id silently routes the deposit into another program.
+        if (text.includes('already registered') && body?.profile?.profileId) {
+          return { profileId: body.profile.profileId };
+        }
         throw new Error(`API error ${res.status}: ${text}`);
       }
       return res.json();

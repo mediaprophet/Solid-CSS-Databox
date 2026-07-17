@@ -34,12 +34,15 @@ export const ProgramsList = () => {
             </thead>
             <tbody>
               {programs.map((p: any) => {
-                const pName = p.profile?.name || p.profile?.["schema:name"] || "Unknown Org";
+                const pName = p.principalLegalName || p.profile?.program?.principal?.legalName || p.profileId;
                 return (
                   <tr key={p.id} className="hover:bg-white/5 transition-colors">
                     <td className="p-4 border-b border-white/5">
                       <strong className="block">{pName}</strong>
-                      <span className="text-xs text-slate-400">{p.profileId}</span>
+                      {pName !== p.profileId && <span className="text-xs text-slate-400">{p.profileId}</span>}
+                      {p.principalJurisdiction && (
+                        <span className="text-xs text-slate-500 ml-2">{p.principalJurisdiction}</span>
+                      )}
                     </td>
                     <td className="p-4 border-b border-white/5">
                       <a href={p.programUri} target="_blank" rel="noreferrer" className="text-[#d4af37] hover:underline">
