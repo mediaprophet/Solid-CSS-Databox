@@ -1,18 +1,22 @@
 {
   "name": "@solid/community-server",
   "version": "8.0.0",
-  "description": "Community Solid Server: an open and modular implementation of the Solid specifications",
+  "description": "Solid Databox: an organisation-hosted, governed Solid data exchange, built on the Community Solid Server.",
   "license": "MIT",
-  "homepage": "https://github.com/CommunitySolidServer/CommunitySolidServer#readme",
-  "repository": "git@github.com:CommunitySolidServer/CommunitySolidServer.git",
+  "homepage": "https://github.com/mediaprophet/Solid-CSS-Databox#readme",
+  "repository": "git@github.com:mediaprophet/Solid-CSS-Databox.git",
   "bugs": {
-    "url": "https://github.com/CommunitySolidServer/CommunitySolidServer/issues"
+    "url": "https://github.com/mediaprophet/Solid-CSS-Databox/issues"
   },
   "keywords": [
     "solid",
     "linked-data",
     "rdf",
-    "ldp"
+    "ldp",
+    "databox",
+    "data-exchange",
+    "consent",
+    "data-portability"
   ],
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
