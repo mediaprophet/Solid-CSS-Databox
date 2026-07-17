@@ -4,6 +4,15 @@ import type { DataAccessor } from '../../../../src/storage/accessors/DataAccesso
 import { FilterMetadataDataAccessor } from '../../../../src/storage/accessors/FilterMetadataDataAccessor';
 import { guardedStreamFrom } from '../../../../src/util/StreamUtil';
 
+// Assigning these fields directly in a test would cause TypeScript to narrow their types,
+// so it would no longer see that the accessors below can remove them again.
+function createMetadata(): RepresentationMetadata {
+  const metadata = new RepresentationMetadata();
+  metadata.contentLength = 40;
+  metadata.contentType = APPLICATION_JSON;
+  return metadata;
+}
+
 describe('FilterMetadataDataAccessor', (): void => {
   let childAccessor: jest.Mocked<DataAccessor>;
 
@@ -24,9 +33,7 @@ describe('FilterMetadataDataAccessor', (): void => {
       childAccessor,
       [ new FilterPattern(undefined, CONTENT_LENGTH) ],
     );
-    const mockMetadata = new RepresentationMetadata();
-    mockMetadata.contentLength = 40;
-    mockMetadata.contentType = APPLICATION_JSON;
+    const mockMetadata = createMetadata();
     await filterMetadataAccessor.writeDocument(mockIdentifier, mockData, mockMetadata);
     expect(childAccessor.writeDocument).toHaveBeenCalledTimes(1);
     expect(childAccessor.writeDocument).toHaveBeenLastCalledWith(mockIdentifier, mockData, mockMetadata);
@@ -40,9 +47,7 @@ describe('FilterMetadataDataAccessor', (): void => {
       new FilterPattern(undefined, CONTENT_TYPE),
     ];
     const filterMetadataAccessor = new FilterMetadataDataAccessor(childAccessor, filters);
-    const mockMetadata = new RepresentationMetadata();
-    mockMetadata.contentLength = 40;
-    mockMetadata.contentType = APPLICATION_JSON;
+    const mockMetadata = createMetadata();
     await filterMetadataAccessor.writeDocument(mockIdentifier, mockData, mockMetadata);
     expect(childAccessor.writeDocument).toHaveBeenCalledTimes(1);
     expect(childAccessor.writeDocument).toHaveBeenLastCalledWith(mockIdentifier, mockData, mockMetadata);
@@ -55,9 +60,7 @@ describe('FilterMetadataDataAccessor', (): void => {
       childAccessor,
       [ new FilterPattern(undefined, CONTENT_LENGTH) ],
     );
-    const mockMetadata = new RepresentationMetadata();
-    mockMetadata.contentLength = 40;
-    mockMetadata.contentType = APPLICATION_JSON;
+    const mockMetadata = createMetadata();
     await filterMetadataAccessor.writeContainer(mockIdentifier, mockMetadata);
     expect(childAccessor.writeContainer).toHaveBeenCalledTimes(1);
     expect(childAccessor.writeContainer).toHaveBeenLastCalledWith(mockIdentifier, mockMetadata);
@@ -71,9 +74,7 @@ describe('FilterMetadataDataAccessor', (): void => {
       new FilterPattern(undefined, CONTENT_TYPE),
     ];
     const filterMetadataAccessor = new FilterMetadataDataAccessor(childAccessor, filters);
-    const mockMetadata = new RepresentationMetadata();
-    mockMetadata.contentLength = 40;
-    mockMetadata.contentType = APPLICATION_JSON;
+    const mockMetadata = createMetadata();
     await filterMetadataAccessor.writeContainer(mockIdentifier, mockMetadata);
     expect(childAccessor.writeContainer).toHaveBeenCalledTimes(1);
     expect(childAccessor.writeContainer).toHaveBeenLastCalledWith(mockIdentifier, mockMetadata);
@@ -84,9 +85,7 @@ describe('FilterMetadataDataAccessor', (): void => {
   it('an empty filter matches all metadata entries, and thus everything is removed.', async(): Promise<void> => {
     const filters = [ new FilterPattern() ];
     const filterMetadataAccessor = new FilterMetadataDataAccessor(childAccessor, filters);
-    const mockMetadata = new RepresentationMetadata();
-    mockMetadata.contentLength = 40;
-    mockMetadata.contentType = APPLICATION_JSON;
+    const mockMetadata = createMetadata();
     await filterMetadataAccessor.writeContainer(mockIdentifier, mockMetadata);
     expect(childAccessor.writeContainer).toHaveBeenCalledTimes(1);
     expect(childAccessor.writeContainer).toHaveBeenLastCalledWith(mockIdentifier, mockMetadata);

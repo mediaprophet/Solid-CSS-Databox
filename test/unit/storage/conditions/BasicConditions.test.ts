@@ -55,7 +55,7 @@ describe('A BasicConditions', (): void => {
     eTagHandler.matchesETag.mockReturnValue(false);
     const conditions = new BasicConditions(eTagHandler, { matchesETag: [ '*' ]});
     expect(conditions.matchesMetadata(metadata, true)).toBe(true);
-    expect(eTagHandler.matchesETag).toHaveBeenCalledTimes(0);
+    expect(eTagHandler.matchesETag).not.toHaveBeenCalled();
   });
 
   it('requires notMatchesETag to not match the provided ETag with the metadata.', async(): Promise<void> => {

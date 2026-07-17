@@ -85,5 +85,32 @@ describe('A QuotaStrategy', (): void => {
       });
       await expect(destroy).resolves.toBeUndefined();
     });
+
+    it('should error the stream if determining the chunk size rejects.', async(): Promise<void> => {
+      const failure = new Error('reporter failed');
+      mockReporter.calculateChunkSize.mockRejectedValue(failure);
+      const stream = guardedStreamFrom([ 'data' ]);
+      const track = await strategy.createQuotaGuard({ path: `${base}nested/file3.txt` });
+      const piped = pipeSafely(stream, track);
+
+      // Without the rejection being routed to `done`, the stream would stall here instead of erroring.
+      const error = new Promise<Error>((resolve): void => {
+        piped.on('error', resolve);
+      });
+      await expect(error).resolves.toBe(failure);
+    });
+
+    it('should error the stream if reading the available space rejects.', async(): Promise<void> => {
+      const failure = new Error('space lookup failed');
+      jest.spyOn(strategy, 'getAvailableSpace').mockRejectedValue(failure);
+      const stream = guardedStreamFrom([ 'data' ]);
+      const track = await strategy.createQuotaGuard({ path: `${base}nested/file4.txt` });
+      const piped = pipeSafely(stream, track);
+
+      const error = new Promise<Error>((resolve): void => {
+        piped.on('error', resolve);
+      });
+      await expect(error).resolves.toBe(failure);
+    });
   });
 });

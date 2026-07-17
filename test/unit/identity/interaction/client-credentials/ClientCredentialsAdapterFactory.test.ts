@@ -57,7 +57,7 @@ describe('A ClientCredentialsAdapterFactory', (): void => {
     await expect(adapter.find(label)).resolves.toEqual({ payload: 'payload' });
     expect(sourceAdapter.find).toHaveBeenCalledTimes(1);
     expect(sourceAdapter.find).toHaveBeenLastCalledWith(label);
-    expect(credentialsStore.findByLabel).toHaveBeenCalledTimes(0);
+    expect(credentialsStore.findByLabel).not.toHaveBeenCalled();
   });
 
   it('returns no result if there is no token for the label.', async(): Promise<void> => {

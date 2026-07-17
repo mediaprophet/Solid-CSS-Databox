@@ -86,9 +86,9 @@ describe('A ParallelHandler', (): void => {
       handlers[1].canHandle.mockRejectedValueOnce(error);
       await expect(composite.handleSafe('abc')).rejects.toThrow(error);
 
-      expect(handlers[0].handle).toHaveBeenCalledTimes(0);
-      expect(handlers[1].handle).toHaveBeenCalledTimes(0);
-      expect(handlers[2].handle).toHaveBeenCalledTimes(0);
+      expect(handlers[0].handle).not.toHaveBeenCalled();
+      expect(handlers[1].handle).not.toHaveBeenCalled();
+      expect(handlers[2].handle).not.toHaveBeenCalled();
     });
 
     it('fails if one handle fails.', async(): Promise<void> => {

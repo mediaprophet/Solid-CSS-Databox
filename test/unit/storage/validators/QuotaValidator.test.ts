@@ -69,7 +69,7 @@ describe('QuotaValidator', (): void => {
     // Step 3
     it('should destroy the stream when quota is exceeded during write.', async(): Promise<void> => {
       mockedStrategy.createQuotaGuard.mockResolvedValueOnce(guardStream(new PassThrough({
-        async transform(this): Promise<void> {
+        transform(this): void {
           this.destroy(new Error('error'));
         },
       })));

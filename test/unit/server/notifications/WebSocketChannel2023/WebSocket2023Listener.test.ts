@@ -14,11 +14,11 @@ import {
 import { NotImplementedHttpError } from '../../../../../src/util/errors/NotImplementedHttpError';
 
 jest.mock('ws', (): any => ({
-  WebSocketServer: jest.fn().mockImplementation((): any => ({
+  WebSocketServer: jest.fn().mockReturnValue({
     handleUpgrade(upgradeRequest: any, socket: any, head: any, callback: any): void {
       callback(socket, upgradeRequest);
     },
-  })),
+  }),
 }));
 
 describe('A WebSocket2023Listener', (): void => {
@@ -61,8 +61,8 @@ describe('A WebSocket2023Listener', (): void => {
 
   it('calls the handler when receiving a valid request.', async(): Promise<void> => {
     await expect(listener.handle({ upgradeRequest, webSocket })).resolves.toBeUndefined();
-    expect(webSocket.send).toHaveBeenCalledTimes(0);
-    expect(webSocket.close).toHaveBeenCalledTimes(0);
+    expect(webSocket.send).not.toHaveBeenCalled();
+    expect(webSocket.close).not.toHaveBeenCalled();
     expect(handler.handleSafe).toHaveBeenCalledTimes(1);
     expect(handler.handleSafe).toHaveBeenLastCalledWith({ webSocket, channel });
   });

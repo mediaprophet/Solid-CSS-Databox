@@ -40,8 +40,8 @@ describe('A ParsingHttpHandler', (): void => {
     await expect(handler.handle({ request, response })).resolves.toBeUndefined();
     expect(source.handleSafe).toHaveBeenCalledTimes(1);
     expect(source.handleSafe).toHaveBeenLastCalledWith({ operation, request, response });
-    expect(errorHandler.handleSafe).toHaveBeenCalledTimes(0);
-    expect(responseWriter.handleSafe).toHaveBeenCalledTimes(0);
+    expect(errorHandler.handleSafe).not.toHaveBeenCalled();
+    expect(responseWriter.handleSafe).not.toHaveBeenCalled();
   });
 
   it('calls the responseWriter if there is a response.', async(): Promise<void> => {
@@ -50,7 +50,7 @@ describe('A ParsingHttpHandler', (): void => {
     await expect(handler.handle({ request, response })).resolves.toBeUndefined();
     expect(source.handleSafe).toHaveBeenCalledTimes(1);
     expect(source.handleSafe).toHaveBeenLastCalledWith({ operation, request, response });
-    expect(errorHandler.handleSafe).toHaveBeenCalledTimes(0);
+    expect(errorHandler.handleSafe).not.toHaveBeenCalled();
     expect(responseWriter.handleSafe).toHaveBeenCalledTimes(1);
     expect(responseWriter.handleSafe).toHaveBeenLastCalledWith({ response, result });
   });

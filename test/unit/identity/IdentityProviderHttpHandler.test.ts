@@ -97,7 +97,7 @@ describe('An IdentityProviderHttpHandler', (): void => {
     expect(result.metadata).toBe(representation.metadata);
     expect(provider.interactionDetails).toHaveBeenCalledTimes(1);
     expect(provider.interactionDetails).toHaveBeenLastCalledWith(request, response);
-    expect(cookieStore.get).toHaveBeenCalledTimes(0);
+    expect(cookieStore.get).not.toHaveBeenCalled();
     expect(handler.handleSafe).toHaveBeenCalledTimes(1);
     expect(handler.handleSafe).toHaveBeenLastCalledWith({ operation, oidcInteraction });
   });

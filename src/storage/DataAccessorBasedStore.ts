@@ -46,7 +46,9 @@ import {
 import type { DataAccessor } from './accessors/DataAccessor';
 import type { Conditions } from './conditions/Conditions';
 import type { ChangeMap, ResourceStore } from './ResourceStore';
-import namedNode = DataFactory.namedNode;
+
+// eslint-disable-next-line @typescript-eslint/unbound-method -- n3 factory fns never use `this`
+const { namedNode } = DataFactory;
 
 /**
  * ResourceStore which uses a DataAccessor for backend access.
@@ -136,7 +138,7 @@ export class DataAccessorBasedStore implements ResourceStore {
             if (!isMetadata) {
               metadata.addQuads(child.quads());
             }
-            metadata.add(LDP.terms.contains, child.identifier as NamedNode, SOLID_META.terms.ResponseMetadata);
+            metadata.add(LDP.terms.contains, child.identifier, SOLID_META.terms.ResponseMetadata);
           }
         }
         data = metadata.quads();
@@ -717,7 +719,7 @@ export class DataAccessorBasedStore implements ResourceStore {
 
     // Create the container, starting with its parent
     const ancestors: ChangeMap = this.identifierStrategy.isRootContainer(container) ?
-      new IdentifierMap() :
+        new IdentifierMap() :
         await this.createRecursiveContainers(this.identifierStrategy.getParentContainer(container));
     const changes = await this.writeData(container, new BasicRepresentation([], container), true, false, false);
 

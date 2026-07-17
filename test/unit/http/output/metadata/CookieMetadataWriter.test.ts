@@ -3,8 +3,9 @@ import { createResponse } from 'node-mocks-http';
 import { CookieMetadataWriter } from '../../../../../src/http/output/metadata/CookieMetadataWriter';
 import { RepresentationMetadata } from '../../../../../src/http/representation/RepresentationMetadata';
 import type { HttpResponse } from '../../../../../src/server/HttpResponse';
-import namedNode = DataFactory.namedNode;
-import literal = DataFactory.literal;
+
+// eslint-disable-next-line jest/unbound-method -- n3 factory fns never use `this`
+const { namedNode, literal } = DataFactory;
 
 describe('A CookieMetadataWriter', (): void => {
   const writer = new CookieMetadataWriter({
@@ -16,7 +17,7 @@ describe('A CookieMetadataWriter', (): void => {
 
   beforeEach(async(): Promise<void> => {
     metadata = new RepresentationMetadata();
-    response = createResponse() as HttpResponse;
+    response = createResponse();
   });
 
   it('adds no headers if there is no relevant metadata.', async(): Promise<void> => {

@@ -278,7 +278,7 @@ function checkPolicyRef(
     return gatewayRejection(DATABOX_GATEWAY_CODES.policyRefUnresolved, 'Policy template is not the class template.');
   }
   const template = profile.policies.templates.find((pt): boolean => pt.id === klass.policyTemplate);
-  if (!template || template.version !== policyRef.policyVersion) {
+  if (template?.version !== policyRef.policyVersion) {
     return gatewayRejection(DATABOX_GATEWAY_CODES.policyRefUnresolved, 'Policy version does not resolve.');
   }
   return undefined;

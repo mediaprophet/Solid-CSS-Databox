@@ -297,7 +297,7 @@ describe('A LockingResourceStore', (): void => {
   it('hasResource should only acquire and release the read lock.', async(): Promise<void> => {
     await store.hasResource(subjectId);
     expect(locker.withReadLock).toHaveBeenCalledTimes(1);
-    expect(locker.withWriteLock).toHaveBeenCalledTimes(0);
+    expect(locker.withWriteLock).not.toHaveBeenCalled();
     expect(source.hasResource).toHaveBeenCalledTimes(1);
     expect(source.hasResource).toHaveBeenLastCalledWith(subjectId);
     expect(order).toEqual([ 'lock read', 'hasResource', 'unlock read' ]);

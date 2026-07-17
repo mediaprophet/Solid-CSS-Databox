@@ -9,6 +9,7 @@ import { fetchDataset } from '../../util/FetchUtil';
 import { SOLID } from '../../util/Vocabularies';
 import { OwnershipValidator } from './OwnershipValidator';
 
+// eslint-disable-next-line @typescript-eslint/unbound-method -- n3 factory fns never use `this`
 const { literal, namedNode, quad } = DataFactory;
 
 /**

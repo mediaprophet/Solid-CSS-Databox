@@ -58,7 +58,7 @@ describe('A ResetPasswordHandler', (): void => {
     await expect(handler.handle({ json } as any)).rejects.toThrow('This reset password link is no longer valid.');
     expect(forgotPasswordStore.get).toHaveBeenCalledTimes(1);
     expect(forgotPasswordStore.get).toHaveBeenLastCalledWith(recordId);
-    expect(forgotPasswordStore.delete).toHaveBeenCalledTimes(0);
-    expect(passwordStore.update).toHaveBeenCalledTimes(0);
+    expect(forgotPasswordStore.delete).not.toHaveBeenCalled();
+    expect(passwordStore.update).not.toHaveBeenCalled();
   });
 });

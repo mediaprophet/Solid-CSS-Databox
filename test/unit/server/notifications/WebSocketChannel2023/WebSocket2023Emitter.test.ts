@@ -40,7 +40,7 @@ describe('A WebSocket2023Emitter', (): void => {
   it('destroys the representation if there is no matching WebSocket.', async(): Promise<void> => {
     const representation = new BasicRepresentation('notification', 'text/plain');
     await expect(emitter.handle({ channel, representation })).resolves.toBeUndefined();
-    expect(webSocket.send).toHaveBeenCalledTimes(0);
+    expect(webSocket.send).not.toHaveBeenCalled();
     expect(representation.data.destroyed).toBe(true);
   });
 
@@ -76,6 +76,6 @@ describe('A WebSocket2023Emitter', (): void => {
     await expect(emitter.handle({ channel, representation })).resolves.toBeUndefined();
     expect(webSocket.send).toHaveBeenCalledTimes(1);
     expect(webSocket.send).toHaveBeenLastCalledWith('notification');
-    expect(webSocket2.send).toHaveBeenCalledTimes(0);
+    expect(webSocket2.send).not.toHaveBeenCalled();
   });
 });

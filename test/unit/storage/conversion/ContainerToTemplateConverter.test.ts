@@ -6,6 +6,7 @@ import { readableToString } from '../../../../src/util/StreamUtil';
 import type { TemplateEngine } from '../../../../src/util/templates/TemplateEngine';
 import { LDP, RDF } from '../../../../src/util/Vocabularies';
 
+// eslint-disable-next-line jest/unbound-method -- n3 factory fns never use `this`
 const { namedNode: nn, quad } = DataFactory;
 
 describe('A ContainerToTemplateConverter', (): void => {

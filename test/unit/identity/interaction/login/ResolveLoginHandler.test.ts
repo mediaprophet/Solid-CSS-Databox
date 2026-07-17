@@ -67,8 +67,8 @@ describe('A ResolveLoginHandler', (): void => {
 
     expect(cookieStore.generate).toHaveBeenCalledTimes(1);
     expect(cookieStore.generate).toHaveBeenLastCalledWith(accountId);
-    expect(cookieStore.delete).toHaveBeenCalledTimes(0);
-    expect(accountStore.updateSetting).toHaveBeenCalledTimes(0);
+    expect(cookieStore.delete).not.toHaveBeenCalled();
+    expect(accountStore.updateSetting).not.toHaveBeenCalled();
   });
 
   it('generates a metadata object if the login handler did not provide one.', async(): Promise<void> => {
@@ -80,7 +80,7 @@ describe('A ResolveLoginHandler', (): void => {
     });
     expect(result.metadata).not.toBe(metadata);
     expect(result.metadata?.get(CONTENT_TYPE_TERM)).toBeUndefined();
-    expect(accountStore.updateSetting).toHaveBeenCalledTimes(0);
+    expect(accountStore.updateSetting).not.toHaveBeenCalled();
   });
 
   it('adds a location field if there is an OIDC interaction.', async(): Promise<void> => {
@@ -98,7 +98,7 @@ describe('A ResolveLoginHandler', (): void => {
     expect(input.oidcInteraction!.result).toEqual({
       login: { accountId: 'id' },
     });
-    expect(accountStore.updateSetting).toHaveBeenCalledTimes(0);
+    expect(accountStore.updateSetting).not.toHaveBeenCalled();
   });
 
   it('updates the account remember settings if necessary.', async(): Promise<void> => {
@@ -129,6 +129,6 @@ describe('A ResolveLoginHandler', (): void => {
     expect(cookieStore.generate).toHaveBeenLastCalledWith(accountId);
     expect(cookieStore.delete).toHaveBeenCalledTimes(1);
     expect(cookieStore.delete).toHaveBeenLastCalledWith('old-cookie-value');
-    expect(accountStore.updateSetting).toHaveBeenCalledTimes(0);
+    expect(accountStore.updateSetting).not.toHaveBeenCalled();
   });
 });

@@ -144,7 +144,7 @@ describe('A BasePodStore', (): void => {
     expect(storage.find).toHaveBeenLastCalledWith(OWNER_TYPE, { podId: id, webId });
     expect(storage.create).toHaveBeenCalledTimes(1);
     expect(storage.create).toHaveBeenLastCalledWith(OWNER_TYPE, { podId: id, webId, visible: true });
-    expect(storage.setField).toHaveBeenCalledTimes(0);
+    expect(storage.setField).not.toHaveBeenCalled();
   });
 
   it('updates the existing object if there already is an owner with this WebID.', async(): Promise<void> => {
@@ -152,7 +152,7 @@ describe('A BasePodStore', (): void => {
     await expect(store.updateOwner(id, webId, true)).resolves.toBeUndefined();
     expect(storage.find).toHaveBeenCalledTimes(1);
     expect(storage.find).toHaveBeenLastCalledWith(OWNER_TYPE, { podId: id, webId });
-    expect(storage.create).toHaveBeenCalledTimes(0);
+    expect(storage.create).not.toHaveBeenCalled();
     expect(storage.setField).toHaveBeenCalledTimes(1);
     expect(storage.setField).toHaveBeenLastCalledWith(OWNER_TYPE, 'id1', 'visible', true);
   });
@@ -174,7 +174,7 @@ describe('A BasePodStore', (): void => {
     await expect(store.removeOwner(id, webId)).resolves.toBeUndefined();
     expect(storage.find).toHaveBeenCalledTimes(1);
     expect(storage.find).toHaveBeenLastCalledWith(OWNER_TYPE, { podId: id });
-    expect(storage.delete).toHaveBeenCalledTimes(0);
+    expect(storage.delete).not.toHaveBeenCalled();
   });
 
   it('cannot remove the last owner.', async(): Promise<void> => {
@@ -182,6 +182,6 @@ describe('A BasePodStore', (): void => {
     await expect(store.removeOwner(id, webId)).rejects.toThrow(BadRequestHttpError);
     expect(storage.find).toHaveBeenCalledTimes(1);
     expect(storage.find).toHaveBeenLastCalledWith(OWNER_TYPE, { podId: id });
-    expect(storage.delete).toHaveBeenCalledTimes(0);
+    expect(storage.delete).not.toHaveBeenCalled();
   });
 });

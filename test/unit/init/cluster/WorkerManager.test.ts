@@ -2,7 +2,7 @@ import { ClusterManager, WorkerManager } from '../../../../src';
 
 describe('A WorkerManager', (): void => {
   it('can be created from a ClusterManager.', (): void => {
-    expect((): WorkerManager => new WorkerManager(new ClusterManager(4))).toBeDefined();
+    expect(new WorkerManager(new ClusterManager(4))).toBeInstanceOf(WorkerManager);
   });
 
   it('can call handle.', async(): Promise<void> => {

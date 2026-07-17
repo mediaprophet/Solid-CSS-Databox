@@ -59,8 +59,8 @@ describe('A ListeningActivityHandler', (): void => {
 
     expect(notificationHandler.handleSafe).toHaveBeenCalledTimes(1);
     expect(notificationHandler.handleSafe).toHaveBeenLastCalledWith({ channel, activity, topic, metadata });
-    expect(logger.error).toHaveBeenCalledTimes(0);
-    expect(storage.update).toHaveBeenCalledTimes(0);
+    expect(logger.error).not.toHaveBeenCalled();
+    expect(storage.update).not.toHaveBeenCalled();
   });
 
   it('updates the lastEmit value of the channel if it has a rate limit.', async(): Promise<void> => {
@@ -72,7 +72,7 @@ describe('A ListeningActivityHandler', (): void => {
 
     expect(notificationHandler.handleSafe).toHaveBeenCalledTimes(1);
     expect(notificationHandler.handleSafe).toHaveBeenLastCalledWith({ channel, activity, topic, metadata });
-    expect(logger.error).toHaveBeenCalledTimes(0);
+    expect(logger.error).not.toHaveBeenCalled();
     expect(storage.update).toHaveBeenCalledTimes(1);
     expect(storage.update).toHaveBeenLastCalledWith({
       ...channel,
@@ -89,8 +89,8 @@ describe('A ListeningActivityHandler', (): void => {
 
     await flushPromises();
 
-    expect(notificationHandler.handleSafe).toHaveBeenCalledTimes(0);
-    expect(logger.error).toHaveBeenCalledTimes(0);
+    expect(notificationHandler.handleSafe).not.toHaveBeenCalled();
+    expect(logger.error).not.toHaveBeenCalled();
   });
 
   it('does not emit an event on channels if their start time has not been reached.', async(): Promise<void> => {
@@ -100,8 +100,8 @@ describe('A ListeningActivityHandler', (): void => {
 
     await flushPromises();
 
-    expect(notificationHandler.handleSafe).toHaveBeenCalledTimes(0);
-    expect(logger.error).toHaveBeenCalledTimes(0);
+    expect(notificationHandler.handleSafe).not.toHaveBeenCalled();
+    expect(logger.error).not.toHaveBeenCalled();
   });
 
   it('does not stop if one channel causes an error.', async(): Promise<void> => {
@@ -123,7 +123,7 @@ describe('A ListeningActivityHandler', (): void => {
     emitter.emit('changed', topic, activity, metadata);
 
     await flushPromises();
-    expect(notificationHandler.handleSafe).toHaveBeenCalledTimes(0);
+    expect(notificationHandler.handleSafe).not.toHaveBeenCalled();
     expect(logger.error).toHaveBeenCalledTimes(1);
     expect(logger.error).toHaveBeenLastCalledWith(`Something went wrong emitting notifications: bad event`);
   });
@@ -135,7 +135,7 @@ describe('A ListeningActivityHandler', (): void => {
 
     await flushPromises();
 
-    expect(notificationHandler.handleSafe).toHaveBeenCalledTimes(0);
-    expect(logger.error).toHaveBeenCalledTimes(0);
+    expect(notificationHandler.handleSafe).not.toHaveBeenCalled();
+    expect(logger.error).not.toHaveBeenCalled();
   });
 });

@@ -5,7 +5,6 @@ import { NotImplementedHttpError } from '../../util/errors/NotImplementedHttpErr
 import { CreatedResponseDescription } from '../output/response/CreatedResponseDescription';
 import { ResetResponseDescription } from '../output/response/ResetResponseDescription';
 import type { ResponseDescription } from '../output/response/ResponseDescription';
-import type { Patch } from '../representation/Patch';
 import type { OperationHandlerInput } from './OperationHandler';
 import { OperationHandler } from './OperationHandler';
 
@@ -44,7 +43,7 @@ export class PatchOperationHandler extends OperationHandler {
     //   PUT successfully creates one, then the origin server MUST inform the
     //   user agent by sending a 201 (Created) response.
     const exists = await this.store.hasResource(operation.target);
-    await this.store.modifyResource(operation.target, operation.body as Patch, operation.conditions);
+    await this.store.modifyResource(operation.target, operation.body, operation.conditions);
     if (exists) {
       return new ResetResponseDescription();
     }

@@ -70,8 +70,9 @@ describe('A BasicResponseWriter', (): void => {
 
   it('can handle the data stream erroring.', async(): Promise<void> => {
     const data = guardedStreamFrom([]);
+    const streamError = new Error('bad data!');
     data.read = (): any => {
-      data.emit('error', new Error('bad data!'));
+      data.emit('error', streamError);
       return null;
     };
     result = { statusCode: 201, data };
@@ -82,7 +83,10 @@ describe('A BasicResponseWriter', (): void => {
 
     const end = new Promise<void>((resolve): void => {
       response.on('error', (error: Error): void => {
-        expect(error).toEqual(new Error('bad data!'));
+        // `toEqual` on an Error only compares the `message`, so it would also accept an error of a
+        // completely different class. The writer pipes the stream error through unchanged, so assert
+        // identity: that also covers the class and the message.
+        expect(error).toBe(streamError);
         resolve();
       });
     });

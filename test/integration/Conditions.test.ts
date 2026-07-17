@@ -12,6 +12,7 @@ import {
   removeFolder,
 } from './Config';
 
+// eslint-disable-next-line jest/unbound-method -- n3 factory fns never use `this`
 const { namedNode, quad } = DataFactory;
 
 const port = getPort('Conditions');
@@ -285,7 +286,7 @@ describe.each(stores)('A server supporting conditions with %s', (name, { storeCo
     const linkHeaders = response.headers.get('link');
     expect(typeof linkHeaders).toBe('string');
     const regex = /<([^>]+)>; rel="describedby"/u.exec(linkHeaders!);
-    expect(regex).toBeDefined();
+    expect(regex).not.toBeNull();
     const metaUrl = regex![1];
 
     // Timestamp accuracy is at second level so need to make sure it changed

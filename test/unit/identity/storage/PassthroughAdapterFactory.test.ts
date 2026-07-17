@@ -18,7 +18,18 @@ describe('A PassthroughAdapterFactory', (): void => {
   });
 
   it('calls the source createStorageAdapter function.', async(): Promise<void> => {
-    expect(factory.createStorageAdapter('Client')).toBeUndefined();
+    const sourceAdapter: jest.Mocked<Adapter> = {
+      upsert: jest.fn(),
+      find: jest.fn(),
+      findByUserCode: jest.fn(),
+      findByUid: jest.fn(),
+      consume: jest.fn(),
+      destroy: jest.fn(),
+      revokeByGrantId: jest.fn(),
+    };
+    sourceFactory.createStorageAdapter.mockReturnValue(sourceAdapter);
+
+    expect(factory.createStorageAdapter('Client')).toBe(sourceAdapter);
     expect(sourceFactory.createStorageAdapter).toHaveBeenCalledTimes(1);
     expect(sourceFactory.createStorageAdapter).toHaveBeenLastCalledWith('Client');
   });

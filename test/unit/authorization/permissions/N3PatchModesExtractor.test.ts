@@ -12,6 +12,7 @@ import { NotImplementedHttpError } from '../../../../src/util/errors/NotImplemen
 import { IdentifierSetMultiMap } from '../../../../src/util/map/IdentifierMap';
 import { compareMaps } from '../../../util/Util';
 
+// eslint-disable-next-line jest/unbound-method -- n3 factory fns never use `this`
 const { quad, namedNode } = DataFactory;
 
 describe('An N3PatchModesExtractor', (): void => {

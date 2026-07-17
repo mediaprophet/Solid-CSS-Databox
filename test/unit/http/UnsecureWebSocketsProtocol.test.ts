@@ -8,11 +8,11 @@ import type { Guarded } from '../../../src/util/GuardedStream';
 import { AS } from '../../../src/util/Vocabularies';
 
 jest.mock('ws', (): any => ({
-  WebSocketServer: jest.fn().mockImplementation((): any => ({
+  WebSocketServer: jest.fn().mockReturnValue({
     handleUpgrade(upgradeRequest: any, socket: any, head: any, callback: any): void {
       callback(socket, upgradeRequest);
     },
-  })),
+  }),
 }));
 
 class DummySocket extends EventEmitter {
@@ -168,7 +168,7 @@ describe('An UnsecureWebSocketsProtocol', (): void => {
       expect(webSocket.messages).toHaveLength(2);
       expect(webSocket.messages.pop())
         .toBe('warning Missing Sec-WebSocket-Protocol header, expected value \'solid-0.1\'');
-      expect(webSocket.close).toHaveBeenCalledTimes(0);
+      expect(webSocket.close).not.toHaveBeenCalled();
     });
 
     it('emits an error and closes the connection with the wrong Sec-WebSocket-Protocol.', async(): Promise<void> => {

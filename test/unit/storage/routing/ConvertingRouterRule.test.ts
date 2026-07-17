@@ -59,14 +59,14 @@ describe('A ConvertingRouterRule', (): void => {
   });
 
   it('checks if the stores contain the identifier if there is no data.', async(): Promise<void> => {
-    store1.hasResource.mockImplementationOnce((): any => true);
+    store1.hasResource.mockResolvedValueOnce(true);
     await expect(rule.handle({ identifier: { path: 'identifier' }})).resolves.toBe(store1);
     expect(store1.hasResource).toHaveBeenCalledTimes(1);
   });
 
   it('returns the defaultStore if no other store has the resource.', async(): Promise<void> => {
-    store1.hasResource.mockImplementationOnce((): any => false);
-    store2.hasResource.mockImplementationOnce((): any => false);
+    store1.hasResource.mockResolvedValueOnce(false);
+    store2.hasResource.mockResolvedValueOnce(false);
     await expect(rule.handle({ identifier: { path: 'identifier' }})).resolves.toBe(defaultStore);
   });
 

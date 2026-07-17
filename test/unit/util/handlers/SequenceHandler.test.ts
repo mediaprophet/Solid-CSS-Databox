@@ -36,7 +36,7 @@ describe('A SequenceHandler', (): void => {
 
     expect(handlers[1].canHandle).toHaveBeenCalledTimes(1);
     expect(handlers[1].canHandle).toHaveBeenLastCalledWith('test');
-    expect(handlers[1].handle).toHaveBeenCalledTimes(0);
+    expect(handlers[1].handle).not.toHaveBeenCalled();
 
     expect(handlers[2].canHandle).toHaveBeenCalledTimes(1);
     expect(handlers[2].canHandle).toHaveBeenLastCalledWith('test');

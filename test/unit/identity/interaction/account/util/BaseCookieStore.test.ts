@@ -50,7 +50,7 @@ describe('A BaseCookieStore', (): void => {
     await expect(store.refresh(cookie)).resolves.toBeUndefined();
     expect(storage.get).toHaveBeenCalledTimes(1);
     expect(storage.get).toHaveBeenLastCalledWith(cookie);
-    expect(storage.set).toHaveBeenCalledTimes(0);
+    expect(storage.set).not.toHaveBeenCalled();
   });
 
   it('can delete cookies.', async(): Promise<void> => {

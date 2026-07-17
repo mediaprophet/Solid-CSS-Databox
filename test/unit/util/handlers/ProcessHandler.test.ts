@@ -18,8 +18,8 @@ describe('A ProcessHandler', (): void => {
 
   describe('allowing only worker processes', (): void => {
     it('can create a ProcessHandler.', (): void => {
-      expect((): ProcessHandler<string, string> =>
-        new ProcessHandler(source, createClusterManager(1, true), false)).toBeDefined();
+      expect(new ProcessHandler(source, createClusterManager(1, true), false))
+        .toBeInstanceOf(ProcessHandler);
     });
 
     it('can delegate to its source when run singlethreaded from worker.', async(): Promise<void> => {
@@ -45,8 +45,8 @@ describe('A ProcessHandler', (): void => {
 
   describe('allowing only the primary process', (): void => {
     it('can create a ProcessHandler.', (): void => {
-      expect((): ProcessHandler<string, string> =>
-        new ProcessHandler(source, createClusterManager(1, true), true)).toBeDefined();
+      expect(new ProcessHandler(source, createClusterManager(1, true), true))
+        .toBeInstanceOf(ProcessHandler);
     });
 
     it('can delegate to its source when run singlethreaded from worker.', async(): Promise<void> => {

@@ -2,7 +2,9 @@ import { DataFactory, Store } from 'n3';
 import type { AccessCheckerArgs } from '../../../../src/authorization/access/AccessChecker';
 import { AgentClassAccessChecker } from '../../../../src/authorization/access/AgentClassAccessChecker';
 import { ACL, FOAF } from '../../../../src/util/Vocabularies';
-import namedNode = DataFactory.namedNode;
+
+// eslint-disable-next-line jest/unbound-method -- n3 factory fns never use `this`
+const { namedNode } = DataFactory;
 
 describe('An AgentClassAccessChecker', (): void => {
   const webId = 'http://test.com/alice/profile/card#me';

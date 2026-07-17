@@ -45,7 +45,7 @@ describe('A StateNotificationGenerator', (): void => {
     await expect(generator.handle({ topic, channel, activity: AS.terms.Update })).resolves.toBe(notification);
     expect(source.handleSafe).toHaveBeenCalledTimes(1);
     expect(source.handleSafe).toHaveBeenLastCalledWith({ topic, channel, activity: AS.terms.Update });
-    expect(resourceSet.hasResource).toHaveBeenCalledTimes(0);
+    expect(resourceSet.hasResource).not.toHaveBeenCalled();
   });
 
   it('calls the source with an Update notification if the topic exists.', async(): Promise<void> => {

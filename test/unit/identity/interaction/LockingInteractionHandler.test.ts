@@ -60,8 +60,8 @@ describe('A LockingInteractionHandler', (): void => {
     await expect(handler.handle(input)).resolves.toBe('response');
     expect(source.handle).toHaveBeenCalledTimes(1);
     expect(source.handle).toHaveBeenLastCalledWith(input);
-    expect(locker.withReadLock).toHaveBeenCalledTimes(0);
-    expect(locker.withWriteLock).toHaveBeenCalledTimes(0);
+    expect(locker.withReadLock).not.toHaveBeenCalled();
+    expect(locker.withWriteLock).not.toHaveBeenCalled();
   });
 
   it('creates a read lock for read operations.', async(): Promise<void> => {
@@ -69,7 +69,7 @@ describe('A LockingInteractionHandler', (): void => {
     expect(source.handle).toHaveBeenCalledTimes(1);
     expect(source.handle).toHaveBeenLastCalledWith(input);
     expect(locker.withReadLock).toHaveBeenCalledTimes(1);
-    expect(locker.withWriteLock).toHaveBeenCalledTimes(0);
+    expect(locker.withWriteLock).not.toHaveBeenCalled();
   });
 
   it('creates a write lock for write operations.', async(): Promise<void> => {
@@ -77,7 +77,7 @@ describe('A LockingInteractionHandler', (): void => {
     await expect(handler.handle(input)).resolves.toBe('response');
     expect(source.handle).toHaveBeenCalledTimes(1);
     expect(source.handle).toHaveBeenLastCalledWith(input);
-    expect(locker.withReadLock).toHaveBeenCalledTimes(0);
+    expect(locker.withReadLock).not.toHaveBeenCalled();
     expect(locker.withWriteLock).toHaveBeenCalledTimes(1);
   });
 });

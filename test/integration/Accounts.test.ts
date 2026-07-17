@@ -114,7 +114,7 @@ describe.each(stores)('A server with account management using %s', (name, { conf
     const res = await fetch(controls.account.create, { method: 'POST' });
     expect(res.status).toBe(200);
     const json = await res.json();
-    expect(res.headers.get('set-cookie')).toBeDefined();
+    expect(res.headers.get('set-cookie')).not.toBeNull();
     const cookies = parse(splitCookiesString(res.headers.get('set-cookie')!));
     expect(cookies).toHaveLength(1);
 
@@ -248,7 +248,7 @@ describe.each(stores)('A server with account management using %s', (name, { conf
       body: JSON.stringify({ email, password }),
     });
     expect(res.status).toBe(200);
-    expect(res.headers.get('set-cookie')).toBeDefined();
+    expect(res.headers.get('set-cookie')).not.toBeNull();
   });
 
   it('can create a pod.', async(): Promise<void> => {
@@ -583,12 +583,12 @@ describe.each(stores)('A server with account management using %s', (name, { conf
     const mail = sendMail.mock.calls[0][0];
     expect(mail.to).toBe(email);
     const match = /(http:.*)$/u.exec(mail.text);
-    expect(match).toBeDefined();
+    expect(match).not.toBeNull();
     const resetUrl = match![1];
     res = await fetch(resetUrl);
     const url = new URL(resetUrl);
     const recordId = url.searchParams.get('rid');
-    expect(recordId).toBeDefined();
+    expect(recordId).not.toBeNull();
 
     // Reset the password
     password = 'resetSecret';
@@ -606,6 +606,6 @@ describe.each(stores)('A server with account management using %s', (name, { conf
       body: JSON.stringify({ email, password }),
     });
     expect(res.status).toBe(200);
-    expect(res.headers.get('set-cookie')).toBeDefined();
+    expect(res.headers.get('set-cookie')).not.toBeNull();
   });
 });

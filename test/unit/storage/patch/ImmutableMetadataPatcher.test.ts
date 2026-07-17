@@ -14,6 +14,7 @@ import { FilterPattern } from '../../../../src/util/QuadUtil';
 import { guardedStreamFrom } from '../../../../src/util/StreamUtil';
 import { SimpleSuffixStrategy } from '../../../util/SimpleSuffixStrategy';
 
+// eslint-disable-next-line jest/unbound-method -- n3 factory fns never use `this`
 const { namedNode, quad } = DataFactory;
 
 function getPatch(): Patch {

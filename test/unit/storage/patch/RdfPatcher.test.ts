@@ -14,6 +14,7 @@ import type {
 import { InternalServerError } from '../../../../src/util/errors/InternalServerError';
 import { readableToQuads } from '../../../../src/util/StreamUtil';
 
+// eslint-disable-next-line jest/unbound-method -- n3 factory fns never use `this`
 const { quad, namedNode } = DataFactory;
 
 describe('An RdfPatcher,', (): void => {
@@ -54,7 +55,7 @@ describe('An RdfPatcher,', (): void => {
     await expect(rdfPatcher.handleSafe({ identifier, patch, representation })).rejects.toThrow(InternalServerError);
     await expect(rdfPatcher.handleSafe({ identifier, patch, representation })).rejects
       .toThrow('Quad stream was expected for patching.');
-    expect(patcher.handle).toHaveBeenCalledTimes(0);
+    expect(patcher.handle).not.toHaveBeenCalled();
   });
 
   it('uses a new store when there is no representation to patch.', async(): Promise<void> => {

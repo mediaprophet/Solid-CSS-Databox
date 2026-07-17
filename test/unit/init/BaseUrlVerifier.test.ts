@@ -23,13 +23,13 @@ describe('A BaseUrlVerifier', (): void => {
   it('stores the value if no value was stored yet.', async(): Promise<void> => {
     const initializer = new BaseUrlVerifier(baseUrl1, storageKey, storage);
     await expect(initializer.handle()).resolves.toBeUndefined();
-    expect(logger.warn).toHaveBeenCalledTimes(0);
+    expect(logger.warn).not.toHaveBeenCalled();
   });
 
   it('logs a warning in case the value changes.', async(): Promise<void> => {
     let initializer = new BaseUrlVerifier(baseUrl1, storageKey, storage);
     await expect(initializer.handle()).resolves.toBeUndefined();
-    expect(logger.warn).toHaveBeenCalledTimes(0);
+    expect(logger.warn).not.toHaveBeenCalled();
 
     initializer = new BaseUrlVerifier(baseUrl2, storageKey, storage);
     await expect(initializer.handle()).resolves.toBeUndefined();

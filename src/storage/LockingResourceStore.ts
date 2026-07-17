@@ -133,12 +133,13 @@ export class LockingResourceStore implements AtomicResourceStore {
         // Release the lock when an error occurs or the data finished streaming
         await this.waitForStreamToEnd(representation.data);
       }).catch((error: unknown): void => {
+        const reason = error as Error;
         // Destroy the source stream in case the lock times out
-        representation?.data.destroy(error as Error);
+        representation?.data.destroy(reason);
 
         // Let this function return an error in case something went wrong getting the data
         // or in case the timeout happens before `func` returned
-        reject(error as Error);
+        reject(reason);
       });
     });
   }

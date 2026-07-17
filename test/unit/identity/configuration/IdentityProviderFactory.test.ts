@@ -14,7 +14,13 @@ import type { AdapterFactory } from '../../../../src/identity/storage/AdapterFac
 import type { KeyValueStorage } from '../../../../src/storage/keyvalue/KeyValueStorage';
 import { extractErrorTerms } from '../../../../src/util/errors/HttpErrorUtil';
 import { OAuthHttpError } from '../../../../src/util/errors/OAuthHttpError';
-import type { Configuration, errors, KoaContextWithOIDC } from '../../../../templates/types/oidc-provider';
+import type {
+  AccountClaims,
+  Configuration,
+  errors,
+  KoaContextWithOIDC,
+  UnknownObject,
+} from '../../../../templates/types/oidc-provider';
 
 jest.mock('oidc-provider', (): any => {
   const fn = jest.fn((issuer: string, config: Configuration): any => ({ issuer, config, use: jest.fn() }));
@@ -37,6 +43,16 @@ const routes = {
   token: '/foo/oidc/token',
   userinfo: '/foo/oidc/me',
 };
+
+// The `oidc-provider` config types declare these hooks as `CanBePromise<T>` (`Promise<T> | T`), which is
+// not promise-like enough for `resolves`/`rejects` to be verifiable. `IdentityProviderFactory` only ever
+// assigns `async` functions to them, so casting to the actual Promise-returning signatures keeps the
+// awaited assertions below type-checked instead of erasing them to `any`.
+type InteractionUrlFn = (ctx: KoaContextWithOIDC, interaction: Interaction) => Promise<string>;
+type ClaimsFn = () => Promise<AccountClaims>;
+type ExtraTokenClaimsFn = (ctx: unknown, token: unknown) => Promise<UnknownObject>;
+type RenderErrorFn = (ctx: KoaContextWithOIDC, out: unknown, error: Error) => Promise<void>;
+type OidcMiddleware = (ctx: KoaContextWithOIDC, next: () => Promise<void>) => Promise<void>;
 
 describe('An IdentityProviderFactory', (): void => {
   let jestWorkerId: string | undefined;
@@ -164,24 +180,27 @@ describe('An IdentityProviderFactory', (): void => {
     expect((config.pkce!.required as any)()).toBe(true);
     expect(config.clientDefaults?.id_token_signed_response_alg).toBe('ES256');
 
-    await expect((config.interactions?.url as any)(ctx, oidcInteraction)).resolves.toBe(interactionRoute.getPath());
+    await expect((config.interactions?.url as InteractionUrlFn)(ctx, oidcInteraction))
+      .resolves.toBe(interactionRoute.getPath());
 
     let findResult = await config.findAccount?.({ oidc: { client: { clientId: 'clientId' }}} as any, webId);
     expect(findResult?.accountId).toBe(webId);
-    await expect((findResult?.claims as any)()).resolves.toEqual({ sub: webId, webid: webId, azp: 'clientId' });
+    await expect((findResult?.claims as ClaimsFn)()).resolves.toEqual({ sub: webId, webid: webId, azp: 'clientId' });
     findResult = await config.findAccount?.({ oidc: {}} as any, webId);
-    await expect((findResult?.claims as any)()).resolves.toEqual({ sub: webId, webid: webId });
+    await expect((findResult?.claims as ClaimsFn)()).resolves.toEqual({ sub: webId, webid: webId });
 
-    await expect((config.extraTokenClaims as any)({}, {}))
+    await expect((config.extraTokenClaims as ExtraTokenClaimsFn)({}, {}))
       .rejects.toThrow('Missing client ID from client credentials.');
     const client = { clientId: 'my_id', kind: 'ClientCredentials' };
-    await expect((config.extraTokenClaims as any)({}, { client }))
+    await expect((config.extraTokenClaims as ExtraTokenClaimsFn)({}, { client }))
       .rejects.toThrow(`Unknown client credentials token my_id`);
     clientCredentialsStore.findByLabel.mockResolvedValueOnce({ id: 'id', label: 'label', accountId: 'id', webId: 'http://example.com/foo', secret: 'my-secret' });
-    await expect((config.extraTokenClaims as any)({}, { client }))
+    await expect((config.extraTokenClaims as ExtraTokenClaimsFn)({}, { client }))
       .resolves.toEqual({ webid: 'http://example.com/foo' });
-    await expect((config.extraTokenClaims as any)({}, { kind: 'AccessToken', accountId: webId, clientId: 'clientId' }))
-      .resolves.toEqual({ webid: webId });
+    await expect((config.extraTokenClaims as ExtraTokenClaimsFn)(
+      {},
+      { kind: 'AccessToken', accountId: webId, clientId: 'clientId' },
+    )).resolves.toEqual({ webid: webId });
 
     expect(config.features?.resourceIndicators?.enabled).toBe(true);
     expect((config.features?.resourceIndicators?.defaultResource as any)()).toBe('http://example.com/');
@@ -194,7 +213,7 @@ describe('An IdentityProviderFactory', (): void => {
 
     // Test the renderError function
     const error = new Error('error!');
-    await expect((config.renderError as any)(ctx, {}, error)).resolves.toBeUndefined();
+    await expect((config.renderError as RenderErrorFn)(ctx, {}, error)).resolves.toBeUndefined();
     expect(errorHandler.handleSafe).toHaveBeenCalledTimes(1);
     expect(errorHandler.handleSafe)
       .toHaveBeenLastCalledWith({ error, request: ctx.req });
@@ -265,7 +284,7 @@ describe('An IdentityProviderFactory', (): void => {
 
     const oAuthError = new OAuthHttpError(error, error.name, 500, 'bad data - more info - more details');
 
-    await expect((config.renderError as any)(ctx, {}, error)).resolves.toBeUndefined();
+    await expect((config.renderError as RenderErrorFn)(ctx, {}, error)).resolves.toBeUndefined();
     expect(errorHandler.handleSafe).toHaveBeenCalledTimes(1);
     expect(errorHandler.handleSafe)
       .toHaveBeenLastCalledWith({ error: oAuthError, request: ctx.req });
@@ -283,7 +302,7 @@ describe('An IdentityProviderFactory', (): void => {
     error.error_description = 'client is invalid';
     error.error_detail = 'client not found';
 
-    await expect((config.renderError as any)(ctx, {}, error)).resolves.toBeUndefined();
+    await expect((config.renderError as RenderErrorFn)(ctx, {}, error)).resolves.toBeUndefined();
     expect(errorHandler.handleSafe).toHaveBeenCalledTimes(1);
     expect(errorHandler.handleSafe)
       .toHaveBeenLastCalledWith({
@@ -306,7 +325,7 @@ describe('An IdentityProviderFactory', (): void => {
   it('adds middleware to make the OIDC provider think the request wants HTML.', async(): Promise<void> => {
     const provider = await factory.getProvider();
     expect(provider.use).toHaveBeenCalledTimes(1);
-    const middleware = jest.mocked(provider.use).mock.calls[0][0];
+    const middleware = jest.mocked(provider.use).mock.calls[0][0] as unknown as OidcMiddleware;
 
     // eslint-disable-next-line jest/unbound-method
     const oldAccept = ctx.accepts;
@@ -315,13 +334,13 @@ describe('An IdentityProviderFactory', (): void => {
     expect(next).toHaveBeenCalledTimes(1);
 
     expect(ctx.accepts('json', 'html')).toBe('html');
-    expect(oldAccept).toHaveBeenCalledTimes(0);
+    expect(oldAccept).not.toHaveBeenCalled();
   });
 
   it('does not modify the context accepts function in other cases.', async(): Promise<void> => {
     const provider = await factory.getProvider();
     expect(provider.use).toHaveBeenCalledTimes(1);
-    const middleware = jest.mocked(provider.use).mock.calls[0][0];
+    const middleware = jest.mocked(provider.use).mock.calls[0][0] as unknown as OidcMiddleware;
 
     // eslint-disable-next-line jest/unbound-method
     const oldAccept = ctx.accepts;

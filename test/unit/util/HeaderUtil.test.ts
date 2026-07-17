@@ -219,24 +219,24 @@ describe('HeaderUtil', (): void => {
     });
 
     it('adds values if there are none already.', async(): Promise<void> => {
-      expect(addHeader(response, 'name', 'value')).toBeUndefined();
+      addHeader(response, 'name', 'value');
       expect(response.getHeader('name')).toBe('value');
 
-      expect(addHeader(response, 'names', [ 'value1', 'values2' ])).toBeUndefined();
+      addHeader(response, 'names', [ 'value1', 'values2' ]);
       expect(response.getHeader('names')).toEqual([ 'value1', 'values2' ]);
     });
 
     it('appends values to already existing values.', async(): Promise<void> => {
       response.setHeader('name', 'oldValue');
-      expect(addHeader(response, 'name', 'value')).toBeUndefined();
+      addHeader(response, 'name', 'value');
       expect(response.getHeader('name')).toEqual([ 'oldValue', 'value' ]);
 
       response.setHeader('number', 5);
-      expect(addHeader(response, 'number', 'value')).toBeUndefined();
+      addHeader(response, 'number', 'value');
       expect(response.getHeader('number')).toEqual([ '5', 'value' ]);
 
       response.setHeader('names', [ 'oldValue1', 'oldValue2' ]);
-      expect(addHeader(response, 'names', [ 'value1', 'values2' ])).toBeUndefined();
+      addHeader(response, 'names', [ 'value1', 'values2' ]);
       expect(response.getHeader('names')).toEqual([ 'oldValue1', 'oldValue2', 'value1', 'values2' ]);
     });
   });

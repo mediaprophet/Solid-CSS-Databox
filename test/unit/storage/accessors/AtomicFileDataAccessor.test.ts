@@ -62,9 +62,9 @@ describe('AtomicFileDataAccessor', (): void => {
         data.emit('error', new Error('error'));
         return null;
       });
-      jest.spyOn(jest.requireMock('fs-extra'), 'stat').mockImplementation((): any => ({
+      jest.spyOn(jest.requireMock('fs-extra'), 'stat').mockReturnValue({
         isFile: (): boolean => false,
-      }));
+      });
       await expect(accessor.writeDocument({ path: `${base}res.ttl` }, data, metadata)).rejects.toThrow('error');
     });
 
@@ -72,9 +72,9 @@ describe('AtomicFileDataAccessor', (): void => {
       jest.spyOn(jest.requireMock('fs-extra'), 'rename').mockImplementation((): any => {
         throw new Error('error');
       });
-      jest.spyOn(jest.requireMock('fs-extra'), 'stat').mockImplementation((): any => ({
+      jest.spyOn(jest.requireMock('fs-extra'), 'stat').mockReturnValue({
         isFile: (): boolean => true,
-      }));
+      });
       await expect(accessor.writeDocument({ path: `${base}res.ttl` }, data, metadata)).rejects.toThrow('error');
     });
 
@@ -82,9 +82,9 @@ describe('AtomicFileDataAccessor', (): void => {
       jest.spyOn(jest.requireMock('fs-extra'), 'rename').mockImplementation((): any => {
         throw new Error('error');
       });
-      jest.spyOn(jest.requireMock('fs-extra'), 'stat').mockImplementation((): any => ({
+      jest.spyOn(jest.requireMock('fs-extra'), 'stat').mockReturnValue({
         isFile: (): boolean => false,
-      }));
+      });
       await expect(accessor.writeDocument({ path: `${base}res.ttl` }, data, metadata)).rejects.toThrow('error');
     });
 

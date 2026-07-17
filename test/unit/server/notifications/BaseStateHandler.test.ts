@@ -46,6 +46,6 @@ describe('A BaseStateHandler', (): void => {
     expect(notificationHandler.handleSafe).toHaveBeenCalledTimes(1);
     expect(notificationHandler.handleSafe).toHaveBeenLastCalledWith({ topic: { path: channel.topic }, channel });
     expect(channel.state).toBe('123');
-    expect(storage.update).toHaveBeenCalledTimes(0);
+    expect(storage.update).not.toHaveBeenCalled();
   });
 });

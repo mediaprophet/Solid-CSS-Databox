@@ -37,6 +37,9 @@ export async function readableToString(stream: Readable): Promise<string> {
  */
 export async function readableToQuads(stream: Readable): Promise<Store> {
   const quads = new Store();
+  // `@types/n3` types this as `EventEmitter & Promise<this>`, but at runtime `Store.import`
+  // returns the input stream, which is not thenable. Completion is awaited via the stream below.
+  // eslint-disable-next-line @typescript-eslint/no-floating-promises
   quads.import(stream);
   await endOfStream(stream);
   return quads;
@@ -159,6 +162,9 @@ export function transformSafely<T = unknown>(
 ): Guarded<Transform> {
   return pipeSafely(source, new Transform({
     ...options,
+    // Both handlers catch everything and report through `callback`, so the returned promise never
+    // rejects. The rule only sees a promise-returning function in a void position, not that contract.
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     async transform(data: T, encoding, callback): Promise<void> {
       let error: Error | null = null;
       try {
@@ -168,6 +174,7 @@ export function transformSafely<T = unknown>(
       }
       callback(error);
     },
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     async flush(callback): Promise<void> {
       let error: Error | null = null;
       try {

@@ -23,6 +23,7 @@ import {
   removeFolder,
 } from './Config';
 
+// eslint-disable-next-line jest/unbound-method -- n3 factory fns never use `this`
 const { literal, namedNode, quad } = DataFactory;
 
 const port = getPort('LpdHandlerWithoutAuth');

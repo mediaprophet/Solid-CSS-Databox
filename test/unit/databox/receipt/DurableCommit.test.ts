@@ -5,7 +5,7 @@ import { validCommit } from './ReceiptTestSupport';
 
 /** Cast a malformed partial into DurableCommit for fail-closed tests. */
 function bad(overrides: Record<string, unknown>): DurableCommit {
-  return { ...validCommit(), ...overrides } as unknown as DurableCommit;
+  return { ...validCommit(), ...overrides };
 }
 
 describe('assertDurableCommit', (): void => {

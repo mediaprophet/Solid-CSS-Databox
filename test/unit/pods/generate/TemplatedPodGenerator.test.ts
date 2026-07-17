@@ -4,6 +4,7 @@ import type { VariableHandler } from '../../../../src/pods/generate/variables/Va
 import { TEMPLATE, TEMPLATE_VARIABLE } from '../../../../src/pods/generate/variables/Variables';
 import type { PodSettings } from '../../../../src/pods/settings/PodSettings';
 import type { KeyValueStorage } from '../../../../src/storage/keyvalue/KeyValueStorage';
+import { MemoryMapStorage } from '../../../../src/storage/keyvalue/MemoryMapStorage';
 import { BadRequestHttpError } from '../../../../src/util/errors/BadRequestHttpError';
 import { ConflictHttpError } from '../../../../src/util/errors/ConflictHttpError';
 import { joinFilePath } from '../../../../src/util/PathUtil';
@@ -29,13 +30,13 @@ describe('A TemplatedPodGenerator', (): void => {
 
     storeFactory = {
       generate: jest.fn().mockResolvedValue('store'),
-    } as any;
+    };
 
     variableHandler = {
       handleSafe: jest.fn(),
     } as any;
 
-    configStorage = new Map<string, unknown>() as any;
+    configStorage = new MemoryMapStorage<unknown>();
 
     generator = new TemplatedPodGenerator(storeFactory, variableHandler, configStorage, baseUrl, configTemplatePath);
   });
@@ -55,7 +56,8 @@ describe('A TemplatedPodGenerator', (): void => {
         [TEMPLATE_VARIABLE.templateConfig]: templatePath,
         'urn:solid-server:default:variable:baseUrl': baseUrl,
       });
-    expect(configStorage.get(identifier.path)).toEqual({ [TEMPLATE_VARIABLE.templateConfig]: templatePath });
+    await expect(configStorage.get(identifier.path))
+      .resolves.toEqual({ [TEMPLATE_VARIABLE.templateConfig]: templatePath });
   });
 
   it('rejects identifiers that already have a config.', async(): Promise<void> => {
@@ -72,7 +74,7 @@ describe('A TemplatedPodGenerator', (): void => {
     settings[TEMPLATE_VARIABLE.rootFilePath] = 'correctFilePath';
     settings.login = 'should not be stored';
     await expect(generator.generate(settings)).resolves.toBe('store');
-    expect(configStorage.get(identifier.path)).toEqual({
+    await expect(configStorage.get(identifier.path)).resolves.toEqual({
       [TEMPLATE_VARIABLE.templateConfig]: templatePath,
       [TEMPLATE_VARIABLE.rootFilePath]: 'correctFilePath',
     });

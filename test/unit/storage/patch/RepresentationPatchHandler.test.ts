@@ -15,6 +15,7 @@ describe('A RepresentationPatchHandler', (): void => {
   const representation = new BasicRepresentation('', 'text/turtle');
   const patch: Patch = new BasicRepresentation('', 'application/sparql-update');
   const patchResult = new BasicRepresentation('', 'application/trig');
+  const changeMap = { [identifier.path]: new RepresentationMetadata(identifier) };
   let input: PatchHandlerInput;
   let source: jest.Mocked<ResourceStore>;
   let patcher: jest.Mocked<RepresentationPatcher<Representation>>;
@@ -23,9 +24,7 @@ describe('A RepresentationPatchHandler', (): void => {
   beforeEach(async(): Promise<void> => {
     source = {
       getRepresentation: jest.fn().mockResolvedValue(representation),
-      setRepresentation: jest.fn().mockResolvedValue({
-        [identifier.path]: new RepresentationMetadata(identifier),
-      }),
+      setRepresentation: jest.fn().mockResolvedValue(changeMap),
     } as any;
 
     input = { source, identifier, patch };
@@ -38,9 +37,7 @@ describe('A RepresentationPatchHandler', (): void => {
   });
 
   it('calls the patcher with the representation from the store.', async(): Promise<void> => {
-    await expect(handler.handle(input)).resolves.toEqual({
-      [identifier.path]: new RepresentationMetadata(identifier),
-    });
+    await expect(handler.handle(input)).resolves.toBe(changeMap);
 
     expect(patcher.handleSafe).toHaveBeenCalledTimes(1);
     expect(patcher.handleSafe).toHaveBeenLastCalledWith({ identifier, patch, representation });
@@ -52,9 +49,7 @@ describe('A RepresentationPatchHandler', (): void => {
   it('calls the patcher with no representation if there is none.', async(): Promise<void> => {
     source.getRepresentation.mockRejectedValueOnce(new NotFoundHttpError());
 
-    await expect(handler.handle(input)).resolves.toEqual({
-      [identifier.path]: new RepresentationMetadata(identifier),
-    });
+    await expect(handler.handle(input)).resolves.toBe(changeMap);
 
     expect(patcher.handleSafe).toHaveBeenCalledTimes(1);
     expect(patcher.handleSafe).toHaveBeenLastCalledWith({ identifier, patch });

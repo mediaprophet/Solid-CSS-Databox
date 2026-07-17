@@ -13,6 +13,7 @@ import { InternalServerError } from '../../../../src/util/errors/InternalServerE
 import { NotImplementedHttpError } from '../../../../src/util/errors/NotImplementedHttpError';
 import { guardedStreamFrom } from '../../../../src/util/StreamUtil';
 
+// eslint-disable-next-line jest/unbound-method -- n3 factory fns never use `this`
 const { namedNode, quad } = DataFactory;
 
 function getPatch(query: string): SparqlUpdatePatch {

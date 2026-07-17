@@ -47,7 +47,7 @@ describe('A StreamingHttpListeningActivityHandler', (): void => {
     expect(notificationHandler.handleSafe).toHaveBeenLastCalledWith(
       expect.objectContaining({ activity, topic, metadata }),
     );
-    expect(logger.error).toHaveBeenCalledTimes(0);
+    expect(logger.error).not.toHaveBeenCalled();
   });
 
   it('does not call the NotificationHandler if there is an event but no stream.', async(): Promise<void> => {
@@ -55,8 +55,8 @@ describe('A StreamingHttpListeningActivityHandler', (): void => {
 
     await flushPromises();
 
-    expect(notificationHandler.handleSafe).toHaveBeenCalledTimes(0);
-    expect(logger.error).toHaveBeenCalledTimes(0);
+    expect(notificationHandler.handleSafe).not.toHaveBeenCalled();
+    expect(logger.error).not.toHaveBeenCalled();
   });
 
   it('logs error from notification handler.', async(): Promise<void> => {

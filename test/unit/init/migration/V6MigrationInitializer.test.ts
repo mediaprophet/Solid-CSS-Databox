@@ -30,6 +30,11 @@ type ClientCredentials = {
 const questionMock = jest.fn().mockImplementation((input, callback): void => callback('y'));
 const closeMock = jest.fn();
 jest.mock('node:readline', (): any => ({
+  // Jest hoists this factory above the `questionMock`/`closeMock` declarations above, so the
+  // returned object may only be built once `createInterface` is actually called. Switching to
+  // `mockReturnValue` would build it eagerly while those consts are still in their temporal
+  // dead zone, failing the suite with "Cannot access 'questionMock' before initialization".
+  // eslint-disable-next-line jest/prefer-mock-return-shorthand
   createInterface: jest.fn().mockImplementation((): any => ({
     question: questionMock,
     close: closeMock,
@@ -175,15 +180,15 @@ describe('A V6MigrationInitializer', (): void => {
   it('does nothing if the server has no stored version number.', async(): Promise<void> => {
     setupStorage.get.mockResolvedValueOnce(undefined);
     await expect(initializer.handle()).resolves.toBeUndefined();
-    expect(accountStorage.get).toHaveBeenCalledTimes(0);
-    expect(newAccountStorage.create).toHaveBeenCalledTimes(0);
+    expect(accountStorage.get).not.toHaveBeenCalled();
+    expect(newAccountStorage.create).not.toHaveBeenCalled();
   });
 
   it('does nothing if stored version is more than 6.', async(): Promise<void> => {
     setupStorage.get.mockResolvedValueOnce('7.0.0');
     await expect(initializer.handle()).resolves.toBeUndefined();
-    expect(accountStorage.get).toHaveBeenCalledTimes(0);
-    expect(newAccountStorage.create).toHaveBeenCalledTimes(0);
+    expect(accountStorage.get).not.toHaveBeenCalled();
+    expect(newAccountStorage.create).not.toHaveBeenCalled();
   });
 
   it('ignores accounts and credentials for which it cannot find the settings.', async(): Promise<void> => {
@@ -252,7 +257,7 @@ describe('A V6MigrationInitializer', (): void => {
     it('throws an error to stop the server if no positive answer is received.', async(): Promise<void> => {
       questionMock.mockImplementation((input, callback): void => callback('n'));
       await expect(initializer.handle()).rejects.toThrow('Stopping server as migration was cancelled.');
-      expect(newAccountStorage.create).toHaveBeenCalledTimes(0);
+      expect(newAccountStorage.create).not.toHaveBeenCalled();
     });
   });
 });

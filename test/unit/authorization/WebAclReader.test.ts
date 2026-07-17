@@ -20,6 +20,7 @@ import { SingleRootIdentifierStrategy } from '../../../src/util/identifiers/Sing
 import { IdentifierMap, IdentifierSetMultiMap } from '../../../src/util/map/IdentifierMap';
 import { compareMaps } from '../../util/Util';
 
+// eslint-disable-next-line jest/unbound-method -- n3 factory fns never use `this`
 const { namedNode: nn, quad } = DataFactory;
 
 const acl = 'http://www.w3.org/ns/auth/acl#';

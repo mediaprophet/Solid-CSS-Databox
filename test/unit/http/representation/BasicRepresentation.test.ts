@@ -8,6 +8,7 @@ import { INTERNAL_QUADS } from '../../../../src/util/ContentTypes';
 import { guardedStreamFrom } from '../../../../src/util/StreamUtil';
 import { CONTENT_TYPE } from '../../../../src/util/Vocabularies';
 
+// eslint-disable-next-line jest/unbound-method -- n3 factory fns never use `this`
 const { namedNode } = DataFactory;
 
 describe('BasicRepresentation', (): void => {

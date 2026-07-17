@@ -9,6 +9,7 @@ import { BadRequestHttpError } from '../../../../src/util/errors/BadRequestHttpE
 import { extractErrorTerms } from '../../../../src/util/errors/HttpErrorUtil';
 import { SOLID } from '../../../../src/util/Vocabularies';
 
+// eslint-disable-next-line jest/unbound-method -- n3 factory fns never use `this`
 const { literal, namedNode, quad } = DataFactory;
 
 jest.mock('rdf-dereference', (): any => ({
@@ -69,13 +70,13 @@ describe('A TokenOwnershipValidator', (): void => {
     expect(BadRequestHttpError.isInstance(error)).toBe(true);
     expect(extractErrorTerms((error as BadRequestHttpError).metadata))
       .toEqual({ quad: tokenString });
-    expect(rdfDereferenceMock.dereference).toHaveBeenCalledTimes(0);
+    expect(rdfDereferenceMock.dereference).not.toHaveBeenCalled();
   });
 
   it('errors if the expected triple is missing.', async(): Promise<void> => {
     // First call will add the token to the storage
     await expect(validator.handle({ webId })).rejects.toThrow(tokenString);
-    expect(rdfDereferenceMock.dereference).toHaveBeenCalledTimes(0);
+    expect(rdfDereferenceMock.dereference).not.toHaveBeenCalled();
     // Second call will fetch the WebId
     await expect(validator.handle({ webId })).rejects.toThrow(tokenString);
     expect(rdfDereferenceMock.dereference).toHaveBeenCalledTimes(1);

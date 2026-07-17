@@ -86,7 +86,7 @@ describe('HashChainedEvidenceLedger', (): void => {
     expect((): unknown => (entry as unknown as { sequence: number }).sequence = 99).toThrow(TypeError);
     // Entries() returns a defensive copy: mutating it does not rewrite the ledger.
     const copy = ledger.entries('t1');
-    (copy as unknown[]).push({} as never);
+    (copy as unknown[]).push({});
     expect(ledger.entries('t1')).toHaveLength(1);
   });
 

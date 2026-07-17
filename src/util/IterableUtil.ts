@@ -98,7 +98,7 @@ export function reduce<TIn>(iterable: Iterable<TIn>,
  */
 export function reduce<TIn, TOut>(
   iterable: Iterable<TIn>,
-  callbackFn: (previousValue: TOut, currentValue: TIn, currentIndex: number) => TOut, initialValue: TOut
+  callbackFn: (previousValue: TOut, currentValue: TIn, currentIndex: number) => TOut, initialValue: TOut,
 ): TOut;
 export function reduce<TIn, TOut>(
   iterable: Iterable<TIn>,

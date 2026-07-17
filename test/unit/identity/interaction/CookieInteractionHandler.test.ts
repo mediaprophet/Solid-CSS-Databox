@@ -108,9 +108,9 @@ describe('A CookieInteractionHandler', (): void => {
   it('adds no cookie metadata if there is no cookie.', async(): Promise<void> => {
     input.metadata.removeAll(SOLID_HTTP.terms.accountCookie);
     await expect(handler.handle(input)).resolves.toEqual(output);
-    expect(cookieStore.get).toHaveBeenCalledTimes(0);
-    expect(accountStore.getSetting).toHaveBeenCalledTimes(0);
-    expect(cookieStore.refresh).toHaveBeenCalledTimes(0);
+    expect(cookieStore.get).not.toHaveBeenCalled();
+    expect(accountStore.getSetting).not.toHaveBeenCalled();
+    expect(cookieStore.refresh).not.toHaveBeenCalled();
     expect(output.metadata?.get(SOLID_HTTP.terms.accountCookie)).toBeUndefined();
     expect(output.metadata?.get(SOLID_HTTP.terms.accountCookieExpiration)).toBeUndefined();
   });
@@ -119,9 +119,9 @@ describe('A CookieInteractionHandler', (): void => {
     output.metadata!.set(SOLID_HTTP.terms.accountCookie, 'other-cookie');
     output.metadata!.set(SOLID_HTTP.terms.accountCookieExpiration, date.toISOString());
     await expect(handler.handle(input)).resolves.toEqual(output);
-    expect(cookieStore.get).toHaveBeenCalledTimes(0);
-    expect(accountStore.getSetting).toHaveBeenCalledTimes(0);
-    expect(cookieStore.refresh).toHaveBeenCalledTimes(0);
+    expect(cookieStore.get).not.toHaveBeenCalled();
+    expect(accountStore.getSetting).not.toHaveBeenCalled();
+    expect(cookieStore.refresh).not.toHaveBeenCalled();
   });
 
   it('adds no cookie metadata if no account ID was found.', async(): Promise<void> => {
@@ -129,8 +129,8 @@ describe('A CookieInteractionHandler', (): void => {
     await expect(handler.handle(input)).resolves.toEqual(output);
     expect(cookieStore.get).toHaveBeenCalledTimes(1);
     expect(cookieStore.get).toHaveBeenLastCalledWith(cookie);
-    expect(accountStore.getSetting).toHaveBeenCalledTimes(0);
-    expect(cookieStore.refresh).toHaveBeenCalledTimes(0);
+    expect(accountStore.getSetting).not.toHaveBeenCalled();
+    expect(cookieStore.refresh).not.toHaveBeenCalled();
     expect(output.metadata?.get(SOLID_HTTP.terms.accountCookie)).toBeUndefined();
     expect(output.metadata?.get(SOLID_HTTP.terms.accountCookieExpiration)).toBeUndefined();
   });
@@ -142,7 +142,7 @@ describe('A CookieInteractionHandler', (): void => {
     expect(cookieStore.get).toHaveBeenLastCalledWith(cookie);
     expect(accountStore.getSetting).toHaveBeenCalledTimes(1);
     expect(accountStore.getSetting).toHaveBeenLastCalledWith(accountId, ACCOUNT_SETTINGS_REMEMBER_LOGIN);
-    expect(cookieStore.refresh).toHaveBeenCalledTimes(0);
+    expect(cookieStore.refresh).not.toHaveBeenCalled();
     expect(output.metadata?.get(SOLID_HTTP.terms.accountCookie)).toBeUndefined();
     expect(output.metadata?.get(SOLID_HTTP.terms.accountCookieExpiration)).toBeUndefined();
   });

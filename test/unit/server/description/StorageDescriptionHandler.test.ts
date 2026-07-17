@@ -10,8 +10,9 @@ import type { HttpResponse } from '../../../../src/server/HttpResponse';
 import type { ResourceStore } from '../../../../src/storage/ResourceStore';
 import { readableToQuads } from '../../../../src/util/StreamUtil';
 import { PIM, RDF } from '../../../../src/util/Vocabularies';
-import quad = DataFactory.quad;
-import namedNode = DataFactory.namedNode;
+
+// eslint-disable-next-line jest/unbound-method -- n3 factory fns never use `this`
+const { quad, namedNode } = DataFactory;
 
 describe('A StorageDescriptionHandler', (): void => {
   const path = '.well-known/solid';
@@ -51,7 +52,7 @@ describe('A StorageDescriptionHandler', (): void => {
     operation.method = 'POST';
     await expect(handler.canHandle({ request, response, operation }))
       .rejects.toThrow('Only GET requests can target the storage description.');
-    expect(store.getRepresentation).toHaveBeenCalledTimes(0);
+    expect(store.getRepresentation).not.toHaveBeenCalled();
   });
 
   it('requires the corresponding container to be a pim:Storage.', async(): Promise<void> => {

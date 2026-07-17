@@ -1,4 +1,5 @@
 import type { KeyValueStorage } from '../../../../src/storage/keyvalue/KeyValueStorage';
+import { MemoryMapStorage } from '../../../../src/storage/keyvalue/MemoryMapStorage';
 import { NotImplementedHttpError } from '../../../../src/util/errors/NotImplementedHttpError';
 import type { AsyncHandler } from '../../../../src/util/handlers/AsyncHandler';
 import { ConditionalHandler } from '../../../../src/util/handlers/ConditionalHandler';
@@ -12,7 +13,9 @@ describe('A ConditionalHandler', (): void => {
   let handler: ConditionalHandler<string, string>;
 
   beforeEach(async(): Promise<void> => {
-    storage = new Map<string, boolean>() as any;
+    // A real promise-returning storage rather than a bare Map: the handler awaits `storage.get`,
+    // and a Map would let a missing `await` in the handler pass unnoticed.
+    storage = new MemoryMapStorage<unknown>();
     source = {
       canHandle: jest.fn(),
       handleSafe: jest.fn().mockResolvedValue('handledSafely'),
@@ -31,7 +34,7 @@ describe('A ConditionalHandler', (): void => {
   it('rejects all canHandle requests once the storage value matches.', async(): Promise<void> => {
     await storage.set(storageKey, storageValue);
     await expect(handler.canHandle(input)).rejects.toThrow(NotImplementedHttpError);
-    expect(source.canHandle).toHaveBeenCalledTimes(0);
+    expect(source.canHandle).not.toHaveBeenCalled();
   });
 
   it('caches the value of the storage.', async(): Promise<void> => {
@@ -45,7 +48,7 @@ describe('A ConditionalHandler', (): void => {
     await expect(handler.handleSafe(input)).resolves.toBe('handledSafely');
     expect(source.handleSafe).toHaveBeenCalledTimes(1);
     expect(source.handleSafe).toHaveBeenLastCalledWith(input);
-    expect(storage.get(storageKey)).toBeUndefined();
+    await expect(storage.get(storageKey)).resolves.toBeUndefined();
   });
 
   it('can store the value itself if requested after a handleSafe call.', async(): Promise<void> => {
@@ -53,20 +56,20 @@ describe('A ConditionalHandler', (): void => {
     await expect(handler.handleSafe(input)).resolves.toBe('handledSafely');
     expect(source.handleSafe).toHaveBeenCalledTimes(1);
     expect(source.handleSafe).toHaveBeenLastCalledWith(input);
-    expect(storage.get(storageKey)).toBe(storageValue);
+    await expect(storage.get(storageKey)).resolves.toBe(storageValue);
   });
 
   it('rejects all handleSafe requests once the storage value matches.', async(): Promise<void> => {
     await storage.set(storageKey, storageValue);
     await expect(handler.handleSafe(input)).rejects.toThrow(NotImplementedHttpError);
-    expect(source.handleSafe).toHaveBeenCalledTimes(0);
+    expect(source.handleSafe).not.toHaveBeenCalled();
   });
 
   it('redirects input to the source handle call.', async(): Promise<void> => {
     await expect(handler.handle(input)).resolves.toBe('handled');
     expect(source.handle).toHaveBeenCalledTimes(1);
     expect(source.handle).toHaveBeenLastCalledWith(input);
-    expect(storage.get(storageKey)).toBeUndefined();
+    await expect(storage.get(storageKey)).resolves.toBeUndefined();
   });
 
   it('does not reject handle requests once the storage value matches.', async(): Promise<void> => {
@@ -81,6 +84,6 @@ describe('A ConditionalHandler', (): void => {
     await expect(handler.handle(input)).resolves.toBe('handled');
     expect(source.handle).toHaveBeenCalledTimes(1);
     expect(source.handle).toHaveBeenLastCalledWith(input);
-    expect(storage.get(storageKey)).toBe(storageValue);
+    await expect(storage.get(storageKey)).resolves.toBe(storageValue);
   });
 });

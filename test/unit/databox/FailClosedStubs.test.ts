@@ -4,6 +4,12 @@ import { DenyAllDataboxPermissionReader } from '../../../src/databox/authorizati
 import { NotImplementedEvidenceLedger } from '../../../src/databox/evidence/Evidence';
 import { NotImplementedCursorFeed } from '../../../src/databox/feed/CursorFeed';
 import { NotImplementedOpaqueIdentifierGenerator } from '../../../src/databox/identifiers/OpaqueIdentifierGenerator';
+import { DBX_DUTIES, DBX_PROFILE_V1 } from '../../../src/databox/odrl/terms';
+import {
+  loadInstitutionProfile,
+  validateInstitutionProfile,
+} from '../../../src/databox/profile/InstitutionProfileValidator';
+import { AppendOnlyStore } from '../../../src/databox/storage/AppendOnlyStore';
 import { NotImplementedTenantResolver } from '../../../src/databox/tenant/TenantResolver';
 import { NotImplementedHttpError } from '../../../src/util/errors/NotImplementedHttpError';
 
@@ -41,15 +47,17 @@ describe('Databox fail-closed stubs', (): void => {
   });
 
   it('the package barrel re-exports the scaffolded seams and Wave-B artifacts.', (): void => {
-    expect(DataboxExports.AppendOnlyStore).toBeDefined();
-    expect(DataboxExports.NotImplementedOpaqueIdentifierGenerator).toBeDefined();
-    expect(DataboxExports.DenyAllDataboxPermissionReader).toBeDefined();
+    // Asserting identity, not just definedness: the barrel is a stack of `export *` lines, so a name
+    // collision could bind these to a different module's symbol without tsc or a definedness check noticing.
+    expect(DataboxExports.AppendOnlyStore).toBe(AppendOnlyStore);
+    expect(DataboxExports.NotImplementedOpaqueIdentifierGenerator).toBe(NotImplementedOpaqueIdentifierGenerator);
+    expect(DataboxExports.DenyAllDataboxPermissionReader).toBe(DenyAllDataboxPermissionReader);
     // DBX-06 institution profile schema
-    expect(DataboxExports.validateInstitutionProfile).toBeDefined();
-    expect(DataboxExports.loadInstitutionProfile).toBeDefined();
+    expect(DataboxExports.validateInstitutionProfile).toBe(validateInstitutionProfile);
+    expect(DataboxExports.loadInstitutionProfile).toBe(loadInstitutionProfile);
     // DBX-07 ODRL vocabulary & profile
-    expect(DataboxExports.DBX_PROFILE_V1).toBeDefined();
-    expect(DataboxExports.DBX_DUTIES).toBeDefined();
+    expect(DataboxExports.DBX_PROFILE_V1).toBe(DBX_PROFILE_V1);
+    expect(DataboxExports.DBX_DUTIES).toBe(DBX_DUTIES);
   });
 
   it('the composed authorizer (C4) grants nothing (empty map, narrow-never-broaden).', async(): Promise<void> => {

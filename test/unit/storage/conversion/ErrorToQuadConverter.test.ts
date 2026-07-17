@@ -6,6 +6,7 @@ import { ErrorToQuadConverter } from '../../../../src/storage/conversion/ErrorTo
 import { BadRequestHttpError } from '../../../../src/util/errors/BadRequestHttpError';
 import { DC, SOLID_ERROR } from '../../../../src/util/Vocabularies';
 
+// eslint-disable-next-line jest/unbound-method -- n3 factory fns never use `this`
 const { literal, namedNode, quad } = DataFactory;
 
 describe('An ErrorToQuadConverter', (): void => {

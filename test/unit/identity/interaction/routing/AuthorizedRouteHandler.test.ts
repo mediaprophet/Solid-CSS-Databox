@@ -47,12 +47,12 @@ describe('An AuthorizedRouteHandler', (): void => {
   it('errors if there is no account ID in the input.', async(): Promise<void> => {
     delete input.accountId;
     await expect(handler.handle(input)).rejects.toThrow(UnauthorizedHttpError);
-    expect(source.handle).toHaveBeenCalledTimes(0);
+    expect(source.handle).not.toHaveBeenCalled();
   });
 
   it('errors if the account ID does not match the route result.', async(): Promise<void> => {
     route.matchPath.mockReturnValueOnce({ accountId: 'otherId' });
     await expect(handler.handle(input)).rejects.toThrow(ForbiddenHttpError);
-    expect(source.handle).toHaveBeenCalledTimes(0);
+    expect(source.handle).not.toHaveBeenCalled();
   });
 });

@@ -35,12 +35,12 @@ describe('A LogoutHandler', (): void => {
   it('does nothing if the request is not logged in.', async(): Promise<void> => {
     metadata = new RepresentationMetadata();
     await expect(handler.handle({ metadata } as any)).resolves.toEqual({ json: {}});
-    expect(cookieStore.delete).toHaveBeenCalledTimes(0);
+    expect(cookieStore.delete).not.toHaveBeenCalled();
   });
 
   it('errors if the cookie does not belong to the authenticated account.', async(): Promise<void> => {
     cookieStore.get.mockResolvedValueOnce('other-id');
     await expect(handler.handle({ metadata, accountId } as any)).rejects.toThrow('Invalid cookie');
-    expect(cookieStore.delete).toHaveBeenCalledTimes(0);
+    expect(cookieStore.delete).not.toHaveBeenCalled();
   });
 });

@@ -17,8 +17,9 @@ import {
   instantiateFromConfig,
   removeFolder,
 } from './Config';
-import quad = DataFactory.quad;
-import namedNode = DataFactory.namedNode;
+
+// eslint-disable-next-line jest/unbound-method -- n3 factory fns never use `this`
+const { quad, namedNode } = DataFactory;
 
 const port = getPort('WebSocketChannel2023');
 const baseUrl = `http://localhost:${port}/`;

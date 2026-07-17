@@ -93,6 +93,6 @@ describe('A CreateClientCredentialsHandler', (): void => {
     await expect(handler.handle({ accountId, json } as any)).rejects.toThrow(BadRequestHttpError);
     expect(webIdStore.isLinked).toHaveBeenCalledTimes(1);
     expect(webIdStore.isLinked).toHaveBeenLastCalledWith(webId, accountId);
-    expect(clientCredentialsStore.create).toHaveBeenCalledTimes(0);
+    expect(clientCredentialsStore.create).not.toHaveBeenCalled();
   });
 });

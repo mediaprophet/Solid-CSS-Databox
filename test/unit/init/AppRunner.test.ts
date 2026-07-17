@@ -201,8 +201,8 @@ describe('AppRunner', (): void => {
         .toHaveBeenNthCalledWith(2, 'urn:solid-server:default:App', { variables: expectedVariables });
       expect(shorthandResolver.handleSafe).toHaveBeenCalledTimes(1);
       expect(shorthandResolver.handleSafe).toHaveBeenLastCalledWith(shorthand);
-      expect(cliExtractor.handleSafe).toHaveBeenCalledTimes(0);
-      expect(app.start).toHaveBeenCalledTimes(0);
+      expect(cliExtractor.handleSafe).not.toHaveBeenCalled();
+      expect(app.start).not.toHaveBeenCalled();
       expect(app.clusterManager.isSingleThreaded()).toBeFalsy();
     });
 
@@ -225,13 +225,13 @@ describe('AppRunner', (): void => {
         .toHaveBeenNthCalledWith(2, 'urn:solid-server:default:App', { variables: {}});
       expect(shorthandResolver.handleSafe).toHaveBeenCalledTimes(1);
       expect(shorthandResolver.handleSafe).toHaveBeenLastCalledWith({});
-      expect(cliExtractor.handleSafe).toHaveBeenCalledTimes(0);
-      expect(app.start).toHaveBeenCalledTimes(0);
+      expect(cliExtractor.handleSafe).not.toHaveBeenCalled();
+      expect(app.start).not.toHaveBeenCalled();
       expect(app.clusterManager.isSingleThreaded()).toBeFalsy();
     });
 
     it('throws an error if threading issues are detected with 1 class.', async(): Promise<void> => {
-      listSingleThreadedComponentsMock.mockImplementationOnce((): string[] => [ 'ViolatingClass' ]);
+      listSingleThreadedComponentsMock.mockReturnValueOnce([ 'ViolatingClass' ]);
       const variables = {
         'urn:solid-server:default:variable:port': 3000,
         'urn:solid-server:default:variable:loggingLevel': 'info',
@@ -262,12 +262,12 @@ describe('AppRunner', (): void => {
         /\[ViolatingClass\] is not threadsafe and should not be run in multithreaded setups!/u,
       );
 
-      expect(write).toHaveBeenCalledTimes(0);
-      expect(exit).toHaveBeenCalledTimes(0);
+      expect(write).not.toHaveBeenCalled();
+      expect(exit).not.toHaveBeenCalled();
     });
 
     it('throws an error if threading issues are detected with 2 class.', async(): Promise<void> => {
-      listSingleThreadedComponentsMock.mockImplementationOnce((): string[] => [ 'ViolatingClass1', 'ViolatingClass2' ]);
+      listSingleThreadedComponentsMock.mockReturnValueOnce([ 'ViolatingClass1', 'ViolatingClass2' ]);
       const variables = {
         'urn:solid-server:default:variable:port': 3000,
         'urn:solid-server:default:variable:loggingLevel': 'info',
@@ -298,8 +298,8 @@ describe('AppRunner', (): void => {
         /\[ViolatingClass1, ViolatingClass2\] are not threadsafe and should not be run in multithreaded setups!/u,
       );
 
-      expect(write).toHaveBeenCalledTimes(0);
-      expect(exit).toHaveBeenCalledTimes(0);
+      expect(write).not.toHaveBeenCalled();
+      expect(exit).not.toHaveBeenCalled();
     });
   });
 
@@ -352,7 +352,7 @@ describe('AppRunner', (): void => {
       );
       expect(shorthandResolver.handleSafe).toHaveBeenCalledTimes(1);
       expect(shorthandResolver.handleSafe).toHaveBeenLastCalledWith(shorthand);
-      expect(cliExtractor.handleSafe).toHaveBeenCalledTimes(0);
+      expect(cliExtractor.handleSafe).not.toHaveBeenCalled();
       expect(app.start).toHaveBeenCalledTimes(1);
       expect(app.start).toHaveBeenCalledWith();
       expect(app.clusterManager.isSingleThreaded()).toBeFalsy();
@@ -383,7 +383,7 @@ describe('AppRunner', (): void => {
       expect(manager.instantiate)
         .toHaveBeenNthCalledWith(2, 'urn:solid-server:default:App', { variables: defaultVariables });
       expect(app.clusterManager.isSingleThreaded()).toBeFalsy();
-      expect(app.start).toHaveBeenCalledTimes(0);
+      expect(app.start).not.toHaveBeenCalled();
     });
 
     it('can apply multiple configurations.', async(): Promise<void> => {
@@ -415,7 +415,7 @@ describe('AppRunner', (): void => {
       expect(manager.instantiate)
         .toHaveBeenNthCalledWith(2, 'urn:solid-server:default:App', { variables: defaultVariables });
       expect(app.clusterManager.isSingleThreaded()).toBeFalsy();
-      expect(app.start).toHaveBeenCalledTimes(0);
+      expect(app.start).not.toHaveBeenCalled();
     });
 
     it('uses the default process.argv in case none are provided.', async(): Promise<void> => {
@@ -458,7 +458,7 @@ describe('AppRunner', (): void => {
       expect(manager.instantiate).toHaveBeenNthCalledWith(1, 'urn:solid-server-app-setup:default:CliResolver', {});
       expect(manager.instantiate)
         .toHaveBeenNthCalledWith(2, 'urn:solid-server:default:App', { variables: defaultVariables });
-      expect(app.start).toHaveBeenCalledTimes(0);
+      expect(app.start).not.toHaveBeenCalled();
       expect(app.clusterManager.isSingleThreaded()).toBeFalsy();
 
       process.argv = argv;
@@ -471,7 +471,7 @@ describe('AppRunner', (): void => {
     });
 
     it('throws an error if there are threading issues detected.', async(): Promise<void> => {
-      listSingleThreadedComponentsMock.mockImplementationOnce((): string[] => [ 'ViolatingClass' ]);
+      listSingleThreadedComponentsMock.mockReturnValueOnce([ 'ViolatingClass' ]);
 
       let caughtError: Error = new Error('should disappear');
       try {
@@ -484,8 +484,8 @@ describe('AppRunner', (): void => {
         /\[ViolatingClass\] is not threadsafe and should not be run in multithreaded setups!/u,
       );
 
-      expect(write).toHaveBeenCalledTimes(0);
-      expect(exit).toHaveBeenCalledTimes(0);
+      expect(write).not.toHaveBeenCalled();
+      expect(exit).not.toHaveBeenCalled();
     });
 
     it('throws an error if creating a ComponentsManager fails.', async(): Promise<void> => {
@@ -500,8 +500,8 @@ describe('AppRunner', (): void => {
       expect(caughtError.message).toMatch(/^Could not build the config files from .*default\.json/mu);
       expect(caughtError.message).toMatch(/^Error: Fatal/mu);
 
-      expect(write).toHaveBeenCalledTimes(0);
-      expect(exit).toHaveBeenCalledTimes(0);
+      expect(write).not.toHaveBeenCalled();
+      expect(exit).not.toHaveBeenCalled();
     });
 
     it('throws an error if instantiating the CliResolver fails.', async(): Promise<void> => {
@@ -516,8 +516,8 @@ describe('AppRunner', (): void => {
       expect(caughtError.message).toMatch(/^Could not create the CLI resolver/mu);
       expect(caughtError.message).toMatch(/^Error: Fatal/mu);
 
-      expect(write).toHaveBeenCalledTimes(0);
-      expect(exit).toHaveBeenCalledTimes(0);
+      expect(write).not.toHaveBeenCalled();
+      expect(exit).not.toHaveBeenCalled();
     });
 
     it('throws an error if extracting the CLI shorthand values fails.', async(): Promise<void> => {
@@ -532,8 +532,8 @@ describe('AppRunner', (): void => {
       expect(caughtError.message).toMatch(/^Could not parse the CLI parameters/mu);
       expect(caughtError.message).toMatch(/^Error: Fatal/mu);
 
-      expect(write).toHaveBeenCalledTimes(0);
-      expect(exit).toHaveBeenCalledTimes(0);
+      expect(write).not.toHaveBeenCalled();
+      expect(exit).not.toHaveBeenCalled();
     });
 
     it('throws an error if resolving the shorthand values fails.', async(): Promise<void> => {
@@ -548,8 +548,8 @@ describe('AppRunner', (): void => {
       expect(caughtError.message).toMatch(/^Could not resolve the shorthand values/mu);
       expect(caughtError.message).toMatch(/^Error: Fatal/mu);
 
-      expect(write).toHaveBeenCalledTimes(0);
-      expect(exit).toHaveBeenCalledTimes(0);
+      expect(write).not.toHaveBeenCalled();
+      expect(exit).not.toHaveBeenCalled();
     });
 
     it('throws an error if instantiating the server fails.', async(): Promise<void> => {
@@ -567,8 +567,8 @@ describe('AppRunner', (): void => {
       expect(caughtError.message).toMatch(/^Could not create the server/mu);
       expect(caughtError.message).toMatch(/^Error: Fatal/mu);
 
-      expect(write).toHaveBeenCalledTimes(0);
-      expect(exit).toHaveBeenCalledTimes(0);
+      expect(write).not.toHaveBeenCalled();
+      expect(exit).not.toHaveBeenCalled();
     });
 
     it('throws an error if non-error objects get thrown.', async(): Promise<void> => {
@@ -582,8 +582,8 @@ describe('AppRunner', (): void => {
       }
       expect(caughtError.message).toMatch(/^Unknown error: NotAnError$/mu);
 
-      expect(write).toHaveBeenCalledTimes(0);
-      expect(exit).toHaveBeenCalledTimes(0);
+      expect(write).not.toHaveBeenCalled();
+      expect(exit).not.toHaveBeenCalled();
     });
   });
 
@@ -770,9 +770,9 @@ describe('AppRunner', (): void => {
 
       expect(app.start).toHaveBeenCalledTimes(1);
 
-      expect(write).toHaveBeenCalledTimes(0);
+      expect(write).not.toHaveBeenCalled();
 
-      expect(exit).toHaveBeenCalledTimes(0);
+      expect(exit).not.toHaveBeenCalled();
     });
   });
 

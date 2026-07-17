@@ -9,6 +9,7 @@ import {
 } from '../../../src/util/TermUtil';
 import { XSD } from '../../../src/util/Vocabularies';
 
+// eslint-disable-next-line jest/unbound-method -- n3 factory fns never use `this`
 const { literal, namedNode } = DataFactory;
 
 describe('TermUtil', (): void => {

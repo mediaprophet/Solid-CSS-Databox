@@ -30,6 +30,7 @@ import { isContainerIdentifier } from '../../util/PathUtil';
 import { CONTENT_TYPE_TERM, LDP } from '../../util/Vocabularies';
 import type { DataAccessor } from './DataAccessor';
 
+// eslint-disable-next-line @typescript-eslint/unbound-method -- n3 factory fns never use `this`
 const { defaultGraph, namedNode, quad, variable } = DataFactory;
 
 /**

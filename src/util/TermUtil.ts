@@ -1,6 +1,7 @@
 import { DataFactory } from 'n3';
 import type { Literal, NamedNode, Term } from '@rdfjs/types';
 
+// eslint-disable-next-line @typescript-eslint/unbound-method -- n3 factory fns never use `this`
 const { namedNode, literal } = DataFactory;
 
 /**

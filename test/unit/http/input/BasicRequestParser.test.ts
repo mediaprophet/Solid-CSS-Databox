@@ -37,12 +37,15 @@ describe('A BasicRequestParser', (): void => {
 
   it('returns the output of all input parsers after calling handle.', async(): Promise<void> => {
     bodyParser.handle = ({ metadata }): any => ({ data: 'body', metadata });
-    await expect(requestParser.handle({ url: 'url', method: 'GET' } as any)).resolves.toEqual({
+    const result = await requestParser.handle({ url: 'url', method: 'GET' } as any);
+    expect(result).toEqual({
       method: 'GET',
       target: { path: 'target' },
       preferences: 'preference',
       conditions: 'conditions',
-      body: { data: 'body', metadata: new RepresentationMetadata({ path: 'target' }) },
+      body: { data: 'body', metadata: expect.any(RepresentationMetadata) },
     });
+    expect(result.body.metadata.identifier.value).toBe('target');
+    expect(result.body.metadata.quads()).toHaveLength(0);
   });
 });

@@ -61,8 +61,8 @@ describe('A BasePodCreator', (): void => {
 
   it('can use an external WebID for the pod generation.', async(): Promise<void> => {
     await expect(creator.handle({ accountId, name, webId })).resolves.toEqual({ podUrl, webId, podId });
-    expect(webIdStore.isLinked).toHaveBeenCalledTimes(0);
-    expect(webIdStore.create).toHaveBeenCalledTimes(0);
+    expect(webIdStore.isLinked).not.toHaveBeenCalled();
+    expect(webIdStore.create).not.toHaveBeenCalled();
     expect(podStore.create).toHaveBeenCalledTimes(1);
     expect(podStore.create).toHaveBeenLastCalledWith(accountId, {
       base: { path: podUrl },
@@ -72,8 +72,8 @@ describe('A BasePodCreator', (): void => {
 
   it('create a root pod.', async(): Promise<void> => {
     await expect(creator.handle({ accountId, webId })).resolves.toEqual({ podUrl: baseUrl, webId, podId });
-    expect(webIdStore.isLinked).toHaveBeenCalledTimes(0);
-    expect(webIdStore.create).toHaveBeenCalledTimes(0);
+    expect(webIdStore.isLinked).not.toHaveBeenCalled();
+    expect(webIdStore.create).not.toHaveBeenCalled();
     expect(podStore.create).toHaveBeenCalledTimes(1);
     expect(podStore.create).toHaveBeenLastCalledWith(accountId, {
       base: { path: baseUrl },
@@ -87,8 +87,8 @@ describe('A BasePodCreator', (): void => {
       .rejects.toThrow(`${generatedWebId} is already registered to this account.`);
     expect(webIdStore.isLinked).toHaveBeenCalledTimes(1);
     expect(webIdStore.isLinked).toHaveBeenLastCalledWith(generatedWebId, accountId);
-    expect(webIdStore.create).toHaveBeenCalledTimes(0);
-    expect(podStore.create).toHaveBeenCalledTimes(0);
+    expect(webIdStore.create).not.toHaveBeenCalled();
+    expect(podStore.create).not.toHaveBeenCalled();
   });
 
   it('undoes any changes if something goes wrong creating the pod.', async(): Promise<void> => {

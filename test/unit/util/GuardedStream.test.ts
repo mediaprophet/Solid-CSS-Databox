@@ -70,10 +70,10 @@ describe('GuardedStream', (): void => {
       const endListener = jest.fn();
       stream.addListener('end', endListener);
 
-      expect(errorListeners[0]).toHaveBeenCalledTimes(0);
-      expect(errorListeners[1]).toHaveBeenCalledTimes(0);
-      expect(errorListeners[2]).toHaveBeenCalledTimes(0);
-      expect(endListener).toHaveBeenCalledTimes(0);
+      expect(errorListeners[0]).not.toHaveBeenCalled();
+      expect(errorListeners[1]).not.toHaveBeenCalled();
+      expect(errorListeners[2]).not.toHaveBeenCalled();
+      expect(endListener).not.toHaveBeenCalled();
 
       jest.runAllTimers();
 
@@ -86,7 +86,7 @@ describe('GuardedStream', (): void => {
       expect(errorListeners[2]).toHaveBeenCalledTimes(2);
       expect(errorListeners[1]).toHaveBeenNthCalledWith(1, errors[0]);
       expect(errorListeners[1]).toHaveBeenNthCalledWith(2, errors[1]);
-      expect(endListener).toHaveBeenCalledTimes(0);
+      expect(endListener).not.toHaveBeenCalled();
     });
 
     it('ignores error listeners that were already attached.', async(): Promise<void> => {
@@ -139,8 +139,8 @@ describe('GuardedStream', (): void => {
 
       jest.runAllTimers();
 
-      expect(errorCb).toHaveBeenCalledTimes(0);
-      expect(errorCb2).toHaveBeenCalledTimes(0);
+      expect(errorCb).not.toHaveBeenCalled();
+      expect(errorCb2).not.toHaveBeenCalled();
       expect(errorCb3).toHaveBeenCalledTimes(1);
       expect(errorCb3).toHaveBeenLastCalledWith(error);
     });

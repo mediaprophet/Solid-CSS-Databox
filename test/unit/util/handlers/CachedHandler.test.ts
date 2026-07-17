@@ -48,7 +48,7 @@ describe('A CachedHandler', (): void => {
     await expect(handler.handle(input)).resolves.toBe(output);
     source.canHandle.mockRejectedValue(new Error('bad input'));
     await expect(handler.canHandle(input)).resolves.toBeUndefined();
-    expect(source.canHandle).toHaveBeenCalledTimes(0);
+    expect(source.canHandle).not.toHaveBeenCalled();
   });
 
   it('cannot handle input with multiple keys if the first key is already missing.', async(): Promise<void> => {

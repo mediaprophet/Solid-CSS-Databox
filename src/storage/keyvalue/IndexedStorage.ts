@@ -194,7 +194,7 @@ export interface IndexedStorage<T extends IndexTypeCollection<T>> {
     type: TType,
     id: string,
     key: TKey,
-    value: ValueType<T[TType][TKey]>
+    value: ValueType<T[TType][TKey]>,
   ) => Promise<void>;
 
   /**

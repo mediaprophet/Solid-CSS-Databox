@@ -20,7 +20,7 @@ describe('assertNonEmpty', (): void => {
   });
 
   it('rejects a non-string and an empty string.', (): void => {
-    expect((): string => assertNonEmpty(42 as unknown as string, 'f')).toThrow(`Evidence field 'f'`);
+    expect((): string => assertNonEmpty(42, 'f')).toThrow(`Evidence field 'f'`);
     expect((): string => assertNonEmpty('', 'f')).toThrow(`Evidence field 'f'`);
   });
 });

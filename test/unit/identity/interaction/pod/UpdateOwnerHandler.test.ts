@@ -54,7 +54,7 @@ describe('An UpdateOwnerHandler', (): void => {
     expect(store.get).toHaveBeenLastCalledWith(id);
     expect(store.updateOwner).toHaveBeenCalledTimes(1);
     expect(store.updateOwner).toHaveBeenLastCalledWith(id, webId, true);
-    expect(store.removeOwner).toHaveBeenCalledTimes(0);
+    expect(store.removeOwner).not.toHaveBeenCalled();
   });
 
   it('can remove an owner.', async(): Promise<void> => {
@@ -62,7 +62,7 @@ describe('An UpdateOwnerHandler', (): void => {
       .resolves.toEqual({ json: {}});
     expect(store.get).toHaveBeenCalledTimes(1);
     expect(store.get).toHaveBeenLastCalledWith(id);
-    expect(store.updateOwner).toHaveBeenCalledTimes(0);
+    expect(store.updateOwner).not.toHaveBeenCalled();
     expect(store.removeOwner).toHaveBeenCalledTimes(1);
     expect(store.removeOwner).toHaveBeenLastCalledWith(id, webId);
   });
@@ -72,7 +72,7 @@ describe('An UpdateOwnerHandler', (): void => {
       .rejects.toThrow(NotFoundHttpError);
     expect(store.get).toHaveBeenCalledTimes(1);
     expect(store.get).toHaveBeenLastCalledWith(id);
-    expect(store.updateOwner).toHaveBeenCalledTimes(0);
-    expect(store.removeOwner).toHaveBeenCalledTimes(0);
+    expect(store.updateOwner).not.toHaveBeenCalled();
+    expect(store.removeOwner).not.toHaveBeenCalled();
   });
 });

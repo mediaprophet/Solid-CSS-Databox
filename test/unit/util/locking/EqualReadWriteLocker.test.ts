@@ -21,8 +21,8 @@ describe('An EqualReadWriteLocker', (): void => {
     const prom = locker.withReadLock(identifier, emptyFn);
     expect(sourceLocker.acquire).toHaveBeenCalledTimes(1);
     expect(sourceLocker.acquire).toHaveBeenLastCalledWith(identifier);
-    expect(emptyFn).toHaveBeenCalledTimes(0);
-    expect(sourceLocker.release).toHaveBeenCalledTimes(0);
+    expect(emptyFn).not.toHaveBeenCalled();
+    expect(sourceLocker.release).not.toHaveBeenCalled();
 
     await expect(prom).resolves.toBeUndefined();
     expect(sourceLocker.acquire).toHaveBeenCalledTimes(1);
@@ -35,8 +35,8 @@ describe('An EqualReadWriteLocker', (): void => {
     const prom = locker.withWriteLock(identifier, emptyFn);
     expect(sourceLocker.acquire).toHaveBeenCalledTimes(1);
     expect(sourceLocker.acquire).toHaveBeenLastCalledWith(identifier);
-    expect(emptyFn).toHaveBeenCalledTimes(0);
-    expect(sourceLocker.release).toHaveBeenCalledTimes(0);
+    expect(emptyFn).not.toHaveBeenCalled();
+    expect(sourceLocker.release).not.toHaveBeenCalled();
 
     await expect(prom).resolves.toBeUndefined();
     expect(sourceLocker.acquire).toHaveBeenCalledTimes(1);
@@ -50,8 +50,8 @@ describe('An EqualReadWriteLocker', (): void => {
     const prom = locker.withWriteLock(identifier, emptyFn);
     expect(sourceLocker.acquire).toHaveBeenCalledTimes(1);
     expect(sourceLocker.acquire).toHaveBeenLastCalledWith(identifier);
-    expect(emptyFn).toHaveBeenCalledTimes(0);
-    expect(sourceLocker.release).toHaveBeenCalledTimes(0);
+    expect(emptyFn).not.toHaveBeenCalled();
+    expect(sourceLocker.release).not.toHaveBeenCalled();
 
     await expect(prom).rejects.toThrow('bad data!');
     expect(sourceLocker.acquire).toHaveBeenCalledTimes(1);

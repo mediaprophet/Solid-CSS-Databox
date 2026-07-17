@@ -27,24 +27,24 @@ describe('A ReadOnlyStore', (): void => {
   it('throws an error when calling addResource.', async(): Promise<void> => {
     await expect(store.addResource({ path: 'addPath' }, {} as Representation))
       .rejects.toThrow(ForbiddenHttpError);
-    expect(source.addResource).toHaveBeenCalledTimes(0);
+    expect(source.addResource).not.toHaveBeenCalled();
   });
 
   it('throws an error when calling setRepresentation.', async(): Promise<void> => {
     await expect(store.setRepresentation({ path: 'setPath' }, {} as Representation))
       .rejects.toThrow(ForbiddenHttpError);
-    expect(source.setRepresentation).toHaveBeenCalledTimes(0);
+    expect(source.setRepresentation).not.toHaveBeenCalled();
   });
 
   it('throws an error when calling deleteResource.', async(): Promise<void> => {
     await expect(store.deleteResource({ path: 'deletePath' }))
       .rejects.toThrow(ForbiddenHttpError);
-    expect(source.deleteResource).toHaveBeenCalledTimes(0);
+    expect(source.deleteResource).not.toHaveBeenCalled();
   });
 
   it('throws an error when calling modifyResource.', async(): Promise<void> => {
     await expect(store.modifyResource({ path: 'modifyPath' }, {} as Patch))
       .rejects.toThrow(ForbiddenHttpError);
-    expect(source.modifyResource).toHaveBeenCalledTimes(0);
+    expect(source.modifyResource).not.toHaveBeenCalled();
   });
 });

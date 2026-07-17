@@ -17,6 +17,7 @@ import { SingleRootIdentifierStrategy } from '../../../../src/util/identifiers/S
 import { guardedStreamFrom } from '../../../../src/util/StreamUtil';
 import { CONTENT_TYPE_TERM, LDP, RDF } from '../../../../src/util/Vocabularies';
 
+// eslint-disable-next-line jest/unbound-method -- n3 factory fns never use `this`
 const { literal, namedNode, quad } = DataFactory;
 
 jest.mock('fetch-sparql-endpoint');

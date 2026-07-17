@@ -17,7 +17,7 @@ describe('A ConfigPodInitializer', (): void => {
   beforeEach(async(): Promise<void> => {
     storeFactory = {
       generate: jest.fn().mockResolvedValue('store'),
-    } as any;
+    };
 
     configStorage = new Map<string, unknown>() as any;
     await configStorage.set(identifierA.path, configA);

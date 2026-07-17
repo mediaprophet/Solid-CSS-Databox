@@ -90,7 +90,7 @@ describe('MappingForge', (): void => {
       if (deposited.status !== 'reconciled') {
         throw new Error('Expected a reconciled bridge report.');
       }
-      expect(deposited.receipt.jws).toBeDefined();
+      expect(deposited.receipt.jws.split('.')).toHaveLength(3);
       expect(JSON.stringify(deposited)).not.toContain('KNOWN');
 
       const unresolved = await forge.depositSourceEvent({ ...base, sourceEventId: 'evt-2', customerId: 'UNKNOWN' });

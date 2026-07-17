@@ -58,7 +58,7 @@ describe('A BaseLoginAccountStorage', (): void => {
     await expect(storage.create(ACCOUNT_TYPE, { test: 'data' })).resolves.toEqual({ test: 'data', id: 'id' });
     expect(source.create).toHaveBeenCalledTimes(1);
     expect(source.create).toHaveBeenLastCalledWith(ACCOUNT_TYPE, { test: 'data', linkedLoginsCount: 0 });
-    expect(source.delete).toHaveBeenCalledTimes(0);
+    expect(source.delete).not.toHaveBeenCalled();
 
     await jest.advanceTimersByTimeAsync(30 * 60 * 1000);
 
@@ -71,11 +71,11 @@ describe('A BaseLoginAccountStorage', (): void => {
     await expect(storage.create(ACCOUNT_TYPE, { test: 'data' })).resolves.toEqual({ test: 'data', id: 'id' });
     expect(source.create).toHaveBeenCalledTimes(1);
     expect(source.create).toHaveBeenLastCalledWith(ACCOUNT_TYPE, { test: 'data', linkedLoginsCount: 0 });
-    expect(source.delete).toHaveBeenCalledTimes(0);
+    expect(source.delete).not.toHaveBeenCalled();
 
     await jest.advanceTimersByTimeAsync(30 * 60 * 1000);
 
-    expect(source.delete).toHaveBeenCalledTimes(0);
+    expect(source.delete).not.toHaveBeenCalled();
   });
 
   it('prevents creating entries if the account has no linked logins.', async(): Promise<void> => {
@@ -85,7 +85,7 @@ describe('A BaseLoginAccountStorage', (): void => {
       .rejects.toThrow('An account needs at least 1 login method.');
     expect(source.get).toHaveBeenCalledTimes(1);
     expect(source.get).toHaveBeenLastCalledWith(ACCOUNT_TYPE, 'id');
-    expect(source.create).toHaveBeenCalledTimes(0);
+    expect(source.create).not.toHaveBeenCalled();
   });
 
   it('can create new login methods if there are no linked logins.', async(): Promise<void> => {
@@ -116,7 +116,7 @@ describe('A BaseLoginAccountStorage', (): void => {
     await expect(storage.create('dummy', { test: 'data', account: 'id' })).rejects.toThrow(NotFoundHttpError);
     expect(source.get).toHaveBeenCalledTimes(1);
     expect(source.get).toHaveBeenLastCalledWith(ACCOUNT_TYPE, 'id');
-    expect(source.create).toHaveBeenCalledTimes(0);
+    expect(source.create).not.toHaveBeenCalled();
   });
 
   it('calls the source when checking existence.', async(): Promise<void> => {
@@ -163,7 +163,7 @@ describe('A BaseLoginAccountStorage', (): void => {
   it('throws a 404 when trying to set an unknown account.', async(): Promise<void> => {
     source.get.mockResolvedValueOnce(undefined);
     await expect(storage.set(ACCOUNT_TYPE, { test: 'data' } as any)).rejects.toThrow(NotFoundHttpError);
-    expect(source.set).toHaveBeenCalledTimes(0);
+    expect(source.set).not.toHaveBeenCalled();
   });
 
   it('calls the source when setting specific keys.', async(): Promise<void> => {
@@ -188,7 +188,7 @@ describe('A BaseLoginAccountStorage', (): void => {
     expect(source.get).toHaveBeenCalledTimes(2);
     expect(source.get).toHaveBeenNthCalledWith(1, 'dummy', 'dum');
     expect(source.get).toHaveBeenNthCalledWith(2, ACCOUNT_TYPE, 'id');
-    expect(source.delete).toHaveBeenCalledTimes(0);
+    expect(source.delete).not.toHaveBeenCalled();
   });
 
   it('can delete login methods if there is more than one.', async(): Promise<void> => {
@@ -211,13 +211,13 @@ describe('A BaseLoginAccountStorage', (): void => {
     await expect(storage.delete('dummy', 'dum')).rejects.toThrow(NotFoundHttpError);
     expect(source.get).toHaveBeenCalledTimes(1);
     expect(source.get).toHaveBeenLastCalledWith('dummy', 'dum');
-    expect(source.delete).toHaveBeenCalledTimes(0);
+    expect(source.delete).not.toHaveBeenCalled();
   });
 
   it('can delete non-login entries.', async(): Promise<void> => {
     await storage.defineType('dummy', { test: 'string', account: `id:${ACCOUNT_TYPE}` }, false);
     await expect(storage.delete('dummy', 'dum')).resolves.toBeUndefined();
-    expect(source.get).toHaveBeenCalledTimes(0);
+    expect(source.get).not.toHaveBeenCalled();
     expect(source.delete).toHaveBeenCalledTimes(1);
     expect(source.delete).toHaveBeenLastCalledWith('dummy', 'dum');
   });

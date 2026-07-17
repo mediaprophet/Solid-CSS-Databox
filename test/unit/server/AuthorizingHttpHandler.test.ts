@@ -98,6 +98,6 @@ describe('An AuthorizingHttpHandler', (): void => {
     const modes = modeQuads.map((quad): string => quad.object.value);
     expect(modes).toContain(AccessMode.read);
     expect(modes).toContain(AccessMode.write);
-    expect(source.handleSafe).toHaveBeenCalledTimes(0);
+    expect(source.handleSafe).not.toHaveBeenCalled();
   });
 });

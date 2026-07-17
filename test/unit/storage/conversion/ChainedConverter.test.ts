@@ -157,12 +157,12 @@ describe('A ChainedConverter', (): void => {
     const result = await converter.handle(args);
     expect(result.metadata.contentType).toBe('x/x');
     expect(result.metadata.get(POSIX.terms.size)).toBeUndefined();
-    expect(converters[0].handle).toHaveBeenCalledTimes(0);
-    expect(converters[1].handle).toHaveBeenCalledTimes(0);
+    expect(converters[0].handle).not.toHaveBeenCalled();
+    expect(converters[1].handle).not.toHaveBeenCalled();
     expect(converters[2].handle).toHaveBeenCalledTimes(1);
-    expect(converters[3].handle).toHaveBeenCalledTimes(0);
-    expect(converters[4].handle).toHaveBeenCalledTimes(0);
-    expect(converters[5].handle).toHaveBeenCalledTimes(0);
+    expect(converters[3].handle).not.toHaveBeenCalled();
+    expect(converters[4].handle).not.toHaveBeenCalled();
+    expect(converters[5].handle).not.toHaveBeenCalled();
     expect(converters[6].handle).toHaveBeenCalledTimes(1);
   });
 

@@ -1,6 +1,8 @@
 import { DataFactory } from 'n3';
 import type { AuxiliaryStrategy, RepresentationMetadata, ResourceIdentifier } from '../../src';
-import namedNode = DataFactory.namedNode;
+
+// eslint-disable-next-line jest/unbound-method -- n3 factory fns never use `this`
+const { namedNode } = DataFactory;
 
 export class SimpleSuffixStrategy implements AuxiliaryStrategy {
   private readonly suffix: string;

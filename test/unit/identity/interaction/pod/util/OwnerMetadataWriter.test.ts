@@ -4,7 +4,6 @@ import { RepresentationMetadata } from '../../../../../../src/http/representatio
 import { OwnerMetadataWriter } from '../../../../../../src/identity/interaction/pod/util/OwnerMetadataWriter';
 import type { PodStore } from '../../../../../../src/identity/interaction/pod/util/PodStore';
 import type { StorageLocationStrategy } from '../../../../../../src/server/description/StorageLocationStrategy';
-import type { HttpResponse } from '../../../../../../src/server/HttpResponse';
 import { joinUrl } from '../../../../../../src/util/PathUtil';
 
 describe('An OwnerMetadataWriter', (): void => {
@@ -21,7 +20,7 @@ describe('An OwnerMetadataWriter', (): void => {
   beforeEach(async(): Promise<void> => {
     metadata = new RepresentationMetadata(target);
 
-    response = createResponse() as HttpResponse;
+    response = createResponse();
 
     podStore = {
       findByBaseUrl: jest.fn().mockResolvedValue({ id, accountId }),
@@ -50,9 +49,9 @@ describe('An OwnerMetadataWriter', (): void => {
     metadata = new RepresentationMetadata();
     await expect(writer.handle({ metadata, response })).resolves.toBeUndefined();
     expect(response.getHeaders()).toEqual({});
-    expect(storageStrategy.getStorageIdentifier).toHaveBeenCalledTimes(0);
-    expect(podStore.findByBaseUrl).toHaveBeenCalledTimes(0);
-    expect(podStore.getOwners).toHaveBeenCalledTimes(0);
+    expect(storageStrategy.getStorageIdentifier).not.toHaveBeenCalled();
+    expect(podStore.findByBaseUrl).not.toHaveBeenCalled();
+    expect(podStore.getOwners).not.toHaveBeenCalled();
   });
 
   it('adds no headers if no root storage could be found.', async(): Promise<void> => {
@@ -61,8 +60,8 @@ describe('An OwnerMetadataWriter', (): void => {
     expect(response.getHeaders()).toEqual({});
     expect(storageStrategy.getStorageIdentifier).toHaveBeenCalledTimes(1);
     expect(storageStrategy.getStorageIdentifier).toHaveBeenLastCalledWith(target);
-    expect(podStore.findByBaseUrl).toHaveBeenCalledTimes(0);
-    expect(podStore.getOwners).toHaveBeenCalledTimes(0);
+    expect(podStore.findByBaseUrl).not.toHaveBeenCalled();
+    expect(podStore.getOwners).not.toHaveBeenCalled();
   });
 
   it('adds no headers if the target is not a pod base URL.', async(): Promise<void> => {
@@ -71,8 +70,8 @@ describe('An OwnerMetadataWriter', (): void => {
     expect(response.getHeaders()).toEqual({});
     expect(storageStrategy.getStorageIdentifier).toHaveBeenCalledTimes(1);
     expect(storageStrategy.getStorageIdentifier).toHaveBeenLastCalledWith({ path: joinUrl(target.path, 'document') });
-    expect(podStore.findByBaseUrl).toHaveBeenCalledTimes(0);
-    expect(podStore.getOwners).toHaveBeenCalledTimes(0);
+    expect(podStore.findByBaseUrl).not.toHaveBeenCalled();
+    expect(podStore.getOwners).not.toHaveBeenCalled();
   });
 
   it('adds no headers if there is no matching pod object.', async(): Promise<void> => {
@@ -83,7 +82,7 @@ describe('An OwnerMetadataWriter', (): void => {
     expect(storageStrategy.getStorageIdentifier).toHaveBeenLastCalledWith(target);
     expect(podStore.findByBaseUrl).toHaveBeenCalledTimes(1);
     expect(podStore.findByBaseUrl).toHaveBeenLastCalledWith(target.path);
-    expect(podStore.getOwners).toHaveBeenCalledTimes(0);
+    expect(podStore.getOwners).not.toHaveBeenCalled();
   });
 
   it('adds no headers if there are no matching owners.', async(): Promise<void> => {

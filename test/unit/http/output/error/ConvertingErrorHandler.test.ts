@@ -14,7 +14,9 @@ import type {
 import type { HttpError } from '../../../../../src/util/errors/HttpError';
 import { NotFoundHttpError } from '../../../../../src/util/errors/NotFoundHttpError';
 import { HTTP, XSD } from '../../../../../src/util/Vocabularies';
-import literal = DataFactory.literal;
+
+// eslint-disable-next-line jest/unbound-method -- n3 factory fns never use `this`
+const { literal } = DataFactory;
 
 const preferences: RepresentationPreferences = { type: { 'text/turtle': 1 }};
 
@@ -76,7 +78,7 @@ describe('A ConvertingErrorHandler', (): void => {
     await expect(handler.canHandle({ error, request })).rejects.toThrow('rejected');
     expect(preferenceParser.canHandle).toHaveBeenCalledTimes(1);
     expect(preferenceParser.canHandle).toHaveBeenLastCalledWith({ request });
-    expect(converter.canHandle).toHaveBeenCalledTimes(0);
+    expect(converter.canHandle).not.toHaveBeenCalled();
   });
 
   it('accepts input supported by the converter.', async(): Promise<void> => {

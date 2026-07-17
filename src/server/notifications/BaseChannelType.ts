@@ -21,7 +21,9 @@ import { NOTIFY, RDF, XSD } from '../../util/Vocabularies';
 import { CONTEXT_NOTIFICATION } from './Notification';
 import type { NotificationChannel } from './NotificationChannel';
 import type { NotificationChannelType, SubscriptionService } from './NotificationChannelType';
-import namedNode = DataFactory.namedNode;
+
+// eslint-disable-next-line @typescript-eslint/unbound-method -- n3 factory fns never use `this`
+const { namedNode } = DataFactory;
 
 /**
  * Helper type used to store information about the default features.
@@ -169,8 +171,7 @@ export abstract class BaseChannelType implements NotificationChannelType {
           }),
         },
       );
-      // Typing issue with rdf-parse library
-      this.shaclQuads = await readableToQuads(shaclStream as unknown as Readable);
+      this.shaclQuads = await readableToQuads(shaclStream);
     }
     return this.shaclQuads;
   }
@@ -206,7 +207,7 @@ export abstract class BaseChannelType implements NotificationChannelType {
     }
 
     // From this point on, we can assume the subject corresponds to a valid subscription request
-    return focusNodes[0] as NamedNode;
+    return focusNodes[0];
   }
 
   /**
