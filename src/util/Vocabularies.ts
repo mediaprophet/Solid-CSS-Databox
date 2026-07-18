@@ -246,6 +246,18 @@ export const OIDC = createVocabulary(
   'redirect_uris',
 );
 
+export const ORG = createVocabulary(
+  'http://www.w3.org/ns/org#',
+  'Organization',
+  'Membership',
+  'Role',
+  'member',
+  'organization',
+  'role',
+  'memberOf',
+  'hasMember',
+);
+
 export const PIM = createVocabulary(
   'http://www.w3.org/ns/pim/space#',
   'Storage',
