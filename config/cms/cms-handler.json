@@ -1,0 +1,43 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server/^8.0.0/components/context.jsonld",
+  "import": [
+    "css:config/http/handler/handlers/storage-description.json"
+  ],
+  "@graph": [
+    {
+      "comment": "In-process registry of installed CMS modules and their enabled state.",
+      "@id": "urn:solid-server:cms:ModuleRegistry",
+      "@type": "InMemoryDataboxModuleRegistry"
+    },
+    {
+      "comment": "Databox CMS control plane. It is ordered before the catch-all LDP handler.",
+      "@id": "urn:solid-server:cms:CmsHttpHandler",
+      "@type": "CmsHttpHandler",
+      "registry": { "@id": "urn:solid-server:cms:ModuleRegistry" },
+      "controlToken": { "@id": "urn:solid-server:cms:variable:controlToken" },
+      "routeBase": "/.databox/cms"
+    },
+    {
+      "comment": "All HTTP handlers, with the CMS route before the general LDP handler.",
+      "@id": "urn:solid-server:default:HttpHandler",
+      "@type": "SequenceHandler",
+      "handlers": [
+        { "@id": "urn:solid-server:default:Middleware" },
+        {
+          "@id": "urn:solid-server:default:BaseHttpHandler",
+          "@type": "WaterfallHandler",
+          "handlers": [
+            { "@id": "urn:solid-server:default:StaticAssetHandler" },
+            { "@id": "urn:solid-server:default:OidcHandler" },
+            { "@id": "urn:solid-server:default:NotificationHttpHandler" },
+            { "@id": "urn:solid-server:default:StorageDescriptionHandler" },
+            { "@id": "urn:solid-server:default:AuthResourceHttpHandler" },
+            { "@id": "urn:solid-server:default:IdentityProviderHandler" },
+            { "@id": "urn:solid-server:cms:CmsHttpHandler" },
+            { "@id": "urn:solid-server:default:LdpHandler" }
+          ]
+        }
+      ]
+    }
+  ]
+}

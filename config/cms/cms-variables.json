@@ -1,0 +1,39 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server/^8.0.0/components/context.jsonld",
+  "@graph": [
+    {
+      "comment": "Required CMS control-plane secret supplied by CLI/environment.",
+      "@id": "urn:solid-server:cms:variable:controlToken",
+      "@type": "Variable"
+    },
+    {
+      "@id": "urn:solid-server-app-setup:default:CliExtractor",
+      "@type": "YargsCliExtractor",
+      "parameters": [
+        {
+          "@type": "YargsParameter",
+          "name": "cmsControlToken",
+          "options": {
+            "requiresArg": true,
+            "type": "string",
+            "describe": "Control-plane bearer token for the Databox CMS control plane (minimum 32 bytes)."
+          }
+        }
+      ]
+    },
+    {
+      "@id": "urn:solid-server-app-setup:default:ShorthandResolver",
+      "@type": "CombinedShorthandResolver",
+      "resolvers": [
+        {
+          "CombinedShorthandResolver:_resolvers_key": "urn:solid-server:cms:variable:controlToken",
+          "CombinedShorthandResolver:_resolvers_value": {
+            "@type": "KeyExtractor",
+            "key": "cmsControlToken",
+            "defaultValue": ""
+          }
+        }
+      ]
+    }
+  ]
+}
