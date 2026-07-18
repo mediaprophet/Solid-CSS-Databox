@@ -621,6 +621,11 @@ export * from './util/templates/TemplateUtil';
 
 // Databox (DBX-09 scaffold — see databox/handoffs/DBX-09.md)
 export * from './databox/authorization/DataboxAuthorizer';
+export * from './databox/cms/CmsHttpHandler';
+export * from './databox/cms/CmsModuleRouter';
+export * from './databox/cms/DataboxModuleRegistry';
+export * from './databox/cms/ModuleConfigStore';
+export * from './databox/cms/SolidModuleManifest';
 export * from './databox/context/AuthenticatedContextExtractor';
 export * from './databox/context/DataboxRequestContext';
 export * from './databox/evidence/Evidence';

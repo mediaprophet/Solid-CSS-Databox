@@ -60,6 +60,8 @@
     "demo:seraphim-forge": "ts-node ./scripts/seraphimForgeDemo.ts",
     "start:databox-live": "node ./bin/server.js -c config/databox/live.json",
     "start:databox-demo": "node ./bin/server.js -c config/databox/live.json --databoxControlToken 12345678901234567890123456789012",
+    "start:cms": "node ./bin/server.js -c config/cms/cms.json",
+    "start:cms-demo": "node ./bin/server.js -c config/cms/cms.json --cmsControlToken 12345678901234567890123456789012",
     "typedocs": "typedoc --customCss ./documentation/typedoc.css",
     "jest": "jest --coverageReporters text-summary --",
     "lint": "npm run lint:eslint && npm run lint:markdown",
