@@ -4,8 +4,8 @@ import type { ResourceIdentifier } from '../../http/representation/ResourceIdent
 import type { ResourceStore } from '../../storage/ResourceStore';
 import { ensureTrailingSlash } from '../../util/PathUtil';
 import { readableToString } from '../../util/StreamUtil';
+import { CMS } from '../../util/Vocabularies';
 
-const CMS_ENABLED = 'urn:solid-server:databox:cms#enabled';
 const TURTLE = 'text/turtle';
 
 /**
@@ -42,7 +42,7 @@ export class ModuleConfigStore {
 
   /** Set the enabled flag, persisting it as the module's state graph. */
   public async setEnabled(id: string, enabled: boolean): Promise<void> {
-    await this.save(id, `<> <${CMS_ENABLED}> ${enabled ? 'true' : 'false'} .`);
+    await this.save(id, `<> <${CMS.enabled}> ${enabled ? 'true' : 'false'} .`);
   }
 
   /** Whether the module is enabled (defaults to `false` when no state, or no flag, is stored). */
@@ -52,7 +52,7 @@ export class ModuleConfigStore {
       return false;
     }
     return new Parser({ baseIRI: this.container }).parse(turtle)
-      .some((quad): boolean => quad.predicate.value === CMS_ENABLED && quad.object.value === 'true');
+      .some((quad): boolean => quad.predicate.value === CMS.enabled && quad.object.value === 'true');
   }
 
   private identifier(id: string): ResourceIdentifier {

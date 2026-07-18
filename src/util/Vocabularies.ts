@@ -167,6 +167,13 @@ export const AUTH = createVocabulary(
   'publicMode',
 );
 
+export const CMS = createVocabulary(
+  'urn:solid-server:databox:cms#',
+  'Module',
+  'enabled',
+  'config',
+);
+
 export const DC = createVocabulary(
   'http://purl.org/dc/terms/',
   'description',
