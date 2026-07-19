@@ -72,6 +72,13 @@ a **system-tray** presence. Split by job:
   **Tauri** (Rust + OS WebView, a few MB — not Electron). A Rust tray is the on-ramp to Tauri (same
   `tao`/`wry` ecosystem), so starting thin keeps Tauri open without committing.
 
+**Receipt printing (native, Rust core).** Physical POS receipt output is a hardware concern and belongs in the
+Rust native edge alongside device/connector I/O: **QR-image rendering + thermal-printer I/O (ESC/POS)**. The
+CMS builds the *pure* pieces — the printable receipt **document** and the **QR payload** (a URL to the
+consumer's digital RDF/VC receipt in the pod: `src/databox/cms/modules/receipt/ReceiptDoc.ts`); the Rust core
+renders the QR and drives the printer. Scanning the QR bridges paper → the sovereign, verifiable digital
+receipt (anti-lock-in).
+
 **Honest caveats (bite in any toolkit):**
 - **Node reality:** CSS *is* Node → the harness must **bundle/manage a Node runtime + the CSS/CMS server as a
   sidecar** (Tauri sidecar model / Rust child-process supervisor). This packaging is the real work,
