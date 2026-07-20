@@ -169,6 +169,19 @@ describe('A SparqlDataAccessor', (): void => {
     ]));
   });
 
+  it('uses a separate SPARQL Update endpoint when configured.', async(): Promise<void> => {
+    const updateEndpoint = 'http://test.com/update';
+    accessor = new SparqlDataAccessor(endpoint, identifierStrategy, updateEndpoint);
+    metadata = new RepresentationMetadata(
+      { path: 'http://test.com/container/' },
+      { [RDF.type]: [ LDP.terms.Resource, LDP.terms.Container ]},
+    );
+    await expect(accessor.writeContainer({ path: 'http://test.com/container/' }, metadata)).resolves.toBeUndefined();
+
+    expect(fetchUpdate).toHaveBeenCalledTimes(1);
+    expect(fetchUpdate.mock.calls[0][0]).toBe(updateEndpoint);
+  });
+
   it('does not write containment triples when writing to a root container.', async(): Promise<void> => {
     metadata = new RepresentationMetadata(
       { path: 'http://test.com/' },

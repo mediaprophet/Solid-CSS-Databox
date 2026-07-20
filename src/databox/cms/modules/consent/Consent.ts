@@ -25,27 +25,42 @@ function requireUri(value: string, field: string): string {
   }
 }
 
+function requireNonEmpty(value: string, field: string): string {
+  const trimmed = value.trim();
+  if (trimmed.length === 0) {
+    throw new BadRequestHttpError(`A consent needs a ${field}.`);
+  }
+  return trimmed;
+}
+
+function requireDataCategories(dataCategories: readonly string[]): readonly string[] {
+  const categories = dataCategories.map((category): string => category.trim());
+  if (categories.length === 0 || categories.some((category): boolean => category.length === 0)) {
+    throw new BadRequestHttpError('A consent needs at least one non-empty data category.');
+  }
+  return categories;
+}
+
+function requireDate(value: string, field: string): string {
+  const date = new Date(value);
+  if (value.trim().length === 0 || Number.isNaN(date.getTime())) {
+    throw new BadRequestHttpError(`A consent ${field} must be a valid date.`);
+  }
+  return value;
+}
+
 /**
- * Build a DPV-shaped consent record as JSON-LD (see `databox/solid-cms-plan.md`, §consent —
- * the privacy spine shared by allied-health, charity, CDR, and GDPR flows). Pure and
- * deterministic: the granted/withdrawn status and timestamp are both supplied by the caller.
+ * Build a DPV-shaped consent record as JSON-LD. Pure and deterministic: the
+ * granted/withdrawn status and timestamp are both supplied by the caller.
  */
 export function buildConsent(input: ConsentInput): Record<string, unknown> {
   const id = requireUri(input.id, 'id');
   const dataSubject = requireUri(input.dataSubject, 'dataSubject');
   const controller = requireUri(input.controller, 'controller');
-  if (input.purpose.trim().length === 0) {
-    throw new BadRequestHttpError('A consent needs a purpose.');
-  }
-  if (input.dataCategories.length === 0) {
-    throw new BadRequestHttpError('A consent needs at least one data category.');
-  }
-  if (input.legalBasis.trim().length === 0) {
-    throw new BadRequestHttpError('A consent needs a legalBasis.');
-  }
-  if (input.timestamp.trim().length === 0) {
-    throw new BadRequestHttpError('A consent needs a timestamp.');
-  }
+  const purpose = requireNonEmpty(input.purpose, 'purpose');
+  const dataCategories = requireDataCategories(input.dataCategories);
+  const legalBasis = requireNonEmpty(input.legalBasis, 'legalBasis');
+  const timestamp = requireDate(input.timestamp, 'timestamp');
 
   return {
     [LD_CONTEXT]: 'https://w3id.org/dpv#',
@@ -53,10 +68,10 @@ export function buildConsent(input: ConsentInput): Record<string, unknown> {
     [LD_TYPE]: 'Consent',
     dataSubject: { [LD_ID]: dataSubject },
     dataController: { [LD_ID]: controller },
-    hasPurpose: input.purpose,
-    hasPersonalData: input.dataCategories,
-    hasLegalBasis: input.legalBasis,
+    hasPurpose: purpose,
+    hasPersonalData: dataCategories,
+    hasLegalBasis: legalBasis,
     hasConsentStatus: input.granted ? 'ConsentGiven' : 'ConsentWithdrawn',
-    timestamp: input.timestamp,
+    timestamp,
   };
 }

@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useCreate, useList } from "@refinedev/core";
 
 /**
@@ -19,7 +19,7 @@ async function generateHolderJwk() {
 export const MappingsSimulator = () => {
   const { mutate, isPending: isLoading } = useCreate();
   const { result: programsData } = useList({ resource: "programs" });
-  const programs = programsData?.data ?? [];
+  const programs = useMemo(() => programsData?.data ?? [], [programsData?.data]);
 
   const [formData, setFormData] = useState({
     profileId: "",

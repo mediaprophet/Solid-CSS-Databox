@@ -1,9 +1,72 @@
 # Plan: A Solid-native CMS for CSS — modules, config, setup, admin, users
 ### First concrete module: Hosting / Cloudflare domain setup
 
-> Status: **draft for Timothy to extend** ("I have a lot to add"). This is a plain markdown working
+> Status: **canonical implementation plan, in progress**. This is a plain markdown working
 > document — edit directly or drop notes in chat and I'll integrate them coherently. Open questions and
 > the places most wanting your input are marked **⟵ your call** / **TBC**.
+
+---
+
+## 0. Current implementation checkpoint
+
+**Checkpoint date:** 2026-07-19. The attached Claude/Codex practical to-do list has partly moved from roadmap
+to implementation. The project now has a broad verified CMS/domain library plus the first integration layer.
+Do not evaluate future work only by whether unit tests pass; evaluate it against the four invariants in §13.1.
+
+Implemented in the current branch:
+
+- Opt-in CMS/SPARQL presets exist alongside the default/basic CSS install path.
+- Module manifests, enabled state, config state, vertical profiles, and connector descriptors can be represented
+  as Solid/RDF resources.
+- Portable CMS "works" export/import exists for manifests, enabled/config state, Turtle state, vertical profiles,
+  and connector manifest/job descriptors.
+- `ModuleManifestRdf` supports portable RDF manifest serialization/discovery through standard Solid Type Index
+  patterns.
+- `forge-admin` has demo/live/standard-Solid provider modes; the standard-Solid mode degrades away from
+  CSS-enhanced control-plane operations.
+- `VerticalProfile` ships declarative lighthouse bundles for `food.restaurant` and `health.privacy-consent`.
+- Oxigraph support exists as an opt-in SPARQL storage profile plus deterministic hydration planning. Oxigraph is
+  explicitly a rebuildable query environment, not canonical storage.
+- `OxigraphCmsSync` exists as a disabled-by-default helper for syncing allowlisted canonical Solid RDF writes into
+  hydrated named graphs.
+- `OxigraphCmsSyncComposition` wires the sync helper into opt-in Components.js lifecycle/config with startup
+  hydration, canonical resource allowlists, notification/finalizer ownership, and a SPARQL Update executor.
+- `CmsMigrationProof` demonstrates the in-memory no-lock-in loop: file-backed CMS works -> standard Solid RDF
+  resources -> Oxigraph hydration profile -> vanilla Solid degradation import.
+- `scripts/run-cms-migration-proof.mjs` provides an optional live migration harness for file-backed CSS ->
+  Oxigraph/SPARQL CSS -> vanilla Solid-readable mode, with dry-run plans and honest skip behavior.
+- Built-in CMS route wrappers exist for receipts, menu building, hosting planning, works export/import, vertical
+  profile preview/apply, and public website preview.
+- POS/customer-display/order/promotion/ticket/native-device/cash-register/customer-ordering contracts exist as
+  Solid/RDF-friendly CMS modules, and Forge Admin has initial POS, customer display, waiter, receipt, module,
+  hosting, and setup surfaces.
+- Customer display now has a timed playlist model for app install, Solid vault connect, transaction, loyalty,
+  receipt/QR, customer self-order, and advertising slides.
+- Connector runtime planning now covers sidecar import commands, secret references, provenance/conflict
+  placeholders, virtual query mode, and LDAP data-import vs auth-federation separation.
+- Deployment artifacts exist for Docker Compose and Kubernetes-style CMS deployment, with secrets/env separation.
+- Verification gates are currently green for root build, root lint, TypeScript, CMS units, full unit suite, CMS
+  integrations, deployment validation, and Forge Admin build/lint.
+- Run the live Oxigraph-backed CSS smoke harness against an actual Oxigraph endpoint (WASM-based Oxigraph server) in both unified and split query/update modes.
+- Run real network hydration through the opt-in Oxigraph sync composition against an actual Oxigraph endpoint.
+- Run the migration proof live: file-backed CSS pod -> standard Solid RDF works -> Oxigraph-backed CSS profile -> vanilla Solid-readable degradation mode.
+- Extend the POS `ResourceStore` write path (now live for cart/order/ticket/onboarding/table-session/onboarding-wifi via `PosOrderStore`/`TableSessionStore` + `POST/GET /.databox/cms/pos/orders` + `POST/GET /.databox/cms/pos/tables/sessions` + `POST/GET /.databox/cms/pos/wifi-onboarding`, round-tripping as canonical RDF readable through plain LDP) to register/close-session and customer-display state, plus native shop Wi-Fi/table-session handling.
+
+Still required before the plan can be called fully implemented:
+
+- Build the Rust/native or WASM POS edge package for actual mTLS/WebID-TLS device verification, thermal printer
+  and cash drawer I/O, QR bitmap rendering, offline replay, and audit receipt transport.
+- Publish customer-display playlists through live Solid resources/notifications and exercise them on real/native
+  display clients.
+- Implement the runtime connector sidecars for actual ODBC/LDAP/R2RML execution, import jobs, and later live
+  sync/provenance/conflict behavior.
+- Turn website preview into live public publishing backed by Solid RDF state, including sitemap/OG/feed assets.
+- Complete the native tray/supervisor and Oxigraph sidecar/loader packaging path for non-expert operators.
+- Add broader live conformance gates: vanilla-Solid degradation tests, live Oxigraph tests, cross-module vertical
+  integration tests, and accessibility/i18n checks for admin and public renderers.
+
+The next swarm should therefore focus on **live endpoint execution, ResourceStore route wiring, native hardware
+packaging, and public publishing**, not more standalone horizontal builders.
 
 ---
 
@@ -141,7 +204,7 @@ hand-waving):
   the CMS's *operational definition* — governance rules (ODRL/DPV), **module definitions/manifests**, workflows,
   access policies (WAC/ACP), RDF-driven views, vocab (OWL/SHACL) — is **declarative RDF**; CSS/Node is *one thin
   interpreter* over it. So the portable unit is the **RDF "works"** (the org's whole operational definition +
-  data), which **import into a different Solid server** — OpenLink Virtuoso, a future **QualiaDB** — that
+  data), which **import into a different Solid server** — Oxigraph-backed CSS, OpenLink Virtuoso, a future **QualiaDB** — that
   supplies its **own interpreter + adapters** (the "bit of additional code" per environment). **Honest
   spectrum:** *declarable* (data, vocab, ODRL/DPV rules, SHACL, manifests, access policy, RDF views/workflows)
   migrates **as data**; *irreducibly imperative* — (a) **the interpreter engine itself** (something must read
@@ -193,6 +256,35 @@ needs to bring that in. "You can arrive" as cleanly as "you can leave."
   bridge, not the mapper).
 - **Relevance:** mostly the **enterprise / powerful-server** end (real AD/SQL estates — same end that wants K8s
   and OpenLink/QualiaDB), less the corner shop. Decision #30.
+
+### 1.6 Data layer — internal Solid pods over a swappable engine (Oxigraph, native + WASM)
+
+Settled across the SPARQL / Oxigraph / WASM / internal-pods discussion. **The model is fixed; the engine is a
+choice** — the no-lock-in principle (§1.4) applied to storage.
+
+- **Model (fixed, portable):** all CMS/org operational data = **internal Solid pods** on `databox.[org].[tld]`
+  — WAC-scoped to org/admin agents, not publicly discoverable/federated, and distinct from external/interop
+  pods. The source of truth is **Solid pods**: migration remains standard pod export/import (§1.4). It is not
+  "SPARQL DB vs pods"; it is **pods, always, over a chosen engine**.
+- **Engine (swappable, under the pods):** file backend for the shop-box default; **Oxigraph** for a Rust
+  SPARQL 1.1 triplestore; Virtuoso / QualiaDB for enterprise. Oxigraph is the reference non-file target because
+  it can run natively in the Rust loader and expose a localhost SPARQL surface for CSS's `SparqlDataAccessor`.
+  CSS supports both the unified `/sparql` style and split query/update endpoints (`/query` + `/update`) via
+  opt-in SPARQL presets.
+- **Pods canonical, Oxigraph hydrated/rebuildable:** writes go through LDP/Solid so CSS owns WAC, containment,
+  metadata, and consistency. Oxigraph is the hydrated query environment, synced from pod writes and rebuildable
+  from pod export. Losing the triplestore must not mean losing the organisation.
+- **Query:** SPARQL over the hydrated environment for CMS/admin query power; Comunica-over-LDP is the vanilla
+  fallback on a plain Solid server (§1.4). The raw SPARQL endpoint is internal/admin only; external sharing still
+  goes through CSS/LDP/WAC.
+- **Verifiable credentials:** signed VC bytes live canonically in pods. Oxigraph may index/query credential
+  metadata, but verification runs against the signed pod resource, not re-materialized triples.
+- **Binaries:** RDF goes to the triplestore; binaries remain referenced blobs in file/object storage. A pure
+  triplestore is not the whole storage story.
+
+**Implementation consequence:** every CMS module state/config endpoint must write ordinary RDF resources through
+`ResourceStore`; every migration/export path must emit the RDF "works"; every CSS-enhanced feature owes a
+standard-Solid degradation path.
 
 ## 2. Prior art reviewed — SolidOS (and what we reuse)
 
@@ -1012,7 +1104,8 @@ Two surfaces: **admin shell** + **public website**. Design:
 
 ### 13.2 Phases (dependency-ordered)
 - **Phase 0 — Foundations & guardrails** (sequential, first, heavily checked). Install-profile skeleton (§1.1);
-  module framework (registry/manifest/config-as-resource/route-dispatch §5.1); capability-abstraction +
+  module framework (registry/manifest/config-as-resource/route-dispatch §5.1); SPARQL/Oxigraph storage-profile
+  seam (§1.6); capability-abstraction +
   **standard-Solid provider** (two modes §1.4); ontology scaffolding + `Vocabularies.ts` entry (§3); **theming
   token engine** skeleton; and the **invariant test harness** (basic-install-untouched, vanilla-Solid
   conformance, mode-degradation) that every later agent runs against. **Deliverable:** an empty vanilla-Solid
@@ -1031,7 +1124,8 @@ Two surfaces: **admin shell** + **public website**. Design:
   delivery, credential-gated-access. One agent per module; verify each. **Deliverable:** the capability library.
 - **Phase 4 — Infrastructure & integration** (parallel). Hosting (Cloudflare Tunnel + 3 routes §6); device
   identity (Rust+mTLS §10.2); deployment (Docker/compose + K8s/Helm §1.3); enterprise connectors (ODBC/LDAP +
-  R2RML mapper §1.5); portability/migration tool (§1.4); website maker; theming (full). **Deliverable:**
+  R2RML mapper §1.5); Oxigraph native-loader profile + hydrated query sync (§1.6); portability/migration tool
+  (§1.4); website maker; theming (full). **Deliverable:**
   deployable end-to-end, on-ramp + off-ramp.
 - **Phase 5 — Verticals** (**high-parallel swarm** — one agent per vertical). Assemble the ~21 bundles from
   horizontals (declarative bundle manifest + vertical vocab + config + thin glue). **Lighthouses first:** AUTO
@@ -1039,7 +1133,8 @@ Two surfaces: **admin shell** + **public website**. Design:
   HEALTH (privacy/consent). **Deliverable:** demonstrable verticals.
 - **Phase 6 — Flagship & frontier** (later; some research). Job/task marketplace + connector/broker deploy;
   selective-disclosure crypto (SD-JWT/BBS+); full supply-chain provenance federation; advanced website maker;
-  **migrate-to-another-Solid-server demonstration** (OpenLink / QualiaDB — proves §1.4 by demonstration).
+  **migrate-to-another-Solid-server demonstration** (Oxigraph-backed profile / OpenLink / QualiaDB — proves
+  §1.4 by demonstration).
   **Deliverable:** the thesis-proving flagships.
 
 **Cross-cutting non-code workstreams (parallel, standards/advocacy):** government-as-issuer engagement (§10.2/

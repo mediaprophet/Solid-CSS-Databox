@@ -47,6 +47,25 @@ export * from './forge/MappingForgeHttpApi';
 
 // Live CSS integration (DBX-25)
 export * from './integration/LiveDataboxHttpHandler';
+export * from './cms/VerticalProfile';
+export * from './cms/CmsMigrationProof';
+export * from './cms/TableSessionStore';
+export * from './cms/OxigraphCmsHydration';
+export * from './cms/OxigraphCmsSync';
+export * from './cms/OxigraphCmsSyncComposition';
+export * from './cms/modules/integration/ConnectorContract';
+export * from './cms/modules/integration/ConnectorRuntimePlan';
+export * from './cms/modules/menu/Menu';
+export * from './cms/modules/pos/Cart';
+export * from './cms/modules/pos/CashRegister';
+export * from './cms/modules/pos/CustomerOrdering';
+export * from './cms/modules/pos/TableSession';
+export * from './cms/modules/pos/CustomerDisplay';
+export * from './cms/modules/pos/Order';
+export * from './cms/modules/pos/Promotion';
+export * from './cms/modules/pos/Ticket';
+export * from './cms/modules/pos/NativePosDeviceContract';
+export * from './cms/modules/website/PublicFeedRenderer';
 
 // Institution/program profile schema (C10/C11 provisioning inputs, DBX-06)
 export * from './profile/InstitutionProfile';

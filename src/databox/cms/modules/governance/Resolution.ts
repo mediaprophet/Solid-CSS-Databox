@@ -32,34 +32,48 @@ function requireUri(value: string, field: string): string {
 }
 
 function requireNonEmpty(value: string, field: string): string {
-  if (value.trim().length === 0) {
+  const trimmed = value.trim();
+  if (trimmed.length === 0) {
     throw new BadRequestHttpError(`A resolution ${field} must not be empty.`);
+  }
+  return trimmed;
+}
+
+function requireNonNegativeInteger(value: number, field: string): number {
+  if (!Number.isFinite(value) || !Number.isInteger(value) || value < 0) {
+    throw new BadRequestHttpError(`A resolution ${field} must be a non-negative integer.`);
   }
   return value;
 }
 
-function requireNonNegative(value: number, field: string): number {
-  if (value < 0) {
-    throw new BadRequestHttpError(`A resolution ${field} must not be negative.`);
+function requirePositiveInteger(value: number, field: string): number {
+  if (!Number.isFinite(value) || !Number.isInteger(value) || value <= 0) {
+    throw new BadRequestHttpError(`A resolution ${field} must be a positive integer.`);
+  }
+  return value;
+}
+
+function requireDate(value: string, field: string): string {
+  const date = new Date(value);
+  if (value.trim().length === 0 || Number.isNaN(date.getTime())) {
+    throw new BadRequestHttpError(`A resolution ${field} must be a valid date.`);
   }
   return value;
 }
 
 /**
- * Record an auditable board/committee resolution as schema.org JSON-LD (see
- * `databox/solid-cms-plan.md`, §5.7) — a vote tally captured as an `Action` whose `result` carries
- * the count and the derived quorum/carried outcome, so governance decisions are machine-checkable
- * and provenance-linked like every other module record. Pure and deterministic.
+ * Record an auditable board/committee resolution as schema.org JSON-LD. The vote tally
+ * and the derived quorum/carried outcome are machine-checkable and deterministic.
  */
 export function recordResolution(input: ResolutionInput): ResolutionResult {
   const id = requireUri(input.id, 'id');
   const title = requireNonEmpty(input.title, 'title');
   const decision = requireNonEmpty(input.decision, 'decision');
-  const votesFor = requireNonNegative(input.votesFor, 'votesFor');
-  const votesAgainst = requireNonNegative(input.votesAgainst, 'votesAgainst');
-  const abstain = requireNonNegative(input.abstain, 'abstain');
-  const quorum = requireNonNegative(input.quorum, 'quorum');
-  const date = requireNonEmpty(input.date, 'date');
+  const votesFor = requireNonNegativeInteger(input.votesFor, 'votesFor');
+  const votesAgainst = requireNonNegativeInteger(input.votesAgainst, 'votesAgainst');
+  const abstain = requireNonNegativeInteger(input.abstain, 'abstain');
+  const quorum = requirePositiveInteger(input.quorum, 'quorum');
+  const date = requireDate(input.date, 'date');
 
   const quorumMet = (votesFor + votesAgainst + abstain) >= quorum;
   const carried = quorumMet && votesFor > votesAgainst;
@@ -71,6 +85,7 @@ export function recordResolution(input: ResolutionInput): ResolutionResult {
     name: title,
     description: decision,
     startTime: date,
+    actionStatus: 'CompletedActionStatus',
     result: {
       for: votesFor,
       against: votesAgainst,

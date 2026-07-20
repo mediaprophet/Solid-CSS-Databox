@@ -5,7 +5,7 @@ import { useCreate, useList } from "@refinedev/core";
 export const EventDispatcher = () => {
   const { mutate, isPending: isLoading } = useCreate();
   const { result: programsData } = useList({ resource: "programs" });
-  const programs = programsData?.data ?? [];
+  const programs = useMemo(() => programsData?.data ?? [], [programsData?.data]);
 
   const [formData, setFormData] = useState({
     profileId: "",
@@ -27,8 +27,11 @@ export const EventDispatcher = () => {
   );
   // The Forge refuses a deposit whose basis/purpose are not the ones the profile
   // binds to the record class, so drive both from the program's published bindings.
-  const bindings = program?.recordClassBindings ?? [];
-  const binding = bindings.find((b: any) => b.id === formData.recordClass);
+  const bindings = useMemo(() => program?.recordClassBindings ?? [], [program?.recordClassBindings]);
+  const binding = useMemo(
+    () => bindings.find((b: any) => b.id === formData.recordClass),
+    [bindings, formData.recordClass]
+  );
 
   useEffect(() => {
     if (!formData.profileId && programs.length > 0) {
@@ -39,17 +42,24 @@ export const EventDispatcher = () => {
   // Select a record class for the chosen program, and follow its bindings.
   useEffect(() => {
     if (bindings.length === 0) return;
-    const current = bindings.find((b: any) => b.id === formData.recordClass);
-    const next = current ?? bindings[0];
-    if (!current || formData.legalBasis !== next.legalBasis) {
-      setFormData((f) => ({
-        ...f,
+    setFormData((currentFormData) => {
+      const current = bindings.find((b: any) => b.id === currentFormData.recordClass);
+      const next = current ?? bindings[0];
+      if (
+        current &&
+        currentFormData.legalBasis === next.legalBasis &&
+        (next.purposes?.includes(currentFormData.purpose) || next.purposes?.length === 0)
+      ) {
+        return currentFormData;
+      }
+      return {
+        ...currentFormData,
         recordClass: next.id,
         legalBasis: next.legalBasis,
         purpose: next.purposes?.[0] ?? "",
-      }));
-    }
-  }, [formData.profileId, formData.recordClass, bindings]);
+      };
+    });
+  }, [bindings]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

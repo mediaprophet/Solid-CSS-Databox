@@ -28,6 +28,11 @@
       "@type": "Variable"
     },
     {
+      "comment": "Optional SPARQL Update endpoint when a backend separates query and update URLs.",
+      "@id": "urn:solid-server:default:variable:sparqlUpdateEndpoint",
+      "@type": "Variable"
+    },
+    {
       "comment": "The max level of log messages that should be output.",
       "@id": "urn:solid-server:default:variable:loggingLevel",
       "@type": "Variable"

@@ -1,0 +1,18 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server/^8.0.0/components/context.jsonld",
+  "import": [
+    "css:config/file.json",
+    "css:config/cms/cms-variables.json",
+    "css:config/cms/cms-handler.json"
+  ],
+  "@graph": [
+    {
+      "comment": [
+        "Opt-in Databox CMS profile with persistent file storage.",
+        "Use this for container deployments with CSS_ROOT_FILE_PATH=/data.",
+        "It extends the normal file-backed CSS profile and adds only the CMS control plane.",
+        "The base/default server remains a vanilla Solid server unless this preset is selected."
+      ]
+    }
+  ]
+}

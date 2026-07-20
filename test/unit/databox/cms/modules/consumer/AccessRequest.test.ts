@@ -25,9 +25,27 @@ describe('buildAccessRequest', (): void => {
     expect(object['@id']).toBe('https://example.org/orgs/acme');
 
     expect(request.name).toBe('AccessRequest');
+    expect(request.actionStatus).toBe('PotentialActionStatus');
     expect(request.description).toBe('orders, profile');
     expect(request.startTime).toBe('2026-07-01');
     expect(request.dueDate).toBe('2026-07-31');
+    expect(request.result).toEqual({
+      requestScope: [ 'orders', 'profile' ],
+      responseDueDate: '2026-07-31',
+    });
+  });
+
+  it('normalizes whitespace in scope entries.', (): void => {
+    const request = buildAccessRequest({
+      id: 'https://example.org/requests/1',
+      dataSubject: 'https://example.org/people/alice',
+      controller: 'https://example.org/orgs/acme',
+      scope: [ ' orders ', ' profile ' ],
+      submittedAt: '2026-07-01',
+      dueDays: 30,
+    });
+
+    expect(request.description).toBe('orders, profile');
   });
 
   it('rejects a non-URI id.', (): void => {
@@ -74,7 +92,18 @@ describe('buildAccessRequest', (): void => {
     })).toThrow('non-empty scope');
   });
 
-  it('rejects a non-positive dueDays.', (): void => {
+  it('rejects a blank scope entry.', (): void => {
+    expect((): unknown => buildAccessRequest({
+      id: 'https://example.org/requests/1',
+      dataSubject: 'https://example.org/people/alice',
+      controller: 'https://example.org/orgs/acme',
+      scope: [ 'orders', '  ' ],
+      submittedAt: '2026-07-01',
+      dueDays: 30,
+    })).toThrow('non-empty scope');
+  });
+
+  it('rejects a non-positive or non-integer dueDays.', (): void => {
     expect((): unknown => buildAccessRequest({
       id: 'https://example.org/requests/1',
       dataSubject: 'https://example.org/people/alice',
@@ -82,7 +111,15 @@ describe('buildAccessRequest', (): void => {
       scope: [ 'orders' ],
       submittedAt: '2026-07-01',
       dueDays: 0,
-    })).toThrow('dueDays must be greater than zero');
+    })).toThrow('dueDays must be a positive integer');
+    expect((): unknown => buildAccessRequest({
+      id: 'https://example.org/requests/1',
+      dataSubject: 'https://example.org/people/alice',
+      controller: 'https://example.org/orgs/acme',
+      scope: [ 'orders' ],
+      submittedAt: '2026-07-01',
+      dueDays: 1.5,
+    })).toThrow('dueDays must be a positive integer');
   });
 
   it('rejects an invalid submittedAt date.', (): void => {

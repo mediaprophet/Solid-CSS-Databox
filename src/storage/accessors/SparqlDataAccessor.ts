@@ -48,12 +48,14 @@ const { defaultGraph, namedNode, quad, variable } = DataFactory;
 export class SparqlDataAccessor implements DataAccessor {
   protected readonly logger = getLoggerFor(this);
   private readonly endpoint: string;
+  private readonly updateEndpoint: string;
   private readonly identifierStrategy: IdentifierStrategy;
   private readonly fetcher: SparqlEndpointFetcher;
   private readonly generator: SparqlGenerator;
 
-  public constructor(endpoint: string, identifierStrategy: IdentifierStrategy) {
+  public constructor(endpoint: string, identifierStrategy: IdentifierStrategy, updateEndpoint?: string) {
     this.endpoint = endpoint;
+    this.updateEndpoint = updateEndpoint ?? endpoint;
     this.identifierStrategy = identifierStrategy;
     this.fetcher = new SparqlEndpointFetcher();
     this.generator = new Generator();
@@ -356,11 +358,11 @@ export class SparqlDataAccessor implements DataAccessor {
    */
   private async sendSparqlUpdate(sparqlQuery: Update): Promise<void> {
     const query = this.generator.stringify(sparqlQuery);
-    this.logger.info(`Sending SPARQL UPDATE query to ${this.endpoint}: ${query}`);
+    this.logger.info(`Sending SPARQL UPDATE query to ${this.updateEndpoint}: ${query}`);
     try {
-      await this.fetcher.fetchUpdate(this.endpoint, query);
+      await this.fetcher.fetchUpdate(this.updateEndpoint, query);
     } catch (error: unknown) {
-      this.logger.error(`SPARQL endpoint ${this.endpoint} error: ${createErrorMessage(error)}`);
+      this.logger.error(`SPARQL endpoint ${this.updateEndpoint} error: ${createErrorMessage(error)}`);
       throw error;
     }
   }

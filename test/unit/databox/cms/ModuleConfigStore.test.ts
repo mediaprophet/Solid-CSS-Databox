@@ -38,6 +38,15 @@ describe('A ModuleConfigStore', (): void => {
     await expect(configStore.isEnabled('hosting')).resolves.toBe(true);
   });
 
+  it('preserves existing config triples when changing the enabled flag.', async(): Promise<void> => {
+    await configStore.save('hosting', '<> <urn:example:colour> "blue" .');
+    await configStore.setEnabled('hosting', true);
+
+    const turtle = await configStore.load('hosting');
+    expect(turtle).toContain('urn:example:colour');
+    expect(turtle).toContain('urn:solid-server:databox:cms#enabled');
+  });
+
   it('reads back a disabled flag as not enabled.', async(): Promise<void> => {
     await configStore.setEnabled('hosting', false);
     await expect(configStore.isEnabled('hosting')).resolves.toBe(false);
@@ -50,5 +59,9 @@ describe('A ModuleConfigStore', (): void => {
   it('treats stored state without an enabled flag as not enabled.', async(): Promise<void> => {
     await configStore.save('hosting', '<> <urn:example:x> "y" .');
     await expect(configStore.isEnabled('hosting')).resolves.toBe(false);
+  });
+
+  it('rejects unsafe module ids instead of writing outside the module container.', async(): Promise<void> => {
+    await expect(configStore.save('../escape', '<> <urn:example:x> "y" .')).rejects.toThrow('Unsafe CMS module id');
   });
 });

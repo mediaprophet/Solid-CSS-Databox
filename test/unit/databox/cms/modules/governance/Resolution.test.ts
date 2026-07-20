@@ -27,6 +27,7 @@ describe('recordResolution', (): void => {
     expect(result.record.name).toBe('Adopt annual budget');
     expect(result.record.description).toBe('The board resolves to adopt the proposed annual budget.');
     expect(result.record.startTime).toBe('2026-07-01');
+    expect(result.record.actionStatus).toBe('CompletedActionStatus');
     expect(result.record.result).toEqual({
       for: 5,
       against: 2,
@@ -34,6 +35,16 @@ describe('recordResolution', (): void => {
       carried: true,
       quorumMet: true,
     });
+  });
+
+  it('normalizes whitespace in text fields.', (): void => {
+    const result = recordResolution(baseInput({
+      title: '  Approve capital spend  ',
+      decision: '  Approve the repair budget.  ',
+    }));
+
+    expect(result.record.name).toBe('Approve capital spend');
+    expect(result.record.description).toBe('Approve the repair budget.');
   });
 
   it('does not carry a resolution when votes against are at least votes for.', (): void => {
@@ -68,33 +79,39 @@ describe('recordResolution', (): void => {
     }).toThrow('A resolution decision must not be empty.');
   });
 
-  it('throws when votesFor is negative.', (): void => {
+  it('throws when votesFor is not a non-negative integer.', (): void => {
     expect((): void => {
       recordResolution(baseInput({ votesFor: -1 }));
-    }).toThrow('A resolution votesFor must not be negative.');
+    }).toThrow('A resolution votesFor must be a non-negative integer.');
+    expect((): void => {
+      recordResolution(baseInput({ votesFor: 1.5 }));
+    }).toThrow('A resolution votesFor must be a non-negative integer.');
   });
 
-  it('throws when votesAgainst is negative.', (): void => {
+  it('throws when votesAgainst is not a non-negative integer.', (): void => {
     expect((): void => {
       recordResolution(baseInput({ votesAgainst: -1 }));
-    }).toThrow('A resolution votesAgainst must not be negative.');
+    }).toThrow('A resolution votesAgainst must be a non-negative integer.');
   });
 
-  it('throws when abstain is negative.', (): void => {
+  it('throws when abstain is not a non-negative integer.', (): void => {
     expect((): void => {
       recordResolution(baseInput({ abstain: -1 }));
-    }).toThrow('A resolution abstain must not be negative.');
+    }).toThrow('A resolution abstain must be a non-negative integer.');
   });
 
-  it('throws when quorum is negative.', (): void => {
+  it('throws when quorum is not a positive integer.', (): void => {
     expect((): void => {
-      recordResolution(baseInput({ quorum: -1 }));
-    }).toThrow('A resolution quorum must not be negative.');
+      recordResolution(baseInput({ quorum: 0 }));
+    }).toThrow('A resolution quorum must be a positive integer.');
+    expect((): void => {
+      recordResolution(baseInput({ quorum: 1.5 }));
+    }).toThrow('A resolution quorum must be a positive integer.');
   });
 
-  it('throws when date is empty.', (): void => {
+  it('throws when date is invalid.', (): void => {
     expect((): void => {
-      recordResolution(baseInput({ date: '  ' }));
-    }).toThrow('A resolution date must not be empty.');
+      recordResolution(baseInput({ date: 'not-a-date' }));
+    }).toThrow('A resolution date must be a valid date.');
   });
 });

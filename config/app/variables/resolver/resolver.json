@@ -52,6 +52,13 @@
           }
         },
         {
+          "CombinedShorthandResolver:_resolvers_key": "urn:solid-server:default:variable:sparqlUpdateEndpoint",
+          "CombinedShorthandResolver:_resolvers_value": {
+            "@type": "KeyExtractor",
+            "key": "sparqlUpdateEndpoint"
+          }
+        },
+        {
           "CombinedShorthandResolver:_resolvers_key": "urn:solid-server:default:variable:showStackTrace",
           "CombinedShorthandResolver:_resolvers_value": {
             "@type": "KeyExtractor",

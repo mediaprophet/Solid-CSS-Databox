@@ -1,8 +1,6 @@
 {
   "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server/^8.0.0/components/context.jsonld",
-  "import": [
-    "css:config/http/handler/handlers/storage-description.json"
-  ],
+  "import": [],
   "@graph": [
     {
       "comment": "In-process registry of installed CMS modules and their enabled state.",
@@ -10,12 +8,52 @@
       "@type": "InMemoryDataboxModuleRegistry"
     },
     {
+      "comment": "Persists CMS module enabled/config state as ordinary Solid RDF resources.",
+      "@id": "urn:solid-server:cms:ModuleConfigStore",
+      "@type": "ModuleConfigStore",
+      "store": { "@id": "urn:solid-server:default:ResourceStore" },
+      "baseUrl": { "@id": "urn:solid-server:default:variable:baseUrl" }
+    },
+    {
+      "comment": "Persists POS cart/order/ticket flow records as ordinary Solid RDF resources.",
+      "@id": "urn:solid-server:cms:PosOrderStore",
+      "@type": "PosOrderStore",
+      "store": { "@id": "urn:solid-server:default:ResourceStore" },
+      "baseUrl": { "@id": "urn:solid-server:default:variable:baseUrl" }
+    },
+    {
+      "comment": "Persists POS cash-register open/close sessions as ordinary Solid RDF resources.",
+      "@id": "urn:solid-server:cms:CashRegisterStore",
+      "@type": "CashRegisterStore",
+      "store": { "@id": "urn:solid-server:default:ResourceStore" },
+      "baseUrl": { "@id": "urn:solid-server:default:variable:baseUrl" }
+    },
+    {
+      "comment": "Persists rendered customer-display playlists as ordinary Solid RDF resources.",
+      "@id": "urn:solid-server:cms:CustomerDisplayStore",
+      "@type": "CustomerDisplayStore",
+      "store": { "@id": "urn:solid-server:default:ResourceStore" },
+      "baseUrl": { "@id": "urn:solid-server:default:variable:baseUrl" }
+    },
+    {
+      "comment": "Publishes rendered public website assets (HTML/JSON-LD/CSS) as ordinary Solid resources.",
+      "@id": "urn:solid-server:cms:PublicWebsiteStore",
+      "@type": "PublicWebsiteStore",
+      "store": { "@id": "urn:solid-server:default:ResourceStore" },
+      "baseUrl": { "@id": "urn:solid-server:default:variable:baseUrl" }
+    },
+    {
       "comment": "Databox CMS control plane. It is ordered before the catch-all LDP handler.",
       "@id": "urn:solid-server:cms:CmsHttpHandler",
       "@type": "CmsHttpHandler",
       "registry": { "@id": "urn:solid-server:cms:ModuleRegistry" },
       "controlToken": { "@id": "urn:solid-server:cms:variable:controlToken" },
-      "routeBase": "/.databox/cms"
+      "routeBase": "/.databox/cms",
+      "configStore": { "@id": "urn:solid-server:cms:ModuleConfigStore" },
+      "orderStore": { "@id": "urn:solid-server:cms:PosOrderStore" },
+      "cashRegisterStore": { "@id": "urn:solid-server:cms:CashRegisterStore" },
+      "customerDisplayStore": { "@id": "urn:solid-server:cms:CustomerDisplayStore" },
+      "publicWebsiteStore": { "@id": "urn:solid-server:cms:PublicWebsiteStore" }
     },
     {
       "comment": "All HTTP handlers, with the CMS route before the general LDP handler.",

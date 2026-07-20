@@ -12,6 +12,7 @@ export const TEMPLATE_VARIABLE = createVocabulary(
   'baseUrl',
   'rootFilePath',
   'sparqlEndpoint',
+  'sparqlUpdateEndpoint',
   'templateConfig',
 );
 
