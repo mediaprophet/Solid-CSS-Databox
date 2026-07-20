@@ -7,15 +7,33 @@
 // against in App.tsx).
 
 import type { DataProvider } from "@refinedev/core";
+import { createPosOperationsSnapshot } from "../data/posOperations";
 
 // Defaults target the local Track B preset; override for a server on another
 // origin. The token is the preset's demonstration control boundary, not IAM.
 const API_URL = import.meta.env.VITE_FORGE_API_URL ?? "http://localhost:3000/.databox/forge";
 const TOKEN = import.meta.env.VITE_FORGE_TOKEN ?? "12345678901234567890123456789012";
+const CMS_API_URL = import.meta.env.VITE_CMS_API_URL ?? "http://localhost:3000/.databox/cms";
+const CMS_TOKEN = import.meta.env.VITE_CMS_TOKEN ?? TOKEN;
 
 const fetchWithAuth = async (url: string, options: RequestInit = {}) => {
   const headers = new Headers(options.headers);
   headers.set("Authorization", `Bearer ${TOKEN}`);
+  headers.set("Content-Type", "application/json");
+
+  const response = await fetch(url, { ...options, headers });
+  const data = await response.json().catch(() => ({}));
+
+  if (!response.ok) {
+    throw new Error(data?.error || `HTTP ${response.status}`);
+  }
+
+  return data;
+};
+
+const fetchCmsWithAuth = async (url: string, options: RequestInit = {}) => {
+  const headers = new Headers(options.headers);
+  headers.set("Authorization", `Bearer ${CMS_TOKEN}`);
   headers.set("Content-Type", "application/json");
 
   const response = await fetch(url, { ...options, headers });
@@ -215,6 +233,50 @@ export const dataProvider: DataProvider = {
       };
     }
 
+    if (resource === "cms-modules") {
+      const data = await fetchCmsWithAuth(`${CMS_API_URL}/modules`);
+      const items = (Array.isArray(data) ? data : []).map((module: any) =>
+        typeof module === "string"
+          ? { id: module, name: module, enabled: true, capabilities: [], routes: [] }
+          : { ...module, id: module.id }
+      );
+      return {
+        data: items,
+        total: items.length,
+      };
+    }
+
+    if (resource === "cms-vertical-profiles") {
+      const data = await fetchCmsWithAuth(`${CMS_API_URL}/vertical-profiles`);
+      const items = (Array.isArray(data) ? data : []).map((profile: any) => ({
+        ...profile,
+        id: profile.id,
+      }));
+      return {
+        data: items,
+        total: items.length,
+        meta: {
+          providerMode: "css-enhanced",
+          capabilityMode: "css-enhanced",
+          controlPlaneAvailable: true,
+        },
+      };
+    }
+
+    if (resource === "pos-operations") {
+      const snapshot = createPosOperationsSnapshot("live-ui-proof", "css-enhanced", true);
+      return {
+        data: [snapshot],
+        total: 1,
+        meta: {
+          providerMode: "live-ui-proof",
+          capabilityMode: "css-enhanced",
+          controlPlaneAvailable: true,
+          degradationReason: snapshot.degradationReason,
+        },
+      };
+    }
+
     throw new Error(`Unsupported getList resource: ${resource}`);
   },
 
@@ -241,6 +303,16 @@ export const dataProvider: DataProvider = {
       const record = mockOutboundRequests.find((r) => r.id === id);
       if (!record) throw new Error("Outbound request not found");
       return { data: record };
+    }
+
+    if (resource === "cms-modules") {
+      const data = await fetchCmsWithAuth(`${CMS_API_URL}/modules/${encodeURIComponent(String(id))}`);
+      return { data: { ...data, id: data.id } };
+    }
+
+    if (resource === "cms-vertical-profiles") {
+      const data = await fetchCmsWithAuth(`${CMS_API_URL}/vertical-profiles/${encodeURIComponent(String(id))}`);
+      return { data: { ...data, id: data.id } };
     }
 
     throw new Error("getOne not implemented for Forge API");
@@ -283,6 +355,14 @@ export const dataProvider: DataProvider = {
       return { data: mockOutboundRequests[index] };
     }
 
+    if (resource === "cms-modules") {
+      const data = await fetchCmsWithAuth(`${CMS_API_URL}/modules/${encodeURIComponent(String(id))}`, {
+        method: "PUT",
+        body: JSON.stringify(variables),
+      });
+      return { data: { ...data, id: data.id } };
+    }
+
     throw new Error("update not implemented for Forge API");
   },
 
@@ -321,6 +401,29 @@ export const dataProvider: DataProvider = {
       };
       mockOutboundRequests = [record, ...mockOutboundRequests];
       return { data: record };
+    }
+    if (resource === "hosting-plans") {
+      const data = await fetchCmsWithAuth(`${CMS_API_URL}/hosting/plan`, {
+        method: "POST",
+        body: JSON.stringify(variables),
+      });
+      return { data: { id: Date.now(), ...data } as any };
+    }
+    if (resource === "receipt-documents") {
+      const data = await fetchCmsWithAuth(`${CMS_API_URL}/receipt/build`, {
+        method: "POST",
+        body: JSON.stringify(variables),
+      });
+      return { data: { id: data.receiptId, ...data } as any };
+    }
+    if (resource === "cms-vertical-profile-applications") {
+      const profileId = variables.profileId;
+      const operation = variables.operation === "apply" ? "apply" : "preview";
+      const data = await fetchCmsWithAuth(
+        `${CMS_API_URL}/vertical-profiles/${encodeURIComponent(String(profileId))}/${operation}`,
+        { method: "POST", body: JSON.stringify({}) }
+      );
+      return { data: { id: `${profileId}:${operation}`, ...data } as any };
     }
     throw new Error(`Unsupported create resource: ${resource}`);
   },

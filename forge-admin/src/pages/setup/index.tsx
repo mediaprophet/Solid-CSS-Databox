@@ -1,8 +1,9 @@
 // @ts-nocheck
-import React, { useState, useEffect } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useCreate } from "@refinedev/core";
 import { InformationCategories } from "./InformationCategories";
+import { VerticalProfilePicker } from "./VerticalProfilePicker";
 import { INFO_CATEGORIES, recommendCategories, vocabFor } from "../../data/informationCategories";
 
 const ANZSIC_DIVISIONS = [
@@ -38,8 +39,20 @@ export const SetupPage = () => {
   });
   
   const [selectedCategories, setSelectedCategories] = useState<string[]>(recommendCategories("G"));
-  const [selectedOntologies, setSelectedOntologies] = useState<string[]>([]);
   const [result, setResult] = useState<any>(null);
+  const ontologyMappings = useMemo(
+    () => selectedCategories.flatMap((id) => {
+      const category = INFO_CATEGORIES.find((candidate) => candidate.id === id);
+      if (!category) {
+        return [];
+      }
+      const vocabulary = vocabFor(category.rightType);
+      return [ vocabulary.dpv, vocabulary.gdpr, vocabulary.odrl ].filter(
+        (term): term is string => typeof term === "string"
+      );
+    }),
+    [selectedCategories]
+  );
 
   // When industry changes, refresh the recommended information categories.
   useEffect(() => {
@@ -79,7 +92,7 @@ export const SetupPage = () => {
                 );
               })
               .filter(Boolean),
-            "ontologyMappings": selectedOntologies
+            "ontologyMappings": ontologyMappings
           },
         },
       },
@@ -170,6 +183,10 @@ export const SetupPage = () => {
           </div>
         </div>
       </form>
+
+      <div className="mt-8">
+        <VerticalProfilePicker />
+      </div>
 
       {/* Full-width: expansive information & data categories taxonomy. */}
       <div className="mt-8">

@@ -34,6 +34,19 @@ describe('buildConsent', (): void => {
     expect(controller['@id']).toBe('https://example.org/orgs/clinic');
   });
 
+  it('normalizes whitespace in purpose, data categories, and legal basis.', (): void => {
+    const consent = buildConsent({
+      ...base,
+      purpose: '  direct care  ',
+      dataCategories: [ '  allergies  ', ' appointments ' ],
+      legalBasis: '  consent  ',
+    });
+
+    expect(consent.hasPurpose).toBe('direct care');
+    expect(consent.hasPersonalData).toStrictEqual([ 'allergies', 'appointments' ]);
+    expect(consent.hasLegalBasis).toBe('consent');
+  });
+
   it('builds a withdrawn consent record.', (): void => {
     const consent = buildConsent({ ...base, granted: false });
     expect(consent.hasConsentStatus).toBe('ConsentWithdrawn');
@@ -61,11 +74,16 @@ describe('buildConsent', (): void => {
     expect((): unknown => buildConsent({ ...base, dataCategories: []})).toThrow('data category');
   });
 
+  it('rejects blank dataCategories.', (): void => {
+    expect((): unknown => buildConsent({ ...base, dataCategories: [ 'health-record', '  ' ]}))
+      .toThrow('data category');
+  });
+
   it('rejects an empty legalBasis.', (): void => {
     expect((): unknown => buildConsent({ ...base, legalBasis: '  ' })).toThrow('legalBasis');
   });
 
-  it('rejects an empty timestamp.', (): void => {
-    expect((): unknown => buildConsent({ ...base, timestamp: '  ' })).toThrow('timestamp');
+  it('rejects an invalid timestamp.', (): void => {
+    expect((): unknown => buildConsent({ ...base, timestamp: 'not-a-date' })).toThrow('timestamp');
   });
 });

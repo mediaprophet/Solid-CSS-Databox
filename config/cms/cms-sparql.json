@@ -1,0 +1,16 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server/^8.0.0/components/context.jsonld",
+  "import": [
+    "css:config/sparql-endpoint.json",
+    "css:config/cms/cms-variables.json",
+    "css:config/cms/cms-handler.json"
+  ],
+  "@graph": [
+    {
+      "comment": [
+        "Databox CMS profile over a SPARQL backend.",
+        "Use this when one endpoint handles both query and update, e.g. an Oxigraph /sparql endpoint."
+      ]
+    }
+  ]
+}

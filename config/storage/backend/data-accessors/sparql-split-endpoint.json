@@ -1,0 +1,16 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server/^8.0.0/components/context.jsonld",
+  "@graph": [
+    {
+      "comment": [
+        "Stores data on a SPARQL endpoint with separate query and update URLs.",
+        "This matches engines such as Oxigraph that expose /query and /update while preserving the existing single-endpoint preset."
+      ],
+      "@id": "urn:solid-server:default:SparqlDataAccessor",
+      "@type": "SparqlDataAccessor",
+      "endpoint": { "@id": "urn:solid-server:default:variable:sparqlEndpoint" },
+      "identifierStrategy": { "@id": "urn:solid-server:default:IdentifierStrategy" },
+      "updateEndpoint": { "@id": "urn:solid-server:default:variable:sparqlUpdateEndpoint" }
+    }
+  ]
+}

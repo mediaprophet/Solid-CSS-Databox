@@ -1,10 +1,13 @@
 import opinionated from 'opinionated-eslint-config';
 
 export default opinionated().append({
-  // Don't want to lint test assets, the nested forge-admin app (self-linted with
-  // its own oxlint config), generated static build output under docs/, or the
-  // vendored minified third-party scripts served with the landing page.
+  // Don't lint generated/runtime output. The nested forge-admin app is self-linted
+  // with oxlint, and local agent/runtime folders are not source of truth.
   ignores: [
+    '.agents/**',
+    '.claude/**',
+    'coverage/**',
+    'dist/**',
     'test/assets/*',
     'componentsjs-error-state.json',
     '.data/**',

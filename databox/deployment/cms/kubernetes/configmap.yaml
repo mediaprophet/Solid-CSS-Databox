@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: databox-cms-config
+  labels:
+    app.kubernetes.io/name: databox-cms
+data:
+  CSS_BASE_URL: 'https://databox.example.org/'
+  CSS_CONFIG: config/cms/cms-file.json
+  CSS_PORT: '3000'
+  CSS_ROOT_FILE_PATH: /data
+  CSS_LOGGING_LEVEL: info

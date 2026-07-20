@@ -32,6 +32,29 @@ describe('buildReceiptDoc', (): void => {
       payload: 'https://pod.example.org/receipts/r-1',
       caption: 'Scan for your digital receipt',
     });
+    expect(result.nativeEdgePrintJob).toMatchObject({
+      type: 'DataboxNativeReceiptPrintJob',
+      capability: 'native-edge:thermal-receipt-print',
+      status: 'unavailable',
+      unavailableReason: 'No Rust/native-edge printer connector is attached to this CMS control plane.',
+      target: {
+        kind: 'thermal-printer',
+        protocol: 'escpos',
+      },
+      payload: {
+        format: 'databox.receipt.v1',
+        receiptId: 'R-1',
+        total: '21.99',
+        qr: {
+          payload: 'https://pod.example.org/receipts/r-1',
+          render: 'native-edge',
+        },
+      },
+      boundary: {
+        hardwareIo: 'native-edge-only',
+        browserAction: 'generate-descriptor-only',
+      },
+    });
   });
 
   it('builds a receipt without tax.', (): void => {

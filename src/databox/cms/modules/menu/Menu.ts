@@ -1,10 +1,25 @@
 import { BadRequestHttpError } from '../../../../util/errors/BadRequestHttpError';
+import type { SolidModuleManifest } from '../../SolidModuleManifest';
 
 // JSON-LD keywords as constants so they can be used as computed keys (the linter's naming
 // convention forbids `@`-prefixed object-literal property names).
 const LD_CONTEXT = '@context';
 const LD_TYPE = '@type';
 const LD_ID = '@id';
+
+export const MENU_MODULE_MANIFEST: SolidModuleManifest = {
+  id: 'menu',
+  name: 'Menu',
+  version: '0.1.0',
+  description: 'Portable schema.org menu resources for public food-offer publishing and Solid RDF discovery.',
+  capabilities: [
+    'cms:menu',
+    'cms:portable-core-schema-org-menu',
+    'cms:standard-solid-menu-rdf',
+    'cms:css-enhanced-menu-build-route',
+  ],
+  routes: [ 'POST /.databox/cms/menu/build' ],
+};
 
 export interface MenuItem {
   readonly name: string;

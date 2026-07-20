@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention -- JSON-LD uses @context. */
 import { BadRequestHttpError } from '../../../../util/errors/BadRequestHttpError';
 
 export interface ReceiptOrg {
@@ -34,7 +35,7 @@ export interface ReceiptQr {
   readonly caption: string;
 }
 
-export interface ReceiptDoc {
+export interface ReceiptDocBase {
   readonly org: ReceiptOrg;
   readonly receiptId: string;
   readonly date: string;
@@ -44,6 +45,40 @@ export interface ReceiptDoc {
   readonly tax?: string;
   readonly total: string;
   readonly qr: ReceiptQr;
+}
+
+export interface NativeReceiptPrintJobDescriptor {
+  readonly '@context': Record<string, string>;
+  readonly type: 'DataboxNativeReceiptPrintJob';
+  readonly id: string;
+  readonly capability: 'native-edge:thermal-receipt-print';
+  readonly status: 'unavailable';
+  readonly unavailableReason: string;
+  readonly target: {
+    readonly kind: 'thermal-printer';
+    readonly protocol: 'escpos';
+  };
+  readonly payload: {
+    readonly format: 'databox.receipt.v1';
+    readonly receiptId: string;
+    readonly date: string;
+    readonly currency: string;
+    readonly lines: readonly PrintableLine[];
+    readonly subtotal: string;
+    readonly tax?: string;
+    readonly total: string;
+    readonly qr: ReceiptQr & {
+      readonly render: 'native-edge';
+    };
+  };
+  readonly boundary: {
+    readonly hardwareIo: 'native-edge-only';
+    readonly browserAction: 'generate-descriptor-only';
+  };
+}
+
+export interface ReceiptDoc extends ReceiptDocBase {
+  readonly nativeEdgePrintJob: NativeReceiptPrintJobDescriptor;
 }
 
 function round2(value: number): number {
@@ -58,9 +93,47 @@ function requireUri(value: string, field: string): string {
   }
 }
 
+export function buildNativeReceiptPrintJob(document: ReceiptDocBase): NativeReceiptPrintJobDescriptor {
+  return {
+    '@context': {
+      schema: 'https://schema.org/',
+      cms: 'urn:solid-server:databox:cms#',
+      nativeEdge: 'urn:solid-server:databox:native-edge#',
+    },
+    type: 'DataboxNativeReceiptPrintJob',
+    id: `urn:solid-server:databox:native-edge:receipt-print-job:${encodeURIComponent(document.receiptId)}`,
+    capability: 'native-edge:thermal-receipt-print',
+    status: 'unavailable',
+    unavailableReason:
+      'No Rust/native-edge printer connector is attached to this CMS control plane.',
+    target: {
+      kind: 'thermal-printer',
+      protocol: 'escpos',
+    },
+    payload: {
+      format: 'databox.receipt.v1',
+      receiptId: document.receiptId,
+      date: document.date,
+      currency: document.currency,
+      lines: document.lines,
+      subtotal: document.subtotal,
+      ...document.tax === undefined ? {} : { tax: document.tax },
+      total: document.total,
+      qr: {
+        ...document.qr,
+        render: 'native-edge',
+      },
+    },
+    boundary: {
+      hardwareIo: 'native-edge-only',
+      browserAction: 'generate-descriptor-only',
+    },
+  };
+}
+
 /**
- * Build a printable receipt document — organisation info, lines, totals, and a QR payload linking
- * to the consumer's digital RDF/VC receipt in the pod (see `databox/solid-cms-plan.md`, §10.5).
+ * Build a printable receipt document: organisation info, lines, totals, and a QR payload linking
+ * to the consumer's digital RDF/VC receipt in the pod (see `databox/solid-cms-plan.md`, section 10.5).
  * QR image rendering and thermal printing are handled by the Rust core; this unit produces the
  * structured document and QR payload string only. Pure and deterministic.
  */
@@ -99,7 +172,7 @@ export function buildReceiptDoc(input: ReceiptDocInput): ReceiptDoc {
   if (input.taxPercent !== undefined) {
     const taxNum = round2(subtotalNum * input.taxPercent / 100);
     const total = round2(subtotalNum + taxNum).toFixed(2);
-    return {
+    const document: ReceiptDocBase = {
       org: input.org,
       receiptId: input.receiptId,
       date: input.date,
@@ -110,9 +183,13 @@ export function buildReceiptDoc(input: ReceiptDocInput): ReceiptDoc {
       total,
       qr,
     };
+    return {
+      ...document,
+      nativeEdgePrintJob: buildNativeReceiptPrintJob(document),
+    };
   }
 
-  return {
+  const document: ReceiptDocBase = {
     org: input.org,
     receiptId: input.receiptId,
     date: input.date,
@@ -121,5 +198,9 @@ export function buildReceiptDoc(input: ReceiptDocInput): ReceiptDoc {
     subtotal,
     total: subtotal,
     qr,
+  };
+  return {
+    ...document,
+    nativeEdgePrintJob: buildNativeReceiptPrintJob(document),
   };
 }

@@ -1,4 +1,5 @@
-import { Parser } from 'n3';
+import type { Quad } from '@rdfjs/types';
+import { DataFactory, Parser, Writer } from 'n3';
 import { BasicRepresentation } from '../../http/representation/BasicRepresentation';
 import type { ResourceIdentifier } from '../../http/representation/ResourceIdentifier';
 import type { ResourceStore } from '../../storage/ResourceStore';
@@ -42,7 +43,11 @@ export class ModuleConfigStore {
 
   /** Set the enabled flag, persisting it as the module's state graph. */
   public async setEnabled(id: string, enabled: boolean): Promise<void> {
-    await this.save(id, `<> <${CMS.enabled}> ${enabled ? 'true' : 'false'} .`);
+    const identifier = this.identifier(id);
+    await this.store.setRepresentation(
+      identifier,
+      new BasicRepresentation(await setModuleEnabledFlag(identifier.path, await this.load(id) ?? '', enabled), TURTLE),
+    );
   }
 
   /** Whether the module is enabled (defaults to `false` when no state, or no flag, is stored). */
@@ -56,6 +61,42 @@ export class ModuleConfigStore {
   }
 
   private identifier(id: string): ResourceIdentifier {
-    return { path: `${this.container}${id}` };
+    assertSafeModuleId(id);
+    return { path: `${this.container}${encodeURIComponent(id)}` };
   }
+}
+
+/**
+ * Returns a module-state graph with exactly one cms:enabled triple while preserving other config triples.
+ */
+export async function setModuleEnabledFlag(baseIRI: string, turtle: string, enabled: boolean): Promise<string> {
+  const parser = new Parser({ baseIRI });
+  const quads = parser.parse(turtle)
+    .filter((quad): boolean => quad.predicate.value !== CMS.enabled);
+  quads.push(DataFactory.quad(
+    DataFactory.namedNode(baseIRI),
+    DataFactory.namedNode(CMS.enabled),
+    DataFactory.literal(enabled ? 'true' : 'false'),
+  ));
+  return serializeTurtle(quads);
+}
+
+function assertSafeModuleId(id: string): void {
+  if (!/^[\w.:-]+$/u.test(id)) {
+    throw new TypeError(`Unsafe CMS module id ${id}.`);
+  }
+}
+
+async function serializeTurtle(quads: Quad[]): Promise<string> {
+  const writer = new Writer();
+  writer.addQuads(quads);
+  return new Promise((resolve, reject): void => {
+    writer.end((error, result): void => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(typeof result === 'string' ? result : '');
+      }
+    });
+  });
 }

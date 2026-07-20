@@ -4,6 +4,7 @@ import routerProvider from "@refinedev/react-router";
 
 import { dataProvider } from "./providers/dataProvider";
 import { demoDataProvider } from "./providers/demoDataProvider";
+import { standardSolidDataProvider } from "./providers/standardSolidDataProvider";
 import { Layout } from "./components/layout";
 import { ProgramsList } from "./pages/programs/list";
 import { ProgramCreate } from "./pages/programs/create";
@@ -11,6 +12,13 @@ import { MappingsSimulator } from "./pages/mappings/create";
 import { EventDispatcher } from "./pages/events/create";
 import { SetupPage } from "./pages/setup";
 import { DataPortabilityRegistry } from "./pages/data-portability";
+import { ModulesPage } from "./pages/modules";
+import { HostingPage } from "./pages/hosting";
+import { ReceiptsPage } from "./pages/receipts";
+import { PosTerminalPage } from "./pages/pos";
+import { WaiterOrdersPage } from "./pages/waiter";
+import { CustomerSelfOrderPage } from "./pages/pos/customer";
+import { PromotionDisplayPage } from "./pages/pos/display";
 import { CorrectionsList } from "./pages/corrections/list";
 import { CorrectionShow } from "./pages/corrections/show";
 import { AccessRequestsList } from "./pages/access-requests/list";
@@ -21,11 +29,17 @@ import "./index.css";
 
 function App() {
   // Static demo build (VITE_DEMO=true) uses an in-memory data provider + hash
-  // routing so it runs on GitHub Pages with no backend. The default dev/live
-  // build is unchanged: BrowserRouter + the real backend-wired dataProvider.
+  // routing so it runs on GitHub Pages with no backend. VITE_PROVIDER_MODE can
+  // opt into standard-solid portable-core mode without using the CSS CMS control
+  // plane. The default dev/live build is unchanged.
   const isDemo = import.meta.env.VITE_DEMO === "true";
+  const providerMode = import.meta.env.VITE_PROVIDER_MODE;
   const Router = isDemo ? HashRouter : BrowserRouter;
-  const activeDataProvider = isDemo ? demoDataProvider : dataProvider;
+  const activeDataProvider = isDemo
+    ? demoDataProvider
+    : providerMode === "standard-solid"
+      ? standardSolidDataProvider
+      : dataProvider;
 
   return (
     <Router>
@@ -59,6 +73,30 @@ function App() {
             list: "/data-portability",
           },
           {
+            name: "cms-modules",
+            list: "/cms/modules",
+          },
+          {
+            name: "cms-vertical-profiles",
+            list: "/setup",
+          },
+          {
+            name: "cms-vertical-profile-applications",
+            create: "/setup",
+          },
+          {
+            name: "hosting-plans",
+            create: "/hosting",
+          },
+          {
+            name: "receipt-documents",
+            create: "/receipts",
+          },
+          {
+            name: "pos-operations",
+            list: "/pos",
+          },
+          {
             name: "corrections",
             list: "/corrections",
             show: "/corrections/show/:id",
@@ -86,6 +124,13 @@ function App() {
             <Route path="/events" element={<EventDispatcher />} />
             <Route path="/setup" element={<SetupPage />} />
             <Route path="/data-portability" element={<DataPortabilityRegistry />} />
+            <Route path="/cms/modules" element={<ModulesPage />} />
+            <Route path="/hosting" element={<HostingPage />} />
+            <Route path="/receipts" element={<ReceiptsPage />} />
+            <Route path="/pos" element={<PosTerminalPage />} />
+            <Route path="/waiter" element={<WaiterOrdersPage />} />
+            <Route path="/pos/customer" element={<CustomerSelfOrderPage />} />
+            <Route path="/pos/display" element={<PromotionDisplayPage />} />
             <Route path="/corrections">
               <Route index element={<CorrectionsList />} />
               <Route path="show/:id" element={<CorrectionShow />} />

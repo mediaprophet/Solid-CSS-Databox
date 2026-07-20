@@ -14,6 +14,7 @@
 // file does not modify or import it. Everything here is synthetic sample data.
 
 import type { DataProvider } from "@refinedev/core";
+import { createPosOperationsSnapshot } from "../data/posOperations";
 
 const SYNTHETIC_JWS =
   "eyJhbGciOiJFUzI1NiIsImtpZCI6ImRlbW8ja2V5LTEifQ." +
@@ -80,7 +81,236 @@ let mockOutboundRequests = [
   { id: "obr-3002", platformId: "ent-salesforce", platformName: "Salesforce", category: "Enterprise", persona: "organisation", requesterId: "urn:uuid:org-forge-0001", scope: ["identity:core", "financial:transaction_ledger"], regulatoryBasis: "CDR (Consumer Data Right)", status: "pending", submittedAt: new Date(Date.now() - 1 * 86400000).toISOString(), dueDate: new Date(Date.now() + 29 * 86400000).toISOString() },
 ];
 
+const mockCmsModules = [
+  {
+    id: "hosting",
+    name: "Hosting",
+    version: "0.1.0",
+    description: "Guided domain, DNS and launch-configuration planning for the CMS profile.",
+    capabilities: ["cms:hosting", "cms:dns-plan"],
+    routes: ["POST /.databox/cms/hosting/plan"],
+    enabled: true,
+    capabilityMode: "css-enhanced",
+    adminUi: { navLabel: "Hosting", path: "/hosting" },
+  },
+  {
+    id: "receipt",
+    name: "Receipt Writer",
+    version: "0.1.0",
+    description: "Printable receipt documents with QR links to the consumer RDF/VC receipt in the pod.",
+    capabilities: [
+      "cms:receipt-document",
+      "cms:portable-core-receipt-doc",
+      "cms:css-enhanced-receipt-build-route",
+      "cms:native-edge-print-job-descriptor",
+    ],
+    routes: ["POST /.databox/cms/receipt/build"],
+    enabled: true,
+    capabilityMode: "css-enhanced",
+    adminUi: { navLabel: "Receipts", path: "/receipts" },
+  },
+  {
+    id: "pos-operations",
+    name: "POS Operations",
+    version: "0.1.0",
+    description: "Admin proof surfaces for counter POS, waiter ordering, self-order table sessions, and customer display frames.",
+    capabilities: [
+      "cms:portable-core-schema-order",
+      "cms:portable-core-table-session",
+      "cms:portable-core-schema-offer",
+      "cms:css-enhanced-kitchen-display-intent",
+      "cms:native-edge-payment-and-printer-boundary",
+    ],
+    routes: [],
+    enabled: true,
+    capabilityMode: "css-enhanced",
+    adminUi: { navLabel: "POS Terminal", path: "/pos" },
+  },
+];
+
+const verticalModule = (moduleId: string, rationale: string, defaultConfig?: string) => ({
+  moduleId,
+  required: true,
+  enabledByDefault: true,
+  rationale,
+  ...(defaultConfig
+    ? { defaultConfig: { contentType: "text/turtle", turtle: defaultConfig } }
+    : {}),
+});
+
+const withDemoAvailability = (profile: any) => {
+  const installed = new Map(mockCmsModules.map((module) => [module.id, module]));
+  const modules = profile.modules.map((module: any) => {
+    const manifest = installed.get(module.moduleId);
+    return manifest
+      ? {
+          ...module,
+          available: true,
+          enabled: manifest.enabled,
+          capabilityMode: manifest.capabilityMode,
+          manifest,
+        }
+      : {
+          ...module,
+          available: false,
+          enabled: false,
+          capabilityMode: "unavailable",
+          unavailableReason: "Synthetic demo: this horizontal module is not installed in the demo registry.",
+        };
+  });
+  const missingModules = modules.filter((module: any) => !module.available).map((module: any) => module.moduleId);
+  return {
+    ...profile,
+    modules,
+    capabilityMode: "css-enhanced",
+    controlPlaneAvailable: true,
+    canApply: missingModules.length === 0,
+    missingModules,
+    unavailableModules: missingModules,
+    degradationReason: missingModules.length > 0 ? `Missing horizontal modules: ${missingModules.join(", ")}.` : undefined,
+  };
+};
+
+const mockVerticalProfiles = [
+  withDemoAvailability({
+    id: "food.restaurant",
+    name: "Food / Restaurant",
+    version: "0.1.0",
+    description: "Small restaurant bundle for menus, commerce, reservations, receipts, and public SEO.",
+    useCases: ["FOOD"],
+    modules: [
+      verticalModule("menu", "Menus are the public food offer and allergen-facing catalogue surface."),
+      verticalModule("catalogue", "Catalogue resources hold products, modifiers, variants, and publishable item metadata.", '<> <https://schema.org/itemListOrder> "menu-section" .'),
+      verticalModule("stock", "Stock keeps menu availability honest for a small operator."),
+      verticalModule("payments", "Payments handles checkout adapters while keeping payment secrets out of portable works."),
+      verticalModule("pos-operations", "POS operations compose counter checkout, waiter ordering, table self-order, and display frames from portable order resources.", '<> <urn:solid-server:databox:cms#posProfile> "restaurant-service" .'),
+      verticalModule("receipt", "Receipts produce RDF-backed proof of purchase and the printable QR payload.", '<> <urn:solid-server:databox:cms#receiptProfile> "consumer-digital-receipt" .'),
+      verticalModule("bookings", "Bookings supports table reservations, deposits, cancellation and rescheduling."),
+      verticalModule("events", "Events covers special sittings, tastings, and venue programming."),
+      verticalModule("opening-hours", "Opening hours provides ordinary schema.org availability for public discovery.", '<> <https://schema.org/servesCuisine> "local" .'),
+      verticalModule("website-seo", "Website SEO publishes JSON-LD and discovery metadata without requiring CSS routes."),
+    ],
+  }),
+  withDemoAvailability({
+    id: "health.privacy-consent",
+    name: "Health / Privacy Consent",
+    version: "0.1.0",
+    description: "Health privacy bundle for consent, access, correction, governance, delegation, and emergency access.",
+    useCases: ["HEALTH"],
+    modules: [
+      verticalModule("consent", "Consent records purpose-limited processing decisions as RDF policy state.", '<> <urn:solid-server:databox:cms#defaultPurpose> "care-provision" .'),
+      verticalModule("access-request", "Access requests support patient rights over held records."),
+      verticalModule("correction-request", "Correction requests support amendment workflows without destructive edits."),
+      verticalModule("governance", "Governance supplies approval gates and auditable resolutions for sensitive handling.", '<> <urn:solid-server:databox:cms#approvalMode> "dual-control-for-sensitive-data" .'),
+      verticalModule("delegation", "Delegation gives carers and guardians scoped revocable authority."),
+      verticalModule("break-glass", "Break-glass access is temporary, conditional, and audited for emergencies."),
+      verticalModule("credential-gate", "Credential gates verify qualifications or care roles with minimal disclosure."),
+    ],
+  }),
+];
+
 const list = (data: unknown[]) => ({ data, total: data.length });
+
+const planHosting = (input: any) => {
+  const apex = input.apexDomain.trim();
+  const origin = input.originTarget.trim();
+  if (!apex.includes(".") || origin.length === 0) {
+    throw new Error("A hosting plan needs an apex domain and origin target.");
+  }
+  const label = input.databoxLabel || "databox";
+  const databoxHost = `${label}.${apex}`;
+  const devicesHost = `devices.${apex}`;
+  const wwwHost = input.wwwEnabled ? `www.${apex}` : undefined;
+  const type = /^\d{1,3}(?:\.\d{1,3}){3}$/.test(origin) ? "A" : origin.includes(":") ? "AAAA" : "CNAME";
+  const proxied = input.proxied ?? true;
+  const dnsRecords = [
+    { type, name: databoxHost, content: origin, proxied, ttl: 1 },
+    { type, name: devicesHost, content: origin, proxied: false, ttl: 1 },
+  ];
+  if (wwwHost) dnsRecords.push({ type, name: wwwHost, content: origin, proxied, ttl: 1 });
+  const baseUrl = `https://${databoxHost}/`;
+  return {
+    id: Date.now(),
+    databoxHost,
+    wwwHost,
+    devicesHost,
+    baseUrl,
+    dnsRecords,
+    launchCommand: `npm run start:cms -- --baseUrl ${baseUrl} --cmsControlToken <32+ byte token>`,
+  };
+};
+
+const buildReceiptDocument = (input: any) => {
+  const lines = input.lines.map((line: any) => ({
+    name: line.name,
+    quantity: Number(line.quantity),
+    amount: (Number(line.quantity) * Number(line.unitPrice)).toFixed(2),
+  }));
+  const subtotalNum = input.lines.reduce(
+    (total: number, line: any) => total + Number(line.quantity) * Number(line.unitPrice),
+    0
+  );
+  const subtotal = subtotalNum.toFixed(2);
+  const tax =
+    input.taxPercent === undefined || input.taxPercent === ""
+      ? undefined
+      : (Math.round(subtotalNum * Number(input.taxPercent)) / 100).toFixed(2);
+  const total = tax === undefined ? subtotal : (subtotalNum + Number(tax)).toFixed(2);
+  const qr = {
+    payload: new URL(input.digitalReceiptUrl).href,
+    caption: "Scan for your digital receipt",
+  };
+  const document = {
+    id: input.receiptId,
+    org: input.org,
+    receiptId: input.receiptId,
+    date: input.date,
+    currency: input.currency,
+    lines,
+    subtotal,
+    ...(tax === undefined ? {} : { tax }),
+    total,
+    qr,
+  };
+
+  return {
+    ...document,
+    nativeEdgePrintJob: {
+      "@context": {
+        schema: "https://schema.org/",
+        cms: "urn:solid-server:databox:cms#",
+        nativeEdge: "urn:solid-server:databox:native-edge#",
+      },
+      type: "DataboxNativeReceiptPrintJob",
+      id: `urn:solid-server:databox:native-edge:receipt-print-job:${encodeURIComponent(input.receiptId)}`,
+      capability: "native-edge:thermal-receipt-print",
+      status: "unavailable",
+      unavailableReason: "No Rust/native-edge printer connector is attached to this CMS control plane.",
+      target: {
+        kind: "thermal-printer",
+        protocol: "escpos",
+      },
+      payload: {
+        format: "databox.receipt.v1",
+        receiptId: input.receiptId,
+        date: input.date,
+        currency: input.currency,
+        lines,
+        subtotal,
+        ...(tax === undefined ? {} : { tax }),
+        total,
+        qr: {
+          ...qr,
+          render: "native-edge",
+        },
+      },
+      boundary: {
+        hardwareIo: "native-edge-only",
+        browserAction: "generate-descriptor-only",
+      },
+    },
+  };
+};
 
 export const demoDataProvider: DataProvider = {
   getList: async ({ resource }: any) => {
@@ -90,6 +320,9 @@ export const demoDataProvider: DataProvider = {
       case "access-requests": return list(mockAccessRequests);
       case "consumer-ledger": return list(mockLedger);
       case "outbound-requests": return list(mockOutboundRequests);
+      case "cms-modules": return list(mockCmsModules);
+      case "cms-vertical-profiles": return list(mockVerticalProfiles);
+      case "pos-operations": return list([createPosOperationsSnapshot("demo", "css-enhanced", true)]);
       default: return list([]);
     }
   },
@@ -105,6 +338,8 @@ export const demoDataProvider: DataProvider = {
       case "access-requests": return pick(mockAccessRequests);
       case "consumer-ledger": return pick(mockLedger);
       case "outbound-requests": return pick(mockOutboundRequests);
+      case "cms-modules": return pick(mockCmsModules);
+      case "cms-vertical-profiles": return pick(mockVerticalProfiles);
       default: throw new Error(`getOne not supported for '${resource}' in demo mode.`);
     }
   },
@@ -182,6 +417,37 @@ export const demoDataProvider: DataProvider = {
       return { data: record };
     }
 
+    if (resource === "hosting-plans") {
+      return { data: planHosting(variables) };
+    }
+
+    if (resource === "receipt-documents") {
+      return { data: buildReceiptDocument(variables) };
+    }
+
+    if (resource === "cms-vertical-profile-applications") {
+      const profile = mockVerticalProfiles.find((item) => item.id === variables.profileId);
+      if (!profile) throw new Error("Vertical profile not found in demo data.");
+      const operation = variables.operation === "apply" ? "apply" : "preview";
+      if (operation === "apply" && !profile.canApply) {
+        throw new Error(profile.degradationReason || "This vertical profile cannot be applied in the demo registry.");
+      }
+      return {
+        data: {
+          id: `${profile.id}:${operation}`,
+          ...profile,
+          operation,
+          persisted: operation === "apply",
+          defaults: profile.modules.map((module: any) => ({
+            moduleId: module.moduleId,
+            enabled: module.enabledByDefault,
+            contentType: module.defaultConfig?.contentType ?? "text/turtle",
+            configTurtle: module.defaultConfig?.turtle ?? "",
+          })),
+        },
+      };
+    }
+
     return { data: { id: Date.now(), ...variables } };
   },
 
@@ -196,6 +462,7 @@ export const demoDataProvider: DataProvider = {
       case "corrections": return patch(mockCorrections);
       case "access-requests": return patch(mockAccessRequests);
       case "outbound-requests": return patch(mockOutboundRequests);
+      case "cms-modules": return patch(mockCmsModules);
       default: throw new Error(`update not supported for '${resource}' in demo mode.`);
     }
   },

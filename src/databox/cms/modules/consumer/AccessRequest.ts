@@ -24,22 +24,23 @@ function requireUri(value: string, field: string): string {
 }
 
 function requireScope(scope: readonly string[]): readonly string[] {
-  if (scope.length === 0) {
+  const requestedScope = scope.map((scopeEntry): string => scopeEntry.trim());
+  if (requestedScope.length === 0 || requestedScope.some((scopeEntry): boolean => scopeEntry.length === 0)) {
     throw new BadRequestHttpError('An access request needs a non-empty scope.');
   }
-  return scope;
+  return requestedScope;
 }
 
 function requireDueDays(dueDays: number): number {
-  if (dueDays <= 0) {
-    throw new BadRequestHttpError('An access request dueDays must be greater than zero.');
+  if (!Number.isFinite(dueDays) || !Number.isInteger(dueDays) || dueDays <= 0) {
+    throw new BadRequestHttpError('An access request dueDays must be a positive integer.');
   }
   return dueDays;
 }
 
 function computeDueDate(submittedAt: string, dueDays: number): string {
   const date = new Date(submittedAt);
-  if (Number.isNaN(date.getTime())) {
+  if (submittedAt.trim().length === 0 || Number.isNaN(date.getTime())) {
     throw new BadRequestHttpError('An access request submittedAt must be a valid date.');
   }
   date.setUTCDate(date.getUTCDate() + dueDays);
@@ -47,9 +48,8 @@ function computeDueDate(submittedAt: string, dueDays: number): string {
 }
 
 /**
- * Build a data-subject access request as a schema.org `Action` (see `databox/solid-cms-plan.md`,
- * §consumer-rights, ADR-0023). Pure and deterministic — all identifiers and dates are supplied by
- * the caller.
+ * Build a data-subject access request as a schema.org `Action`. Pure and deterministic:
+ * all identifiers and dates are supplied by the caller.
  */
 export function buildAccessRequest(input: AccessRequestInput): Record<string, unknown> {
   const id = requireUri(input.id, 'id');
@@ -66,8 +66,13 @@ export function buildAccessRequest(input: AccessRequestInput): Record<string, un
     agent: { [LD_ID]: dataSubject },
     object: { [LD_ID]: controller },
     name: 'AccessRequest',
+    actionStatus: 'PotentialActionStatus',
     description: scope.join(', '),
     startTime: input.submittedAt,
     dueDate,
+    result: {
+      requestScope: scope,
+      responseDueDate: dueDate,
+    },
   };
 }

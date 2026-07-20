@@ -96,6 +96,15 @@
         },
         {
           "@type": "YargsParameter",
+          "name": "sparqlUpdateEndpoint",
+          "options": {
+            "requiresArg": true,
+            "type": "string",
+            "describe": "URL of the SPARQL Update endpoint, when using a quadstore with separate query and update URLs."
+          }
+        },
+        {
+          "@type": "YargsParameter",
           "name": "podConfigJson",
           "options": {
             "requiresArg": true,

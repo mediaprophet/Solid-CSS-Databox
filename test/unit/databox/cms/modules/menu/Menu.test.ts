@@ -1,5 +1,5 @@
 import type { MenuInput } from '../../../../../../src/databox/cms/modules/menu/Menu';
-import { buildMenu } from '../../../../../../src/databox/cms/modules/menu/Menu';
+import { buildMenu, MENU_MODULE_MANIFEST } from '../../../../../../src/databox/cms/modules/menu/Menu';
 
 const base: MenuInput = {
   id: 'https://example.org/menus/1',
@@ -27,6 +27,19 @@ function record(value: unknown): Record<string, unknown> {
 }
 
 describe('buildMenu', (): void => {
+  it('advertises a CMS module manifest with portable and CSS-enhanced capabilities.', (): void => {
+    expect(MENU_MODULE_MANIFEST).toMatchObject({
+      id: 'menu',
+      name: 'Menu',
+      capabilities: expect.arrayContaining([
+        'cms:portable-core-schema-org-menu',
+        'cms:standard-solid-menu-rdf',
+        'cms:css-enhanced-menu-build-route',
+      ]),
+      routes: [ 'POST /.databox/cms/menu/build' ],
+    });
+  });
+
   it('builds a schema.org Menu JSON-LD document with multiple sections.', (): void => {
     const menu = buildMenu(base);
     expect(menu['@context']).toBe('https://schema.org/');

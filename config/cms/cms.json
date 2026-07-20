@@ -5,7 +5,6 @@
     "css:config/app/main/default.json",
     "css:config/app/variables/default.json",
     "css:config/cms/cms-variables.json",
-    "css:config/cms/cms-handler.json",
     "css:config/http/middleware/default.json",
     "css:config/http/notifications/all.json",
     "css:config/http/server-factory/http.json",
@@ -32,7 +31,9 @@
     "css:config/util/logging/winston.json",
     "css:config/util/representation-conversion/default.json",
     "css:config/util/resource-locker/memory.json",
-    "css:config/util/variables/default.json"
+    "css:config/util/variables/default.json",
+    "css:config/http/handler/handlers/storage-description.json",
+    "css:config/cms/cms-handler.json"
   ],
   "@graph": [
     {
