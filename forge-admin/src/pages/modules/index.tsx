@@ -89,7 +89,7 @@ export const ModulesPage = () => {
     setShapeError(null);
   };
 
-  const submitConfig = async (values: Record<string, unknown>, turtle: string) => {
+  const submitConfig = async (_values: Record<string, unknown>, turtle: string) => {
     if (!configModule) return;
     setConfigSaving(true);
     try {
@@ -153,7 +153,7 @@ export const ModulesPage = () => {
                 </td>
                 <td className="p-4">
                   <div className="flex flex-wrap gap-1 max-w-xs">
-                    {(module.capabilities ?? []).map((capability) => (
+                    {(module.capabilities ?? []).map((capability: string) => (
                       <span key={capability} className="bg-blue-500/10 text-blue-300 border border-blue-500/20 px-2 py-0.5 rounded text-xs font-mono">
                         {capability}
                       </span>
@@ -170,7 +170,7 @@ export const ModulesPage = () => {
                 </td>
                 <td className="p-4">
                   <div className="flex flex-col gap-1">
-                    {(module.routes ?? []).map((route) => (
+                    {(module.routes ?? []).map((route: string) => (
                       <span key={route} className="font-mono text-xs text-slate-400">{route}</span>
                     ))}
                   </div>

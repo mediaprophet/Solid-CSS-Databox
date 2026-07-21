@@ -33,7 +33,7 @@ export const ConsumerLedgerShow = () => {
       <p className="text-sm text-slate-400 mb-6">The following data points are currently held by the organization for this consumer, subject to the mapped ODRL policies.</p>
 
       <div className="grid grid-cols-1 gap-4">
-        {record.dataPoints.map((dp, idx) => (
+        {record.dataPoints.map((dp: any, idx: number) => (
           <div key={idx} className="glass-panel p-5 rounded-xl border border-white/5 flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
               <p className="font-mono text-sm text-[#d4af37] font-semibold">{dp.field}</p>

@@ -291,7 +291,7 @@ export const DataPortabilityRegistry = () => {
                 </td>
                 <td className="p-4">
                   <div className="flex flex-wrap gap-1 max-w-xs">
-                    {r.scope.map((s) => (
+                    {r.scope.map((s: string) => (
                       <span key={s} className="bg-white/10 px-2 py-0.5 rounded text-xs font-mono">{s}</span>
                     ))}
                   </div>

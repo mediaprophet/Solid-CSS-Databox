@@ -58,7 +58,7 @@ export const CorrectionsList = () => {
                   <td className="p-4">{getStatusBadge(record.status)}</td>
                   <td className="p-4 text-right">
                     <button
-                      onClick={() => show("corrections", record.id)}
+                      onClick={() => show("corrections", record.id ?? "")}
                       className="text-[#d4af37] hover:text-white transition-colors text-sm font-semibold opacity-0 group-hover:opacity-100"
                     >
                       Adjudicate →

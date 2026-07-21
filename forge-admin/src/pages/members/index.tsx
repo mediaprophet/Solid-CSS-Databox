@@ -170,7 +170,7 @@ export const MembersPage = () => {
         </form>
       )}
 
-      {result && (
+      {result !== null && (
         <div className="mt-6 glass-panel p-6 rounded-xl" role="status" aria-live="polite">
           <h3 className="text-lg font-bold text-[#d4af37] mb-3">Result</h3>
           <pre className="text-xs text-slate-300 whitespace-pre-wrap break-words font-mono">{JSON.stringify(result, null, 2)}</pre>
