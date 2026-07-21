@@ -1,0 +1,1 @@
+npm.cmd run test:ts && npm.cmd run test:unit
