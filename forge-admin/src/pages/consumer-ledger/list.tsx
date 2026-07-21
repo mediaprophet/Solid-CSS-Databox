@@ -39,7 +39,7 @@ export const ConsumerLedgerList = () => {
                   </td>
                   <td className="p-4 text-right">
                     <button
-                      onClick={() => show("consumer-ledger", record.id)}
+                      onClick={() => show("consumer-ledger", record.id ?? "")}
                       className="text-[#d4af37] hover:text-white transition-colors text-sm font-semibold opacity-0 group-hover:opacity-100"
                     >
                       View Inventory →

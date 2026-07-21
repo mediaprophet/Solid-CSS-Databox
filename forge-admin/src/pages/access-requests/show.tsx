@@ -68,7 +68,7 @@ export const AccessRequestShow = () => {
               <div>
                 <p className="text-xs text-blue-400 uppercase tracking-wider mb-1 font-semibold">Requested Scope</p>
                 <div className="flex flex-wrap gap-2 mt-2">
-                  {record.scope.map(s => (
+                  {record.scope.map((s: string) => (
                     <span key={s} className="bg-blue-500/20 text-blue-300 border border-blue-500/30 px-3 py-1 rounded text-sm font-mono">{s}</span>
                   ))}
                 </div>

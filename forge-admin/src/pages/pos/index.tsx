@@ -15,7 +15,7 @@ export const PosTerminalPage = () => {
   ]);
   const [intent, setIntent] = useState<any>(null);
 
-  const sections = [...new Set(snapshot.menuItems.map((item: any) => item.section))];
+  const sections = [...new Set(snapshot.menuItems.map((item: any) => item.section))] as string[];
   const visibleItems = snapshot.menuItems.filter((item: any) => item.section === section);
   const subtotal = orderTotal(cart);
   const gst = Math.round(subtotal / 11 * 100) / 100;

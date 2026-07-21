@@ -6,6 +6,7 @@ import {
   DIRECTION_LABELS,
   applicableCategories,
   vocabFor,
+  type Direction,
 } from "../../data/informationCategories";
 
 type Mode = "au" | "multi" | "standards";
@@ -73,8 +74,8 @@ const Basis = ({ cat, mode }: { cat: any; mode: Mode }) => {
   return <>{all}</>;
 };
 
-const CategoryCard = ({ cat, checked, mode, onToggle }: any) => {
-  const dir = DIRECTION_LABELS[cat.direction];
+const CategoryCard = ({ cat, checked, mode, onToggle }: { cat: any; checked: boolean; mode: Mode; onToggle: () => void }) => {
+  const dir = DIRECTION_LABELS[cat.direction as Direction];
   return (
     <div
       onClick={onToggle}
@@ -101,7 +102,7 @@ const CategoryCard = ({ cat, checked, mode, onToggle }: any) => {
         </div>
       </div>
       <div className="flex flex-wrap items-center gap-1.5 pl-6">
-        <span className={`px-1.5 py-0.5 rounded text-[10px] font-semibold border ${directionStyle[cat.direction]}`}>
+        <span className={`px-1.5 py-0.5 rounded text-[10px] font-semibold border ${directionStyle[cat.direction as Direction]}`}>
           {dir.label}
         </span>
         {cat.portability && (
@@ -149,7 +150,7 @@ export const InformationCategories = ({ industry, selected, setSelected }: any) 
   const groupCategories = (groupId: string) => {
     if (groupId !== "sector") return applicable.filter((c) => c.group === groupId);
     return INFO_CATEGORIES.filter(
-      (c) => c.group === "sector" && (showAllSectors || matchingSectors.includes(c.sector))
+      (c) => c.group === "sector" && (showAllSectors || (c.sector != null && matchingSectors.includes(c.sector)))
     );
   };
 

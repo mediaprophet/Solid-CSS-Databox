@@ -5,6 +5,7 @@
 // declares the contract this object implements (and is what `<Refine>` typechecks
 // against in App.tsx).
 
+import type { BaseKey } from "@refinedev/core";
 import { createPosOperationsSnapshot } from "../data/posOperations";
 
 // Defaults target the local Track B preset; override for a server on another
@@ -186,7 +187,7 @@ let mockOutboundRequests: any[] = [
 ];
 
 export const dataProvider = {
-  getList: async ({ resource }) => {
+  getList: async ({ resource }: { resource: string }) => {
     if (resource === "programs") {
       const data = await fetchWithAuth(`${API_URL}/programs`);
       // GET /programs serializes listPrograms() directly, so the body is a bare
@@ -278,7 +279,7 @@ export const dataProvider = {
     throw new Error(`Unsupported getList resource: ${resource}`);
   },
 
-  getOne: async ({ resource, id }) => {
+  getOne: async ({ resource, id }: { resource: string; id: BaseKey }) => {
     if (resource === "corrections") {
       const record = mockCorrections.find((c) => c.id === id);
       if (!record) throw new Error("Correction not found");
@@ -316,7 +317,7 @@ export const dataProvider = {
     throw new Error("getOne not implemented for Forge API");
   },
 
-  update: async ({ resource, id, variables }) => {
+  update: async ({ resource, id, variables }: { resource: string; id: BaseKey; variables: Record<string, unknown> }) => {
     if (resource === "corrections") {
       const index = mockCorrections.findIndex((c) => c.id === id);
       if (index === -1) throw new Error("Correction not found");
@@ -364,7 +365,7 @@ export const dataProvider = {
     throw new Error("update not implemented for Forge API");
   },
 
-  create: async ({ resource, variables, meta }) => {
+  create: async ({ resource, variables, meta }: { resource: string; variables: Record<string, unknown>; meta?: Record<string, unknown> }) => {
     if (resource === "programs") {
       const data = await fetchWithAuth(`${API_URL}/programs`, {
         method: "POST",

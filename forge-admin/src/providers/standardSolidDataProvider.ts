@@ -3,6 +3,7 @@
 // control plane; it reads portable module manifests/state from ordinary Solid
 // resources and reports enhanced operations as unavailable.
 
+import type { BaseKey } from "@refinedev/core";
 import { createPosOperationsSnapshot } from "../data/posOperations";
 
 const MANIFEST_INDEX_URL = import.meta.env.VITE_SOLID_CMS_MANIFEST_INDEX_URL ?? "";
@@ -145,7 +146,7 @@ const absoluteUrl = (value: string, baseUrl: string) => {
 const compactId = (item: any, fallbackUrl?: string) =>
   item.id ?? item["@id"] ?? item.moduleId ?? item.identifier ?? fallbackUrl;
 
-const compactValue = (value: any) => {
+const compactValue = (value: any): any => {
   if (Array.isArray(value)) return value.map(compactValue);
   if (value && typeof value === "object") return value["@value"] ?? value["@id"] ?? value.value ?? value;
   return value;
@@ -322,7 +323,7 @@ const getCmsModules = async () => {
   const json = parseJsonIfPossible(index);
   const modules =
     json !== undefined
-      ? (await Promise.all(graphItems(json).map((entry, index) => readManifestObject(entry, MANIFEST_INDEX_URL, index)))).flat()
+      ? (await Promise.all(graphItems(json).map((entry: any, index: number) => readManifestObject(entry, MANIFEST_INDEX_URL, index)))).flat()
       : await getRdfIndexedModules(index);
 
   return list(modules, {
@@ -351,7 +352,7 @@ const getCmsVerticalProfiles = async () => {
     json !== undefined
       ? (
           await Promise.all(
-            graphVerticalProfiles(json).map((entry: any, index) =>
+            graphVerticalProfiles(json).map((entry: any, index: number) =>
               readVerticalProfileObject(entry, MANIFEST_INDEX_URL, index, moduleById)
             )
           )
@@ -951,7 +952,7 @@ const unquote = (token: string) =>
     .replace(/\\\\/g, "\\");
 
 export const standardSolidDataProvider = {
-  getList: async ({ resource }) => {
+  getList: async ({ resource }: { resource: string }) => {
     if (resource === "cms-modules") {
       return getCmsModules();
     }
@@ -971,7 +972,7 @@ export const standardSolidDataProvider = {
     });
   },
 
-  getOne: async ({ resource, id }) => {
+  getOne: async ({ resource, id }: { resource: string; id: BaseKey }) => {
     if (resource === "cms-modules") {
       const modules = await getCmsModules();
       const record = modules.data.find((module: any) => module.id === id);
@@ -987,7 +988,7 @@ export const standardSolidDataProvider = {
     throw enhancedError(`Reading ${resource}`);
   },
 
-  create: async ({ resource }) => {
+  create: async ({ resource }: { resource: string }) => {
     if (resource === "hosting-plans") {
       throw enhancedError("Generating a hosting plan");
     }
@@ -1000,14 +1001,14 @@ export const standardSolidDataProvider = {
     throw enhancedError(`Creating ${resource}`);
   },
 
-  update: async ({ resource }) => {
+  update: async ({ resource }: { resource: string }) => {
     if (resource === "cms-modules") {
       throw enhancedError("Changing module enabled state");
     }
     throw enhancedError(`Updating ${resource}`);
   },
 
-  deleteOne: async ({ resource }) => {
+  deleteOne: async ({ resource }: { resource: string }) => {
     throw enhancedError(`Deleting ${resource}`);
   },
 

@@ -3,10 +3,9 @@
 .eslintcache
 componentsjs-error-state.json
 coverage
-data
+/data
 dist
 node_modules
-**/node_modules
 test/tmp
 test/tsconfig.tsbuildinfo
 typedocs

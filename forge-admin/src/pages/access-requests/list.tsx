@@ -46,7 +46,7 @@ export const AccessRequestsList = () => {
                   <td className="p-4 font-mono text-xs text-slate-400">{record.consumerUrn}</td>
                   <td className="p-4">
                     <div className="flex flex-wrap gap-1">
-                      {record.scope.map((s) => (
+                      {record.scope.map((s: string) => (
                         <span key={s} className="bg-white/10 px-2 py-1 rounded text-xs font-mono">{s}</span>
                       ))}
                     </div>
@@ -58,7 +58,7 @@ export const AccessRequestsList = () => {
                   <td className="p-4">{getStatusBadge(record.status)}</td>
                   <td className="p-4 text-right">
                     <button
-                      onClick={() => show("access-requests", record.id)}
+                      onClick={() => show("access-requests", record.id ?? "")}
                       className="text-[#d4af37] hover:text-white transition-colors text-sm font-semibold opacity-0 group-hover:opacity-100"
                     >
                       Adjudicate →
