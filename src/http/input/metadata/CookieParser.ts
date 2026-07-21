@@ -1,4 +1,4 @@
-import { parse } from 'cookie';
+import { parseCookie } from 'cookie';
 import { DataFactory } from 'n3';
 import type { NamedNode } from '@rdfjs/types';
 import type { HttpRequest } from '../../../server/HttpRequest';
@@ -26,7 +26,7 @@ export class CookieParser extends MetadataParser {
   }
 
   public async handle(input: { request: HttpRequest; metadata: RepresentationMetadata }): Promise<void> {
-    const cookies = parse(input.request.headers.cookie ?? '');
+    const cookies = parseCookie(input.request.headers.cookie ?? '');
     for (const [ name, uri ] of Object.entries(this.cookieMap)) {
       const value = cookies[name];
       if (value) {

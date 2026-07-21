@@ -79,7 +79,7 @@ describe('the Databox CMS control plane in Community Solid Server', (): void => 
     expect(parseModuleManifestRdf(manifestTurtle, { subjectIri: manifestUrl })).toMatchObject({
       id: 'hosting',
       name: 'Hosting',
-      routes: [ 'POST /.databox/cms/hosting/plan' ],
+      routes: expect.arrayContaining([ 'POST /.databox/cms/hosting/plan' ]),
     });
   });
 

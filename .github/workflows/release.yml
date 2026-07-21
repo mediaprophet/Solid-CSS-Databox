@@ -1,0 +1,214 @@
+# Cross-platform release workflow.
+#
+# Triggers when a version tag (v*) is pushed. Builds:
+#   1. The Node.js / TypeScript server + components.js artifacts
+#   2. The forge-admin demo (static site for GitHub Pages)
+#   3. Native Rust binaries (pos-edge, databox-installer, tray-supervisor)
+#      for macOS (Intel + Apple Silicon), Linux, and Windows
+# Then creates a GitHub Release with all artifacts attached.
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag (e.g. v8.0.0)'
+        required: true
+  workflow_call:
+    inputs:
+      tag:
+        description: 'Release tag (e.g. v8.0.0)'
+        type: string
+        required: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ── Build the Node.js server + forge-admin demo ────────────────────────
+  build-server:
+    name: Build Server & Admin
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.x
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build TypeScript + components
+        run: npm run build
+
+      - name: Build forge-admin demo
+        run: npm run build:demo
+
+      - name: Pack npm tarball
+        run: npm pack
+
+      - name: Upload server artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: server-artifacts
+          path: |
+            *.tgz
+            dist/
+            config/
+            templates/
+            bin/
+            package.json
+            README.md
+            LICENSE
+          retention-days: 7
+
+      - name: Upload forge-admin demo
+        uses: actions/upload-artifact@v4
+        with:
+          name: forge-admin-demo
+          path: docs/admin/
+          retention-days: 7
+
+  # ── Build native Rust binaries on a cross-platform matrix ──────────────
+  build-native:
+    name: Build Native (${{ matrix.target }})
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            archive: tar.gz
+          - os: macos-13
+            target: x86_64-apple-darwin
+            archive: tar.gz
+          - os: macos-14
+            target: aarch64-apple-darwin
+            archive: tar.gz
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            archive: zip
+
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - name: Cache Cargo
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            native/target
+          key: cargo-${{ matrix.target }}-${{ hashFiles('native/**/Cargo.lock') }}
+          restore-keys: |
+            cargo-${{ matrix.target }}-
+
+      - name: Build native binaries (release)
+        working-directory: native
+        run: cargo build --release --target ${{ matrix.target }}
+
+      - name: Stage binaries (Unix)
+        if: matrix.archive != 'zip'
+        run: |
+          mkdir -p native-release
+          cp native/target/${{ matrix.target }}/release/pos-edge native-release/
+          cp native/target/${{ matrix.target }}/release/databox-installer native-release/
+          cp native/target/${{ matrix.target }}/release/tray-supervisor native-release/
+          tar -czf native-${{ matrix.target }}.tar.gz -C native-release .
+
+      - name: Stage binaries (Windows)
+        if: matrix.archive == 'zip'
+        run: |
+          New-Item -ItemType Directory -Force native-release
+          Copy-Item native/target/${{ matrix.target }}/release/pos-edge.exe native-release/
+          Copy-Item native/target/${{ matrix.target }}/release/databox-installer.exe native-release/
+          Copy-Item native/target/${{ matrix.target }}/release/tray-supervisor.exe native-release/
+          Compress-Archive -Path native-release/* -DestinationPath native-${{ matrix.target }}.zip
+
+      - name: Upload native artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: native-${{ matrix.target }}
+          path: native-${{ matrix.target }}.${{ matrix.archive }}
+          retention-days: 7
+
+  # ── Create the GitHub Release with all artifacts ───────────────────────
+  create-release:
+    name: Create GitHub Release
+    needs: [build-server, build-native]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Determine tag
+        id: tag
+        run: |
+          if [ -n "${{ github.event.inputs.tag }}" ]; then
+            echo "name=${{ github.event.inputs.tag }}" >> $GITHUB_OUTPUT
+          else
+            echo "name=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: release-assets
+
+      - name: List artifacts
+        run: find release-assets -type f | head -50
+
+      - name: Prepare release files
+        run: |
+          mkdir -p release-final
+          # Flatten native binary archives
+          cp release-assets/native-*/*.tar.gz release-final/ 2>/dev/null || true
+          cp release-assets/native-*/*.zip release-final/ 2>/dev/null || true
+          # npm tarball
+          cp release-assets/server-artifacts/*.tgz release-final/ 2>/dev/null || true
+          # Forge-admin demo as zip
+          cd release-assets/forge-admin-demo
+          zip -r ../../release-final/forge-admin-demo.zip .
+          cd ../..
+
+      - name: Extract release notes
+        id: notes
+        run: |
+          # Extract the top-most section from RELEASE_NOTES.md
+          TAG="${{ steps.tag.outputs.name }}"
+          # Try to extract the section for this tag; fall back to the first section
+          awk -v tag="$TAG" '
+            /^## / {
+              if (found) exit
+              if (index($0, tag)) found=1
+            }
+            found { print }
+          ' RELEASE_NOTES.md > release-body.md
+          # If empty, use first section
+          if [ ! -s release-body.md ]; then
+            awk '/^## /{if(p)exit; p=1} p' RELEASE_NOTES.md > release-body.md
+          fi
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.tag.outputs.name }}
+          name: ${{ steps.tag.outputs.name }}
+          body_path: release-body.md
+          files: release-final/*
+          draft: false
+          prerelease: ${{ contains(steps.tag.outputs.name, '-') }}
+          generate_release_notes: true

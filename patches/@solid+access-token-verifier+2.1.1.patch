@@ -1,0 +1,31 @@
+diff --git a/node_modules/@solid/access-token-verifier/dist/class/DPoPJTICache.d.ts b/node_modules/@solid/access-token-verifier/dist/class/DPoPJTICache.d.ts
+index eef2b03..3df80bf 100644
+--- a/node_modules/@solid/access-token-verifier/dist/class/DPoPJTICache.d.ts
++++ b/node_modules/@solid/access-token-verifier/dist/class/DPoPJTICache.d.ts
+@@ -1,4 +1,4 @@
+-import LRUCache from "lru-cache";
++import { LRUCache } from "lru-cache";
+ import type { JTICheckFunction } from "../type";
+ export declare class DPoPJTICache extends LRUCache<string, boolean> {
+     constructor();
+diff --git a/node_modules/@solid/access-token-verifier/dist/class/IssuerKeySetCache.d.ts b/node_modules/@solid/access-token-verifier/dist/class/IssuerKeySetCache.d.ts
+index 4614bb8..917dc33 100644
+--- a/node_modules/@solid/access-token-verifier/dist/class/IssuerKeySetCache.d.ts
++++ b/node_modules/@solid/access-token-verifier/dist/class/IssuerKeySetCache.d.ts
+@@ -1,5 +1,5 @@
+ import type { createRemoteJWKSet } from "jose";
+-import LRUCache from "lru-cache";
++import { LRUCache } from "lru-cache";
+ import type { RetrieveIssuerKeySetFunction } from "../type";
+ export declare class IssuerKeySetCache extends LRUCache<string, ReturnType<typeof createRemoteJWKSet>> {
+     constructor();
+diff --git a/node_modules/@solid/access-token-verifier/dist/class/WebIDIssuersCache.d.ts b/node_modules/@solid/access-token-verifier/dist/class/WebIDIssuersCache.d.ts
+index 4b16adc..c3c1615 100644
+--- a/node_modules/@solid/access-token-verifier/dist/class/WebIDIssuersCache.d.ts
++++ b/node_modules/@solid/access-token-verifier/dist/class/WebIDIssuersCache.d.ts
+@@ -1,4 +1,4 @@
+-import LRUCache from "lru-cache";
++import { LRUCache } from "lru-cache";
+ import type { RetrieveOidcIssuersFunction } from "../type";
+ export declare class WebIDIssuersCache extends LRUCache<string, Array<string>> {
+     constructor();

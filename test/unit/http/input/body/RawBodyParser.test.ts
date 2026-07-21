@@ -1,5 +1,5 @@
 import 'jest-rdf';
-import arrayifyStream from 'arrayify-stream';
+import { arrayifyStream } from 'arrayify-stream';
 import type { BodyParserArgs } from '../../../../../src/http/input/body/BodyParser';
 import { RawBodyParser } from '../../../../../src/http/input/body/RawBodyParser';
 import { RepresentationMetadata } from '../../../../../src/http/representation/RepresentationMetadata';

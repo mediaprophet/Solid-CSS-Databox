@@ -1,4 +1,3 @@
-// @ts-nocheck
 //
 // NOTE on the @ts-nocheck above (pre-existing): Refine's `DataProvider` methods are
 // generic over a caller-chosen `TData extends BaseRecord`, so no concrete provider can
@@ -13,7 +12,6 @@
 // `dataProvider.ts` (which posts to http://localhost:3000/.databox/forge); this
 // file does not modify or import it. Everything here is synthetic sample data.
 
-import type { DataProvider } from "@refinedev/core";
 import { createPosOperationsSnapshot } from "../data/posOperations";
 
 const SYNTHETIC_JWS =
@@ -312,7 +310,7 @@ const buildReceiptDocument = (input: any) => {
   };
 };
 
-export const demoDataProvider: DataProvider = {
+export const demoDataProvider = {
   getList: async ({ resource }: any) => {
     switch (resource) {
       case "programs": return list(mockPrograms);
@@ -467,7 +465,7 @@ export const demoDataProvider: DataProvider = {
     }
   },
 
-  deleteOne: async ({ id }: any) => ({ data: { id } }),
+  deleteOne: async ({ id }: any) => ({ data: { id } }) as any,
 
   getApiUrl: () => "demo://in-memory",
 };

@@ -1,0 +1,20 @@
+{
+  "name": "@databox/org-app-container",
+  "version": "0.1.0",
+  "description": "Unified WASM/PWA container that fetches app profiles, UI modules, and per-install licences from the CMS.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@inrupt/solid-client-authn-browser": "^5.0.0",
+    "@inrupt/solid-client": "^3.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^7.0.2",
+    "vite": "^8.1.5",
+    "vite-plugin-pwa": "^1.3.0"
+  }
+}

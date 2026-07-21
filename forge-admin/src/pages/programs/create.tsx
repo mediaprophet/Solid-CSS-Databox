@@ -1,6 +1,5 @@
-// @ts-nocheck
 import React, { useState } from "react";
-import { useCreate } from "@refinedev/core";
+import { useCreate } from "../../hooks/useCreate";
 import { buildSyntheticProfile, BASELINE_PROFILE } from "../../data/institutionProfile";
 
 type Mode = "scaffold" | "authored";

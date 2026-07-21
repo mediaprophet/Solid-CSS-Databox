@@ -1,10 +1,8 @@
-// @ts-nocheck
 //
 // Standard-Solid provider mode. This intentionally does not call the CSS CMS
 // control plane; it reads portable module manifests/state from ordinary Solid
 // resources and reports enhanced operations as unavailable.
 
-import type { DataProvider } from "@refinedev/core";
 import { createPosOperationsSnapshot } from "../data/posOperations";
 
 const MANIFEST_INDEX_URL = import.meta.env.VITE_SOLID_CMS_MANIFEST_INDEX_URL ?? "";
@@ -691,8 +689,10 @@ const rdfLinkedListTerms = (head: RdfTerm, graph: ReturnType<typeof parseTurtle>
   return values;
 };
 
-const sameTerm = (left: RdfTerm, right: RdfTerm) => left.termType === right.termType && left.value === right.value;
-const termKey = (term: RdfTerm) => `${term.termType}:${term.value}`;
+const sameTerm = (left: RdfTerm, right: RdfTerm) =>
+  left.termType === right.termType &&
+  ("value" in left && "value" in right ? left.value === right.value : false);
+const termKey = (term: RdfTerm) => `${term.termType}:${"value" in term ? term.value : "[list]"}`;
 
 const parseTurtle = (turtle: string, baseUrl: string) => {
   const tokens = tokenizeTurtle(turtle);
@@ -715,10 +715,16 @@ class TurtleParser {
   private blankNodeCounter = 0;
   private offset = 0;
 
+  private readonly tokens: string[];
+  private readonly baseUrl: string;
+
   public constructor(
-    private readonly tokens: string[],
-    private readonly baseUrl: string
-  ) {}
+    tokens: string[],
+    baseUrl: string
+  ) {
+    this.tokens = tokens;
+    this.baseUrl = baseUrl;
+  }
 
   public parse() {
     while (!this.done()) {
@@ -812,7 +818,7 @@ class TurtleParser {
     const literal: RdfTerm = { termType: "Literal", value: unquote(token) };
     if (this.peek() === "^^") {
       this.read();
-      literal.datatype = this.readResource().value;
+      literal.datatype = (this.readResource() as { value: string }).value;
     } else if (this.peek()?.startsWith("@") && this.peek() !== "@prefix") {
       literal.language = this.read().slice(1);
     }
@@ -944,7 +950,7 @@ const unquote = (token: string) =>
     .replace(/\\t/g, "\t")
     .replace(/\\\\/g, "\\");
 
-export const standardSolidDataProvider: DataProvider = {
+export const standardSolidDataProvider = {
   getList: async ({ resource }) => {
     if (resource === "cms-modules") {
       return getCmsModules();

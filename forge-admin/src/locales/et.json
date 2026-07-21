@@ -1,0 +1,237 @@
+{
+  "app": {
+    "title": "Databox CMS",
+    "subtitle": "Solidi-põhine sisuhaldus"
+  },
+  "nav": {
+    "setup": "Seadistamine",
+    "modules": "Moodulid",
+    "hosting": "Hostimine",
+    "pos": "POS terminal",
+    "waiter": "Kelneri tellimused",
+    "customerOrder": "Kliendi iseteenindus",
+    "display": "Kampaaniakuva",
+    "receipts": "Kviitungid",
+    "programs": "Programmid",
+    "mappings": "Vastendused",
+    "events": "Sündmused",
+    "dataPortability": "Andmete portatiivsus",
+    "accessRequests": "Ligipääsutaotlused",
+    "corrections": "Parandused",
+    "consumerLedger": "Tarbijaregister"
+  },
+  "common": {
+    "save": "Salvesta",
+    "cancel": "Tühista",
+    "delete": "Kustuta",
+    "edit": "Muuda",
+    "create": "Loo",
+    "search": "Otsi",
+    "loading": "Laadimine...",
+    "error": "Viga",
+    "success": "Edu",
+    "close": "Sulge",
+    "back": "Tagasi",
+    "next": "Edasi",
+    "confirm": "Kinnita",
+    "yes": "Jah",
+    "no": "Ei",
+    "enabled": "Aktiveeritud",
+    "disabled": "Deaktiveeritud",
+    "status": "Olek",
+    "mode": "Režiim",
+    "actions": "Tegevused",
+    "name": "Nimi",
+    "description": "Kirjeldus",
+    "type": "Tüüp",
+    "date": "Kuupäev",
+    "time": "Aeg",
+    "amount": "Summa",
+    "total": "Kokku",
+    "language": "Keel"
+  },
+  "hosting": {
+    "title": "Hostimise seadistamine",
+    "apexDomain": "Peamine domeen",
+    "apexDomainPlaceholder": "näide.org",
+    "originTarget": "Päritolusiht",
+    "originTargetPlaceholder": "IP-aadress või hostinimi",
+    "databoxLabel": "Databox alamdomeen",
+    "databoxLabelPlaceholder": "databox",
+    "wwwEnabled": "Luba www alamdomeen",
+    "proxied": "Proxied (Cloudflare)",
+    "planButton": "Genereeri plaan",
+    "applyButton": "Rakenda Cloudflare'ile",
+    "persistButton": "Salvesta konfiguratsioon",
+    "bindButton": "Ühenda päritolu",
+    "cloudflareToken": "Cloudflare API token",
+    "cloudflareTokenPlaceholder": "Sisestage Cloudflare API token",
+    "downloadArtifacts": "Lae artefaktid alla",
+    "dnsRecords": "DNS kirjed",
+    "launchCommand": "Käivituskäsk",
+    "baseUrl": "Baas-URL",
+    "planSuccess": "Hostimisplaan edukalt genereeritud",
+    "planError": "Hostimisplaani genereerimine ebaõnnestus",
+    "applySuccess": "DNS kirjed ja tunnel edukalt konfigureeritud",
+    "applyError": "Hostimise konfiguratsiooni rakendamine ebaõnnestus",
+    "persistSuccess": "Konfiguratsioon salvestatud RDF ressursina",
+    "persistError": "Konfiguratsiooni salvestamine ebaõnnestus",
+    "bindSuccess": "Päritolu ühendatud TenantBinding-ina",
+    "bindError": "Päritolu ühendamine ebaõnnestus"
+  },
+  "governance": {
+    "title": "Juhtimine",
+    "subtitle": "Rollide sidemed, ODRL poliitikad, heakskiiduväravad ja otsused."
+  },
+  "credentials": {
+    "title": "Volitused",
+    "subtitle": "Verifitseeritavate volituste väljastamine, kontrollimine ja tühistamine."
+  },
+  "members": {
+    "title": "Liikmed",
+    "subtitle": "Liikmete pod-ide varustamine, elutsükli haldamine ja teatiste saatmine LDN kaudu."
+  },
+  "operations": {
+    "title": "Operatsioonid",
+    "subtitle": "3. faasi operatiivsed horisontaalid: nõusolek, delegeerimine, hädaolukord, laoseis, lojaalsus, hinnakujundus ja palju muud."
+  },
+  "modules": {
+    "title": "CMS moodulid",
+    "enabled": "Aktiveeritud",
+    "disabled": "Deaktiveeritud",
+    "enable": "Aktiveeri",
+    "disable": "Deaktiveeri",
+    "configure": "Konfigureeri",
+    "capabilities": "Võimekused",
+    "routes": "Marsruudid",
+    "configShape": "Konfiguratsioonikuju",
+    "noModules": "Ühtegi moodulit pole paigaldatud"
+  },
+  "pos": {
+    "title": "POS terminal",
+    "cart": "Ostukorv",
+    "checkout": "Kassa",
+    "subtotal": "Vahesumma",
+    "tax": "Maks",
+    "total": "Kokku",
+    "payment": "Makse",
+    "cash": "Sularaha",
+    "card": "Kaart",
+    "completeSale": "Lõpeta müük",
+    "voidSale": "Tühista müük",
+    "selectProduct": "Valige toode",
+    "noProducts": "Tooteid pole saadaval",
+    "orderConfirmed": "Tellimus kinnitatud",
+    "paymentReceived": "Makse vastu võetud",
+    "receiptGenerated": "Kviitung genereeritud"
+  },
+  "waiter": {
+    "title": "Kelneri tellimused",
+    "selectTable": "Valige laud",
+    "currentOrder": "Praegune tellimus",
+    "addToOrder": "Lisa tellimusse",
+    "sendToKitchen": "Saada kööki",
+    "clearOrder": "Tühjenda tellimus",
+    "table": "Laud",
+    "items": "Kaubad",
+    "quantity": "Kogus",
+    "price": "Hind"
+  },
+  "setup": {
+    "title": "Seadistamisviisard",
+    "welcome": "Tere tulemast Databox CMS-i",
+    "chooseProfile": "Valige organisatsiooni tüüp",
+    "legalEntity": "Juriidilise isiku andmed",
+    "orgName": "Organisatsiooni nimi",
+    "orgType": "Organisatsiooni tüüp",
+    "complete": "Lõpeta seadistamine",
+    "step": "Samm",
+    "of": "/"
+  },
+  "receipts": {
+    "title": "Kviitungid",
+    "orderId": "Tellimuse ID",
+    "customer": "Klient",
+    "date": "Kuupäev",
+    "total": "Kokku",
+    "viewReceipt": "Vaata kviitungit",
+    "noReceipts": "Kviitungeid ei leitud"
+  },
+  "programs": {
+    "title": "Programmid",
+    "createProgram": "Loo programm",
+    "programName": "Programmi nimi",
+    "programType": "Programmi tüüp",
+    "noPrograms": "Ühtegi programmi pole defineeritud"
+  },
+  "mappings": {
+    "title": "Konnektori vastendused",
+    "sourceType": "Allika tüüp",
+    "odbc": "ODBC",
+    "ldap": "LDAP",
+    "connectionString": "Ühendusstring",
+    "query": "Päring",
+    "url": "URL",
+    "searchBase": "Otsingubaas",
+    "simulate": "Simuleeri",
+    "results": "Tulemused"
+  },
+  "accessRequests": {
+    "title": "Ligipääsutaotlused",
+    "requester": "Taotleja",
+    "resource": "Ressurss",
+    "status": "Olek",
+    "approve": "Heakskiida",
+    "deny": "Keeldu",
+    "noRequests": "Ligipääsutaotlusi pole"
+  },
+  "corrections": {
+    "title": "Parandused",
+    "requestedBy": "Taotles",
+    "field": "Väli",
+    "currentValue": "Praegune väärtus",
+    "requestedValue": "Soovitud väärtus",
+    "approve": "Heakskiida",
+    "deny": "Keeldu",
+    "noCorrections": "Parandustaotlusi pole"
+  },
+  "consumerLedger": {
+    "title": "Tarbijaregister",
+    "consumer": "Tarbija",
+    "event": "Sündmus",
+    "timestamp": "Ajatempel",
+    "details": "Üksikasjad",
+    "noEntries": "Registerkandeid pole"
+  },
+  "dataPortability": {
+    "title": "Andmete portatiivsusregister",
+    "export": "Ekspordi andmed",
+    "import": "Impordi andmed",
+    "format": "Formaat",
+    "status": "Olek"
+  },
+  "events": {
+    "title": "Sündmuste edastaja",
+    "eventType": "Sündmuse tüüp",
+    "payload": "Payload",
+    "dispatch": "Edasta",
+    "result": "Tulemus"
+  },
+  "errors": {
+    "hosting": {
+      "invalid_domain": "Hostimisplaan vajab peamist domeeni nagu \"acme.org\".",
+      "invalid_origin": "Hostimisplaan vajab päritolusihti (IP või hostinimi).",
+      "api_token_required": "Plaani rakendamiseks on vajalik Cloudflare API token.",
+      "api_request_failed": "Cloudflare API päring ebaõnnestus.",
+      "dns_record_exists": "DNS kirje on juba olemas.",
+      "tunnel_creation_failed": "Cloudflare tunneli loomine ebaõnnestus."
+    },
+    "general": {
+      "not_authenticated": "Te pole autentitud.",
+      "forbidden": "Teil pole luba selle tegevuse sooritamiseks.",
+      "not_found": "Soovitud ressurssi ei leitud.",
+      "internal_error": "Tekkis serveri sisemine viga.",
+      "network_error": "Tekkis võrguviga."
+    }
+  }
+}

@@ -1,0 +1,237 @@
+{
+  "app": {
+    "title": "Databox CMS",
+    "subtitle": "Solid-native indholdsadministration"
+  },
+  "nav": {
+    "setup": "Opsætning",
+    "modules": "Moduler",
+    "hosting": "Hosting",
+    "pos": "POS-terminal",
+    "waiter": "Tjenerbestillinger",
+    "customerOrder": "Kundens selvbetjening",
+    "display": "Kampagnevisning",
+    "receipts": "Kvitteringer",
+    "programs": "Programmer",
+    "mappings": "Tilknytninger",
+    "events": "Begivenheder",
+    "dataPortability": "Dataportabilitet",
+    "accessRequests": "Adgangsanmodninger",
+    "corrections": "Rettelser",
+    "consumerLedger": "Forbrugerregister"
+  },
+  "common": {
+    "save": "Gem",
+    "cancel": "Annuller",
+    "delete": "Slet",
+    "edit": "Rediger",
+    "create": "Opret",
+    "search": "Søg",
+    "loading": "Indlæser...",
+    "error": "Fejl",
+    "success": "Succes",
+    "close": "Luk",
+    "back": "Tilbage",
+    "next": "Næste",
+    "confirm": "Bekræft",
+    "yes": "Ja",
+    "no": "Nej",
+    "enabled": "Aktiveret",
+    "disabled": "Deaktiveret",
+    "status": "Status",
+    "mode": "Tilstand",
+    "actions": "Handlinger",
+    "name": "Navn",
+    "description": "Beskrivelse",
+    "type": "Type",
+    "date": "Dato",
+    "time": "Tid",
+    "amount": "Beløb",
+    "total": "Total",
+    "language": "Sprog"
+  },
+  "hosting": {
+    "title": "Hostingopsætning",
+    "apexDomain": "Hoveddomæne",
+    "apexDomainPlaceholder": "eksempel.org",
+    "originTarget": "Oprindelsesmål",
+    "originTargetPlaceholder": "IP-adresse eller værtsnavn",
+    "databoxLabel": "Databox-underdomæne",
+    "databoxLabelPlaceholder": "databox",
+    "wwwEnabled": "Aktiver www-underdomæne",
+    "proxied": "Proxied (Cloudflare)",
+    "planButton": "Generer Plan",
+    "applyButton": "Anvend på Cloudflare",
+    "persistButton": "Gem Konfiguration",
+    "bindButton": "Tilknyt Oprindelse",
+    "cloudflareToken": "Cloudflare API-token",
+    "cloudflareTokenPlaceholder": "Indtast Cloudflare API-token",
+    "downloadArtifacts": "Download Artefakter",
+    "dnsRecords": "DNS-poster",
+    "launchCommand": "Startkommando",
+    "baseUrl": "Basis-URL",
+    "planSuccess": "Hostingplan genereret",
+    "planError": "Kunne ikke generere hostingplan",
+    "applySuccess": "DNS-poster og tunnel konfigureret",
+    "applyError": "Kunne ikke anvende hostingkonfiguration",
+    "persistSuccess": "Konfiguration gemt som RDF-ressource",
+    "persistError": "Kunne ikke gemme konfiguration",
+    "bindSuccess": "Oprindelse tilknyttet som TenantBinding",
+    "bindError": "Kunne ikke tilknytte oprindelse"
+  },
+  "governance": {
+    "title": "Styring",
+    "subtitle": "Rolletilknytninger, ODRL-politikker, godkendelsesporte og resolutioner."
+  },
+  "credentials": {
+    "title": "Legitimationer",
+    "subtitle": "Udsted, verificer og tilbagekald verificerbare legitimationer."
+  },
+  "members": {
+    "title": "Medlemmer",
+    "subtitle": "Klargør medlems-pods, administrer livscyklus og send meddelelser via LDN."
+  },
+  "operations": {
+    "title": "Operationer",
+    "subtitle": "Operationelle horisontaler Fase 3: samtykke, delegation, nødsituation, beholdning, loyalitet, prissætning og mere."
+  },
+  "modules": {
+    "title": "CMS-moduler",
+    "enabled": "Aktiveret",
+    "disabled": "Deaktiveret",
+    "enable": "Aktiver",
+    "disable": "Deaktiver",
+    "configure": "Konfigurer",
+    "capabilities": "Kapaciteter",
+    "routes": "Ruter",
+    "configShape": "Konfigurationsform",
+    "noModules": "Ingen moduler installeret"
+  },
+  "pos": {
+    "title": "POS-terminal",
+    "cart": "Indkøbskurv",
+    "checkout": "Kasse",
+    "subtotal": "Subtotal",
+    "tax": "Afgift",
+    "total": "Total",
+    "payment": "Betaling",
+    "cash": "Kontant",
+    "card": "Kort",
+    "completeSale": "Gennemfør Salg",
+    "voidSale": "Annuller Salg",
+    "selectProduct": "Vælg et produkt",
+    "noProducts": "Ingen produkter tilgængelige",
+    "orderConfirmed": "Bestilling bekræftet",
+    "paymentReceived": "Betaling modtaget",
+    "receiptGenerated": "Kvittering genereret"
+  },
+  "waiter": {
+    "title": "Tjenerbestillinger",
+    "selectTable": "Vælg et bord",
+    "currentOrder": "Aktuel Bestilling",
+    "addToOrder": "Tilføj til Bestilling",
+    "sendToKitchen": "Send til Køkken",
+    "clearOrder": "Ryd Bestilling",
+    "table": "Bord",
+    "items": "Varer",
+    "quantity": "Antal",
+    "price": "Pris"
+  },
+  "setup": {
+    "title": "Installationsguide",
+    "welcome": "Velkommen til Databox CMS",
+    "chooseProfile": "Vælg din organisationstype",
+    "legalEntity": "Juridisk Enhed Detaljer",
+    "orgName": "Organisationsnavn",
+    "orgType": "Organisationstype",
+    "complete": "Gennemfør Opsætning",
+    "step": "Trin",
+    "of": "af"
+  },
+  "receipts": {
+    "title": "Kvitteringer",
+    "orderId": "Bestillings-ID",
+    "customer": "Kunde",
+    "date": "Dato",
+    "total": "Total",
+    "viewReceipt": "Vis Kvittering",
+    "noReceipts": "Ingen kvitteringer fundet"
+  },
+  "programs": {
+    "title": "Programmer",
+    "createProgram": "Opret Program",
+    "programName": "Programnavn",
+    "programType": "Programtype",
+    "noPrograms": "Ingen programmer defineret"
+  },
+  "mappings": {
+    "title": "Konnektor-tilknytninger",
+    "sourceType": "Kildetype",
+    "odbc": "ODBC",
+    "ldap": "LDAP",
+    "connectionString": "Forbindelsesstreng",
+    "query": "Forespørgsel",
+    "url": "URL",
+    "searchBase": "Søgebase",
+    "simulate": "Simuler",
+    "results": "Resultater"
+  },
+  "accessRequests": {
+    "title": "Adgangsanmodninger",
+    "requester": "Anmoder",
+    "resource": "Ressource",
+    "status": "Status",
+    "approve": "Godkend",
+    "deny": "Afvis",
+    "noRequests": "Ingen adgangsanmodninger"
+  },
+  "corrections": {
+    "title": "Rettelser",
+    "requestedBy": "Anmodet af",
+    "field": "Felt",
+    "currentValue": "Nuværende Værdi",
+    "requestedValue": "Ønsket Værdi",
+    "approve": "Godkend",
+    "deny": "Afvis",
+    "noCorrections": "Ingen rettelsesanmodninger"
+  },
+  "consumerLedger": {
+    "title": "Forbrugerregister",
+    "consumer": "Forbruger",
+    "event": "Begivenhed",
+    "timestamp": "Tidsstempel",
+    "details": "Detaljer",
+    "noEntries": "Ingen registerposter"
+  },
+  "dataPortability": {
+    "title": "Dataportabilitetsregister",
+    "export": "Eksporter Data",
+    "import": "Importer Data",
+    "format": "Format",
+    "status": "Status"
+  },
+  "events": {
+    "title": "Begivenhedsdistributør",
+    "eventType": "Begivenhedstype",
+    "payload": "Payload",
+    "dispatch": "Distribuer",
+    "result": "Resultat"
+  },
+  "errors": {
+    "hosting": {
+      "invalid_domain": "En hostingplan kræver et hoveddomæne som \"acme.org\".",
+      "invalid_origin": "En hostingplan kræver et oprindelsesmål (IP eller værtsnavn).",
+      "api_token_required": "En Cloudflare API-token kræves for at anvende planen.",
+      "api_request_failed": "Cloudflare API-anmodningen fejlede.",
+      "dns_record_exists": "DNS-post eksisterer allerede.",
+      "tunnel_creation_failed": "Kunne ikke oprette Cloudflare-tunnel."
+    },
+    "general": {
+      "not_authenticated": "Du er ikke autentificeret.",
+      "forbidden": "Du har ikke tilladelse til at udføre denne handling.",
+      "not_found": "Den anmodede ressource blev ikke fundet.",
+      "internal_error": "Der opstod en intern serverfejl.",
+      "network_error": "Der opstod en netværksfejl."
+    }
+  }
+}

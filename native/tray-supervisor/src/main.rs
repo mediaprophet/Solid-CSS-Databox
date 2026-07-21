@@ -1,4 +1,5 @@
 use std::process::{Child, Command};
+use std::env;
 use tao::{
     event::{Event, WindowEvent},
     event_loop::{ControlFlow, EventLoopBuilder},
@@ -13,6 +14,10 @@ use wry::WebViewBuilder;
 
 fn main() {
     let event_loop = EventLoopBuilder::new().build();
+
+    // Determine spawn mode: pos-edge (if POS_EDGE_SPAWN=true) or direct node
+    let spawn_pos_edge = env::var("POS_EDGE_SPAWN").unwrap_or_default() == "true";
+    let pos_edge_binary = env::var("POS_EDGE_BINARY").unwrap_or_else(|_| "pos-edge".to_string());
 
     // Create an empty 32x32 RGBA icon
     let icon_rgba = vec![0; 32 * 32 * 4];
@@ -56,12 +61,20 @@ fn main() {
             if menu_event.id == start_server_i.id() {
                 if server_process.is_none() {
                     println!("Starting server...");
-                    match Command::new("node")
-                        .arg("./bin/server.js")
-                        .arg("-c")
-                        .arg("config/cms/cms.json")
-                        .spawn()
-                    {
+                    let child = if spawn_pos_edge {
+                        // CombinedInstall chain: tray → pos-edge → node
+                        println!("Spawning via pos-edge binary: {}", pos_edge_binary);
+                        Command::new(&pos_edge_binary)
+                            .spawn()
+                    } else {
+                        // Direct node spawn (default)
+                        Command::new("node")
+                            .arg("./bin/server.js")
+                            .arg("-c")
+                            .arg("config/cms/cms.json")
+                            .spawn()
+                    };
+                    match child {
                         Ok(child) => {
                             server_process = Some(child);
                             start_server_i.set_enabled(false);

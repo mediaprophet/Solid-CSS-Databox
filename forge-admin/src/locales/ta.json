@@ -1,0 +1,237 @@
+{
+  "app": {
+    "title": "Databox CMS",
+    "subtitle": "Solid-சொந்த உள்ளடக்க மேலாண்மை"
+  },
+  "nav": {
+    "setup": "அமைப்பு",
+    "modules": "தொகுதிகள்",
+    "hosting": "ஹோஸ்டிங்",
+    "pos": "POS முனையம்",
+    "waiter": "பணியாளர் ஆர்டர்",
+    "customerOrder": "வாடிக்கையாளர் சுய-ஆர்டர்",
+    "display": "விளம்பர காட்சி",
+    "receipts": "ரசீதுகள்",
+    "programs": "நிரல்கள்",
+    "mappings": "வரைபடம்",
+    "events": "நிகழ்வுகள்",
+    "dataPortability": "தரவு எடுத்துச்செல்லுமை",
+    "accessRequests": "அணுகல் கோரிக்கைகள்",
+    "corrections": "திருத்தங்கள்",
+    "consumerLedger": "நுகர்வோர் கணக்கு"
+  },
+  "common": {
+    "save": "சேமி",
+    "cancel": "ரத்து",
+    "delete": "நீக்கு",
+    "edit": "திருத்து",
+    "create": "உருவாக்கு",
+    "search": "தேடு",
+    "loading": "ஏற்றுகிறது...",
+    "error": "பிழை",
+    "success": "வெற்றி",
+    "close": "மூடு",
+    "back": "பின்",
+    "next": "அடுத்து",
+    "confirm": "உறுதிப்படுத்து",
+    "yes": "ஆம்",
+    "no": "இல்லை",
+    "enabled": "இயக்கப்பட்டது",
+    "disabled": "முடக்கப்பட்டது",
+    "status": "நிலை",
+    "mode": "பயன்முறை",
+    "actions": "செயல்கள்",
+    "name": "பெயர்",
+    "description": "விளக்கம்",
+    "type": "வகை",
+    "date": "தேதி",
+    "time": "நேரம்",
+    "amount": "தொகை",
+    "total": "மொத்தம்",
+    "language": "மொழி"
+  },
+  "hosting": {
+    "title": "ஹோஸ்டிங் அமைப்பு",
+    "apexDomain": "முதன்மை டொமைன்",
+    "apexDomainPlaceholder": "உதாரணம்.org",
+    "originTarget": "மூல இலக்கு",
+    "originTargetPlaceholder": "IP முகவரி அல்லது ஹோஸ்ட்பெயர்",
+    "databoxLabel": "Databox துணை-டொமைன்",
+    "databoxLabelPlaceholder": "databox",
+    "wwwEnabled": "www துணை-டொமைனை இயக்கு",
+    "proxied": "ப்ராக்ஸி (Cloudflare)",
+    "planButton": "திட்டம் உருவாக்கு",
+    "applyButton": "Cloudflare-க்கு பயன்படுத்து",
+    "persistButton": "கட்டமைப்பை சேமி",
+    "bindButton": "மூலத்தை பிணை",
+    "cloudflareToken": "Cloudflare API டோக்கன்",
+    "cloudflareTokenPlaceholder": "Cloudflare API டோக்கனை உள்ளிடு",
+    "downloadArtifacts": "கலைப்பொருட்களை பதிவிறக்கு",
+    "dnsRecords": "DNS பதிவுகள்",
+    "launchCommand": "தொடக்க கட்டளை",
+    "baseUrl": "அடிப்படை URL",
+    "planSuccess": "ஹோஸ்டிங் திட்டம் வெற்றிகரமாக உருவாக்கப்பட்டது",
+    "planError": "ஹோஸ்டிங் திட்டத்தை உருவாக்க முடியவில்லை",
+    "applySuccess": "DNS பதிவுகள் மற்றும் சுரங்கப்பாதை வெற்றிகரமாக கட்டமைக்கப்பட்டது",
+    "applyError": "ஹோஸ்டிங் கட்டமைப்பை பயன்படுத்த முடியவில்லை",
+    "persistSuccess": "கட்டமைப்பு RDF வளமாக சேமிக்கப்பட்டது",
+    "persistError": "கட்டமைப்பை சேமிக்க முடியவில்லை",
+    "bindSuccess": "மூலம் TenantBinding ஆக பிணைக்கப்பட்டது",
+    "bindError": "மூலத்தை பிணைக்க முடியவில்லை"
+  },
+  "governance": {
+    "title": "ஆளுகை",
+    "subtitle": "பங்கு பிணைப்புகள், ODRL கொள்கைகள், அங்கீகார வாயில்கள், மற்றும் தீர்மானங்கள்."
+  },
+  "credentials": {
+    "title": "சான்றுகள்",
+    "subtitle": "சரிபார்க்கக்கூடிய சான்றுகளை வழங்குதல், சரிபார்த்தல், மற்றும் திரும்பப் பெறுதல்."
+  },
+  "members": {
+    "title": "உறுப்பினர்கள்",
+    "subtitle": "உறுப்பினர் பாட்களை வழங்குதல், வாழ்க்கைச்சுழற்சி மேலாண்மை, மற்றும் LDN வழியாக அறிவிப்புகளை அனுப்புதல்."
+  },
+  "operations": {
+    "title": "செயல்பாடுகள்",
+    "subtitle": "கட்டம் 3 செயல்பாட்டு கிடைமட்டங்கள்: ஒப்புதல், பிரதிநிதித்துவம், அவசரம், இருப்பு, விசுவாசம், விலை நிர்ணயம், மற்றும் பல."
+  },
+  "modules": {
+    "title": "CMS தொகுதிகள்",
+    "enabled": "இயக்கப்பட்டது",
+    "disabled": "முடக்கப்பட்டது",
+    "enable": "இயக்கு",
+    "disable": "முடக்கு",
+    "configure": "கட்டமை",
+    "capabilities": "திறன்கள்",
+    "routes": "வழிகள்",
+    "configShape": "கட்டமைப்பு வடிவம்",
+    "noModules": "தொகுதிகள் எதுவும் நிறுவப்படவில்லை"
+  },
+  "pos": {
+    "title": "POS முனையம்",
+    "cart": "வண்டி",
+    "checkout": "கடை",
+    "subtotal": "துணைக்கூட்டு",
+    "tax": "வரி",
+    "total": "மொத்தம்",
+    "payment": "கட்டணம்",
+    "cash": "பணம்",
+    "card": "அட்டை",
+    "completeSale": "விற்பனையை முடி",
+    "voidSale": "விற்பனையை ரத்து",
+    "selectProduct": "தயாரிப்பை தேர்வு",
+    "noProducts": "தயாரிப்புகள் இல்லை",
+    "orderConfirmed": "ஆர்டர் உறுதிப்படுத்தப்பட்டது",
+    "paymentReceived": "கட்டணம் பெறப்பட்டது",
+    "receiptGenerated": "ரசீது உருவாக்கப்பட்டது"
+  },
+  "waiter": {
+    "title": "பணியாளர் ஆர்டர்",
+    "selectTable": "மேசையை தேர்வு",
+    "currentOrder": "தற்போதைய ஆர்டர்",
+    "addToOrder": "ஆர்டருக்கு சேர்",
+    "sendToKitchen": "சமையலறைக்கு அனுப்பு",
+    "clearOrder": "ஆர்டரை அழி",
+    "table": "மேசை",
+    "items": "பொருட்கள்",
+    "quantity": "அளவு",
+    "price": "விலை"
+  },
+  "setup": {
+    "title": "அமைப்பு வழிகாட்டி",
+    "welcome": "Databox CMS-க்கு வரவேற்கிறோம்",
+    "chooseProfile": "உங்கள் நிறுவன வகையை தேர்வு",
+    "legalEntity": "சட்ட நிறுவன விவரம்",
+    "orgName": "நிறுவன பெயர்",
+    "orgType": "நிறுவன வகை",
+    "complete": "அமைப்பை முடி",
+    "step": "படி",
+    "of": "/"
+  },
+  "receipts": {
+    "title": "ரசீதுகள்",
+    "orderId": "ஆர்டர் ID",
+    "customer": "வாடிக்கையாளர்",
+    "date": "தேதி",
+    "total": "மொத்தம்",
+    "viewReceipt": "ரசீதை பார்",
+    "noReceipts": "ரசீதுகள் இல்லை"
+  },
+  "programs": {
+    "title": "நிரல்கள்",
+    "createProgram": "நிரல் உருவாக்கு",
+    "programName": "நிரல் பெயர்",
+    "programType": "நிரல் வகை",
+    "noPrograms": "நிரல்கள் எதுவும் வரையறுக்கப்படவில்லை"
+  },
+  "mappings": {
+    "title": "இணைப்பு வரைபடம்",
+    "sourceType": "மூல வகை",
+    "odbc": "ODBC",
+    "ldap": "LDAP",
+    "connectionString": "இணைப்பு சரம்",
+    "query": "வினவல்",
+    "url": "URL",
+    "searchBase": "தேடல் அடிப்படை",
+    "simulate": "உருவகம்",
+    "results": "முடிவுகள்"
+  },
+  "accessRequests": {
+    "title": "அணுகல் கோரிக்கைகள்",
+    "requester": "கோருநர்",
+    "resource": "வளம்",
+    "status": "நிலை",
+    "approve": "அங்கீகரி",
+    "deny": "மறு",
+    "noRequests": "அணுகல் கோரிக்கைகள் இல்லை"
+  },
+  "corrections": {
+    "title": "திருத்தங்கள்",
+    "requestedBy": "கோரியவர்",
+    "field": "புலம்",
+    "currentValue": "தற்போதைய மதிப்பு",
+    "requestedValue": "கோரப்பட்ட மதிப்பு",
+    "approve": "அங்கீகரி",
+    "deny": "மறு",
+    "noCorrections": "திருத்த கோரிக்கைகள் இல்லை"
+  },
+  "consumerLedger": {
+    "title": "நுகர்வோர் கணக்கு",
+    "consumer": "நுகர்வோர்",
+    "event": "நிகழ்வு",
+    "timestamp": "நேர முத்திரை",
+    "details": "விவரங்கள்",
+    "noEntries": "கணக்கில் பதிவுகள் இல்லை"
+  },
+  "dataPortability": {
+    "title": "தரவு எடுத்துச்செல்லுமை பதிவேடு",
+    "export": "தரவு ஏற்றுமதி",
+    "import": "தரவு இறக்குமதி",
+    "format": "வடிவம்",
+    "status": "நிலை"
+  },
+  "events": {
+    "title": "நிகழ்வு அனுப்புநர்",
+    "eventType": "நிகழ்வு வகை",
+    "payload": "சுமை",
+    "dispatch": "அனுப்பு",
+    "result": "முடிவு"
+  },
+  "errors": {
+    "hosting": {
+      "invalid_domain": "ஹோஸ்டிங் திட்டத்திற்கு \"acme.org\" போன்ற முதன்மை டொமைன் தேவை.",
+      "invalid_origin": "ஹோஸ்டிங் திட்டத்திற்கு மூல இலக்கு (IP அல்லது ஹோஸ்ட்பெயர்) தேவை.",
+      "api_token_required": "திட்டத்தை பயன்படுத்த Cloudflare API டோக்கன் தேவை.",
+      "api_request_failed": "Cloudflare API கோரிக்கை தோல்வியடைந்தது.",
+      "dns_record_exists": "DNS பதிவு ஏற்கனவே உள்ளது.",
+      "tunnel_creation_failed": "Cloudflare சுரங்கப்பாதை உருவாக்க முடியவில்லை."
+    },
+    "general": {
+      "not_authenticated": "நீங்கள் அங்கீகரிக்கப்படவில்லை.",
+      "forbidden": "இந்த செயலை செய்ய உங்களுக்கு அனுமதி இல்லை.",
+      "not_found": "கோரப்பட்ட வளம் காணப்படவில்லை.",
+      "internal_error": "உள் சேவையக பிழை ஏற்பட்டது.",
+      "network_error": "நெட்வொர்க் பிழை ஏற்பட்டது."
+    }
+  }
+}

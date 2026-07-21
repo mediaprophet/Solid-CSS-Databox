@@ -1,0 +1,43 @@
+@prefix schema: <https://schema.org/> .
+@prefix solid: <https://www.w3.org/ns/solid/v1> .
+@prefix cms: <urn:solid-server:databox:cms#> .
+
+<https://databox.example.org/apps/waiter-app/>
+  a schema:SoftwareApplication, solid:SolidApp ;
+  schema:name "Waiter App" ;
+  schema:description "Tableside ordering for restaurant staff" ;
+  schema:softwareVersion "1.0.0" ;
+  schema:identifier "waiter-app" ;
+  solid:networkScope "local-only" ;
+  solid:requiredModules ( "menu" "pos" "bookings" ) ;
+  solid:verticalProfiles ( "food.restaurant" "food.allergy-safety" ) ;
+  solid:installUrl <https://databox.example.org/apps/waiter-app/> ;
+  schema:featureList [
+    a schema:FeatureSpecification ;
+    schema:identifier "menu" ;
+    solid:moduleId "menu" ;
+    schema:name "Menu" ;
+    schema:url "/.databox/cms/menu" ;
+    schema:icon "utensils" ;
+    schema:position 1 ;
+  ], [
+    a schema:FeatureSpecification ;
+    schema:identifier "orders" ;
+    solid:moduleId "pos" ;
+    schema:name "Active Orders" ;
+    schema:url "/.databox/cms/pos/orders" ;
+    schema:icon "clipboard" ;
+    schema:position 2 ;
+    solid:requiredPermission "pos:order" ;
+  ], [
+    a schema:FeatureSpecification ;
+    schema:identifier "bookings" ;
+    solid:moduleId "bookings" ;
+    schema:name "Reservations" ;
+    schema:url "/.databox/cms/bookings" ;
+    schema:icon "calendar" ;
+    schema:position 3 ;
+    solid:requiredPermission "bookings:view" ;
+  ] ;
+  schema:permission ( "pos:order" "bookings:view" ) ;
+.

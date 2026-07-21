@@ -1,7 +1,8 @@
-// @ts-nocheck
-import React from "react";
-import { useList, useUpdate } from "@refinedev/core";
+import { useState } from "react";
+import { useList } from "@refinedev/core";
+import { useUpdate } from "../../hooks/useUpdate";
 import { Link } from "react-router-dom";
+import { UiFormRenderer } from "../../components/ui-form/UiFormRenderer";
 
 const badge = (enabled: boolean) => (
   <span
@@ -50,6 +51,69 @@ export const ModulesPage = () => {
         onError: (error) => alert("Module update failed: " + error.message),
       }
     );
+  };
+
+  const [configModule, setConfigModule] = useState<any | null>(null);
+  const [shapeTurtle, setShapeTurtle] = useState<string | null>(null);
+  const [shapeError, setShapeError] = useState<string | null>(null);
+  const [shapeLoading, setShapeLoading] = useState(false);
+  const [configSaving, setConfigSaving] = useState(false);
+
+  const openConfig = async (module: any) => {
+    setConfigModule(module);
+    setShapeTurtle(null);
+    setShapeError(null);
+    setShapeLoading(true);
+    try {
+      const cmsUrl = import.meta.env.VITE_CMS_API_URL ?? "http://localhost:3000/.databox/cms";
+      const token = import.meta.env.VITE_CMS_TOKEN ?? "12345678901234567890123456789012";
+      const res = await fetch(`${cmsUrl}/modules/${encodeURIComponent(module.id)}/config-shape`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data?.error ?? `HTTP ${res.status}`);
+      }
+      const turtle = await res.text();
+      setShapeTurtle(turtle);
+    } catch (err) {
+      setShapeError(err instanceof Error ? err.message : "Failed to load config shape");
+    } finally {
+      setShapeLoading(false);
+    }
+  };
+
+  const closeConfig = () => {
+    setConfigModule(null);
+    setShapeTurtle(null);
+    setShapeError(null);
+  };
+
+  const submitConfig = async (values: Record<string, unknown>, turtle: string) => {
+    if (!configModule) return;
+    setConfigSaving(true);
+    try {
+      const cmsUrl = import.meta.env.VITE_CMS_API_URL ?? "http://localhost:3000/.databox/cms";
+      const token = import.meta.env.VITE_CMS_TOKEN ?? "12345678901234567890123456789012";
+      const res = await fetch(`${cmsUrl}/modules/${encodeURIComponent(configModule.id)}`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ configTurtle: turtle }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data?.error ?? `HTTP ${res.status}`);
+      }
+      closeConfig();
+      query.refetch();
+    } catch (err) {
+      alert("Failed to save config: " + (err instanceof Error ? err.message : String(err)));
+    } finally {
+      setConfigSaving(false);
+    }
   };
 
   return (
@@ -122,15 +186,26 @@ export const ModulesPage = () => {
                 </td>
                 <td className="p-4">{badge(module.enabled)}</td>
                 <td className="p-4">
-                  <button
-                    type="button"
-                    disabled={isPending || module.controlPlaneAvailable === false}
-                    onClick={() => toggle(module)}
-                    className="action-btn px-3 py-2 text-xs"
-                    title={module.controlPlaneAvailable === false ? "Module toggles require the CSS-enhanced CMS control plane." : undefined}
-                  >
-                    {module.enabled ? "Disable" : "Enable"}
-                  </button>
+                  <div className="flex flex-col gap-2">
+                    <button
+                      type="button"
+                      disabled={isPending || module.controlPlaneAvailable === false}
+                      onClick={() => toggle(module)}
+                      className="action-btn px-3 py-2 text-xs"
+                      title={module.controlPlaneAvailable === false ? "Module toggles require the CSS-enhanced CMS control plane." : undefined}
+                    >
+                      {module.enabled ? "Disable" : "Enable"}
+                    </button>
+                    {module.configShape && (
+                      <button
+                        type="button"
+                        onClick={() => openConfig(module)}
+                        className="px-3 py-2 text-xs rounded-md border border-white/10 bg-white/5 text-slate-300 hover:bg-white/10 transition-colors"
+                      >
+                        Configure
+                      </button>
+                    )}
+                  </div>
                 </td>
               </tr>
             ))}
@@ -142,6 +217,43 @@ export const ModulesPage = () => {
           <div className="p-8 text-center text-slate-500">No CMS modules are exposed by this profile.</div>
         )}
       </div>
+
+      {configModule && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="glass-panel rounded-xl shadow-2xl border border-white/10 max-w-2xl w-full max-h-[85vh] overflow-y-auto p-6">
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h2 className="text-xl font-bold text-white">{configModule.name}</h2>
+                <p className="text-xs text-slate-500 font-mono mt-1">{configModule.id}</p>
+              </div>
+              <button
+                type="button"
+                onClick={closeConfig}
+                className="text-slate-400 hover:text-white text-2xl leading-none"
+              >
+                &times;
+              </button>
+            </div>
+
+            {shapeLoading && <div className="text-slate-400 p-4">Loading configuration form…</div>}
+
+            {shapeError && (
+              <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400">
+                <p className="font-medium">Failed to load config shape</p>
+                <p className="text-sm mt-1">{shapeError}</p>
+              </div>
+            )}
+
+            {shapeTurtle && (
+              <UiFormRenderer
+                shapeTurtle={shapeTurtle}
+                onSubmit={(values, turtle) => submitConfig(values, turtle)}
+                submitLabel={configSaving ? "Saving…" : "Save Configuration"}
+              />
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

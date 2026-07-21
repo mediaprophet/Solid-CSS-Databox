@@ -122,7 +122,7 @@ describe('An IdentityProviderFactory', (): void => {
       set: jest.fn((id: string, value: any): any => map.set(id, value)),
     } satisfies Partial<KeyValueStorage<string, any>> as any;
 
-    const { privateKey, publicKey } = await generateKeyPair('ES256');
+    const { privateKey, publicKey } = await generateKeyPair('ES256', { extractable: true });
     jwkGenerator = {
       alg: 'ES256',
       getPrivateKey: jest.fn().mockResolvedValue({ ...await exportJWK(privateKey), alg: 'ES256' }),

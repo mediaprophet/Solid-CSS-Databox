@@ -87,6 +87,10 @@ export const FOOD_RESTAURANT_VERTICAL_PROFILE: VerticalProfileManifest = {
     }),
     moduleRef('website-seo', 'Website SEO publishes JSON-LD and discovery metadata without requiring CSS routes.'),
     moduleRef('mcp-server', 'MCP Server provides an AI-native interface for the public restaurant menu and bookings.'),
+    moduleRef('barcode', 'Barcode scanner enables GS1-aware product lookup and inventory scanning at the POS.'),
+    moduleRef('eftpos', 'EFTPOS terminal integration for card payments at the counter.'),
+    moduleRef('backups', 'Password-protected encrypted backups of menu, bookings, and financial data.'),
+    moduleRef('accounting', 'Accounting export to Xero/MYOB/QuickBooks for daily sales reconciliation.'),
   ],
 };
 
@@ -108,6 +112,7 @@ export const HEALTH_PRIVACY_CONSENT_VERTICAL_PROFILE: VerticalProfileManifest = 
     moduleRef('delegation', 'Delegation gives carers and guardians scoped revocable authority.'),
     moduleRef('break-glass', 'Break-glass access is temporary, conditional, and audited for emergencies.'),
     moduleRef('credential-gate', 'Credential gates verify qualifications or care roles with minimal disclosure.'),
+    moduleRef('backups', 'Password-protected encrypted backups of consent records and health data for compliance.'),
   ],
 };
 
@@ -388,8 +393,159 @@ export const WELLNESS_CLINIC_PROFILE: VerticalProfileManifest = {
   ],
 };
 
+export const FOOD_ALLERGY_SAFETY_PROFILE: VerticalProfileManifest = {
+  id: 'food.allergy-safety',
+  name: 'Food / Allergy Safety',
+  version: '0.1.0',
+  description: 'Allergy safety bundle bundling ingredient declarations, consumer allergy profiles, allergen matching, and selective disclosure for secret recipes.',
+  useCases: [ 'FOOD', 'ALLERGY', 'SAFETY' ],
+  modules: [
+    moduleRef('allergy-profile', 'Allergy profile manages consumer allergy/dietary profiles with FSANZ/EU allergen categories and dietary restrictions.'),
+    moduleRef('menu', 'Menu provides the public food offer surface where allergen data is displayed.'),
+    moduleRef('catalogue', 'Catalogue holds menu items linked to ingredient declarations.'),
+    moduleRef('pos', 'POS integrates allergen filtering at checkout and customer-facing displays.', {
+      turtle: '<> <urn:solid-server:databox:cms#allergenFilterMode> "enforce" .',
+    }),
+    moduleRef('notifications', 'Notifications alerts staff when a customer with severe allergies places an order.'),
+    moduleRef('credentials', 'Credentials issues allergy attestation VCs for selective disclosure of secret recipes.'),
+  ],
+};
+
+export const PRINT_SHOP_PROFILE: VerticalProfileManifest = {
+  id: 'print.shop',
+  name: 'Print / Shop',
+  version: '0.1.0',
+  description: 'Print shop bundle for print service catalogue, job intake, status tracking, inter-org B2B print jobs with ODRL licence enforcement.',
+  useCases: [ 'PRINT', 'B2B' ],
+  modules: [
+    moduleRef('print', 'Print shop module provides service catalogue, job intake, and status pipeline.'),
+    moduleRef('quotations', 'Quotations issues quotes for print jobs before acceptance.'),
+    moduleRef('payments', 'Payments handles print job invoicing and payment collection.'),
+    moduleRef('delivery', 'Delivery manages delivery of finished print products to customers.'),
+    moduleRef('licensing', 'Licensing enforces ODRL policies for artwork usage and deletion after fulfilment.'),
+    moduleRef('website-seo', 'Website SEO publishes the print shop catalogue and services for public discovery.'),
+  ],
+};
+
+export const HR_WORKFORCE_PROFILE: VerticalProfileManifest = {
+  id: 'hr.workforce',
+  name: 'HR / Workforce',
+  version: '0.1.0',
+  description: 'HR workforce bundle for employee onboarding, shift management, compliance tracking, payroll, and expense claims.',
+  useCases: [ 'HR', 'WORKFORCE' ],
+  modules: [
+    moduleRef('hr', 'HR module manages onboarding, shifts, compliance, payslips, and expense claims.'),
+    moduleRef('governance', 'Governance handles role bindings and approval gates for HR decisions.'),
+    moduleRef('credentials', 'Credentials issues role VCs, compliance certifications, and employment verifications.'),
+    moduleRef('payments', 'Payments processes payroll disbursements and expense reimbursements.'),
+    moduleRef('notifications', 'Notifications delivers shift assignments, compliance alerts, and payslip notifications to member pods.'),
+    moduleRef('driver-management', 'Driver management extends HR for delivery drivers with zone-based dispatch.'),
+    moduleRef('backups', 'Password-protected encrypted backups of employee records and compliance data.'),
+    moduleRef('accounting', 'Accounting export to Xero/MYOB/QuickBooks for payroll journal entries and STP reporting.'),
+  ],
+};
+
+export const FOOD_TAKE_AWAY_VERTICAL_PROFILE: VerticalProfileManifest = {
+  id: 'food.take-away',
+  name: 'Food / Take-Away',
+  version: '0.1.0',
+  description: 'Take-away and delivery bundle for quick-service restaurants, food trucks, and dark kitchens.',
+  useCases: [ 'FOOD' ],
+  modules: [
+    moduleRef('pos.ordering', 'POS handles counter and online ordering with payment integration.'),
+    moduleRef('catalogue', 'Catalogue holds menu items, variants, and modifiers.'),
+    moduleRef('payments', 'Payments processes checkout for online and counter orders.'),
+    moduleRef('receipt', 'Receipts produce digital receipts with QR verification.'),
+    moduleRef('delivery', 'Delivery manages delivery requests with routing and tracking.'),
+    moduleRef('driver-management', 'Driver management handles driver registration, job offers, and dispatch.'),
+    moduleRef('allergy-profile', 'Allergy safety provides allergen matching for menu items.'),
+    moduleRef('tax', 'Tax computes GST/VAT on food sales.'),
+    moduleRef('discounts', 'Discounts manage promo codes and happy hour specials.'),
+    moduleRef('business', 'Business hours provides opening hours for pickup availability.'),
+    moduleRef('website-seo', 'Website SEO publishes menu and ordering metadata for local discovery.'),
+    moduleRef('barcode', 'Barcode scanner enables GS1-aware product lookup for quick-service scanning.'),
+    moduleRef('eftpos', 'EFTPOS terminal integration for card payments including tap-and-go.'),
+    moduleRef('backups', 'Password-protected encrypted backups of orders, menus, and financial data.'),
+    moduleRef('accounting', 'Accounting export to Xero/MYOB/QuickBooks for daily sales reconciliation.'),
+  ],
+};
+
+export const SPORTS_VENUE_VERTICAL_PROFILE: VerticalProfileManifest = {
+  id: 'sports.venue',
+  name: 'Sports / Venue',
+  version: '0.1.0',
+  description: 'Sports venue bundle for ticketed events, scorekeeping, referee management, and credential gates.',
+  useCases: [ 'SPORT' ],
+  modules: [
+    moduleRef('events', 'Events models matches, tournaments, and venue programming.'),
+    moduleRef('ticketing', 'Ticketing issues tickets with QR codes and seat assignments.'),
+    moduleRef('access', 'Access control verifies credentials at venue entry points.'),
+    moduleRef('credentials', 'Credentials issue verifiable tickets and membership cards.'),
+    moduleRef('payments', 'Payments processes ticket sales and merchandise.'),
+    moduleRef('receipt', 'Receipts produce ticket purchase receipts.'),
+    moduleRef('tax', 'Tax computes amusement tax and GST on ticket sales.'),
+    moduleRef('discounts', 'Discounts manage early-bird, group, and member discounts.'),
+    moduleRef('donations', 'Donations manage fundraising campaigns for clubs and charities.'),
+    moduleRef('governance', 'Governance provides approval gates for event decisions.'),
+    moduleRef('profile', 'Profile manages member pods for ticket holders.'),
+    moduleRef('website-seo', 'Website SEO publishes event metadata for discovery.'),
+    moduleRef('barcode', 'Barcode scanner enables QR ticket scanning and merchandise lookup at venue entry.'),
+    moduleRef('eftpos', 'EFTPOS terminal integration for ticket and merchandise sales at the gate.'),
+    moduleRef('backups', 'Password-protected encrypted backups of ticketing, event, and financial data.'),
+    moduleRef('accounting', 'Accounting export to Xero/MYOB/QuickBooks for box office reconciliation.'),
+  ],
+};
+
+export const TRADES_SERVICE_VERTICAL_PROFILE: VerticalProfileManifest = {
+  id: 'trades.service',
+  name: 'Trades / Service',
+  version: '0.1.0',
+  description: 'Trades and field service bundle for jobs, work orders, bookings, and payments.',
+  useCases: [ 'TRADES' ],
+  modules: [
+    moduleRef('jobs', 'Jobs handles work-order intake, queuing, and completion pipeline.'),
+    moduleRef('bookings', 'Bookings manages service appointments and time slots.'),
+    moduleRef('quotations', 'Quotations build professional quotes with line items.'),
+    moduleRef('catalogue', 'Catalogue stores services and parts as schema.org offerings.'),
+    moduleRef('payments', 'Payments processes invoices and on-site payment collection.'),
+    moduleRef('receipt', 'Receipts produce job completion receipts.'),
+    moduleRef('tax', 'Tax computes GST/VAT on services and materials.'),
+    moduleRef('inventory', 'Inventory tracks parts and materials usage.'),
+    moduleRef('profile', 'Profile manages customer pods and communication.'),
+    moduleRef('website-seo', 'Website SEO publishes service metadata for local discovery.'),
+    moduleRef('barcode', 'Barcode scanner enables GS1-aware parts lookup and inventory scanning.'),
+    moduleRef('eftpos', 'EFTPOS terminal integration for on-site card payments.'),
+    moduleRef('backups', 'Password-protected encrypted backups of jobs, quotes, and financial data.'),
+    moduleRef('accounting', 'Accounting export to Xero/MYOB/QuickBooks for invoicing and BAS reconciliation.'),
+  ],
+};
+
+export const CHARITY_NONPROFIT_VERTICAL_PROFILE: VerticalProfileManifest = {
+  id: 'charity.nonprofit',
+  name: 'Charity / Nonprofit',
+  version: '0.1.0',
+  description: 'Charity and nonprofit bundle for donations, member governance, credentials, and tax exemptions.',
+  useCases: [ 'CHARITY' ],
+  modules: [
+    moduleRef('donations', 'Donations manage campaigns, intake, donor receipts as VCs, and transparency reporting.'),
+    moduleRef('governance', 'Governance manages board resolutions, member voting, and policy approvals.'),
+    moduleRef('credentials', 'Credentials issue verifiable donor receipts and membership credentials.'),
+    moduleRef('concessions', 'Concessions manage eligibility for government-subsidised services.'),
+    moduleRef('tax', 'Tax manages tax exemption certificates and deductible donation reports.'),
+    moduleRef('profile', 'Profile manages donor and member pods with LDN communication.'),
+    moduleRef('payments', 'Payments processes one-off and recurring donations.'),
+    moduleRef('receipt', 'Receipts produce donation receipts with QR verification.'),
+    moduleRef('website-seo', 'Website SEO publishes charity metadata and campaign pages.'),
+    moduleRef('events', 'Events models fundraising events and volunteer coordination.'),
+    moduleRef('social', 'Social enables community posts and campaign updates.'),
+    moduleRef('backups', 'Password-protected encrypted backups of donor records and governance documents.'),
+    moduleRef('accounting', 'Accounting export to Xero/MYOB/QuickBooks for grant reporting and fund accounting.'),
+  ],
+};
+
 export const LIGHTHOUSE_VERTICAL_PROFILES: readonly VerticalProfileManifest[] = [
   FOOD_RESTAURANT_VERTICAL_PROFILE,
+  FOOD_ALLERGY_SAFETY_PROFILE,
   HEALTH_PRIVACY_CONSENT_VERTICAL_PROFILE,
   AUTO_PORTABLE_RECORDS_VERTICAL_PROFILE,
   MEMBER_GOVERNANCE_VERTICAL_PROFILE,
@@ -408,6 +564,12 @@ export const LIGHTHOUSE_VERTICAL_PROFILES: readonly VerticalProfileManifest[] = 
   WELLNESS_PRACTITIONER_PROFILE,
   WELLNESS_VENUE_PROFILE,
   WELLNESS_CLINIC_PROFILE,
+  PRINT_SHOP_PROFILE,
+  HR_WORKFORCE_PROFILE,
+  FOOD_TAKE_AWAY_VERTICAL_PROFILE,
+  SPORTS_VENUE_VERTICAL_PROFILE,
+  TRADES_SERVICE_VERTICAL_PROFILE,
+  CHARITY_NONPROFIT_VERTICAL_PROFILE,
 ];
 
 export function validateVerticalProfileBundle(

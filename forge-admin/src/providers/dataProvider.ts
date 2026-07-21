@@ -1,4 +1,3 @@
-// @ts-nocheck
 //
 // NOTE on the @ts-nocheck above (pre-existing): Refine's `DataProvider` methods are
 // generic over a caller-chosen `TData extends BaseRecord`, so no concrete provider can
@@ -6,7 +5,6 @@
 // declares the contract this object implements (and is what `<Refine>` typechecks
 // against in App.tsx).
 
-import type { DataProvider } from "@refinedev/core";
 import { createPosOperationsSnapshot } from "../data/posOperations";
 
 // Defaults target the local Track B preset; override for a server on another
@@ -158,7 +156,7 @@ let mockLedger = [
 // person) send TO a third-party platform to pull our own data back into the
 // Databox. This is the inverse of `access-requests`, which are inbound
 // requests other parties make about data we hold.
-let mockOutboundRequests = [
+let mockOutboundRequests: any[] = [
   {
     id: "obr-3001",
     platformId: "con-google",
@@ -187,7 +185,7 @@ let mockOutboundRequests = [
   }
 ];
 
-export const dataProvider: DataProvider = {
+export const dataProvider = {
   getList: async ({ resource }) => {
     if (resource === "programs") {
       const data = await fetchWithAuth(`${API_URL}/programs`);
@@ -366,7 +364,7 @@ export const dataProvider: DataProvider = {
     throw new Error("update not implemented for Forge API");
   },
 
-  create: async ({ resource, variables }) => {
+  create: async ({ resource, variables, meta }) => {
     if (resource === "programs") {
       const data = await fetchWithAuth(`${API_URL}/programs`, {
         method: "POST",
@@ -417,14 +415,79 @@ export const dataProvider: DataProvider = {
       return { data: { id: data.receiptId, ...data } as any };
     }
     if (resource === "cms-vertical-profile-applications") {
-      const profileId = variables.profileId;
-      const operation = variables.operation === "apply" ? "apply" : "preview";
+      const vars = variables as Record<string, unknown>;
+      const profileId = vars.profileId;
+      const operation = vars.operation === "apply" ? "apply" : "preview";
       const data = await fetchCmsWithAuth(
         `${CMS_API_URL}/vertical-profiles/${encodeURIComponent(String(profileId))}/${operation}`,
         { method: "POST", body: JSON.stringify({}) }
       );
       return { data: { id: `${profileId}:${operation}`, ...data } as any };
     }
+
+    const cmsModuleRoutes: Record<string, Record<string, string>> = {
+      governance: {
+        "role-bind": "/governance/role/bind",
+        "odrl-policy": "/governance/odrl/policy",
+        "approval-gate": "/governance/approval-gate",
+        "resolution": "/governance/resolution",
+      },
+      credentials: {
+        "issue": "/credentials/issue",
+        "verify": "/credentials/verify",
+        "revoke": "/credentials/revoke",
+      },
+      members: {
+        "provision": "/members/provision",
+        "lifecycle": "/members/lifecycle",
+        "notify": "/members/notify",
+        "notify-organisation": "/members/notify-organisation",
+        "access-grant": "/members/access-grant",
+        "profile-build": "/profile/build",
+        "ldn-notification": "/ldn/notification",
+        "ldn-inbox-create": "/ldn/inbox/create",
+        "ldn-send": "/ldn/send",
+      },
+      consent: { "build": "/consent/build" },
+      delegation: { "build": "/delegation/build", "validate": "/delegation/validate" },
+      emergency: { "break-glass": "/emergency/break-glass" },
+      household: { "build": "/household/build" },
+      inventory: { "check": "/inventory/check", "record": "/inventory/record" },
+      loyalty: { "apply": "/loyalty/apply", "record": "/loyalty/record" },
+      orgnetwork: { "unit": "/orgnetwork/unit" },
+      pricing: { "wholesale": "/pricing/wholesale" },
+      a11y: { "audit": "/a11y/audit" },
+      business: { "hours-build": "/business/hours/build", "hours-check": "/business/hours/check" },
+      consumer: { "access-request": "/consumer/access-request", "correction-request": "/consumer/correction-request" },
+      i18n: { "negotiate": "/i18n/negotiate" },
+      integration: { "manifest-validate": "/integration/manifest/validate", "job-validate": "/integration/job/validate" },
+      theming: { "validate": "/theming/validate", "css": "/theming/css", "forge-tokens": "/theming/forge-tokens" },
+      events: { "event": "/events/event" },
+      ticketing: { "ticket": "/ticketing/ticket" },
+      provenance: { "build": "/provenance" },
+      social: { "note": "/social/note" },
+      records: { "entry": "/records/entry" },
+      licensing: { "licence": "/licensing/licence", "permit": "/licensing/permit" },
+      reputation: { "aggregate": "/reputation/aggregate" },
+      delivery: { "request": "/delivery/request" },
+      access: { "evaluate": "/access/evaluate" },
+      quotations: { "build": "/quotations/build" },
+      "mcp.server": { "tools-list": "/mcp/tools/list", "tools-call": "/mcp/tools/call" },
+    };
+
+    const moduleRoutes = cmsModuleRoutes[resource];
+    if (moduleRoutes) {
+      const actionKey = (meta as any)?.action ?? "build";
+      const routePath = moduleRoutes[actionKey];
+      if (routePath) {
+        const data = await fetchCmsWithAuth(`${CMS_API_URL}${routePath}`, {
+          method: "POST",
+          body: JSON.stringify(variables),
+        });
+        return { data: { id: Date.now(), ...data } as any };
+      }
+    }
+
     throw new Error(`Unsupported create resource: ${resource}`);
   },
 

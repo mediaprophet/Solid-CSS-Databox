@@ -1,5 +1,4 @@
-// @ts-nocheck
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import {
   INFO_CATEGORIES,
   GROUPS,

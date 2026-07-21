@@ -2,11 +2,15 @@ import { runLdapSync } from './LdapConnector';
 import { runOdbcSync } from './OdbcConnector';
 import type { LdapConfig } from './LdapConnector';
 import type { OdbcConfig } from './OdbcConnector';
+import { applyMappingToJsonLd, parseMappingFromTurtle } from './RdfMapper';
+import type { MappingDefinition } from './RdfMapper';
 
 export interface ConnectorJobConfig {
   type: 'ldap' | 'odbc';
   ldap?: LdapConfig;
   odbc?: OdbcConfig;
+  /** Optional R2RML/RML mapping definition (Turtle string). If absent, raw rows are output. */
+  mappingTurtle?: string;
 }
 
 /**
@@ -24,17 +28,26 @@ async function main(): Promise<void> {
   }
 
   try {
-    let result: Record<string, unknown>[];
+    let rows: Record<string, unknown>[];
     if (config.type === 'ldap' && config.ldap) {
-      result = await runLdapSync(config.ldap);
+      rows = await runLdapSync(config.ldap) as unknown as Record<string, unknown>[];
     } else if (config.type === 'odbc' && config.odbc) {
-      result = await runOdbcSync(config.odbc);
+      rows = await runOdbcSync(config.odbc);
     } else {
       throw new Error(`Invalid or missing configuration for type '${config.type}'`);
     }
 
+    // If a mapping is provided, apply it to produce JSON-LD; otherwise output raw rows
+    let output: unknown;
+    if (config.mappingTurtle) {
+      const mapping: MappingDefinition = parseMappingFromTurtle(config.mappingTurtle);
+      output = applyMappingToJsonLd(mapping, rows);
+    } else {
+      output = rows;
+    }
+
     // Output valid JSON-LD
-    console.log(JSON.stringify(result, null, 2));
+    console.log(JSON.stringify(output, null, 2));
   } catch (err: unknown) {
     console.error('Connector sidecar failed:', err);
     process.exit(1);
@@ -55,8 +68,8 @@ function readStdin(): Promise<string> {
   });
 }
 
-// Only run automatically if invoked as a script
-if (require.main === module) {
+// Only run automatically if invoked as a script (works in both CJS and ESM)
+if (process.argv[1]?.endsWith('ConnectorSidecar')) {
   main().catch((err: unknown): void => {
     console.error(err);
     process.exit(1);

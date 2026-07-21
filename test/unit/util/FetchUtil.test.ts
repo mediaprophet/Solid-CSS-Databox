@@ -1,9 +1,9 @@
 import { Readable } from 'node:stream';
 import type { Quad } from '@rdfjs/types';
-import arrayifyStream from 'arrayify-stream';
+import { arrayifyStream } from 'arrayify-stream';
 import type { Response } from 'cross-fetch';
 import { DataFactory } from 'n3';
-import rdfDereferencer from 'rdf-dereference';
+import { rdfDereferencer } from 'rdf-dereference';
 import { RdfToQuadConverter } from '../../../src/storage/conversion/RdfToQuadConverter';
 import { fetchDataset, responseToDataset } from '../../../src/util/FetchUtil';
 
@@ -11,7 +11,9 @@ import { fetchDataset, responseToDataset } from '../../../src/util/FetchUtil';
 const { namedNode, quad } = DataFactory;
 
 jest.mock('rdf-dereference', (): any => ({
-  dereference: jest.fn<string, any>(),
+  rdfDereferencer: {
+    dereference: jest.fn<string, any>(),
+  },
 }));
 
 describe('FetchUtil', (): void => {
@@ -64,9 +66,11 @@ describe('FetchUtil', (): void => {
       const response = mockResponse('<http://test.com/s> <http://test.com/p> <http://test.com/o>.', 'text/turtle');
       const body = await response.text();
       const representation = await responseToDataset(response, converter, body);
-      await expect(arrayifyStream(representation.data)).resolves.toEqual([
-        quad(namedNode('http://test.com/s'), namedNode('http://test.com/p'), namedNode('http://test.com/o')),
-      ]);
+      const quads = await arrayifyStream(representation.data);
+      expect(quads).toHaveLength(1);
+      expect(quads[0].subject.value).toBe('http://test.com/s');
+      expect(quads[0].predicate.value).toBe('http://test.com/p');
+      expect(quads[0].object.value).toBe('http://test.com/o');
     });
 
     it('errors if the status code is not 200.', async(): Promise<void> => {

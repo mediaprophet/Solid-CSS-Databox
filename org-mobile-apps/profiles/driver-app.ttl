@@ -1,0 +1,33 @@
+@prefix schema: <https://schema.org/> .
+@prefix solid: <https://www.w3.org/ns/solid/v1> .
+
+<https://databox.example.org/apps/driver-app/>
+  a schema:SoftwareApplication, solid:SolidApp ;
+  schema:name "Driver App" ;
+  schema:description "Unified job queue across stores, navigation, one-tap status, earnings dashboard" ;
+  schema:softwareVersion "1.0.0" ;
+  schema:identifier "driver-app" ;
+  solid:networkScope "remote-capable" ;
+  solid:requiredModules ( "driver-management" "payments" ) ;
+  solid:verticalProfiles ( "hr.workforce" ) ;
+  solid:installUrl <https://databox.example.org/apps/driver-app/> ;
+  schema:featureList [
+    a schema:FeatureSpecification ;
+    schema:identifier "jobs" ;
+    solid:moduleId "driver-management" ;
+    schema:name "Job Queue" ;
+    schema:url "/.databox/cms/delivery/job/offer" ;
+    schema:icon "truck" ;
+    schema:position 1 ;
+    solid:requiredPermission "delivery:accept" ;
+  ], [
+    a schema:FeatureSpecification ;
+    schema:identifier "earnings" ;
+    solid:moduleId "payments" ;
+    schema:name "Earnings" ;
+    schema:url "/.databox/cms/payments" ;
+    schema:icon "dollar" ;
+    schema:position 2 ;
+  ] ;
+  schema:permission ( "delivery:accept" "payments:view" ) ;
+.

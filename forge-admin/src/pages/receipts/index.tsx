@@ -1,6 +1,5 @@
-// @ts-nocheck
 import React, { useState } from "react";
-import { useCreate } from "@refinedev/core";
+import { useCreate } from "../../hooks/useCreate";
 
 const today = () => new Date().toISOString().slice(0, 10);
 
@@ -14,7 +13,7 @@ const initialForm = {
   receiptId: "R-100",
   date: today(),
   currency: "AUD",
-  taxPercent: 10,
+  taxPercent: "10",
   digitalReceiptUrl: "https://pod.example.org/receipts/r-100",
   lines: [
     { name: "Widget", quantity: 2, unitPrice: 5 },

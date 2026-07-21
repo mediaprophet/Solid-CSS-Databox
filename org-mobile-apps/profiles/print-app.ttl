@@ -1,0 +1,42 @@
+@prefix schema: <https://schema.org/> .
+@prefix solid: <https://www.w3.org/ns/solid/v1> .
+
+<https://databox.example.org/apps/print-app/>
+  a schema:SoftwareApplication, solid:SolidApp ;
+  schema:name "Print App" ;
+  schema:description "Print job queue, prepress/proofing, print dispatch, delivery management" ;
+  schema:softwareVersion "1.0.0" ;
+  schema:identifier "print-app" ;
+  solid:networkScope "local-only" ;
+  solid:requiredModules ( "print" "quotations" "payments" ) ;
+  solid:verticalProfiles ( "print.shop" ) ;
+  solid:installUrl <https://databox.example.org/apps/print-app/> ;
+  schema:featureList [
+    a schema:FeatureSpecification ;
+    schema:identifier "queue" ;
+    solid:moduleId "print" ;
+    schema:name "Job Queue" ;
+    schema:url "/.databox/cms/print/job/create" ;
+    schema:icon "printer" ;
+    schema:position 1 ;
+    solid:requiredPermission "print:manage" ;
+  ], [
+    a schema:FeatureSpecification ;
+    schema:identifier "prepress" ;
+    solid:moduleId "print" ;
+    schema:name "Prepress" ;
+    schema:url "/.databox/cms/print/job/status" ;
+    schema:icon "image" ;
+    schema:position 2 ;
+    solid:requiredPermission "print:manage" ;
+  ], [
+    a schema:FeatureSpecification ;
+    schema:identifier "billing" ;
+    solid:moduleId "payments" ;
+    schema:name "Billing" ;
+    schema:url "/.databox/cms/payments" ;
+    schema:icon "dollar" ;
+    schema:position 3 ;
+  ] ;
+  schema:permission ( "print:manage" "payments:view" ) ;
+.

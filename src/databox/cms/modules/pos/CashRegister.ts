@@ -1,4 +1,5 @@
 import { BadRequestHttpError } from '../../../../util/errors/BadRequestHttpError';
+import { CMS } from '../../../../util/Vocabularies';
 import type { SolidModuleManifest } from '../../SolidModuleManifest';
 import type {
   NativePosDeviceDescriptor,
@@ -243,6 +244,7 @@ export const CASH_REGISTER_MODULE_MANIFEST: SolidModuleManifest = {
     'cms:css-enhanced-cash-register-store',
   ],
   routes: [ 'POST /.databox/cms/pos/register/sessions', 'GET /.databox/cms/pos/register/sessions' ],
+  configShape: `${CMS.namespace}CashRegisterConfigShape`,
   adminUi: {
     navLabel: 'Cash Registers',
     path: '/pos/registers',

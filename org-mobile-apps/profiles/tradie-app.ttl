@@ -1,0 +1,42 @@
+@prefix schema: <https://schema.org/> .
+@prefix solid: <https://www.w3.org/ns/solid/v1> .
+
+<https://databox.example.org/apps/tradie-app/>
+  a schema:SoftwareApplication, solid:SolidApp ;
+  schema:name "Tradie App" ;
+  schema:description "Job management for trades — read jobs from pod, write inspections/quotations" ;
+  schema:softwareVersion "1.0.0" ;
+  schema:identifier "tradie-app" ;
+  solid:networkScope "remote-capable" ;
+  solid:requiredModules ( "jobs" "quotations" "records" ) ;
+  solid:verticalProfiles ( "auto.portable-records" "home-services.base" "home-services.maintenance" "home-services.domestic" ) ;
+  solid:installUrl <https://databox.example.org/apps/tradie-app/> ;
+  schema:featureList [
+    a schema:FeatureSpecification ;
+    schema:identifier "jobs" ;
+    solid:moduleId "jobs" ;
+    schema:name "Jobs" ;
+    schema:url "/.databox/cms/jobs" ;
+    schema:icon "wrench" ;
+    schema:position 1 ;
+    solid:requiredPermission "jobs:view" ;
+  ], [
+    a schema:FeatureSpecification ;
+    schema:identifier "quotes" ;
+    solid:moduleId "quotations" ;
+    schema:name "Quotations" ;
+    schema:url "/.databox/cms/quotations" ;
+    schema:icon "file-text" ;
+    schema:position 2 ;
+    solid:requiredPermission "quotations:create" ;
+  ], [
+    a schema:FeatureSpecification ;
+    schema:identifier "records" ;
+    solid:moduleId "records" ;
+    schema:name "Service Records" ;
+    schema:url "/.databox/cms/records" ;
+    schema:icon "clipboard-list" ;
+    schema:position 3 ;
+  ] ;
+  schema:permission ( "jobs:view" "quotations:create" "records:write" ) ;
+.

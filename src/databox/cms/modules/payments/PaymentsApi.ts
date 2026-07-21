@@ -43,17 +43,24 @@ export function registerPaymentsRoutes(router: CmsModuleRouter<(input: HttpHandl
     }
   });
 
-  router.register('POST', '/payments/subscription/dates', async({ request, response }: HttpHandlerInput): Promise<void> => {
+  router.register('POST', '/payments/subscription/next-date', async({ request, response }: HttpHandlerInput): Promise<void> => {
+    try {
+      const input = await readJsonBody<unknown>(request);
+      assertSubscriptionInput(input);
+      writeJson(response, 200, { nextDate: nextBillingDate(input.lastBilledIso, input.interval) });
+    } catch (error: unknown) {
+      writeJson(response, 400, { error: error instanceof Error ? error.message : 'Invalid subscription next-date request.' });
+    }
+  });
+
+  router.register('POST', '/payments/subscription/is-due', async({ request, response }: HttpHandlerInput): Promise<void> => {
     try {
       const input = await readJsonBody<unknown>(request);
       assertSubscriptionInput(input);
       const asOfIso = input.asOfIso || new Date().toISOString();
-      writeJson(response, 200, {
-        isDue: isDue(input.lastBilledIso, input.interval, asOfIso),
-        nextBillingDate: nextBillingDate(input.lastBilledIso, input.interval),
-      }, 'application/ld+json');
+      writeJson(response, 200, { due: isDue(input.lastBilledIso, input.interval, asOfIso) });
     } catch (error: unknown) {
-      writeJson(response, 400, { error: error instanceof Error ? error.message : 'Invalid subscription dates request.' });
+      writeJson(response, 400, { error: error instanceof Error ? error.message : 'Invalid subscription is-due request.' });
     }
   });
 

@@ -1,0 +1,237 @@
+{
+  "app": {
+    "title": "Databox CMS",
+    "subtitle": "Solidネイティブコンテンツ管理"
+  },
+  "nav": {
+    "setup": "セットアップ",
+    "modules": "モジュール",
+    "hosting": "ホスティング",
+    "pos": "POS端末",
+    "waiter": "ウェイター注文",
+    "customerOrder": "顧客セルフオーダー",
+    "display": "プロモーション表示",
+    "receipts": "レシート",
+    "programs": "プログラム",
+    "mappings": "マッピング",
+    "events": "イベント",
+    "dataPortability": "データポータビリティ",
+    "accessRequests": "アクセス要求",
+    "corrections": "修正",
+    "consumerLedger": "消費者台帳"
+  },
+  "common": {
+    "save": "保存",
+    "cancel": "キャンセル",
+    "delete": "削除",
+    "edit": "編集",
+    "create": "作成",
+    "search": "検索",
+    "loading": "読み込み中...",
+    "error": "エラー",
+    "success": "成功",
+    "close": "閉じる",
+    "back": "戻る",
+    "next": "次へ",
+    "confirm": "確認",
+    "yes": "はい",
+    "no": "いいえ",
+    "enabled": "有効",
+    "disabled": "無効",
+    "status": "ステータス",
+    "mode": "モード",
+    "actions": "アクション",
+    "name": "名前",
+    "description": "説明",
+    "type": "タイプ",
+    "date": "日付",
+    "time": "時間",
+    "amount": "金額",
+    "total": "合計",
+    "language": "言語"
+  },
+  "hosting": {
+    "title": "ホスティング設定",
+    "apexDomain": "メインドメイン",
+    "apexDomainPlaceholder": "example.org",
+    "originTarget": "オリジンターゲット",
+    "originTargetPlaceholder": "IPアドレスまたはホスト名",
+    "databoxLabel": "Databoxサブドメイン",
+    "databoxLabelPlaceholder": "databox",
+    "wwwEnabled": "wwwサブドメインを有効化",
+    "proxied": "プロキシ（Cloudflare）",
+    "planButton": "プラン生成",
+    "applyButton": "Cloudflareに適用",
+    "persistButton": "設定保存",
+    "bindButton": "オリジン紐付け",
+    "cloudflareToken": "Cloudflare APIトークン",
+    "cloudflareTokenPlaceholder": "Cloudflare APIトークンを入力",
+    "downloadArtifacts": "アーティファクトダウンロード",
+    "dnsRecords": "DNSレコード",
+    "launchCommand": "起動コマンド",
+    "baseUrl": "ベースURL",
+    "planSuccess": "ホスティングプランの生成に成功しました",
+    "planError": "ホスティングプランの生成に失敗しました",
+    "applySuccess": "DNSレコードとトンネルの設定に成功しました",
+    "applyError": "ホスティング設定の適用に失敗しました",
+    "persistSuccess": "設定がRDFリソースとして保存されました",
+    "persistError": "設定の保存に失敗しました",
+    "bindSuccess": "オリジンがTenantBindingとして紐付けられました",
+    "bindError": "オリジンの紐付けに失敗しました"
+  },
+  "governance": {
+    "title": "ガバナンス",
+    "subtitle": "ロール紐付け、ODRLポリシー、承認ゲート、決議。"
+  },
+  "credentials": {
+    "title": "資格情報",
+    "subtitle": "検証可能な資格情報の発行、検証、取り消し。"
+  },
+  "members": {
+    "title": "メンバー",
+    "subtitle": "メンバーポッドのプロビジョニング、ライフサイクル管理、LDN経由の通知送信。"
+  },
+  "operations": {
+    "title": "運用",
+    "subtitle": "フェーズ3の運用横断機能：同意、委任、緊急、在庫、ロイヤルティ、価格設定など。"
+  },
+  "modules": {
+    "title": "CMSモジュール",
+    "enabled": "有効",
+    "disabled": "無効",
+    "enable": "有効化",
+    "disable": "無効化",
+    "configure": "設定",
+    "capabilities": "機能",
+    "routes": "ルート",
+    "configShape": "設定シェイプ",
+    "noModules": "モジュールがインストールされていません"
+  },
+  "pos": {
+    "title": "POS端末",
+    "cart": "カート",
+    "checkout": "会計",
+    "subtotal": "小計",
+    "tax": "税",
+    "total": "合計",
+    "payment": "支払い",
+    "cash": "現金",
+    "card": "カード",
+    "completeSale": "販売完了",
+    "voidSale": "販売無効",
+    "selectProduct": "商品を選択",
+    "noProducts": "商品がありません",
+    "orderConfirmed": "注文が確認されました",
+    "paymentReceived": "支払いを受け取りました",
+    "receiptGenerated": "レシートが生成されました"
+  },
+  "waiter": {
+    "title": "ウェイター注文",
+    "selectTable": "テーブルを選択",
+    "currentOrder": "現在の注文",
+    "addToOrder": "注文に追加",
+    "sendToKitchen": "キッチンに送信",
+    "clearOrder": "注文をクリア",
+    "table": "テーブル",
+    "items": "アイテム",
+    "quantity": "数量",
+    "price": "価格"
+  },
+  "setup": {
+    "title": "セットアップウィザード",
+    "welcome": "Databox CMSへようこそ",
+    "chooseProfile": "組織タイプを選択",
+    "legalEntity": "法人情報",
+    "orgName": "組織名",
+    "orgType": "組織タイプ",
+    "complete": "セットアップ完了",
+    "step": "ステップ",
+    "of": "/"
+  },
+  "receipts": {
+    "title": "レシート",
+    "orderId": "注文ID",
+    "customer": "顧客",
+    "date": "日付",
+    "total": "合計",
+    "viewReceipt": "レシートを表示",
+    "noReceipts": "レシートが見つかりません"
+  },
+  "programs": {
+    "title": "プログラム",
+    "createProgram": "プログラム作成",
+    "programName": "プログラム名",
+    "programType": "プログラムタイプ",
+    "noPrograms": "プログラムが定義されていません"
+  },
+  "mappings": {
+    "title": "コネクターマッピング",
+    "sourceType": "ソースタイプ",
+    "odbc": "ODBC",
+    "ldap": "LDAP",
+    "connectionString": "接続文字列",
+    "query": "クエリ",
+    "url": "URL",
+    "searchBase": "検索ベース",
+    "simulate": "シミュレート",
+    "results": "結果"
+  },
+  "accessRequests": {
+    "title": "アクセス要求",
+    "requester": "要求者",
+    "resource": "リソース",
+    "status": "ステータス",
+    "approve": "承認",
+    "deny": "拒否",
+    "noRequests": "アクセス要求がありません"
+  },
+  "corrections": {
+    "title": "修正",
+    "requestedBy": "要求者",
+    "field": "フィールド",
+    "currentValue": "現在の値",
+    "requestedValue": "要求された値",
+    "approve": "承認",
+    "deny": "拒否",
+    "noCorrections": "修正要求がありません"
+  },
+  "consumerLedger": {
+    "title": "消費者台帳",
+    "consumer": "消費者",
+    "event": "イベント",
+    "timestamp": "タイムスタンプ",
+    "details": "詳細",
+    "noEntries": "台帳エントリがありません"
+  },
+  "dataPortability": {
+    "title": "データポータビリティ登録",
+    "export": "データエクスポート",
+    "import": "データインポート",
+    "format": "フォーマット",
+    "status": "ステータス"
+  },
+  "events": {
+    "title": "イベントディスパッチャー",
+    "eventType": "イベントタイプ",
+    "payload": "ペイロード",
+    "dispatch": "ディスパッチ",
+    "result": "結果"
+  },
+  "errors": {
+    "hosting": {
+      "invalid_domain": "ホスティングプランには\"acme.org\"のようなメインドメインが必要です。",
+      "invalid_origin": "ホスティングプランにはオリジンターゲット（IPまたはホスト名）が必要です。",
+      "api_token_required": "プランを適用するにはCloudflare APIトークンが必要です。",
+      "api_request_failed": "Cloudflare APIリクエストが失敗しました。",
+      "dns_record_exists": "DNSレコードは既に存在します。",
+      "tunnel_creation_failed": "Cloudflareトンネルの作成に失敗しました。"
+    },
+    "general": {
+      "not_authenticated": "認証されていません。",
+      "forbidden": "このアクションを実行する権限がありません。",
+      "not_found": "要求されたリソースが見つかりませんでした。",
+      "internal_error": "内部サーバーエラーが発生しました。",
+      "network_error": "ネットワークエラーが発生しました。"
+    }
+  }
+}

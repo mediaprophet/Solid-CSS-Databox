@@ -1,0 +1,237 @@
+{
+  "app": {
+    "title": "Databox CMS",
+    "subtitle": "Solid-native contentbeheer"
+  },
+  "nav": {
+    "setup": "Instellen",
+    "modules": "Modules",
+    "hosting": "Hosting",
+    "pos": "POS Terminal",
+    "waiter": "Bediening Bestellingen",
+    "customerOrder": "Klant Zelfbestelling",
+    "display": "Promotie Display",
+    "receipts": "Bonnetjes",
+    "programs": "Programma's",
+    "mappings": "Koppelingen",
+    "events": "Evenementen",
+    "dataPortability": "Dataportabiliteit",
+    "accessRequests": "Toegangsverzoeken",
+    "corrections": "Correcties",
+    "consumerLedger": "Consumentenregister"
+  },
+  "common": {
+    "save": "Opslaan",
+    "cancel": "Annuleren",
+    "delete": "Verwijderen",
+    "edit": "Bewerken",
+    "create": "Aanmaken",
+    "search": "Zoeken",
+    "loading": "Laden...",
+    "error": "Fout",
+    "success": "Succes",
+    "close": "Sluiten",
+    "back": "Terug",
+    "next": "Volgende",
+    "confirm": "Bevestigen",
+    "yes": "Ja",
+    "no": "Nee",
+    "enabled": "Ingeschakeld",
+    "disabled": "Uitgeschakeld",
+    "status": "Status",
+    "mode": "Modus",
+    "actions": "Acties",
+    "name": "Naam",
+    "description": "Beschrijving",
+    "type": "Type",
+    "date": "Datum",
+    "time": "Tijd",
+    "amount": "Bedrag",
+    "total": "Totaal",
+    "language": "Taal"
+  },
+  "hosting": {
+    "title": "Hosting Instellen",
+    "apexDomain": "Hoofddomein",
+    "apexDomainPlaceholder": "voorbeeld.org",
+    "originTarget": "Origin Doel",
+    "originTargetPlaceholder": "IP-adres of hostnaam",
+    "databoxLabel": "Databox Subdomein",
+    "databoxLabelPlaceholder": "databox",
+    "wwwEnabled": "www subdomein inschakelen",
+    "proxied": "Geproxyd (Cloudflare)",
+    "planButton": "Plan Genereren",
+    "applyButton": "Toepassen op Cloudflare",
+    "persistButton": "Configuratie Opslaan",
+    "bindButton": "Origin Koppelen",
+    "cloudflareToken": "Cloudflare API Token",
+    "cloudflareTokenPlaceholder": "Voer Cloudflare API token in",
+    "downloadArtifacts": "Artefacten Downloaden",
+    "dnsRecords": "DNS Records",
+    "launchCommand": "Startopdracht",
+    "baseUrl": "Basis URL",
+    "planSuccess": "Hostingplan succesvol gegenereerd",
+    "planError": "Genereren van hostingplan mislukt",
+    "applySuccess": "DNS records en tunnel succesvol geconfigureerd",
+    "applyError": "Toepassen van hostingconfiguratie mislukt",
+    "persistSuccess": "Configuratie opgeslagen als RDF-bron",
+    "persistError": "Opslaan van configuratie mislukt",
+    "bindSuccess": "Origin gekoppeld als TenantBinding",
+    "bindError": "Koppelen van origin mislukt"
+  },
+  "governance": {
+    "title": "Bestuur",
+    "subtitle": "Rolkoppelingen, ODRL-beleid, goedkeuringspoorten en resoluties."
+  },
+  "credentials": {
+    "title": "Referenties",
+    "subtitle": "Verifieerbare referenties uitgeven, verifiëren en intrekken."
+  },
+  "members": {
+    "title": "Leden",
+    "subtitle": "Leden-pods inrichten, levenscyclus beheren en meldingen versturen via LDN."
+  },
+  "operations": {
+    "title": "Operaties",
+    "subtitle": "Operationele horizontals van Fase 3: toestemming, delegatie, noodgeval, voorraad, loyaliteit, prijzen en meer."
+  },
+  "modules": {
+    "title": "CMS Modules",
+    "enabled": "Ingeschakeld",
+    "disabled": "Uitgeschakeld",
+    "enable": "Inschakelen",
+    "disable": "Uitschakelen",
+    "configure": "Configureren",
+    "capabilities": "Mogelijkheden",
+    "routes": "Routes",
+    "configShape": "Configuratievorm",
+    "noModules": "Geen modules geïnstalleerd"
+  },
+  "pos": {
+    "title": "POS Terminal",
+    "cart": "Winkelwagen",
+    "checkout": "Afrekenen",
+    "subtotal": "Subtotaal",
+    "tax": "Belasting",
+    "total": "Totaal",
+    "payment": "Betaling",
+    "cash": "Contant",
+    "card": "Kaart",
+    "completeSale": "Verkoop Voltooien",
+    "voidSale": "Verkoop Annuleren",
+    "selectProduct": "Selecteer een product",
+    "noProducts": "Geen producten beschikbaar",
+    "orderConfirmed": "Bestelling bevestigd",
+    "paymentReceived": "Betaling ontvangen",
+    "receiptGenerated": "Bonnetje gegenereerd"
+  },
+  "waiter": {
+    "title": "Bediening Bestellingen",
+    "selectTable": "Selecteer een tafel",
+    "currentOrder": "Huidige Bestelling",
+    "addToOrder": "Toevoegen aan Bestelling",
+    "sendToKitchen": "Naar Keuken Sturen",
+    "clearOrder": "Bestelling Wissen",
+    "table": "Tafel",
+    "items": "Artikelen",
+    "quantity": "Hoeveelheid",
+    "price": "Prijs"
+  },
+  "setup": {
+    "title": "Installatiewizard",
+    "welcome": "Welkom bij de Databox CMS",
+    "chooseProfile": "Kies uw organisatietype",
+    "legalEntity": "Rechtspersoon Gegevens",
+    "orgName": "Organisatienaam",
+    "orgType": "Organisatietype",
+    "complete": "Installatie Voltooien",
+    "step": "Stap",
+    "of": "van"
+  },
+  "receipts": {
+    "title": "Bonnetjes",
+    "orderId": "Bestel-ID",
+    "customer": "Klant",
+    "date": "Datum",
+    "total": "Totaal",
+    "viewReceipt": "Bonnetje Bekijken",
+    "noReceipts": "Geen bonnetjes gevonden"
+  },
+  "programs": {
+    "title": "Programma's",
+    "createProgram": "Programma Aanmaken",
+    "programName": "Programmanaam",
+    "programType": "Programmatype",
+    "noPrograms": "Geen programma's gedefinieerd"
+  },
+  "mappings": {
+    "title": "Connectorkoppelingen",
+    "sourceType": "Brontype",
+    "odbc": "ODBC",
+    "ldap": "LDAP",
+    "connectionString": "Verbindingsreeks",
+    "query": "Query",
+    "url": "URL",
+    "searchBase": "Zoekbasis",
+    "simulate": "Simuleren",
+    "results": "Resultaten"
+  },
+  "accessRequests": {
+    "title": "Toegangsverzoeken",
+    "requester": "Aanvrager",
+    "resource": "Bron",
+    "status": "Status",
+    "approve": "Goedkeuren",
+    "deny": "Weigeren",
+    "noRequests": "Geen toegangsverzoeken"
+  },
+  "corrections": {
+    "title": "Correcties",
+    "requestedBy": "Aangevraagd door",
+    "field": "Veld",
+    "currentValue": "Huidige Waarde",
+    "requestedValue": "Gevraagde Waarde",
+    "approve": "Goedkeuren",
+    "deny": "Weigeren",
+    "noCorrections": "Geen correctieverzoeken"
+  },
+  "consumerLedger": {
+    "title": "Consumentenregister",
+    "consumer": "Consument",
+    "event": "Evenement",
+    "timestamp": "Tijdstempel",
+    "details": "Details",
+    "noEntries": "Geen registervermeldingen"
+  },
+  "dataPortability": {
+    "title": "Dataportabiliteitsregister",
+    "export": "Gegevens Exporteren",
+    "import": "Gegevens Importeren",
+    "format": "Formaat",
+    "status": "Status"
+  },
+  "events": {
+    "title": "Evenementverdeler",
+    "eventType": "Evenementtype",
+    "payload": "Payload",
+    "dispatch": "Verzenden",
+    "result": "Resultaat"
+  },
+  "errors": {
+    "hosting": {
+      "invalid_domain": "Een hostingplan vereist een hoofddomein zoals \"acme.org\".",
+      "invalid_origin": "Een hostingplan vereist een origin-doel (IP of hostnaam).",
+      "api_token_required": "Een Cloudflare API token is vereist om het plan toe te passen.",
+      "api_request_failed": "Het Cloudflare API-verzoek is mislukt.",
+      "dns_record_exists": "DNS-record bestaat al.",
+      "tunnel_creation_failed": "Aanmaken van Cloudflare-tunnel mislukt."
+    },
+    "general": {
+      "not_authenticated": "U bent niet geauthenticeerd.",
+      "forbidden": "U heeft geen toestemming om deze actie uit te voeren.",
+      "not_found": "De gevraagde bron is niet gevonden.",
+      "internal_error": "Er is een interne serverfout opgetreden.",
+      "network_error": "Er is een netwerkfout opgetreden."
+    }
+  }
+}

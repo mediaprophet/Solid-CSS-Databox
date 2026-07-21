@@ -1,0 +1,237 @@
+{
+  "app": {
+    "title": "Databox CMS",
+    "subtitle": "إدارة المحتوى الأصلية لـ Solid"
+  },
+  "nav": {
+    "setup": "الإعداد",
+    "modules": "الوحدات",
+    "hosting": "الاستضافة",
+    "pos": "محطة نقاط البيع",
+    "waiter": "طلبات النادل",
+    "customerOrder": "طلب العميل الذاتي",
+    "display": "شاشة العروض",
+    "receipts": "الإيصالات",
+    "programs": "البرامج",
+    "mappings": "التخطيطات",
+    "events": "الأحداث",
+    "dataPortability": "نقل البيانات",
+    "accessRequests": "طلبات الوصول",
+    "corrections": "التصحيحات",
+    "consumerLedger": "سجل المستهلك"
+  },
+  "common": {
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "edit": "تحرير",
+    "create": "إنشاء",
+    "search": "بحث",
+    "loading": "جار التحميل...",
+    "error": "خطأ",
+    "success": "نجاح",
+    "close": "إغلاق",
+    "back": "رجوع",
+    "next": "التالي",
+    "confirm": "تأكيد",
+    "yes": "نعم",
+    "no": "لا",
+    "enabled": "مفعّل",
+    "disabled": "معطّل",
+    "status": "الحالة",
+    "mode": "الوضع",
+    "actions": "إجراءات",
+    "name": "الاسم",
+    "description": "الوصف",
+    "type": "النوع",
+    "date": "التاريخ",
+    "time": "الوقت",
+    "amount": "المبلغ",
+    "total": "الإجمالي",
+    "language": "اللغة"
+  },
+  "hosting": {
+    "title": "إعداد الاستضافة",
+    "apexDomain": "النطاق الرئيسي",
+    "apexDomainPlaceholder": "example.org",
+    "originTarget": "هدف المصدر",
+    "originTargetPlaceholder": "عنوان IP أو اسم المضيف",
+    "databoxLabel": "النطاق الفرعي لـ Databox",
+    "databoxLabelPlaceholder": "databox",
+    "wwwEnabled": "تفعيل النطاق الفرعي www",
+    "proxied": "عبر البروكسي (Cloudflare)",
+    "planButton": "إنشاء الخطة",
+    "applyButton": "تطبيق على Cloudflare",
+    "persistButton": "حفظ التكوين",
+    "bindButton": "ربط المصدر",
+    "cloudflareToken": "رمز Cloudflare API",
+    "cloudflareTokenPlaceholder": "أدخل رمز Cloudflare API",
+    "downloadArtifacts": "تنزيل القطع الأثرية",
+    "dnsRecords": "سجلات DNS",
+    "launchCommand": "أمر التشغيل",
+    "baseUrl": "الرابط الأساسي",
+    "planSuccess": "تم إنشاء خطة الاستضافة بنجاح",
+    "planError": "فشل إنشاء خطة الاستضافة",
+    "applySuccess": "تم تكوين سجلات DNS والنفق بنجاح",
+    "applyError": "فشل تطبيق تكوين الاستضافة",
+    "persistSuccess": "تم حفظ التكوين كمورد RDF",
+    "persistError": "فشل حفظ التكوين",
+    "bindSuccess": "تم ربط المصدر كـ TenantBinding",
+    "bindError": "فشل ربط المصدر"
+  },
+  "governance": {
+    "title": "الحوكمة",
+    "subtitle": "ربط الأدوار، سياسات ODRL، بوابات الموافقة، والقرارات."
+  },
+  "credentials": {
+    "title": "بيانات الاعتماد",
+    "subtitle": "إصدار والتحقق من وإلغاء بيانات الاعتماد القابلة للتحقق."
+  },
+  "members": {
+    "title": "الأعضاء",
+    "subtitle": "توفير قرون الأعضاء، إدارة دورة الحياة، وإرسال الإشعارات عبر LDN."
+  },
+  "operations": {
+    "title": "العمليات",
+    "subtitle": "العمليات الأفقية للمرحلة 3: الموافقة، التفويض، الطوارئ، المخزون، الولاء، التسعير، والمزيد."
+  },
+  "modules": {
+    "title": "وحدات CMS",
+    "enabled": "مفعّل",
+    "disabled": "معطّل",
+    "enable": "تفعيل",
+    "disable": "تعطيل",
+    "configure": "تكوين",
+    "capabilities": "القدرات",
+    "routes": "المسارات",
+    "configShape": "شكل التكوين",
+    "noModules": "لا توجد وحدات مثبتة"
+  },
+  "pos": {
+    "title": "محطة نقاط البيع",
+    "cart": "السلة",
+    "checkout": "الدفع",
+    "subtotal": "المجموع الفرعي",
+    "tax": "الضريبة",
+    "total": "الإجمالي",
+    "payment": "الدفع",
+    "cash": "نقداً",
+    "card": "بطاقة",
+    "completeSale": "إتمام البيع",
+    "voidSale": "إلغاء البيع",
+    "selectProduct": "اختر منتجاً",
+    "noProducts": "لا توجد منتجات متاحة",
+    "orderConfirmed": "تم تأكيد الطلب",
+    "paymentReceived": "تم استلام الدفع",
+    "receiptGenerated": "تم إنشاء الإيصال"
+  },
+  "waiter": {
+    "title": "طلبات النادل",
+    "selectTable": "اختر طاولة",
+    "currentOrder": "الطلب الحالي",
+    "addToOrder": "إضافة إلى الطلب",
+    "sendToKitchen": "إرسال إلى المطبخ",
+    "clearOrder": "مسح الطلب",
+    "table": "الطاولة",
+    "items": "العناصر",
+    "quantity": "الكمية",
+    "price": "السعر"
+  },
+  "setup": {
+    "title": "معالج الإعداد",
+    "welcome": "مرحباً بك في Databox CMS",
+    "chooseProfile": "اختر نوع المؤسسة",
+    "legalEntity": "تفاصيل الكيان القانوني",
+    "orgName": "اسم المؤسسة",
+    "orgType": "نوع المؤسسة",
+    "complete": "إكمال الإعداد",
+    "step": "خطوة",
+    "of": "من"
+  },
+  "receipts": {
+    "title": "الإيصالات",
+    "orderId": "معرف الطلب",
+    "customer": "العميل",
+    "date": "التاريخ",
+    "total": "الإجمالي",
+    "viewReceipt": "عرض الإيصال",
+    "noReceipts": "لم يتم العثور على إيصالات"
+  },
+  "programs": {
+    "title": "البرامج",
+    "createProgram": "إنشاء برنامج",
+    "programName": "اسم البرنامج",
+    "programType": "نوع البرنامج",
+    "noPrograms": "لا توجد برامج محددة"
+  },
+  "mappings": {
+    "title": "تخطيطات الموصل",
+    "sourceType": "نوع المصدر",
+    "odbc": "ODBC",
+    "ldap": "LDAP",
+    "connectionString": "سلسلة الاتصال",
+    "query": "استعلام",
+    "url": "URL",
+    "searchBase": "قاعدة البحث",
+    "simulate": "محاكاة",
+    "results": "النتائج"
+  },
+  "accessRequests": {
+    "title": "طلبات الوصول",
+    "requester": "مقدم الطلب",
+    "resource": "المورد",
+    "status": "الحالة",
+    "approve": "موافقة",
+    "deny": "رفض",
+    "noRequests": "لا توجد طلبات وصول"
+  },
+  "corrections": {
+    "title": "التصحيحات",
+    "requestedBy": "طلب بواسطة",
+    "field": "الحقل",
+    "currentValue": "القيمة الحالية",
+    "requestedValue": "القيمة المطلوبة",
+    "approve": "موافقة",
+    "deny": "رفض",
+    "noCorrections": "لا توجد طلبات تصحيح"
+  },
+  "consumerLedger": {
+    "title": "سجل المستهلك",
+    "consumer": "المستهلك",
+    "event": "الحدث",
+    "timestamp": "الطابع الزمني",
+    "details": "التفاصيل",
+    "noEntries": "لا توجد إدخالات في السجل"
+  },
+  "dataPortability": {
+    "title": "سجل نقل البيانات",
+    "export": "تصدير البيانات",
+    "import": "استيراد البيانات",
+    "format": "التنسيق",
+    "status": "الحالة"
+  },
+  "events": {
+    "title": "موزع الأحداث",
+    "eventType": "نوع الحدث",
+    "payload": "الحمولة",
+    "dispatch": "توزيع",
+    "result": "النتيجة"
+  },
+  "errors": {
+    "hosting": {
+      "invalid_domain": "تتطلب خطة الاستضافة نطاقاً رئيسياً مثل \"acme.org\".",
+      "invalid_origin": "تتطلب خطة الاستضافة هدف مصدر (IP أو اسم مضيف).",
+      "api_token_required": "مطلوب رمز Cloudflare API لتطبيق الخطة.",
+      "api_request_failed": "فشل طلب Cloudflare API.",
+      "dns_record_exists": "سجل DNS موجود بالفعل.",
+      "tunnel_creation_failed": "فشل إنشاء نفق Cloudflare."
+    },
+    "general": {
+      "not_authenticated": "أنت غير مصادق.",
+      "forbidden": "ليس لديك إذن لتنفيذ هذا الإجراء.",
+      "not_found": "لم يتم العثور على المورد المطلوب.",
+      "internal_error": "حدث خطأ داخلي في الخادم.",
+      "network_error": "حدث خطأ في الشبكة."
+    }
+  }
+}

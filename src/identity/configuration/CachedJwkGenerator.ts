@@ -1,6 +1,5 @@
 import { createPublicKey } from 'node:crypto';
-import type { KeyObject } from 'node:crypto';
-import { exportJWK, generateKeyPair, importJWK } from 'jose';
+import { exportJWK, generateKeyPair } from 'jose';
 import type { AsymmetricSigningAlgorithm, JWKS } from '../../../templates/types/oidc-provider';
 import type { KeyValueStorage } from '../../storage/keyvalue/KeyValueStorage';
 import type { AlgJwk, JwkGenerator } from './JwkGenerator';
@@ -41,7 +40,7 @@ export class CachedJwkGenerator implements JwkGenerator {
       return this.privateJwk;
     }
 
-    const { privateKey } = await generateKeyPair(this.alg);
+    const { privateKey } = await generateKeyPair(this.alg, { extractable: true });
 
     // Make sure the JWK is a plain node object for storage
     const privateJwk = { ...await exportJWK(privateKey) } as AlgJwk;
@@ -62,8 +61,7 @@ export class CachedJwkGenerator implements JwkGenerator {
     // The main reason we generate the public key from the private key is, so we don't have to store it.
     // This allows our storage to not break previous versions where we only used the private key.
     // In practice this results in the same key.
-    const privateKey = await importJWK(privateJwk);
-    const publicKey = createPublicKey(privateKey as KeyObject);
+    const publicKey = createPublicKey({ key: privateJwk, format: 'jwk' });
 
     const publicJwk = { ...await exportJWK(publicKey) } as AlgJwk;
     // These fields get lost during the above proces

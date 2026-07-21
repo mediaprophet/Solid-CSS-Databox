@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import type { NamedNode, Quad, Term } from '@rdfjs/types';
-import arrayifyStream from 'arrayify-stream';
+import { arrayifyStream } from 'arrayify-stream';
 import { DataFactory } from 'n3';
 import type { AuxiliaryStrategy } from '../http/auxiliary/AuxiliaryStrategy';
 import { BasicRepresentation } from '../http/representation/BasicRepresentation';

@@ -1,0 +1,237 @@
+{
+  "app": {
+    "title": "Databox CMS",
+    "subtitle": "Solid-मूल सामग्री प्रबंधन"
+  },
+  "nav": {
+    "setup": "सेटअप",
+    "modules": "मॉड्यूल",
+    "hosting": "होस्टिंग",
+    "pos": "POS टर्मिनल",
+    "waiter": "वेटर ऑर्डर",
+    "customerOrder": "ग्राहक स्व-ऑर्डर",
+    "display": "प्रोमो डिस्प्ले",
+    "receipts": "रसीदें",
+    "programs": "कार्यक्रम",
+    "mappings": "मैपिंग",
+    "events": "घटनाएँ",
+    "dataPortability": "डेटा पोर्टेबिलिटी",
+    "accessRequests": "पहुँच अनुरोध",
+    "corrections": "सुधार",
+    "consumerLedger": "उपभोक्ता खाता"
+  },
+  "common": {
+    "save": "सहेजें",
+    "cancel": "रद्द करें",
+    "delete": "हटाएँ",
+    "edit": "संपादित करें",
+    "create": "बनाएँ",
+    "search": "खोजें",
+    "loading": "लोड हो रहा है...",
+    "error": "त्रुटि",
+    "success": "सफलता",
+    "close": "बंद करें",
+    "back": "वापस",
+    "next": "अगला",
+    "confirm": "पुष्टि करें",
+    "yes": "हाँ",
+    "no": "नहीं",
+    "enabled": "सक्षम",
+    "disabled": "अक्षम",
+    "status": "स्थिति",
+    "mode": "मोड",
+    "actions": "क्रियाएँ",
+    "name": "नाम",
+    "description": "विवरण",
+    "type": "प्रकार",
+    "date": "तारीख",
+    "time": "समय",
+    "amount": "राशि",
+    "total": "कुल",
+    "language": "भाषा"
+  },
+  "hosting": {
+    "title": "होस्टिंग सेटअप",
+    "apexDomain": "मुख्य डोमेन",
+    "apexDomainPlaceholder": "उदाहरण.org",
+    "originTarget": "मूल लक्ष्य",
+    "originTargetPlaceholder": "IP पता या होस्टनाम",
+    "databoxLabel": "Databox सबडोमेन",
+    "databoxLabelPlaceholder": "databox",
+    "wwwEnabled": "www सबडोमेन सक्षम करें",
+    "proxied": "प्रॉक्सीकृत (Cloudflare)",
+    "planButton": "योजना बनाएँ",
+    "applyButton": "Cloudflare पर लागू करें",
+    "persistButton": "कॉन्फ़िगरेशन सहेजें",
+    "bindButton": "मूल बाँधें",
+    "cloudflareToken": "Cloudflare API टोकन",
+    "cloudflareTokenPlaceholder": "Cloudflare API टोकन दर्ज करें",
+    "downloadArtifacts": "कलाकृतियाँ डाउनलोड करें",
+    "dnsRecords": "DNS रिकॉर्ड",
+    "launchCommand": "लॉन्च कमांड",
+    "baseUrl": "आधार URL",
+    "planSuccess": "होस्टिंग योजना सफलतापूर्वक बनाई गई",
+    "planError": "होस्टिंग योजना बनाने में विफल",
+    "applySuccess": "DNS रिकॉर्ड और टनल सफलतापूर्वक कॉन्फ़िगर किए गए",
+    "applyError": "होस्टिंग कॉन्फ़िगरेशन लागू करने में विफल",
+    "persistSuccess": "कॉन्फ़िगरेशन RDF संसाधन के रूप में सहेजी गई",
+    "persistError": "कॉन्फ़िगरेशन सहेजने में विफल",
+    "bindSuccess": "मूल TenantBinding के रूप में बाँधा गया",
+    "bindError": "मूल बाँधने में विफल"
+  },
+  "governance": {
+    "title": "शासन",
+    "subtitle": "भूमिका बाइंडिंग, ODRL नीतियाँ, अनुमोदन द्वार, और संकल्प."
+  },
+  "credentials": {
+    "title": "क्रेडेंशियल",
+    "subtitle": "सत्यापन योग्य क्रेडेंशियल जारी करना, सत्यापित करना, और रद्द करना."
+  },
+  "members": {
+    "title": "सदस्य",
+    "subtitle": "सदस्य पॉड का प्रावधान, जीवनचक्र प्रबंधन, और LDN के माध्यम से सूचना भेजना."
+  },
+  "operations": {
+    "title": "संचालन",
+    "subtitle": "चरण 3 के संचालन क्षैतिज: सहमति, प्रतिनिधित्व, आपातकाल, इन्वेंट्री, वफादारी, मूल्य निर्धारण, और अधिक."
+  },
+  "modules": {
+    "title": "CMS मॉड्यूल",
+    "enabled": "सक्षम",
+    "disabled": "अक्षम",
+    "enable": "सक्षम करें",
+    "disable": "अक्षम करें",
+    "configure": "कॉन्फ़िगर करें",
+    "capabilities": "क्षमताएँ",
+    "routes": "मार्ग",
+    "configShape": "कॉन्फ़िगरेशन आकार",
+    "noModules": "कोई मॉड्यूल स्थापित नहीं है"
+  },
+  "pos": {
+    "title": "POS टर्मिनल",
+    "cart": "कार्ट",
+    "checkout": "चेकआउट",
+    "subtotal": "उपकुल",
+    "tax": "कर",
+    "total": "कुल",
+    "payment": "भुगतान",
+    "cash": "नकद",
+    "card": "कार्ड",
+    "completeSale": "बिक्री पूर्ण करें",
+    "voidSale": "बिक्री रद्द करें",
+    "selectProduct": "उत्पाद चुनें",
+    "noProducts": "कोई उत्पाद उपलब्ध नहीं है",
+    "orderConfirmed": "ऑर्डर की पुष्टि हुई",
+    "paymentReceived": "भुगतान प्राप्त हुआ",
+    "receiptGenerated": "रसीद बनाई गई"
+  },
+  "waiter": {
+    "title": "वेटर ऑर्डर",
+    "selectTable": "टेबल चुनें",
+    "currentOrder": "वर्तमान ऑर्डर",
+    "addToOrder": "ऑर्डर में जोड़ें",
+    "sendToKitchen": "रसोई में भेजें",
+    "clearOrder": "ऑर्डर साफ़ करें",
+    "table": "टेबल",
+    "items": "मद",
+    "quantity": "मात्रा",
+    "price": "मूल्य"
+  },
+  "setup": {
+    "title": "सेटअप विज़ार्ड",
+    "welcome": "Databox CMS में आपका स्वागत है",
+    "chooseProfile": "अपना संगठन प्रकार चुनें",
+    "legalEntity": "कानूनी इकाई विवरण",
+    "orgName": "संगठन का नाम",
+    "orgType": "संगठन प्रकार",
+    "complete": "सेटअप पूर्ण करें",
+    "step": "चरण",
+    "of": "/"
+  },
+  "receipts": {
+    "title": "रसीदें",
+    "orderId": "ऑर्डर ID",
+    "customer": "ग्राहक",
+    "date": "तारीख",
+    "total": "कुल",
+    "viewReceipt": "रसीद देखें",
+    "noReceipts": "कोई रसीद नहीं मिली"
+  },
+  "programs": {
+    "title": "कार्यक्रम",
+    "createProgram": "कार्यक्रम बनाएँ",
+    "programName": "कार्यक्रम का नाम",
+    "programType": "कार्यक्रम प्रकार",
+    "noPrograms": "कोई कार्यक्रम परिभाषित नहीं है"
+  },
+  "mappings": {
+    "title": "कनेक्टर मैपिंग",
+    "sourceType": "स्रोत प्रकार",
+    "odbc": "ODBC",
+    "ldap": "LDAP",
+    "connectionString": "कनेक्शन स्ट्रिंग",
+    "query": "क्वेरी",
+    "url": "URL",
+    "searchBase": "खोज आधार",
+    "simulate": "सिम्युलेट करें",
+    "results": "परिणाम"
+  },
+  "accessRequests": {
+    "title": "पहुँच अनुरोध",
+    "requester": "अनुरोधकर्ता",
+    "resource": "संसाधन",
+    "status": "स्थिति",
+    "approve": "स्वीकृत करें",
+    "deny": "अस्वीकृत करें",
+    "noRequests": "कोई पहुँच अनुरोध नहीं"
+  },
+  "corrections": {
+    "title": "सुधार",
+    "requestedBy": "अनुरोधकर्ता",
+    "field": "क्षेत्र",
+    "currentValue": "वर्तमान मान",
+    "requestedValue": "अनुरोधित मान",
+    "approve": "स्वीकृत करें",
+    "deny": "अस्वीकृत करें",
+    "noCorrections": "कोई सुधार अनुरोध नहीं"
+  },
+  "consumerLedger": {
+    "title": "उपभोक्ता खाता",
+    "consumer": "उपभोक्ता",
+    "event": "घटना",
+    "timestamp": "समय-चिह्न",
+    "details": "विवरण",
+    "noEntries": "खाते में कोई प्रविष्टि नहीं"
+  },
+  "dataPortability": {
+    "title": "डेटा पोर्टेबिलिटी रजिस्ट्री",
+    "export": "डेटा निर्यात करें",
+    "import": "डेटा आयात करें",
+    "format": "प्रारूप",
+    "status": "स्थिति"
+  },
+  "events": {
+    "title": "घटना वितरक",
+    "eventType": "घटना प्रकार",
+    "payload": "पेलोड",
+    "dispatch": "वितरित करें",
+    "result": "परिणाम"
+  },
+  "errors": {
+    "hosting": {
+      "invalid_domain": "होस्टिंग योजना के लिए \"acme.org\" जैसे मुख्य डोमेन की आवश्यकता है।",
+      "invalid_origin": "होस्टिंग योजना के लिए मूल लक्ष्य (IP या होस्टनाम) की आवश्यकता है।",
+      "api_token_required": "योजना लागू करने के लिए Cloudflare API टोकन आवश्यक है।",
+      "api_request_failed": "Cloudflare API अनुरोध विफल हुआ।",
+      "dns_record_exists": "DNS रिकॉर्ड पहले से मौजूद है।",
+      "tunnel_creation_failed": "Cloudflare टनल बनाने में विफल।"
+    },
+    "general": {
+      "not_authenticated": "आप प्रमाणित नहीं हैं।",
+      "forbidden": "आपको यह क्रिया करने की अनुमति नहीं है।",
+      "not_found": "अनुरोधित संसाधन नहीं मिला।",
+      "internal_error": "आंतरिक सर्वर त्रुटि उत्पन्न हुई।",
+      "network_error": "नेटवर्क त्रुटि उत्पन्न हुई।"
+    }
+  }
+}

@@ -1,6 +1,6 @@
-// @ts-nocheck
-import React, { useState, useEffect } from "react";
-import { useShow, useUpdate, useNavigation } from "@refinedev/core";
+import { useState, useEffect } from "react";
+import { useShow, useNavigation } from "@refinedev/core";
+import { useUpdate } from "../../hooks/useUpdate";
 
 export const CorrectionShow = () => {
   const { result: record, query } = useShow({ resource: "corrections" });

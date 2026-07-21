@@ -102,7 +102,7 @@ export class CustomerDisplayStore {
     state: CustomerDisplayStateInput,
   ): Promise<PersistedCustomerDisplayResource> {
     validateDisplayState(state);
-    const stateIri = displayIri.endsWith('/') ? `${displayIri}state` : `${displayIri}/state`;
+    const stateIri = `${displayIri}-state`;
     const identifier = this.identifier(stateIri);
     const document = {
       [LD_CONTEXT]: {
@@ -135,7 +135,7 @@ export class CustomerDisplayStore {
 
   /** Read a persisted display state back, or `undefined` if it is absent. */
   public async loadState(displayIri: string, contentType: string = JSON_LD): Promise<string | undefined> {
-    const stateIri = displayIri.endsWith('/') ? `${displayIri}state` : `${displayIri}/state`;
+    const stateIri = `${displayIri}-state`;
     return this.load(stateIri, contentType);
   }
 

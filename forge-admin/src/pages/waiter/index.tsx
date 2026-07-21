@@ -1,5 +1,4 @@
-// @ts-nocheck
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { CapabilityStrip, OrderLinesTable, StatusBadge } from "../pos/shared";
 import { money, orderTotal, standardIntent, usePosSnapshot } from "../pos/operations";
 

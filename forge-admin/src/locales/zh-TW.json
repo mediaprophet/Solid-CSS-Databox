@@ -1,0 +1,23 @@
+{
+  "app": { "title": "Databox CMS", "subtitle": "Solid原生內容管理" },
+  "nav": { "setup": "設定", "modules": "模組", "hosting": "託管", "pos": "POS終端", "waiter": "服務員訂單", "customerOrder": "客戶自助點餐", "display": "促銷顯示", "receipts": "收據", "programs": "程式", "mappings": "對應", "events": "事件", "dataPortability": "資料可攜性", "accessRequests": "存取請求", "corrections": "更正", "consumerLedger": "消費者帳本" },
+  "common": { "save": "儲存", "cancel": "取消", "delete": "刪除", "edit": "編輯", "create": "建立", "search": "搜尋", "loading": "載入中...", "error": "錯誤", "success": "成功", "close": "關閉", "back": "返回", "next": "下一步", "confirm": "確認", "yes": "是", "no": "否", "enabled": "已啟用", "disabled": "已停用", "status": "狀態", "mode": "模式", "actions": "操作", "name": "名稱", "description": "描述", "type": "類型", "date": "日期", "time": "時間", "amount": "金額", "total": "總計", "language": "語言" },
+  "hosting": { "title": "託管設定", "apexDomain": "主網域", "apexDomainPlaceholder": "example.org", "originTarget": "來源目標", "originTargetPlaceholder": "IP位址或主機名稱", "databoxLabel": "Databox子網域", "databoxLabelPlaceholder": "databox", "wwwEnabled": "啟用www子網域", "proxied": "代理(Cloudflare)", "planButton": "產生計畫", "applyButton": "套用至Cloudflare", "persistButton": "儲存設定", "bindButton": "綁定來源", "cloudflareToken": "Cloudflare API權杖", "cloudflareTokenPlaceholder": "輸入Cloudflare API權杖", "downloadArtifacts": "下載成品", "dnsRecords": "DNS記錄", "launchCommand": "啟動命令", "baseUrl": "基礎URL", "planSuccess": "託管計畫產生成功", "planError": "產生託管計畫失敗", "applySuccess": "DNS記錄和通道設定成功", "applyError": "套用託管設定失敗", "persistSuccess": "設定已儲存為RDF資源", "persistError": "儲存設定失敗", "bindSuccess": "來源已綁定為TenantBinding", "bindError": "綁定來源失敗" },
+  "governance": { "title": "治理", "subtitle": "角色綁定、ODRL策略、審批門和決議。" },
+  "credentials": { "title": "憑證", "subtitle": "簽發、驗證和撤銷可驗證憑證。" },
+  "members": { "title": "成員", "subtitle": "配置成員Pod、管理生命週期並透過LDN發送通知。" },
+  "operations": { "title": "營運", "subtitle": "第三階段營運橫向：同意、授權、緊急、庫存、忠誠度、定價等。" },
+  "modules": { "title": "CMS模組", "enabled": "已啟用", "disabled": "已停用", "enable": "啟用", "disable": "停用", "configure": "設定", "capabilities": "功能", "routes": "路由", "configShape": "設定形狀", "noModules": "未安裝任何模組" },
+  "pos": { "title": "POS終端", "cart": "購物車", "checkout": "結帳", "subtotal": "小計", "tax": "稅", "total": "總計", "payment": "付款", "cash": "現金", "card": "卡", "completeSale": "完成銷售", "voidSale": "取消銷售", "selectProduct": "選擇產品", "noProducts": "無可用產品", "orderConfirmed": "訂單已確認", "paymentReceived": "已收到付款", "receiptGenerated": "收據已產生" },
+  "waiter": { "title": "服務員訂單", "selectTable": "選擇桌位", "currentOrder": "目前訂單", "addToOrder": "加入訂單", "sendToKitchen": "送到廚房", "clearOrder": "清除訂單", "table": "桌位", "items": "項目", "quantity": "數量", "price": "價格" },
+  "setup": { "title": "設定精靈", "welcome": "歡迎使用Databox CMS", "chooseProfile": "選擇您的組織類型", "legalEntity": "法人實體詳情", "orgName": "組織名稱", "orgType": "組織類型", "complete": "完成設定", "step": "步驟", "of": "/" },
+  "receipts": { "title": "收據", "orderId": "訂單ID", "customer": "客戶", "date": "日期", "total": "總計", "viewReceipt": "查看收據", "noReceipts": "未找到收據" },
+  "programs": { "title": "程式", "createProgram": "建立程式", "programName": "程式名稱", "programType": "程式類型", "noPrograms": "未定義程式" },
+  "mappings": { "title": "連接器對應", "sourceType": "來源類型", "odbc": "ODBC", "ldap": "LDAP", "connectionString": "連線字串", "query": "查詢", "url": "URL", "searchBase": "搜尋基礎", "simulate": "模擬", "results": "結果" },
+  "accessRequests": { "title": "存取請求", "requester": "請求者", "resource": "資源", "status": "狀態", "approve": "批准", "deny": "拒絕", "noRequests": "無存取請求" },
+  "corrections": { "title": "更正", "requestedBy": "請求人", "field": "欄位", "currentValue": "目前值", "requestedValue": "請求值", "approve": "批准", "deny": "拒絕", "noCorrections": "無更正請求" },
+  "consumerLedger": { "title": "消費者帳本", "consumer": "消費者", "event": "事件", "timestamp": "時間戳", "details": "詳情", "noEntries": "無帳本條目" },
+  "dataPortability": { "title": "資料可攜性登記", "export": "匯出資料", "import": "匯入資料", "format": "格式", "status": "狀態" },
+  "events": { "title": "事件分發器", "eventType": "事件類型", "payload": "承載", "dispatch": "分發", "result": "結果" },
+  "errors": { "hosting": { "invalid_domain": "託管計畫需要主網域，如\"acme.org\"。", "invalid_origin": "託管計畫需要來源目標（IP或主機名稱）。", "api_token_required": "需要Cloudflare API權杖來套用計畫。", "api_request_failed": "Cloudflare API請求失敗。", "dns_record_exists": "DNS記錄已存在。", "tunnel_creation_failed": "建立Cloudflare通道失敗。" }, "general": { "not_authenticated": "您未通過身分驗證。", "forbidden": "您沒有權限執行此操作。", "not_found": "未找到請求的資源。", "internal_error": "發生內部伺服器錯誤。", "network_error": "發生網路錯誤。" } }
+}

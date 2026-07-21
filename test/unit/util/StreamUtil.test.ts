@@ -1,6 +1,6 @@
 import 'jest-rdf';
 import { PassThrough, Readable } from 'node:stream';
-import arrayifyStream from 'arrayify-stream';
+import { arrayifyStream } from 'arrayify-stream';
 import { BlankNode, Literal, NamedNode, Quad, Store } from 'n3';
 import type { Logger } from '../../../src/logging/Logger';
 import { getLoggerFor } from '../../../src/logging/LogUtil';

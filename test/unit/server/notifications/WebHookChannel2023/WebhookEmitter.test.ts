@@ -59,7 +59,7 @@ describe('A WebhookEmitter', (): void => {
 
     representation = new BasicRepresentation(JSON.stringify(notification), 'application/ld+json');
 
-    const { privateKey, publicKey } = await generateKeyPair('ES256');
+    const { privateKey, publicKey } = await generateKeyPair('ES256', { extractable: true });
 
     privateJwk = { ...await exportJWK(privateKey), alg: 'ES256' };
     publicJwk = { ...await exportJWK(publicKey), alg: 'ES256' };

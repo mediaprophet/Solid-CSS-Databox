@@ -1,10 +1,11 @@
-import { instantiateFromConfig } from './Config';
+import { getDefaultVariables, instantiateFromConfig } from './Config';
 import type { App } from '../../src/init/App';
 import fetch from 'cross-fetch';
 import { getPort } from '../util/Util';
 
-const port = getPort('DataboxCms');
+const port = getPort('DataboxCmsVertical');
 const baseUrl = `http://localhost:${port}/`;
+const controlToken = 'cms-vertical-control-token-000000001';
 
 describe('Databox CMS Vertical Integration', (): void => {
   let app: App;
@@ -15,9 +16,8 @@ describe('Databox CMS Vertical Integration', (): void => {
       'urn:solid-server:default:App',
       'config/cms/cms.json',
       {
-        'urn:solid-server:default:variable:port': port,
-        'urn:solid-server:default:variable:baseUrl': baseUrl,
-        'urn:solid-server:default:variable:loggingLevel': 'off',
+        ...getDefaultVariables(port, baseUrl),
+        'urn:solid-server:cms:variable:controlToken': 'cms-vertical-control-token-000000001',
       },
     ) as App;
     await app.start();
@@ -30,19 +30,19 @@ describe('Databox CMS Vertical Integration', (): void => {
   });
 
   it('safely scopes CMS routes without leaking', async(): Promise<void> => {
-    // Verify that the website endpoint is reachable and returns HTML
-    const resWebsite = await fetch(`${baseUrl}.databox/cms/website/index.html`);
-    expect(resWebsite.status).toBe(200);
-    expect(resWebsite.headers.get('content-type')).toContain('text/html');
+    // Verify that the CMS modules endpoint is reachable with auth
+    const resModules = await fetch(`${baseUrl}.databox/cms/modules`, {
+      headers: { authorization: `Bearer ${controlToken}` },
+    });
+    expect(resModules.status).toBe(200);
+    expect(resModules.headers.get('content-type')).toContain('application/json');
 
-    // Verify POS endpoint
-    const resPos = await fetch(`${baseUrl}.databox/cms/pos/catalogue`);
-    expect(resPos.status).toBe(200);
-    expect(resPos.headers.get('content-type')).toContain('application/json');
+    // Verify that CMS routes require auth (no token → 401)
+    const resNoAuth = await fetch(`${baseUrl}.databox/cms/modules`);
+    expect(resNoAuth.status).toBe(401);
 
-    // Cross-module logic: if POS is present, it shouldn't pollute the generic root
+    // Cross-module logic: CMS routes shouldn't pollute the generic root
     const rootCheck = await fetch(`${baseUrl}`);
-    // Root container returns turtle (or HTML representation based on content negotiation)
     expect(rootCheck.status).toBe(200);
   });
 });

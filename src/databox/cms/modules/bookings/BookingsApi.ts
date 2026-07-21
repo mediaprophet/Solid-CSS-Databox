@@ -11,7 +11,7 @@ export function registerBookingsRoutes(router: CmsModuleRouter<(input: HttpHandl
     try {
       const input = await readJsonBody<unknown>(request);
       assertAvailabilityInput(input);
-      writeJson(response, 200, { slots: freeSlots(input) });
+      writeJson(response, 200, freeSlots(input));
     } catch (error: unknown) {
       writeJson(response, 400, { error: error instanceof Error ? error.message : 'Invalid availability request.' });
     }
@@ -31,15 +31,15 @@ function assertAvailabilityInput(value: unknown): asserts value is AvailabilityI
   if (!isRecord(value)) {
     throw new TypeError('An availability request must be a JSON object.');
   }
-  if (typeof value.resourceId !== 'string' || typeof value.startIso !== 'string' || typeof value.endIso !== 'string') {
-    throw new TypeError('An availability request needs resourceId, startIso, and endIso strings.');
+  if (typeof value.windowStart !== 'number' || typeof value.windowEnd !== 'number' || typeof value.slotMinutes !== 'number') {
+    throw new TypeError('An availability request needs windowStart, windowEnd, and slotMinutes numbers.');
   }
-  if (!Array.isArray(value.bookedIntervals)) {
-    throw new TypeError('An availability request needs a bookedIntervals array.');
+  if (!Array.isArray(value.bookings)) {
+    throw new TypeError('An availability request needs a bookings array.');
   }
-  for (const interval of value.bookedIntervals) {
-    if (!isRecord(interval) || typeof interval.start !== 'string' || typeof interval.end !== 'string') {
-      throw new TypeError('Booked intervals need start and end strings.');
+  for (const booking of value.bookings) {
+    if (!isRecord(booking) || typeof booking.start !== 'number' || typeof booking.end !== 'number') {
+      throw new TypeError('Bookings need start and end numbers.');
     }
   }
 }

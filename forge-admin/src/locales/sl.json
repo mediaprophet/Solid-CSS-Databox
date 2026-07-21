@@ -1,0 +1,237 @@
+{
+  "app": {
+    "title": "Databox CMS",
+    "subtitle": "Upravljanje vsebine nativno Solid"
+  },
+  "nav": {
+    "setup": "Nastavitev",
+    "modules": "Moduli",
+    "hosting": "Gostovanje",
+    "pos": "POS terminal",
+    "waiter": "Naročila natakarja",
+    "customerOrder": "Samooplačilno naročilo",
+    "display": "Promocijski zaslon",
+    "receipts": "Računi",
+    "programs": "Programi",
+    "mappings": "Preslikave",
+    "events": "Dogodki",
+    "dataPortability": "Prenosljivost podatkov",
+    "accessRequests": "Prošnje za dostop",
+    "corrections": "Popravki",
+    "consumerLedger": "Register potrošnikov"
+  },
+  "common": {
+    "save": "Shrani",
+    "cancel": "Prekliči",
+    "delete": "Izbriši",
+    "edit": "Uredi",
+    "create": "Ustvari",
+    "search": "Išči",
+    "loading": "Nalaganje...",
+    "error": "Napaka",
+    "success": "Uspeh",
+    "close": "Zapri",
+    "back": "Nazaj",
+    "next": "Naprej",
+    "confirm": "Potrdi",
+    "yes": "Da",
+    "no": "Ne",
+    "enabled": "Omogočeno",
+    "disabled": "Onemogočeno",
+    "status": "Status",
+    "mode": "Način",
+    "actions": "Dejanja",
+    "name": "Ime",
+    "description": "Opis",
+    "type": "Tip",
+    "date": "Datum",
+    "time": "Čas",
+    "amount": "Znesek",
+    "total": "Skupaj",
+    "language": "Jezik"
+  },
+  "hosting": {
+    "title": "Nastavitev gostovanja",
+    "apexDomain": "Glavna domena",
+    "apexDomainPlaceholder": "primer.org",
+    "originTarget": "Cilj izvora",
+    "originTargetPlaceholder": "IP naslov ali ime gostitelja",
+    "databoxLabel": "Databox poddomena",
+    "databoxLabelPlaceholder": "databox",
+    "wwwEnabled": "Omogoči www poddomeno",
+    "proxied": "Proxied (Cloudflare)",
+    "planButton": "Generiraj načrt",
+    "applyButton": "Uveljavi na Cloudflare",
+    "persistButton": "Shrani konfiguracijo",
+    "bindButton": "Poveži izvor",
+    "cloudflareToken": "Cloudflare API žeton",
+    "cloudflareTokenPlaceholder": "Vnesite Cloudflare API žeton",
+    "downloadArtifacts": "Prenesi artefakte",
+    "dnsRecords": "DNS zapisi",
+    "launchCommand": "Ukaz za zagon",
+    "baseUrl": "Osnovni URL",
+    "planSuccess": "Načrt gostovanja uspešno generiran",
+    "planError": "Neuspelo generiranje načrta gostovanja",
+    "applySuccess": "DNS zapisi in predor uspešno konfigurirani",
+    "applyError": "Neuspela uveljavitev konfiguracije gostovanja",
+    "persistSuccess": "Konfiguracija shranjena kot RDF vir",
+    "persistError": "Neuspelo shranjevanje konfiguracije",
+    "bindSuccess": "Izvor povezan kot TenantBinding",
+    "bindError": "Neuspelo povezovanje izvora"
+  },
+  "governance": {
+    "title": "Upravljanje",
+    "subtitle": "Povezave vlog, ODRL politike, vrata odobritev in resolucije."
+  },
+  "credentials": {
+    "title": "Poverilnice",
+    "subtitle": "Izdaja, preverjanje in preklic preverljivih poverilnic."
+  },
+  "members": {
+    "title": "Člani",
+    "subtitle": "Zagotavljanje pod-ov članov, upravljanje življenjskega cikla in pošiljanje obvestil preko LDN."
+  },
+  "operations": {
+    "title": "Operacije",
+    "subtitle": "Operativni horizontali Faze 3: soglasje, delegiranje, nujni primer, zaloga, zvestoba, določanje cen in več."
+  },
+  "modules": {
+    "title": "CMS moduli",
+    "enabled": "Omogočeno",
+    "disabled": "Onemogočeno",
+    "enable": "Omogoči",
+    "disable": "Onemogoči",
+    "configure": "Konfiguriraj",
+    "capabilities": "Zmogljivosti",
+    "routes": "Poti",
+    "configShape": "Oblika konfiguracije",
+    "noModules": "Ni nameščenih modulov"
+  },
+  "pos": {
+    "title": "POS terminal",
+    "cart": "Košarica",
+    "checkout": "Blagajna",
+    "subtotal": "Vmesna vsota",
+    "tax": "Davek",
+    "total": "Skupaj",
+    "payment": "Plačilo",
+    "cash": "Gotovina",
+    "card": "Kartica",
+    "completeSale": "Zaključi prodajo",
+    "voidSale": "Prekliči prodajo",
+    "selectProduct": "Izberite izdelek",
+    "noProducts": "Ni razpoložljivih izdelkov",
+    "orderConfirmed": "Naročilo potrjeno",
+    "paymentReceived": "Plačilo prejeto",
+    "receiptGenerated": "Račun generiran"
+  },
+  "waiter": {
+    "title": "Naročila natakarja",
+    "selectTable": "Izberite mizo",
+    "currentOrder": "Trenutno naročilo",
+    "addToOrder": "Dodaj v naročilo",
+    "sendToKitchen": "Pošlji v kuhinjo",
+    "clearOrder": "Počisti naročilo",
+    "table": "Miza",
+    "items": "Artikli",
+    "quantity": "Količina",
+    "price": "Cena"
+  },
+  "setup": {
+    "title": "Čarovnik za nastavitev",
+    "welcome": "Dobrodošli v Databox CMS",
+    "chooseProfile": "Izberite vrsto organizacije",
+    "legalEntity": "Podatki pravne osebe",
+    "orgName": "Ime organizacije",
+    "orgType": "Vrsta organizacije",
+    "complete": "Zaključi nastavitev",
+    "step": "Korak",
+    "of": "od"
+  },
+  "receipts": {
+    "title": "Računi",
+    "orderId": "ID naročila",
+    "customer": "Stranka",
+    "date": "Datum",
+    "total": "Skupaj",
+    "viewReceipt": "Poglej račun",
+    "noReceipts": "Ni najdenih računov"
+  },
+  "programs": {
+    "title": "Programi",
+    "createProgram": "Ustvari program",
+    "programName": "Ime programa",
+    "programType": "Vrsta programa",
+    "noPrograms": "Ni definiranih programov"
+  },
+  "mappings": {
+    "title": "Preslikave konektorja",
+    "sourceType": "Vrsta vira",
+    "odbc": "ODBC",
+    "ldap": "LDAP",
+    "connectionString": "Niz povezave",
+    "query": "Poizvedba",
+    "url": "URL",
+    "searchBase": "Iskalna baza",
+    "simulate": "Simuliraj",
+    "results": "Rezultati"
+  },
+  "accessRequests": {
+    "title": "Prošnje za dostop",
+    "requester": "Prosilec",
+    "resource": "Vir",
+    "status": "Status",
+    "approve": "Odobri",
+    "deny": "Zavrni",
+    "noRequests": "Ni prošenj za dostop"
+  },
+  "corrections": {
+    "title": "Popravki",
+    "requestedBy": "Zahteval",
+    "field": "Polje",
+    "currentValue": "Trenutna vrednost",
+    "requestedValue": "Zahtevana vrednost",
+    "approve": "Odobri",
+    "deny": "Zavrni",
+    "noCorrections": "Ni prošenj za popravke"
+  },
+  "consumerLedger": {
+    "title": "Register potrošnikov",
+    "consumer": "Potrošnik",
+    "event": "Dogodek",
+    "timestamp": "Časovni žig",
+    "details": "Podrobnosti",
+    "noEntries": "Ni vnosov v registru"
+  },
+  "dataPortability": {
+    "title": "Register prenosljivosti podatkov",
+    "export": "Izvozi podatke",
+    "import": "Uvozi podatke",
+    "format": "Format",
+    "status": "Status"
+  },
+  "events": {
+    "title": "Distributer dogodkov",
+    "eventType": "Vrsta dogodka",
+    "payload": "Payload",
+    "dispatch": "Distribuiraj",
+    "result": "Rezultat"
+  },
+  "errors": {
+    "hosting": {
+      "invalid_domain": "Načrt gostovanja potrebuje glavno domeno kot \"acme.org\".",
+      "invalid_origin": "Načrt gostovanja potrebuje cilj izvora (IP ali ime gostitelja).",
+      "api_token_required": "Cloudflare API žeton je potreben za uveljavitev načrta.",
+      "api_request_failed": "Cloudflare API zahteva je spodletela.",
+      "dns_record_exists": "DNS zapis že obstaja.",
+      "tunnel_creation_failed": "Neuspelo ustvarjanje Cloudflare predora."
+    },
+    "general": {
+      "not_authenticated": "Niste overjeni.",
+      "forbidden": "Nimate dovoljenja za izvedbo tega dejanja.",
+      "not_found": "Zahtevani vir ni bil najden.",
+      "internal_error": "Prišlo je do notranje napake strežnika.",
+      "network_error": "Prišlo je do omrežne napake."
+    }
+  }
+}

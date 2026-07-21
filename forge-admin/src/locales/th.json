@@ -1,0 +1,237 @@
+{
+  "app": {
+    "title": "Databox CMS",
+    "subtitle": "การจัดการเนื้อหาแบบ Solid ดั้งเดิม"
+  },
+  "nav": {
+    "setup": "ตั้งค่า",
+    "modules": "โมดูล",
+    "hosting": "โฮสติ้ง",
+    "pos": "เทอร์มินัล POS",
+    "waiter": "คำสั่งของพนักงานเสิร์ฟ",
+    "customerOrder": "ลูกค้าสั่งเอง",
+    "display": "จอแสดงโปรโมชั่น",
+    "receipts": "ใบเสร็จ",
+    "programs": "โปรแกรม",
+    "mappings": "การแมป",
+    "events": "เหตุการณ์",
+    "dataPortability": "การพกพาข้อมูล",
+    "accessRequests": "คำขอเข้าถึง",
+    "corrections": "การแก้ไข",
+    "consumerLedger": "บัญชีผู้บริโภค"
+  },
+  "common": {
+    "save": "บันทึก",
+    "cancel": "ยกเลิก",
+    "delete": "ลบ",
+    "edit": "แก้ไข",
+    "create": "สร้าง",
+    "search": "ค้นหา",
+    "loading": "กำลังโหลด...",
+    "error": "ข้อผิดพลาด",
+    "success": "สำเร็จ",
+    "close": "ปิด",
+    "back": "ย้อนกลับ",
+    "next": "ถัดไป",
+    "confirm": "ยืนยัน",
+    "yes": "ใช่",
+    "no": "ไม่",
+    "enabled": "เปิดใช้งาน",
+    "disabled": "ปิดใช้งาน",
+    "status": "สถานะ",
+    "mode": "โหมด",
+    "actions": "การดำเนินการ",
+    "name": "ชื่อ",
+    "description": "คำอธิบาย",
+    "type": "ประเภท",
+    "date": "วันที่",
+    "time": "เวลา",
+    "amount": "จำนวนเงิน",
+    "total": "รวม",
+    "language": "ภาษา"
+  },
+  "hosting": {
+    "title": "การตั้งค่าโฮสติ้ง",
+    "apexDomain": "โดเมนหลัก",
+    "apexDomainPlaceholder": "ตัวอย่าง.org",
+    "originTarget": "เป้าหมายต้นทาง",
+    "originTargetPlaceholder": "ที่อยู่ IP หรือชื่อโฮสต์",
+    "databoxLabel": "โดเมนย่อย Databox",
+    "databoxLabelPlaceholder": "databox",
+    "wwwEnabled": "เปิดใช้งานโดเมนย่อย www",
+    "proxied": "ผ่านพร็อกซี (Cloudflare)",
+    "planButton": "สร้างแผน",
+    "applyButton": "นำไปใช้กับ Cloudflare",
+    "persistButton": "บันทึกการกำหนดค่า",
+    "bindButton": "ผูกต้นทาง",
+    "cloudflareToken": "โทเค็น API Cloudflare",
+    "cloudflareTokenPlaceholder": "ป้อนโทเค็น API Cloudflare",
+    "downloadArtifacts": "ดาวน์โหลดอาร์ทิแฟกต์",
+    "dnsRecords": "ระเบียน DNS",
+    "launchCommand": "คำสั่งเริ่มต้น",
+    "baseUrl": "URL พื้นฐาน",
+    "planSuccess": "สร้างแผนโฮสติ้งสำเร็จ",
+    "planError": "สร้างแผนโฮสติ้งล้มเหลว",
+    "applySuccess": "กำหนดค่าระเบียน DNS และอุโมงค์สำเร็จ",
+    "applyError": "นำการกำหนดค่าโฮสติ้งไปใช้ล้มเหลว",
+    "persistSuccess": "บันทึกการกำหนดค่าเป็นทรัพยากร RDF แล้ว",
+    "persistError": "บันทึกการกำหนดค่าล้มเหลว",
+    "bindSuccess": "ผูกต้นทางเป็น TenantBinding แล้ว",
+    "bindError": "ผูกต้นทางล้มเหลว"
+  },
+  "governance": {
+    "title": "ธรรมาภิบาล",
+    "subtitle": "การผูกบทบาท นโยบาย ODRL ประตูอนุมัติ และมติ."
+  },
+  "credentials": {
+    "title": "ข้อมูลรับรอง",
+    "subtitle": "ออก ตรวจสอบ และเพิกถอนข้อมูลรับรองที่ตรวจสอบได้."
+  },
+  "members": {
+    "title": "สมาชิก",
+    "subtitle": "จัดเตรียมพอดสมาชิก จัดการวงจรชีวิต และส่งการแจ้งเตือนผ่าน LDN."
+  },
+  "operations": {
+    "title": "การปฏิบัติการ",
+    "subtitle": "การปฏิบัติการแนวราบระยะที่ 3: ความยินยอม การมอบหมาย เหตุฉุกเฉิน สินค้าคงคลัง ความภักดี การกำหนดราคา และอื่นๆ."
+  },
+  "modules": {
+    "title": "โมดูล CMS",
+    "enabled": "เปิดใช้งาน",
+    "disabled": "ปิดใช้งาน",
+    "enable": "เปิดใช้งาน",
+    "disable": "ปิดใช้งาน",
+    "configure": "กำหนดค่า",
+    "capabilities": "ความสามารถ",
+    "routes": "เส้นทาง",
+    "configShape": "รูปแบบการกำหนดค่า",
+    "noModules": "ไม่มีโมดูลที่ติดตั้ง"
+  },
+  "pos": {
+    "title": "เทอร์มินัล POS",
+    "cart": "ตะกร้า",
+    "checkout": "ชำระเงิน",
+    "subtotal": "ยอดย่อย",
+    "tax": "ภาษี",
+    "total": "รวม",
+    "payment": "การชำระเงิน",
+    "cash": "เงินสด",
+    "card": "บัตร",
+    "completeSale": "เสร็จสิ้นการขาย",
+    "voidSale": "ยกเลิกการขาย",
+    "selectProduct": "เลือกสินค้า",
+    "noProducts": "ไม่มีสินค้าให้เลือก",
+    "orderConfirmed": "ยืนยันคำสั่งซื้อแล้ว",
+    "paymentReceived": "ได้รับการชำระเงินแล้ว",
+    "receiptGenerated": "สร้างใบเสร็จแล้ว"
+  },
+  "waiter": {
+    "title": "คำสั่งของพนักงานเสิร์ฟ",
+    "selectTable": "เลือกโต๊ะ",
+    "currentOrder": "คำสั่งปัจจุบัน",
+    "addToOrder": "เพิ่มไปยังคำสั่ง",
+    "sendToKitchen": "ส่งไปยังครัว",
+    "clearOrder": "ล้างคำสั่ง",
+    "table": "โต๊ะ",
+    "items": "รายการ",
+    "quantity": "จำนวน",
+    "price": "ราคา"
+  },
+  "setup": {
+    "title": "ตัวช่วยตั้งค่า",
+    "welcome": "ยินดีต้อนรับสู่ Databox CMS",
+    "chooseProfile": "เลือกประเภทองค์กร",
+    "legalEntity": "รายละเอียดนิติบุคคล",
+    "orgName": "ชื่อองค์กร",
+    "orgType": "ประเภทองค์กร",
+    "complete": "ตั้งค่าเสร็จสิ้น",
+    "step": "ขั้นตอน",
+    "of": "/"
+  },
+  "receipts": {
+    "title": "ใบเสร็จ",
+    "orderId": "รหัสคำสั่ง",
+    "customer": "ลูกค้า",
+    "date": "วันที่",
+    "total": "รวม",
+    "viewReceipt": "ดูใบเสร็จ",
+    "noReceipts": "ไม่พบใบเสร็จ"
+  },
+  "programs": {
+    "title": "โปรแกรม",
+    "createProgram": "สร้างโปรแกรม",
+    "programName": "ชื่อโปรแกรม",
+    "programType": "ประเภทโปรแกรม",
+    "noPrograms": "ยังไม่ได้กำหนดโปรแกรม"
+  },
+  "mappings": {
+    "title": "การแมปตัวเชื่อมต่อ",
+    "sourceType": "ประเภทแหล่งข้อมูล",
+    "odbc": "ODBC",
+    "ldap": "LDAP",
+    "connectionString": "สตริงการเชื่อมต่อ",
+    "query": "คิวรี",
+    "url": "URL",
+    "searchBase": "ฐานการค้นหา",
+    "simulate": "จำลอง",
+    "results": "ผลลัพธ์"
+  },
+  "accessRequests": {
+    "title": "คำขอเข้าถึง",
+    "requester": "ผู้ร้องขอ",
+    "resource": "ทรัพยากร",
+    "status": "สถานะ",
+    "approve": "อนุมัติ",
+    "deny": "ปฏิเสธ",
+    "noRequests": "ไม่มีคำขอเข้าถึง"
+  },
+  "corrections": {
+    "title": "การแก้ไข",
+    "requestedBy": "ร้องขอโดย",
+    "field": "ฟิลด์",
+    "currentValue": "ค่าปัจจุบัน",
+    "requestedValue": "ค่าที่ร้องขอ",
+    "approve": "อนุมัติ",
+    "deny": "ปฏิเสธ",
+    "noCorrections": "ไม่มีคำขอแก้ไข"
+  },
+  "consumerLedger": {
+    "title": "บัญชีผู้บริโภค",
+    "consumer": "ผู้บริโภค",
+    "event": "เหตุการณ์",
+    "timestamp": "การประทับเวลา",
+    "details": "รายละเอียด",
+    "noEntries": "ไม่มีรายการในบัญชี"
+  },
+  "dataPortability": {
+    "title": "ทะเบียนการพกพาข้อมูล",
+    "export": "ส่งออกข้อมูล",
+    "import": "นำเข้าข้อมูล",
+    "format": "รูปแบบ",
+    "status": "สถานะ"
+  },
+  "events": {
+    "title": "ตัวกระจายเหตุการณ์",
+    "eventType": "ประเภทเหตุการณ์",
+    "payload": "เพย์โหลด",
+    "dispatch": "กระจาย",
+    "result": "ผลลัพธ์"
+  },
+  "errors": {
+    "hosting": {
+      "invalid_domain": "แผนโฮสติ้งต้องมีโดเมนหลัก เช่น \"acme.org\".",
+      "invalid_origin": "แผนโฮสติ้งต้องมีเป้าหมายต้นทาง (IP หรือชื่อโฮสต์).",
+      "api_token_required": "ต้องมีโทเค็น API Cloudflare เพื่อนำแผนไปใช้.",
+      "api_request_failed": "คำขอ API Cloudflare ล้มเหลว.",
+      "dns_record_exists": "ระเบียน DNS มีอยู่แล้ว.",
+      "tunnel_creation_failed": "สร้างอุโมงค์ Cloudflare ล้มเหลว."
+    },
+    "general": {
+      "not_authenticated": "คุณยังไม่ได้รับการรับรองความถูกต้อง.",
+      "forbidden": "คุณไม่มีสิทธิ์ดำเนินการนี้.",
+      "not_found": "ไม่พบทรัพยากรที่ร้องขอ.",
+      "internal_error": "เกิดข้อผิดพลาดภายในเซิร์ฟเวอร์.",
+      "network_error": "เกิดข้อผิดพลาดของเครือข่าย."
+    }
+  }
+}

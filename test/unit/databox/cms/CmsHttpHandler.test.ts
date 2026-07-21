@@ -274,7 +274,13 @@ describe('A CmsHttpHandler', (): void => {
       })).toMatchObject({
         id: 'hosting',
         name: 'Hosting',
-        routes: [ 'POST /.databox/cms/hosting/plan' ],
+        routes: expect.arrayContaining([
+          'POST /.databox/cms/hosting/plan',
+          'POST /.databox/cms/hosting/apply',
+          'POST /.databox/cms/hosting/persist',
+          'POST /.databox/cms/hosting/bind',
+          'POST /.databox/cms/hosting/artifacts',
+        ]),
       });
     });
 
@@ -414,7 +420,7 @@ describe('A CmsHttpHandler', (): void => {
         }),
         expect.objectContaining({
           id: 'health.privacy-consent',
-          missingModules: expect.arrayContaining([ 'consent', 'governance', 'break-glass' ]),
+          missingModules: expect.arrayContaining([ 'access-request', 'break-glass' ]),
         }),
       ]));
     });
@@ -459,7 +465,9 @@ describe('A CmsHttpHandler', (): void => {
       const parsed = JSON.parse(res.body) as { error: string };
       expect(parsed.error).toContain('Vertical profile food.restaurant references missing modules');
       expect(parsed.error).toContain('catalogue, stock, payments');
-      expect(parsed.error).toContain('events, opening-hours');
+      expect(parsed.error).toContain('opening-hours');
+      expect(parsed.error).toContain('barcode');
+      expect(parsed.error).toContain('accounting');
     });
 
     it('reads and writes module state through the portable RDF config store.', async(): Promise<void> => {
@@ -1214,7 +1222,7 @@ describe('A CmsHttpHandler', (): void => {
       }));
       expect(res.statusCode).toBe(201);
       const body = JSON.parse(res.body);
-      expect(body.persisted.iri).toContain('/state');
+      expect(body.persisted.iri).toContain('display-state');
       expect(body.state.mode).toBe('transaction');
     });
 

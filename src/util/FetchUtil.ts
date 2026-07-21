@@ -1,7 +1,7 @@
 import type { Quad } from '@rdfjs/types';
-import arrayifyStream from 'arrayify-stream';
+import { arrayifyStream } from 'arrayify-stream';
 import type { Response } from 'cross-fetch';
-import rdfDereferencer from 'rdf-dereference';
+import { rdfDereferencer } from 'rdf-dereference';
 import { BasicRepresentation } from '../http/representation/BasicRepresentation';
 import type { Representation } from '../http/representation/Representation';
 import { getLoggerFor } from '../logging/LogUtil';

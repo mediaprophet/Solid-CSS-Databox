@@ -1,4 +1,5 @@
 import { BadRequestHttpError } from '../../../../util/errors/BadRequestHttpError';
+import { CMS } from '../../../../util/Vocabularies';
 import type { SolidModuleManifest } from '../../SolidModuleManifest';
 
 /**
@@ -27,6 +28,7 @@ export const SITEMAP_ROBOTS_MODULE_MANIFEST: SolidModuleManifest = {
     'cms:portable-core-xml',
   ],
   routes: [],
+  configShape: `${CMS.namespace}SitemapRobotsConfigShape`,
 };
 
 /** Input describing the public pages to list in the sitemap. */

@@ -1,0 +1,53 @@
+import type { CmsModuleRouter } from '../../CmsModuleRouter';
+import type { HttpHandlerInput } from '../../../../server/HttpHandler';
+import { readJsonBody, writeJson } from '../../CmsHttpUtils';
+import type {
+  PrintServiceInput,
+  PrintJobInput,
+  PrintJobStatusUpdateInput,
+  InterOrgPrintJobInput,
+} from './PrintShop';
+import {
+  createPrintService,
+  createPrintJob,
+  updatePrintJobStatus,
+  createInterOrgPrintJob,
+} from './PrintShop';
+
+export function registerPrintShopRoutes(router: CmsModuleRouter<(input: HttpHandlerInput) => Promise<void>>): void {
+  router.register('POST', '/print/service/create', async({ request, response }: HttpHandlerInput): Promise<void> => {
+    try {
+      const input = await readJsonBody<unknown>(request);
+      writeJson(response, 200, createPrintService(input as PrintServiceInput), 'application/ld+json');
+    } catch (error: unknown) {
+      writeJson(response, 400, { error: error instanceof Error ? error.message : 'Invalid print service request.' });
+    }
+  });
+
+  router.register('POST', '/print/job/create', async({ request, response }: HttpHandlerInput): Promise<void> => {
+    try {
+      const input = await readJsonBody<unknown>(request);
+      writeJson(response, 200, createPrintJob(input as PrintJobInput), 'application/ld+json');
+    } catch (error: unknown) {
+      writeJson(response, 400, { error: error instanceof Error ? error.message : 'Invalid print job request.' });
+    }
+  });
+
+  router.register('POST', '/print/job/status', async({ request, response }: HttpHandlerInput): Promise<void> => {
+    try {
+      const input = await readJsonBody<unknown>(request);
+      writeJson(response, 200, updatePrintJobStatus(input as PrintJobStatusUpdateInput), 'application/ld+json');
+    } catch (error: unknown) {
+      writeJson(response, 400, { error: error instanceof Error ? error.message : 'Invalid print job status update.' });
+    }
+  });
+
+  router.register('POST', '/print/inter-org/submit', async({ request, response }: HttpHandlerInput): Promise<void> => {
+    try {
+      const input = await readJsonBody<unknown>(request);
+      writeJson(response, 200, createInterOrgPrintJob(input as InterOrgPrintJobInput), 'application/ld+json');
+    } catch (error: unknown) {
+      writeJson(response, 400, { error: error instanceof Error ? error.message : 'Invalid inter-org print job request.' });
+    }
+  });
+}

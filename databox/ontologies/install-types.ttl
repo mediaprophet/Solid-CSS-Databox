@@ -1,0 +1,212 @@
+@prefix cms: <urn:solid-server:databox:cms#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+
+# ── Install type classes ──────────────────────────────────────────────
+
+cms:InstallProfile a rdfs:Class ;
+  rdfs:label "Install Profile" ;
+  rdfs:comment "Base class for all Databox CMS install package types." .
+
+cms:ServerInstall a rdfs:Class ;
+  rdfs:subClassOf cms:InstallProfile ;
+  rdfs:label "Server Install" ;
+  rdfs:comment "CSS + CMS presets + Node 24 + service registration. Target: VPS, cloud, on-prem box." .
+
+cms:PosInstall a rdfs:Class ;
+  rdfs:subClassOf cms:InstallProfile ;
+  rdfs:label "POS Install" ;
+  rdfs:comment "POS edge binary + Node POS app (CSS with POS modules) + hardware I/O config. Target: shop box, POS terminal." .
+
+cms:ConnectorInstall a rdfs:Class ;
+  rdfs:subClassOf cms:InstallProfile ;
+  rdfs:label "Connector Install" ;
+  rdfs:comment "Connector sidecar binary (ODBC/LDAP) + Node runtime. Target: enterprise edge." .
+
+cms:TraySupervisorInstall a rdfs:Class ;
+  rdfs:subClassOf cms:InstallProfile ;
+  rdfs:label "Tray Supervisor Install" ;
+  rdfs:comment "Tray supervisor only, manages an existing server. Target: desktop alongside server." .
+
+cms:CombinedInstall a rdfs:Class ;
+  rdfs:subClassOf cms:InstallProfile ;
+  rdfs:label "Combined Install" ;
+  rdfs:comment "Server + POS + tray supervisor. Target: on-prem mini-PC (the typical shop box)." .
+
+# ── SHACL shapes ──────────────────────────────────────────────────────
+
+cms:ServerInstallShape a sh:NodeShape ;
+  sh:targetClass cms:ServerInstall ;
+  sh:property [
+    sh:path cms:requiredNodeVersion ;
+    sh:datatype xsd:string ;
+    sh:hasValue ">=24.0.0 <25.0.0" ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path cms:requiredPort ;
+    sh:datatype xsd:integer ;
+    sh:hasValue 3000 ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path cms:configPreset ;
+    sh:datatype xsd:string ;
+    sh:hasValue "config/cms/cms.json" ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path cms:serviceName ;
+    sh:datatype xsd:string ;
+    sh:hasValue "databox-cms" ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path cms:envTemplate ;
+    sh:datatype xsd:string ;
+    sh:minCount 1 ;
+  ] .
+
+cms:PosInstallShape a sh:NodeShape ;
+  sh:targetClass cms:PosInstall ;
+  sh:property [
+    sh:path cms:requiredBinary ;
+    sh:hasValue "pos-edge" ;
+    sh:minCount 1 ;
+  ] ;
+  sh:property [
+    sh:path cms:requiredNodeVersion ;
+    sh:datatype xsd:string ;
+    sh:hasValue ">=24.0.0 <25.0.0" ;
+    sh:minCount 1 ;
+  ] ;
+  sh:property [
+    sh:path cms:requiredPort ;
+    sh:datatype xsd:integer ;
+    sh:hasValue 3000 ;
+    sh:minCount 1 ;
+  ] ;
+  sh:property [
+    sh:path cms:configPreset ;
+    sh:datatype xsd:string ;
+    sh:hasValue "config/cms/pos.json" ;
+    sh:minCount 1 ;
+  ] ;
+  sh:property [
+    sh:path cms:nativeEdgeBinary ;
+    sh:datatype xsd:string ;
+    sh:minCount 1 ;
+  ] ;
+  sh:property [
+    sh:path cms:nativeEdgeHttpPort ;
+    sh:datatype xsd:integer ;
+    sh:hasValue 9100 ;
+    sh:minCount 1 ;
+  ] ;
+  sh:property [
+    sh:path cms:printerDevice ;
+    sh:datatype xsd:string ;
+    sh:minCount 0 ;
+  ] ;
+  sh:property [
+    sh:path cms:displayDevice ;
+    sh:datatype xsd:string ;
+    sh:minCount 0 ;
+  ] ;
+  sh:property [
+    sh:path cms:cashDrawerVia ;
+    sh:datatype xsd:string ;
+    sh:in ( "printer" "direct" ) ;
+    sh:minCount 0 ;
+  ] ;
+  sh:property [
+    sh:path cms:serviceName ;
+    sh:datatype xsd:string ;
+    sh:hasValue "databox-pos" ;
+    sh:minCount 1 ;
+  ] .
+
+cms:ConnectorInstallShape a sh:NodeShape ;
+  sh:targetClass cms:ConnectorInstall ;
+  sh:property [
+    sh:path cms:requiredBinary ;
+    sh:hasValue "connector-sidecar" ;
+    sh:minCount 1 ;
+  ] ;
+  sh:property [
+    sh:path cms:requiredNodeVersion ;
+    sh:datatype xsd:string ;
+    sh:hasValue ">=24.0.0 <25.0.0" ;
+    sh:minCount 1 ;
+  ] ;
+  sh:property [
+    sh:path cms:serviceName ;
+    sh:datatype xsd:string ;
+    sh:hasValue "databox-connector" ;
+    sh:minCount 1 ;
+  ] .
+
+cms:TraySupervisorInstallShape a sh:NodeShape ;
+  sh:targetClass cms:TraySupervisorInstall ;
+  sh:property [
+    sh:path cms:requiredBinary ;
+    sh:hasValue "tray-supervisor" ;
+    sh:minCount 1 ;
+  ] ;
+  sh:property [
+    sh:path cms:serviceName ;
+    sh:datatype xsd:string ;
+    sh:hasValue "databox-tray" ;
+    sh:minCount 0 ;
+  ] .
+
+cms:CombinedInstallShape a sh:NodeShape ;
+  sh:targetClass cms:CombinedInstall ;
+  sh:property [
+    sh:path cms:requiredBinary ;
+    sh:hasValue "pos-edge" ;
+    sh:hasValue "tray-supervisor" ;
+    sh:minCount 2 ;
+  ] ;
+  sh:property [
+    sh:path cms:requiredNodeVersion ;
+    sh:datatype xsd:string ;
+    sh:hasValue ">=24.0.0 <25.0.0" ;
+    sh:minCount 1 ;
+  ] ;
+  sh:property [
+    sh:path cms:requiredPort ;
+    sh:datatype xsd:integer ;
+    sh:hasValue 3000 ;
+    sh:minCount 1 ;
+  ] ;
+  sh:property [
+    sh:path cms:configPreset ;
+    sh:datatype xsd:string ;
+    sh:hasValue "config/cms/pos.json" ;
+    sh:minCount 1 ;
+  ] ;
+  sh:property [
+    sh:path cms:nativeEdgeBinary ;
+    sh:datatype xsd:string ;
+    sh:minCount 1 ;
+  ] ;
+  sh:property [
+    sh:path cms:nativeEdgeHttpPort ;
+    sh:datatype xsd:integer ;
+    sh:hasValue 9100 ;
+    sh:minCount 1 ;
+  ] ;
+  sh:property [
+    sh:path cms:serviceName ;
+    sh:datatype xsd:string ;
+    sh:hasValue "databox-combined" ;
+    sh:minCount 1 ;
+  ] .

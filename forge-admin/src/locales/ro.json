@@ -1,0 +1,237 @@
+{
+  "app": {
+    "title": "Databox CMS",
+    "subtitle": "Gestionare conținut nativă Solid"
+  },
+  "nav": {
+    "setup": "Configurare",
+    "modules": "Module",
+    "hosting": "Găzduire",
+    "pos": "Terminal POS",
+    "waiter": "Comenzi Chelner",
+    "customerOrder": "Comandă Client",
+    "display": "Afișaj Promoție",
+    "receipts": "Chitanțe",
+    "programs": "Programe",
+    "mappings": "Asocieri",
+    "events": "Evenimente",
+    "dataPortability": "Portabilitate Date",
+    "accessRequests": "Cereri de Acces",
+    "corrections": "Corectări",
+    "consumerLedger": "Registru Consumator"
+  },
+  "common": {
+    "save": "Salvare",
+    "cancel": "Anulare",
+    "delete": "Ștergere",
+    "edit": "Editare",
+    "create": "Creare",
+    "search": "Căutare",
+    "loading": "Se încarcă...",
+    "error": "Eroare",
+    "success": "Succes",
+    "close": "Închidere",
+    "back": "Înapoi",
+    "next": "Următor",
+    "confirm": "Confirmare",
+    "yes": "Da",
+    "no": "Nu",
+    "enabled": "Activat",
+    "disabled": "Dezactivat",
+    "status": "Stare",
+    "mode": "Mod",
+    "actions": "Acțiuni",
+    "name": "Nume",
+    "description": "Descriere",
+    "type": "Tip",
+    "date": "Dată",
+    "time": "Oră",
+    "amount": "Sumă",
+    "total": "Total",
+    "language": "Limbă"
+  },
+  "hosting": {
+    "title": "Configurare Găzduire",
+    "apexDomain": "Domeniu Principal",
+    "apexDomainPlaceholder": "exemplu.org",
+    "originTarget": "Destinație Origine",
+    "originTargetPlaceholder": "Adresă IP sau nume gazdă",
+    "databoxLabel": "Subdomeniu Databox",
+    "databoxLabelPlaceholder": "databox",
+    "wwwEnabled": "Activare subdomeniu www",
+    "proxied": "Proxied (Cloudflare)",
+    "planButton": "Generare Plan",
+    "applyButton": "Aplicare pe Cloudflare",
+    "persistButton": "Salvare Configurare",
+    "bindButton": "Legare Origine",
+    "cloudflareToken": "Token API Cloudflare",
+    "cloudflareTokenPlaceholder": "Introduceți token API Cloudflare",
+    "downloadArtifacts": "Descărcare Artefacte",
+    "dnsRecords": "Înregistrări DNS",
+    "launchCommand": "Comandă Pornire",
+    "baseUrl": "URL Bază",
+    "planSuccess": "Plan de găzduire generat cu succes",
+    "planError": "Generarea planului de găzduire a eșuat",
+    "applySuccess": "Înregistrări DNS și tunel configurate cu succes",
+    "applyError": "Aplicarea configurației de găzduire a eșuat",
+    "persistSuccess": "Configurație salvată ca resursă RDF",
+    "persistError": "Salvarea configurației a eșuat",
+    "bindSuccess": "Origine legată ca TenantBinding",
+    "bindError": "Legarea originii a eșuat"
+  },
+  "governance": {
+    "title": "Guvernanță",
+    "subtitle": "Asocieri de roluri, politici ODRL, porți de aprobare și rezoluții."
+  },
+  "credentials": {
+    "title": "Acreditări",
+    "subtitle": "Emitere, verificare și revocare acreditări verificabile."
+  },
+  "members": {
+    "title": "Membri",
+    "subtitle": "Furnizare pod-uri pentru membri, gestionare ciclu de viață și trimitere notificări prin LDN."
+  },
+  "operations": {
+    "title": "Operațiuni",
+    "subtitle": "Orizontale operaționale Faza 3: consimțământ, delegare, urgență, inventar, loialitate, prețuri și altele."
+  },
+  "modules": {
+    "title": "Module CMS",
+    "enabled": "Activat",
+    "disabled": "Dezactivat",
+    "enable": "Activare",
+    "disable": "Dezactivare",
+    "configure": "Configurare",
+    "capabilities": "Capacități",
+    "routes": "Rute",
+    "configShape": "Formă Configurare",
+    "noModules": "Niciun modul instalat"
+  },
+  "pos": {
+    "title": "Terminal POS",
+    "cart": "Coș",
+    "checkout": "Casă",
+    "subtotal": "Subtotal",
+    "tax": "Taxă",
+    "total": "Total",
+    "payment": "Plată",
+    "cash": "Numerar",
+    "card": "Card",
+    "completeSale": "Finalizare Vânzare",
+    "voidSale": "Anulare Vânzare",
+    "selectProduct": "Selectați un produs",
+    "noProducts": "Niciun produs disponibil",
+    "orderConfirmed": "Comandă confirmată",
+    "paymentReceived": "Plată primită",
+    "receiptGenerated": "Chitanță generată"
+  },
+  "waiter": {
+    "title": "Comenzi Chelner",
+    "selectTable": "Selectați o masă",
+    "currentOrder": "Comandă Curentă",
+    "addToOrder": "Adăugare la Comandă",
+    "sendToKitchen": "Trimitere la Bucătărie",
+    "clearOrder": "Ștergere Comandă",
+    "table": "Masă",
+    "items": "Articole",
+    "quantity": "Cantitate",
+    "price": "Preț"
+  },
+  "setup": {
+    "title": "Asistent Configurare",
+    "welcome": "Bun venit la Databox CMS",
+    "chooseProfile": "Alegeți tipul organizației",
+    "legalEntity": "Detalii Entitate Legală",
+    "orgName": "Nume Organizație",
+    "orgType": "Tip Organizație",
+    "complete": "Finalizare Configurare",
+    "step": "Pas",
+    "of": "din"
+  },
+  "receipts": {
+    "title": "Chitanțe",
+    "orderId": "ID Comandă",
+    "customer": "Client",
+    "date": "Dată",
+    "total": "Total",
+    "viewReceipt": "Vezi Chitanța",
+    "noReceipts": "Nicio chitanță găsită"
+  },
+  "programs": {
+    "title": "Programe",
+    "createProgram": "Creare Program",
+    "programName": "Nume Program",
+    "programType": "Tip Program",
+    "noPrograms": "Niciun program definit"
+  },
+  "mappings": {
+    "title": "Asocieri Conector",
+    "sourceType": "Tip Sursă",
+    "odbc": "ODBC",
+    "ldap": "LDAP",
+    "connectionString": "Șir de Conexiune",
+    "query": "Interogare",
+    "url": "URL",
+    "searchBase": "Bază de Căutare",
+    "simulate": "Simulare",
+    "results": "Rezultate"
+  },
+  "accessRequests": {
+    "title": "Cereri de Acces",
+    "requester": "Solicitant",
+    "resource": "Resursă",
+    "status": "Stare",
+    "approve": "Aprobare",
+    "deny": "Refuzare",
+    "noRequests": "Nicio cerere de acces"
+  },
+  "corrections": {
+    "title": "Corectări",
+    "requestedBy": "Solicitat de",
+    "field": "Câmp",
+    "currentValue": "Valoare Curentă",
+    "requestedValue": "Valoare Solicitată",
+    "approve": "Aprobare",
+    "deny": "Refuzare",
+    "noCorrections": "Nicio cerere de corectare"
+  },
+  "consumerLedger": {
+    "title": "Registru Consumator",
+    "consumer": "Consumator",
+    "event": "Eveniment",
+    "timestamp": "Marcă Temporală",
+    "details": "Detalii",
+    "noEntries": "Nicio intrare în registru"
+  },
+  "dataPortability": {
+    "title": "Registru Portabilitate Date",
+    "export": "Export Date",
+    "import": "Import Date",
+    "format": "Format",
+    "status": "Stare"
+  },
+  "events": {
+    "title": "Distribuitor Evenimente",
+    "eventType": "Tip Eveniment",
+    "payload": "Payload",
+    "dispatch": "Distribuire",
+    "result": "Rezultat"
+  },
+  "errors": {
+    "hosting": {
+      "invalid_domain": "Un plan de găzduire necesită un domeniu principal precum \"acme.org\".",
+      "invalid_origin": "Un plan de găzduire necesită o destinație de origine (IP sau nume gazdă).",
+      "api_token_required": "Un token API Cloudflare este necesar pentru aplicarea planului.",
+      "api_request_failed": "Cererea API Cloudflare a eșuat.",
+      "dns_record_exists": "Înregistrarea DNS există deja.",
+      "tunnel_creation_failed": "Crearea tunelului Cloudflare a eșuat."
+    },
+    "general": {
+      "not_authenticated": "Nu sunteți autentificat.",
+      "forbidden": "Nu aveți permisiunea de a efectua această acțiune.",
+      "not_found": "Resursa solicitată nu a fost găsită.",
+      "internal_error": "A apărut o eroare internă a serverului.",
+      "network_error": "A apărut o eroare de rețea."
+    }
+  }
+}

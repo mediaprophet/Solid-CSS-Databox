@@ -1,5 +1,5 @@
 import type { Readable } from 'node:stream';
-import arrayifyStream from 'arrayify-stream';
+import { arrayifyStream } from 'arrayify-stream';
 import { SparqlEndpointFetcher } from 'fetch-sparql-endpoint';
 import { DataFactory } from 'n3';
 import type { NamedNode, Quad } from '@rdfjs/types';

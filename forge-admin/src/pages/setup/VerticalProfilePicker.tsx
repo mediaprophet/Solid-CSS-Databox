@@ -1,6 +1,6 @@
-// @ts-nocheck
-import React, { useEffect, useMemo, useState } from "react";
-import { useCreate, useList } from "@refinedev/core";
+import { useEffect, useMemo, useState } from "react";
+import { useList } from "@refinedev/core";
+import { useCreate } from "../../hooks/useCreate";
 
 const statusClass = (module: any) => {
   if (!module.available) return "bg-red-500/10 text-red-200 border-red-500/35";
@@ -31,7 +31,7 @@ export const VerticalProfilePicker = () => {
 
   useEffect(() => {
     if (!selectedId && profiles.length > 0) {
-      setSelectedId(profiles[0].id);
+      setSelectedId(String(profiles[0].id));
     }
   }, [profiles, selectedId]);
 

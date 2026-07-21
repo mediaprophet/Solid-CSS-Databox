@@ -1,0 +1,28 @@
+services:
+  databox-cms:
+    image: node:24-slim
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./:/app
+      - databox-data:/app/data
+    environment:
+      - NODE_ENV=production
+      - BASE_URL=http://localhost:3000/
+      - CSS_STORAGE_PATH=/app/data/storage
+      # CMS_CONTROL_TOKEN must be set — generate with: openssl rand -hex 32
+      - CMS_CONTROL_TOKEN=${CMS_CONTROL_TOKEN:?CMS_CONTROL_TOKEN is required}
+    command: >
+      sh -c "npm install --omit=dev && npx community-solid-server -c config/cms/cms.json -f /app/data/storage --baseUrl $${BASE_URL}"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:3000/').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    restart: unless-stopped
+
+volumes:
+  databox-data:
+    driver: local

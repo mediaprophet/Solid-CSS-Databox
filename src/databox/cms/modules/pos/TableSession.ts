@@ -1,4 +1,5 @@
 import { BadRequestHttpError } from '../../../../util/errors/BadRequestHttpError';
+import { CMS } from '../../../../util/Vocabularies';
 import type { SolidModuleManifest } from '../../SolidModuleManifest';
 import {
   LD_CONTEXT,
@@ -105,6 +106,7 @@ export const TABLE_SESSION_MODULE_MANIFEST: SolidModuleManifest = {
     'POST /.databox/cms/pos/wifi-onboarding',
     'GET /.databox/cms/pos/wifi-onboarding',
   ],
+  configShape: `${CMS.namespace}TableSessionConfigShape`,
   adminUi: {
     navLabel: 'Table Sessions',
     path: '/pos/tables',

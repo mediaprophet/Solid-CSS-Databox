@@ -1,0 +1,237 @@
+{
+  "app": {
+    "title": "Databox CMS",
+    "subtitle": "Solid-native turinio valdymas"
+  },
+  "nav": {
+    "setup": "Sąranka",
+    "modules": "Moduliai",
+    "hosting": "Hostingas",
+    "pos": "POS terminalas",
+    "waiter": "Padavėjo užsakymai",
+    "customerOrder": "Kliento savitarna",
+    "display": "Reklamos ekranas",
+    "receipts": "Kvitansijos",
+    "programs": "Programos",
+    "mappings": "Atvaizdavimai",
+    "events": "Įvykiai",
+    "dataPortability": "Duomenų perkeliamumas",
+    "accessRequests": "Prieigos užklausos",
+    "corrections": "Pataisymai",
+    "consumerLedger": "Vartotojų registras"
+  },
+  "common": {
+    "save": "Išsaugoti",
+    "cancel": "Atšaukti",
+    "delete": "Ištrinti",
+    "edit": "Redaguoti",
+    "create": "Sukurti",
+    "search": "Ieškoti",
+    "loading": "Kraunama...",
+    "error": "Klaida",
+    "success": "Sėkmė",
+    "close": "Uždaryti",
+    "back": "Atgal",
+    "next": "Kitas",
+    "confirm": "Patvirtinti",
+    "yes": "Taip",
+    "no": "Ne",
+    "enabled": "Aktyvuota",
+    "disabled": "Deaktyvuota",
+    "status": "Būsena",
+    "mode": "Režimas",
+    "actions": "Veiksmai",
+    "name": "Pavadinimas",
+    "description": "Aprašymas",
+    "type": "Tipas",
+    "date": "Data",
+    "time": "Laikas",
+    "amount": "Suma",
+    "total": "Iš viso",
+    "language": "Kalba"
+  },
+  "hosting": {
+    "title": "Hostingo sąranka",
+    "apexDomain": "Pagrindinis domenas",
+    "apexDomainPlaceholder": "pavyzdys.org",
+    "originTarget": "Kilmės tikslas",
+    "originTargetPlaceholder": "IP adresas arba pagrindinio kompiuterio vardas",
+    "databoxLabel": "Databox subdomenas",
+    "databoxLabelPlaceholder": "databox",
+    "wwwEnabled": "Įjungti www subdomeną",
+    "proxied": "Proxied (Cloudflare)",
+    "planButton": "Generuoti planą",
+    "applyButton": "Taikyti Cloudflare",
+    "persistButton": "Išsaugoti konfigūraciją",
+    "bindButton": "Susieti kilmę",
+    "cloudflareToken": "Cloudflare API tokenas",
+    "cloudflareTokenPlaceholder": "Įveskite Cloudflare API tokeną",
+    "downloadArtifacts": "Atsisiųsti artefaktus",
+    "dnsRecords": "DNS įrašai",
+    "launchCommand": "Paleidimo komanda",
+    "baseUrl": "Bazinis URL",
+    "planSuccess": "Hostingo planas sėkmingai sugeneruotas",
+    "planError": "Nepavyko sugeneruoti hostingo plano",
+    "applySuccess": "DNS įrašai ir tunelis sėkmingai sukonfigūruoti",
+    "applyError": "Nepavyko taikyti hostingo konfigūracijos",
+    "persistSuccess": "Konfigūracija išsaugota kaip RDF resursas",
+    "persistError": "Nepavyko išsaugoti konfigūracijos",
+    "bindSuccess": "Kilmė susieta kaip TenantBinding",
+    "bindError": "Nepavyko susieti kilmės"
+  },
+  "governance": {
+    "title": "Valdymas",
+    "subtitle": "Rolės susiejimai, ODRL politikos, patvirtinimo vartai ir rezoliucijos."
+  },
+  "credentials": {
+    "title": "Kredencialai",
+    "subtitle": "Išduoti, tikrinti ir atšaukti patikrinamus kredencialus."
+  },
+  "members": {
+    "title": "Nariai",
+    "subtitle": "Tiekti narių pod-us, valdyti gyvavimo ciklą ir siųsti pranešimus per LDN."
+  },
+  "operations": {
+    "title": "Operacijos",
+    "subtitle": "3 etapo operatyviniai horizontalai: sutikimas, delegavimas, ekstremali situacija, atsargos, lojalumas, kainodara ir daugiau."
+  },
+  "modules": {
+    "title": "CMS moduliai",
+    "enabled": "Aktyvuota",
+    "disabled": "Deaktyvuota",
+    "enable": "Aktyvuoti",
+    "disable": "Deaktyvuoti",
+    "configure": "Konfigūruoti",
+    "capabilities": "Galimybės",
+    "routes": "Maršrutai",
+    "configShape": "Konfigūracijos forma",
+    "noModules": "Nėra įdiegtų modulių"
+  },
+  "pos": {
+    "title": "POS terminalas",
+    "cart": "Krepšelis",
+    "checkout": "Kasa",
+    "subtotal": "Tarpinė suma",
+    "tax": "Mokestis",
+    "total": "Iš viso",
+    "payment": "Mokėjimas",
+    "cash": "Grynaisiais",
+    "card": "Kortelė",
+    "completeSale": "Užbaigti pardavimą",
+    "voidSale": "Anuliuoti pardavimą",
+    "selectProduct": "Pasirinkite produktą",
+    "noProducts": "Produktų nėra",
+    "orderConfirmed": "Užsakymas patvirtintas",
+    "paymentReceived": "Mokėjimas gautas",
+    "receiptGenerated": "Kvitansija sugeneruota"
+  },
+  "waiter": {
+    "title": "Padavėjo užsakymai",
+    "selectTable": "Pasirinkite stalą",
+    "currentOrder": "Dabartinis užsakymas",
+    "addToOrder": "Pridėti prie užsakymo",
+    "sendToKitchen": "Siųsti į virtuvę",
+    "clearOrder": "Išvalyti užsakymą",
+    "table": "Stalas",
+    "items": "Prekės",
+    "quantity": "Kiekis",
+    "price": "Kaina"
+  },
+  "setup": {
+    "title": "Sąrankos vedlys",
+    "welcome": "Sveiki atvykę į Databox CMS",
+    "chooseProfile": "Pasirinkite organizacijos tipą",
+    "legalEntity": "Juridinio asmens duomenys",
+    "orgName": "Organizacijos pavadinimas",
+    "orgType": "Organizacijos tipas",
+    "complete": "Užbaigti sąranką",
+    "step": "Žingsnis",
+    "of": "iš"
+  },
+  "receipts": {
+    "title": "Kvitansijos",
+    "orderId": "Užsakymo ID",
+    "customer": "Klientas",
+    "date": "Data",
+    "total": "Iš viso",
+    "viewReceipt": "Peržiūrėti kvitansiją",
+    "noReceipts": "Kvitansijų nerasta"
+  },
+  "programs": {
+    "title": "Programos",
+    "createProgram": "Sukurti programą",
+    "programName": "Programos pavadinimas",
+    "programType": "Programos tipas",
+    "noPrograms": "Programų nėra"
+  },
+  "mappings": {
+    "title": "Konektoriaus atvaizdavimai",
+    "sourceType": "Šaltinio tipas",
+    "odbc": "ODBC",
+    "ldap": "LDAP",
+    "connectionString": "Prisijungimo eilutė",
+    "query": "Užklausa",
+    "url": "URL",
+    "searchBase": "Paieškos bazė",
+    "simulate": "Simuliuoti",
+    "results": "Rezultatai"
+  },
+  "accessRequests": {
+    "title": "Prieigos užklausos",
+    "requester": "Pareiškėjas",
+    "resource": "Resursas",
+    "status": "Būsena",
+    "approve": "Patvirtinti",
+    "deny": "Atmesti",
+    "noRequests": "Prieigos užklausų nėra"
+  },
+  "corrections": {
+    "title": "Pataisymai",
+    "requestedBy": "Pareikalavo",
+    "field": "Laukas",
+    "currentValue": "Dabartinė reikšmė",
+    "requestedValue": "Pageidaujama reikšmė",
+    "approve": "Patvirtinti",
+    "deny": "Atmesti",
+    "noCorrections": "Pataisymų užklausų nėra"
+  },
+  "consumerLedger": {
+    "title": "Vartotojų registras",
+    "consumer": "Vartotojas",
+    "event": "Įvykis",
+    "timestamp": "Laiko žyma",
+    "details": "Detalės",
+    "noEntries": "Registro įrašų nėra"
+  },
+  "dataPortability": {
+    "title": "Duomenų perkeliamumo registras",
+    "export": "Eksportuoti duomenis",
+    "import": "Importuoti duomenis",
+    "format": "Formatas",
+    "status": "Būsena"
+  },
+  "events": {
+    "title": "Įvykių siuntėjas",
+    "eventType": "Įvykio tipas",
+    "payload": "Payload",
+    "dispatch": "Siųsti",
+    "result": "Rezultatas"
+  },
+  "errors": {
+    "hosting": {
+      "invalid_domain": "Hostingo planui reikia pagrindinio domeno kaip \"acme.org\".",
+      "invalid_origin": "Hostingo planui reikia kilmės tikslo (IP arba pagrindinio kompiuterio vardo).",
+      "api_token_required": "Cloudflare API tokenas reikalingas plano taikymui.",
+      "api_request_failed": "Cloudflare API užklausa nepavyko.",
+      "dns_record_exists": "DNS įrašas jau egzistuoja.",
+      "tunnel_creation_failed": "Nepavyko sukurti Cloudflare tunelio."
+    },
+    "general": {
+      "not_authenticated": "Jūs neesate autentifikuotas.",
+      "forbidden": "Neturite leidimo atlikti šį veiksmą.",
+      "not_found": "Pageidaujamas resursas nerastas.",
+      "internal_error": "Įvyko vidinė serverio klaida.",
+      "network_error": "Įvyko tinklo klaida."
+    }
+  }
+}

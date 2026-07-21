@@ -1,4 +1,4 @@
-import arrayifyStream from 'arrayify-stream';
+import { arrayifyStream } from 'arrayify-stream';
 import type { RepresentationConverter } from '../../storage/conversion/RepresentationConverter';
 import { INTERNAL_QUADS } from '../../util/ContentTypes';
 import { cloneRepresentation } from '../../util/ResourceUtil';
