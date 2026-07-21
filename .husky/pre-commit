@@ -1,2 +1,14 @@
-[ ! -d node_modules ] && echo "husky: node_modules not found, skipping tests" && exit 0
-node node_modules/jest/bin/jest.js --config=./jest.config.js test/unit --coverageReporters none
+# Run root server unit tests if node_modules is installed
+if [ -d node_modules ] && [ -f node_modules/jest/bin/jest.js ]; then
+  node node_modules/jest/bin/jest.js --config=./jest.config.js test/unit --coverageReporters none
+fi
+
+# Run forge-admin lint/build if node_modules is installed
+if [ -d forge-admin/node_modules ]; then
+  cd forge-admin && npm.cmd run build && cd ..
+fi
+
+# Skip entirely if no node_modules anywhere
+if [ ! -d node_modules ] && [ ! -d forge-admin/node_modules ]; then
+  echo "husky: no node_modules found anywhere, skipping tests"
+fi
