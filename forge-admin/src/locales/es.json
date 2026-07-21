@@ -1,0 +1,237 @@
+{
+  "app": {
+    "title": "Databox CMS",
+    "subtitle": "Gestión de contenido nativa Solid"
+  },
+  "nav": {
+    "setup": "Configuración",
+    "modules": "Módulos",
+    "hosting": "Alojamiento",
+    "pos": "Terminal POS",
+    "waiter": "Pedidos de Camarero",
+    "customerOrder": "Pedido de Cliente",
+    "display": "Pantalla de Promoción",
+    "receipts": "Recibos",
+    "programs": "Programas",
+    "mappings": "Asignaciones",
+    "events": "Eventos",
+    "dataPortability": "Portabilidad de Datos",
+    "accessRequests": "Solicitudes de Acceso",
+    "corrections": "Correcciones",
+    "consumerLedger": "Registro de Consumidor"
+  },
+  "common": {
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "create": "Crear",
+    "search": "Buscar",
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "close": "Cerrar",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "confirm": "Confirmar",
+    "yes": "Sí",
+    "no": "No",
+    "enabled": "Activado",
+    "disabled": "Desactivado",
+    "status": "Estado",
+    "mode": "Modo",
+    "actions": "Acciones",
+    "name": "Nombre",
+    "description": "Descripción",
+    "type": "Tipo",
+    "date": "Fecha",
+    "time": "Hora",
+    "amount": "Importe",
+    "total": "Total",
+    "language": "Idioma"
+  },
+  "hosting": {
+    "title": "Configuración de Alojamiento",
+    "apexDomain": "Dominio Principal",
+    "apexDomainPlaceholder": "ejemplo.org",
+    "originTarget": "Destino de Origen",
+    "originTargetPlaceholder": "Dirección IP o nombre de host",
+    "databoxLabel": "Subdominio Databox",
+    "databoxLabelPlaceholder": "databox",
+    "wwwEnabled": "Habilitar subdominio www",
+    "proxied": "Proxy (Cloudflare)",
+    "planButton": "Generar Plan",
+    "applyButton": "Aplicar a Cloudflare",
+    "persistButton": "Persistir Configuración",
+    "bindButton": "Vincular Origen",
+    "cloudflareToken": "Token API de Cloudflare",
+    "cloudflareTokenPlaceholder": "Introducir token API de Cloudflare",
+    "downloadArtifacts": "Descargar Artefactos",
+    "dnsRecords": "Registros DNS",
+    "launchCommand": "Comando de Inicio",
+    "baseUrl": "URL Base",
+    "planSuccess": "Plan de alojamiento generado con éxito",
+    "planError": "Error al generar el plan de alojamiento",
+    "applySuccess": "Registros DNS y túnel configurados con éxito",
+    "applyError": "Error al aplicar la configuración de alojamiento",
+    "persistSuccess": "Configuración persistida como recurso RDF",
+    "persistError": "Error al persistir la configuración",
+    "bindSuccess": "Origen vinculado como TenantBinding",
+    "bindError": "Error al vincular el origen"
+  },
+  "governance": {
+    "title": "Gobernanza",
+    "subtitle": "Asignaciones de roles, políticas ODRL, puertas de aprobación y resoluciones."
+  },
+  "credentials": {
+    "title": "Credenciales",
+    "subtitle": "Emitir, verificar y revocar credenciales verificables."
+  },
+  "members": {
+    "title": "Miembros",
+    "subtitle": "Aprovisionar pods de miembros, gestionar ciclo de vida y enviar notificaciones vía LDN."
+  },
+  "operations": {
+    "title": "Operaciones",
+    "subtitle": "Horizontales operativos de Fase 3: consentimiento, delegación, emergencia, inventario, lealtad, precios y más."
+  },
+  "modules": {
+    "title": "Módulos CMS",
+    "enabled": "Activado",
+    "disabled": "Desactivado",
+    "enable": "Activar",
+    "disable": "Desactivar",
+    "configure": "Configurar",
+    "capabilities": "Capacidades",
+    "routes": "Rutas",
+    "configShape": "Forma de Configuración",
+    "noModules": "Ningún módulo instalado"
+  },
+  "pos": {
+    "title": "Terminal POS",
+    "cart": "Carrito",
+    "checkout": "Caja",
+    "subtotal": "Subtotal",
+    "tax": "Impuesto",
+    "total": "Total",
+    "payment": "Pago",
+    "cash": "Efectivo",
+    "card": "Tarjeta",
+    "completeSale": "Completar Venta",
+    "voidSale": "Anular Venta",
+    "selectProduct": "Seleccionar un producto",
+    "noProducts": "Ningún producto disponible",
+    "orderConfirmed": "Pedido confirmado",
+    "paymentReceived": "Pago recibido",
+    "receiptGenerated": "Recibo generado"
+  },
+  "waiter": {
+    "title": "Pedidos de Camarero",
+    "selectTable": "Seleccionar una mesa",
+    "currentOrder": "Pedido Actual",
+    "addToOrder": "Añadir al Pedido",
+    "sendToKitchen": "Enviar a Cocina",
+    "clearOrder": "Borrar Pedido",
+    "table": "Mesa",
+    "items": "Artículos",
+    "quantity": "Cantidad",
+    "price": "Precio"
+  },
+  "setup": {
+    "title": "Asistente de Configuración",
+    "welcome": "Bienvenido a Databox CMS",
+    "chooseProfile": "Elija su tipo de organización",
+    "legalEntity": "Detalles de la Entidad Legal",
+    "orgName": "Nombre de la Organización",
+    "orgType": "Tipo de Organización",
+    "complete": "Completar Configuración",
+    "step": "Paso",
+    "of": "de"
+  },
+  "receipts": {
+    "title": "Recibos",
+    "orderId": "ID de Pedido",
+    "customer": "Cliente",
+    "date": "Fecha",
+    "total": "Total",
+    "viewReceipt": "Ver Recibo",
+    "noReceipts": "Ningún recibo encontrado"
+  },
+  "programs": {
+    "title": "Programas",
+    "createProgram": "Crear Programa",
+    "programName": "Nombre del Programa",
+    "programType": "Tipo de Programa",
+    "noPrograms": "Ningún programa definido"
+  },
+  "mappings": {
+    "title": "Asignaciones de Conector",
+    "sourceType": "Tipo de Origen",
+    "odbc": "ODBC",
+    "ldap": "LDAP",
+    "connectionString": "Cadena de Conexión",
+    "query": "Consulta",
+    "url": "URL",
+    "searchBase": "Base de Búsqueda",
+    "simulate": "Simular",
+    "results": "Resultados"
+  },
+  "accessRequests": {
+    "title": "Solicitudes de Acceso",
+    "requester": "Solicitante",
+    "resource": "Recurso",
+    "status": "Estado",
+    "approve": "Aprobar",
+    "deny": "Denegar",
+    "noRequests": "Ninguna solicitud de acceso"
+  },
+  "corrections": {
+    "title": "Correcciones",
+    "requestedBy": "Solicitado por",
+    "field": "Campo",
+    "currentValue": "Valor Actual",
+    "requestedValue": "Valor Solicitado",
+    "approve": "Aprobar",
+    "deny": "Denegar",
+    "noCorrections": "Ninguna solicitud de corrección"
+  },
+  "consumerLedger": {
+    "title": "Registro de Consumidor",
+    "consumer": "Consumidor",
+    "event": "Evento",
+    "timestamp": "Marca de Tiempo",
+    "details": "Detalles",
+    "noEntries": "Ninguna entrada de registro"
+  },
+  "dataPortability": {
+    "title": "Registro de Portabilidad de Datos",
+    "export": "Exportar Datos",
+    "import": "Importar Datos",
+    "format": "Formato",
+    "status": "Estado"
+  },
+  "events": {
+    "title": "Distribuidor de Eventos",
+    "eventType": "Tipo de Evento",
+    "payload": "Carga Útil",
+    "dispatch": "Distribuir",
+    "result": "Resultado"
+  },
+  "errors": {
+    "hosting": {
+      "invalid_domain": "Un plan de alojamiento necesita un dominio principal como \"acme.org\".",
+      "invalid_origin": "Un plan de alojamiento necesita un destino de origen (IP o nombre de host).",
+      "api_token_required": "Se requiere un token API de Cloudflare para aplicar el plan.",
+      "api_request_failed": "La solicitud API de Cloudflare falló.",
+      "dns_record_exists": "El registro DNS ya existe.",
+      "tunnel_creation_failed": "Error al crear el túnel de Cloudflare."
+    },
+    "general": {
+      "not_authenticated": "No está autenticado.",
+      "forbidden": "No tiene permiso para realizar esta acción.",
+      "not_found": "El recurso solicitado no fue encontrado.",
+      "internal_error": "Ocurrió un error interno del servidor.",
+      "network_error": "Ocurrió un error de red."
+    }
+  }
+}

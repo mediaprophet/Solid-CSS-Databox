@@ -1,0 +1,33 @@
+@prefix schema: <https://schema.org/> .
+@prefix solid: <https://www.w3.org/ns/solid/v1> .
+
+<https://databox.example.org/apps/scorekeeper-app/>
+  a schema:SoftwareApplication, solid:SolidApp ;
+  schema:name "Scorekeeper App" ;
+  schema:description "Live score marking for matches/games, writes to pod, notifies via LDN" ;
+  schema:softwareVersion "1.0.0" ;
+  schema:identifier "scorekeeper-app" ;
+  solid:networkScope "local-only" ;
+  solid:requiredModules ( "events" "records" ) ;
+  solid:verticalProfiles ( "sport.league-team" "sport.facility-court" ) ;
+  solid:installUrl <https://databox.example.org/apps/scorekeeper-app/> ;
+  schema:featureList [
+    a schema:FeatureSpecification ;
+    schema:identifier "matches" ;
+    solid:moduleId "events" ;
+    schema:name "Live Matches" ;
+    schema:url "/.databox/cms/events" ;
+    schema:icon "trophy" ;
+    schema:position 1 ;
+    solid:requiredPermission "events:score" ;
+  ], [
+    a schema:FeatureSpecification ;
+    schema:identifier "standings" ;
+    solid:moduleId "records" ;
+    schema:name "Standings" ;
+    schema:url "/.databox/cms/records" ;
+    schema:icon "list-ordered" ;
+    schema:position 2 ;
+  ] ;
+  schema:permission ( "events:score" "records:write" ) ;
+.

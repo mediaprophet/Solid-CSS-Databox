@@ -77,7 +77,12 @@ describe('CMS vertical profiles', (): void => {
       'opening-hours',
       'website-seo',
       'mcp-server',
+      'barcode',
+      'eftpos',
+      'backups',
+      'accounting',
     ]);
+    expect(result.missingModules).toEqual(expect.arrayContaining(['barcode', 'eftpos', 'backups', 'accounting']));
   });
 
   it('applies enabled defaults and RDF config through the module config store.', async(): Promise<void> => {
@@ -98,7 +103,13 @@ describe('CMS vertical profiles', (): void => {
       'opening-hours',
       'website-seo',
       'mcp-server',
+      'barcode',
+      'eftpos',
+      'backups',
+      'accounting',
     ]);
+    expect(registry.listEnabled().map((manifest): string => manifest.id))
+      .toEqual(expect.arrayContaining(['barcode', 'eftpos', 'backups', 'accounting']));
     expect(data.get('https://databox.example/.databox/cms/modules/catalogue'))
       .toContain('https://schema.org/itemListOrder');
     expect(data.get('https://databox.example/.databox/cms/modules/receipt'))
@@ -117,6 +128,7 @@ describe('CMS vertical profiles', (): void => {
   it('ships meaningful lighthouse bundles from the CMS plan.', (): void => {
     expect(LIGHTHOUSE_VERTICAL_PROFILES.map((profile): string => profile.id)).toEqual([
       'food.restaurant',
+      'food.allergy-safety',
       'health.privacy-consent',
       'auto.portable-records',
       'member.governance',
@@ -135,7 +147,14 @@ describe('CMS vertical profiles', (): void => {
       'wellness.practitioner',
       'wellness.venue',
       'wellness.clinic',
+      'print.shop',
+      'hr.workforce',
+      'food.take-away',
+      'sports.venue',
+      'trades.service',
+      'charity.nonprofit',
     ]);
+    expect(LIGHTHOUSE_VERTICAL_PROFILES.length).toBeGreaterThanOrEqual(26);
     expect(FOOD_RESTAURANT_VERTICAL_PROFILE.modules.map((module): string => module.moduleId))
       .toEqual(expect.arrayContaining([ 'menu', 'catalogue', 'payments', 'receipt', 'bookings', 'events' ]));
     expect(HEALTH_PRIVACY_CONSENT_VERTICAL_PROFILE.modules.map((module): string => module.moduleId))
@@ -147,6 +166,7 @@ describe('CMS vertical profiles', (): void => {
         'delegation',
         'break-glass',
         'credential-gate',
+        'backups',
       ]));
   });
 

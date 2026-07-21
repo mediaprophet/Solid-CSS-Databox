@@ -5,7 +5,7 @@ import { parse, toSeconds } from 'iso8601-duration';
 import { DataFactory } from 'n3';
 import type { Store } from 'n3';
 import type { NamedNode, Term } from '@rdfjs/types';
-import rdfParser from 'rdf-parse';
+import { rdfParser } from 'rdf-parse';
 import SHACLValidator from 'rdf-validate-shacl';
 import type { Credentials } from '../../authentication/Credentials';
 import type { AccessMap } from '../../authorization/permissions/Permissions';
@@ -197,7 +197,7 @@ export abstract class BaseChannelType implements NotificationChannelType {
     }
 
     const validator = new SHACLValidator(await this.getShaclQuads());
-    const report = validator.validate(data);
+    const report = await validator.validate(data);
 
     if (!report.conforms) {
       // Use the first error to generate error message

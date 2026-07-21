@@ -1,0 +1,237 @@
+{
+  "app": {
+    "title": "Databox CMS",
+    "subtitle": "Solid-native content management"
+  },
+  "nav": {
+    "setup": "Setup",
+    "modules": "Modules",
+    "hosting": "Hosting",
+    "pos": "POS Terminal",
+    "waiter": "Waiter Orders",
+    "customerOrder": "Customer Self-Order",
+    "display": "Promotion Display",
+    "receipts": "Receipts",
+    "programs": "Programs",
+    "mappings": "Mappings",
+    "events": "Events",
+    "dataPortability": "Data Portability",
+    "accessRequests": "Access Requests",
+    "corrections": "Corrections",
+    "consumerLedger": "Consumer Ledger"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "search": "Search",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "confirm": "Confirm",
+    "yes": "Yes",
+    "no": "No",
+    "enabled": "Enabled",
+    "disabled": "Disabled",
+    "status": "Status",
+    "mode": "Mode",
+    "actions": "Actions",
+    "name": "Name",
+    "description": "Description",
+    "type": "Type",
+    "date": "Date",
+    "time": "Time",
+    "amount": "Amount",
+    "total": "Total",
+    "language": "Language"
+  },
+  "hosting": {
+    "title": "Hosting Setup",
+    "apexDomain": "Apex Domain",
+    "apexDomainPlaceholder": "example.org",
+    "originTarget": "Origin Target",
+    "originTargetPlaceholder": "IP address or hostname",
+    "databoxLabel": "Databox Subdomain",
+    "databoxLabelPlaceholder": "databox",
+    "wwwEnabled": "Enable www subdomain",
+    "proxied": "Proxied (Cloudflare)",
+    "planButton": "Generate Plan",
+    "applyButton": "Apply to Cloudflare",
+    "persistButton": "Persist Configuration",
+    "bindButton": "Bind Origin",
+    "cloudflareToken": "Cloudflare API Token",
+    "cloudflareTokenPlaceholder": "Enter scoped Cloudflare API token",
+    "downloadArtifacts": "Download Artifacts",
+    "dnsRecords": "DNS Records",
+    "launchCommand": "Launch Command",
+    "baseUrl": "Base URL",
+    "planSuccess": "Hosting plan generated successfully",
+    "planError": "Failed to generate hosting plan",
+    "applySuccess": "DNS records and tunnel configured successfully",
+    "applyError": "Failed to apply hosting configuration",
+    "persistSuccess": "Configuration persisted as RDF resource",
+    "persistError": "Failed to persist configuration",
+    "bindSuccess": "Origin bound as TenantBinding",
+    "bindError": "Failed to bind origin"
+  },
+  "governance": {
+    "title": "Governance",
+    "subtitle": "Role bindings, ODRL policies, approval gates, and resolutions."
+  },
+  "credentials": {
+    "title": "Credentials",
+    "subtitle": "Issue, verify, and revoke verifiable credentials."
+  },
+  "members": {
+    "title": "Members",
+    "subtitle": "Provision member pods, manage lifecycle, and send notifications via LDN."
+  },
+  "operations": {
+    "title": "Operations",
+    "subtitle": "Phase 3 operational horizontals: consent, delegation, emergency, inventory, loyalty, pricing, and more."
+  },
+  "modules": {
+    "title": "CMS Modules",
+    "enabled": "Enabled",
+    "disabled": "Disabled",
+    "enable": "Enable",
+    "disable": "Disable",
+    "configure": "Configure",
+    "capabilities": "Capabilities",
+    "routes": "Routes",
+    "configShape": "Config Shape",
+    "noModules": "No modules installed"
+  },
+  "pos": {
+    "title": "POS Terminal",
+    "cart": "Cart",
+    "checkout": "Checkout",
+    "subtotal": "Subtotal",
+    "tax": "Tax",
+    "total": "Total",
+    "payment": "Payment",
+    "cash": "Cash",
+    "card": "Card",
+    "completeSale": "Complete Sale",
+    "voidSale": "Void Sale",
+    "selectProduct": "Select a product",
+    "noProducts": "No products available",
+    "orderConfirmed": "Order confirmed",
+    "paymentReceived": "Payment received",
+    "receiptGenerated": "Receipt generated"
+  },
+  "waiter": {
+    "title": "Waiter Orders",
+    "selectTable": "Select a table",
+    "currentOrder": "Current Order",
+    "addToOrder": "Add to Order",
+    "sendToKitchen": "Send to Kitchen",
+    "clearOrder": "Clear Order",
+    "table": "Table",
+    "items": "Items",
+    "quantity": "Quantity",
+    "price": "Price"
+  },
+  "setup": {
+    "title": "Setup Wizard",
+    "welcome": "Welcome to the Databox CMS",
+    "chooseProfile": "Choose your organisation type",
+    "legalEntity": "Legal Entity Details",
+    "orgName": "Organisation Name",
+    "orgType": "Organisation Type",
+    "complete": "Complete Setup",
+    "step": "Step",
+    "of": "of"
+  },
+  "receipts": {
+    "title": "Receipts",
+    "orderId": "Order ID",
+    "customer": "Customer",
+    "date": "Date",
+    "total": "Total",
+    "viewReceipt": "View Receipt",
+    "noReceipts": "No receipts found"
+  },
+  "programs": {
+    "title": "Programs",
+    "createProgram": "Create Program",
+    "programName": "Program Name",
+    "programType": "Program Type",
+    "noPrograms": "No programs defined"
+  },
+  "mappings": {
+    "title": "Connector Mappings",
+    "sourceType": "Source Type",
+    "odbc": "ODBC",
+    "ldap": "LDAP",
+    "connectionString": "Connection String",
+    "query": "Query",
+    "url": "URL",
+    "searchBase": "Search Base",
+    "simulate": "Simulate",
+    "results": "Results"
+  },
+  "accessRequests": {
+    "title": "Access Requests",
+    "requester": "Requester",
+    "resource": "Resource",
+    "status": "Status",
+    "approve": "Approve",
+    "deny": "Deny",
+    "noRequests": "No access requests"
+  },
+  "corrections": {
+    "title": "Corrections",
+    "requestedBy": "Requested By",
+    "field": "Field",
+    "currentValue": "Current Value",
+    "requestedValue": "Requested Value",
+    "approve": "Approve",
+    "deny": "Deny",
+    "noCorrections": "No correction requests"
+  },
+  "consumerLedger": {
+    "title": "Consumer Ledger",
+    "consumer": "Consumer",
+    "event": "Event",
+    "timestamp": "Timestamp",
+    "details": "Details",
+    "noEntries": "No ledger entries"
+  },
+  "dataPortability": {
+    "title": "Data Portability Registry",
+    "export": "Export Data",
+    "import": "Import Data",
+    "format": "Format",
+    "status": "Status"
+  },
+  "events": {
+    "title": "Event Dispatcher",
+    "eventType": "Event Type",
+    "payload": "Payload",
+    "dispatch": "Dispatch",
+    "result": "Result"
+  },
+  "errors": {
+    "hosting": {
+      "invalid_domain": "A hosting plan needs an apex domain such as \"acme.org\".",
+      "invalid_origin": "A hosting plan needs an origin target (IP or hostname).",
+      "api_token_required": "A Cloudflare API token is required to apply the plan.",
+      "api_request_failed": "The Cloudflare API request failed.",
+      "dns_record_exists": "DNS record already exists.",
+      "tunnel_creation_failed": "Failed to create Cloudflare Tunnel."
+    },
+    "general": {
+      "not_authenticated": "You are not authenticated.",
+      "forbidden": "You do not have permission to perform this action.",
+      "not_found": "The requested resource was not found.",
+      "internal_error": "An internal server error occurred.",
+      "network_error": "A network error occurred."
+    }
+  }
+}

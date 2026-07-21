@@ -1,4 +1,4 @@
-import { serialize } from 'cookie';
+import { stringifySetCookie } from 'cookie';
 import type { NamedNode } from 'n3';
 import { DataFactory } from 'n3';
 import type { HttpResponse } from '../../../server/HttpResponse';
@@ -43,7 +43,7 @@ export class CookieMetadataWriter extends MetadataWriter {
         // SameSite: Lax makes it so the cookie gets sent if the origin is the server,
         // or if the browser navigates there from another site.
         // Setting the path to `/` so it applies to the entire server.
-        addHeader(response, 'Set-Cookie', serialize(name, value, { path: '/', sameSite: 'lax', expires }));
+        addHeader(response, 'Set-Cookie', stringifySetCookie({ name, value, path: '/', sameSite: 'lax', expires }));
       }
     }
   }

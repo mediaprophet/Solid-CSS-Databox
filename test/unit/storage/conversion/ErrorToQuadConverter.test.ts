@@ -1,5 +1,5 @@
 import 'jest-rdf';
-import arrayifyStream from 'arrayify-stream';
+import { arrayifyStream } from 'arrayify-stream';
 import { DataFactory } from 'n3';
 import { BasicRepresentation } from '../../../../src/http/representation/BasicRepresentation';
 import { ErrorToQuadConverter } from '../../../../src/storage/conversion/ErrorToQuadConverter';

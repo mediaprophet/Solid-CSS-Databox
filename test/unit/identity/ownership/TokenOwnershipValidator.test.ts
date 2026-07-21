@@ -2,7 +2,7 @@ import crypto from 'node:crypto';
 import { Readable } from 'node:stream';
 import { DataFactory } from 'n3';
 import type { Quad } from 'n3';
-import rdfDereferencer from 'rdf-dereference';
+import { rdfDereferencer } from 'rdf-dereference';
 import { TokenOwnershipValidator } from '../../../../src/identity/ownership/TokenOwnershipValidator';
 import type { ExpiringStorage } from '../../../../src/storage/keyvalue/ExpiringStorage';
 import { BadRequestHttpError } from '../../../../src/util/errors/BadRequestHttpError';
@@ -13,7 +13,9 @@ import { SOLID } from '../../../../src/util/Vocabularies';
 const { literal, namedNode, quad } = DataFactory;
 
 jest.mock('rdf-dereference', (): any => ({
-  dereference: jest.fn(),
+  rdfDereferencer: {
+    dereference: jest.fn(),
+  },
 }));
 
 function quadToString(qq: Quad): string {

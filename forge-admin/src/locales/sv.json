@@ -1,0 +1,237 @@
+{
+  "app": {
+    "title": "Databox CMS",
+    "subtitle": "Solid-native innehållshantering"
+  },
+  "nav": {
+    "setup": "Installation",
+    "modules": "Moduler",
+    "hosting": "Hosting",
+    "pos": "POS-terminal",
+    "waiter": "Kellnerbeställningar",
+    "customerOrder": "Kundsjälvbeställning",
+    "display": "Kampanjvisning",
+    "receipts": "Kvitton",
+    "programs": "Program",
+    "mappings": "Mappningar",
+    "events": "Händelser",
+    "dataPortability": "Dataportabilitet",
+    "accessRequests": "Åtkomstbegäranden",
+    "corrections": "Korrigeringar",
+    "consumerLedger": "Konsumentregister"
+  },
+  "common": {
+    "save": "Spara",
+    "cancel": "Avbryt",
+    "delete": "Ta bort",
+    "edit": "Redigera",
+    "create": "Skapa",
+    "search": "Sök",
+    "loading": "Laddar...",
+    "error": "Fel",
+    "success": "Lyckades",
+    "close": "Stäng",
+    "back": "Tillbaka",
+    "next": "Nästa",
+    "confirm": "Bekräfta",
+    "yes": "Ja",
+    "no": "Nej",
+    "enabled": "Aktiverad",
+    "disabled": "Inaktiverad",
+    "status": "Status",
+    "mode": "Läge",
+    "actions": "Åtgärder",
+    "name": "Namn",
+    "description": "Beskrivning",
+    "type": "Typ",
+    "date": "Datum",
+    "time": "Tid",
+    "amount": "Belopp",
+    "total": "Totalt",
+    "language": "Språk"
+  },
+  "hosting": {
+    "title": "Hostingkonfiguration",
+    "apexDomain": "Huvuddomän",
+    "apexDomainPlaceholder": "exempel.org",
+    "originTarget": "Ursprungsmål",
+    "originTargetPlaceholder": "IP-adress eller värdnamn",
+    "databoxLabel": "Databox-underdomän",
+    "databoxLabelPlaceholder": "databox",
+    "wwwEnabled": "Aktivera www-underdomän",
+    "proxied": "Proxied (Cloudflare)",
+    "planButton": "Generera Plan",
+    "applyButton": "Tillämpa på Cloudflare",
+    "persistButton": "Spara Konfiguration",
+    "bindButton": "Koppla Ursprung",
+    "cloudflareToken": "Cloudflare API-token",
+    "cloudflareTokenPlaceholder": "Ange Cloudflare API-token",
+    "downloadArtifacts": "Ladda ner Artefakter",
+    "dnsRecords": "DNS-poster",
+    "launchCommand": "Startkommando",
+    "baseUrl": "Bas-URL",
+    "planSuccess": "Hostingplan genererad",
+    "planError": "Misslyckades att generera hostingplan",
+    "applySuccess": "DNS-poster och tunnel konfigurerade",
+    "applyError": "Misslyckades att tillämpa hostingkonfiguration",
+    "persistSuccess": "Konfiguration sparad som RDF-resurs",
+    "persistError": "Misslyckades att spara konfiguration",
+    "bindSuccess": "Ursprung kopplat som TenantBinding",
+    "bindError": "Misslyckades att koppla ursprung"
+  },
+  "governance": {
+    "title": "Styrning",
+    "subtitle": "Rollbindningar, ODRL-policyer, godkännandepporter och resolutioner."
+  },
+  "credentials": {
+    "title": "Referenser",
+    "subtitle": "Utfärda, verifiera och återkalla verifierbara referenser."
+  },
+  "members": {
+    "title": "Medlemmar",
+    "subtitle": "Tillhandahåll medlemspods, hantera livscykel och skicka aviseringar via LDN."
+  },
+  "operations": {
+    "title": "Operationer",
+    "subtitle": "Operativa horisonteller Fas 3: samtycke, delegering, nödfall, lager, lojalitet, prissättning och mer."
+  },
+  "modules": {
+    "title": "CMS-moduler",
+    "enabled": "Aktiverad",
+    "disabled": "Inaktiverad",
+    "enable": "Aktivera",
+    "disable": "Inaktivera",
+    "configure": "Konfigurera",
+    "capabilities": "Kapaciteter",
+    "routes": "Rutter",
+    "configShape": "Konfigurationsform",
+    "noModules": "Inga moduler installerade"
+  },
+  "pos": {
+    "title": "POS-terminal",
+    "cart": "Kundvagn",
+    "checkout": "Kassa",
+    "subtotal": "Delsumma",
+    "tax": "Skatt",
+    "total": "Totalt",
+    "payment": "Betalning",
+    "cash": "Kontant",
+    "card": "Kort",
+    "completeSale": "Slutför Försäljning",
+    "voidSale": "Makulera Försäljning",
+    "selectProduct": "Välj en produkt",
+    "noProducts": "Inga produkter tillgängliga",
+    "orderConfirmed": "Beställning bekräftad",
+    "paymentReceived": "Betalning mottagen",
+    "receiptGenerated": "Kvitto genererat"
+  },
+  "waiter": {
+    "title": "Kellnerbeställningar",
+    "selectTable": "Välj ett bord",
+    "currentOrder": "Aktuell Beställning",
+    "addToOrder": "Lägg till i Beställning",
+    "sendToKitchen": "Skicka till Kök",
+    "clearOrder": "Rensa Beställning",
+    "table": "Bord",
+    "items": "Artiklar",
+    "quantity": "Antal",
+    "price": "Pris"
+  },
+  "setup": {
+    "title": "Installationsguide",
+    "welcome": "Välkommen till Databox CMS",
+    "chooseProfile": "Välj din organisationstyp",
+    "legalEntity": "Juridisk Enhets Detaljer",
+    "orgName": "Organisationsnamn",
+    "orgType": "Organisationstyp",
+    "complete": "Slutför Installation",
+    "step": "Steg",
+    "of": "av"
+  },
+  "receipts": {
+    "title": "Kvitton",
+    "orderId": "Beställnings-ID",
+    "customer": "Kund",
+    "date": "Datum",
+    "total": "Totalt",
+    "viewReceipt": "Visa Kvitto",
+    "noReceipts": "Inga kvitton hittades"
+  },
+  "programs": {
+    "title": "Program",
+    "createProgram": "Skapa Program",
+    "programName": "Programnamn",
+    "programType": "Programtyp",
+    "noPrograms": "Inga program definierade"
+  },
+  "mappings": {
+    "title": "Kopplingsmappningar",
+    "sourceType": "Källtyp",
+    "odbc": "ODBC",
+    "ldap": "LDAP",
+    "connectionString": "Anslutningssträng",
+    "query": "Fråga",
+    "url": "URL",
+    "searchBase": "Sökbas",
+    "simulate": "Simulera",
+    "results": "Resultat"
+  },
+  "accessRequests": {
+    "title": "Åtkomstbegäranden",
+    "requester": "Begärande",
+    "resource": "Resurs",
+    "status": "Status",
+    "approve": "Godkänn",
+    "deny": "Neka",
+    "noRequests": "Inga åtkomstbegäranden"
+  },
+  "corrections": {
+    "title": "Korrigeringar",
+    "requestedBy": "Begärd av",
+    "field": "Fält",
+    "currentValue": "Aktuellt Värde",
+    "requestedValue": "Begärt Värde",
+    "approve": "Godkänn",
+    "deny": "Neka",
+    "noCorrections": "Inga korrektionsbegäranden"
+  },
+  "consumerLedger": {
+    "title": "Konsumentregister",
+    "consumer": "Konsument",
+    "event": "Händelse",
+    "timestamp": "Tidsstämpel",
+    "details": "Detaljer",
+    "noEntries": "Inga registerposter"
+  },
+  "dataPortability": {
+    "title": "Dataportabilitetsregister",
+    "export": "Exportera Data",
+    "import": "Importera Data",
+    "format": "Format",
+    "status": "Status"
+  },
+  "events": {
+    "title": "Händelsedistributör",
+    "eventType": "Händelsetyp",
+    "payload": "Payload",
+    "dispatch": "Distribuera",
+    "result": "Resultat"
+  },
+  "errors": {
+    "hosting": {
+      "invalid_domain": "En hostingplan behöver en huvuddomän som \"acme.org\".",
+      "invalid_origin": "En hostingplan behöver ett ursprungsmål (IP eller värdnamn).",
+      "api_token_required": "En Cloudflare API-token krävs för att tillämpa planen.",
+      "api_request_failed": "Cloudflare API-begäran misslyckades.",
+      "dns_record_exists": "DNS-post finns redan.",
+      "tunnel_creation_failed": "Misslyckades att skapa Cloudflare-tunnel."
+    },
+    "general": {
+      "not_authenticated": "Du är inte autentiserad.",
+      "forbidden": "Du har inte behörighet att utföra denna åtgärd.",
+      "not_found": "Den begärda resursen hittades inte.",
+      "internal_error": "Ett internt serverfel uppstod.",
+      "network_error": "Ett nätverksfel uppstod."
+    }
+  }
+}

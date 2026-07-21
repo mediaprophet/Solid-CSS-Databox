@@ -21,12 +21,11 @@ function assertVariantInput(body: unknown): asserts body is VariantInput {
 }
 
 export function registerCatalogueRoutes(router: CmsModuleRouter<(input: HttpHandlerInput) => Promise<void>>): void {
-  router.register('POST', '/catalogue/variants', async({ request, response }): Promise<void> => {
+  router.register('POST', '/catalogue/variants/build', async({ request, response }): Promise<void> => {
     try {
       const body = await readJsonBody<Record<string, unknown>>(request);
       assertVariantInput(body);
-      const variants = buildVariants(body);
-      writeJson(response, 201, { variants });
+      writeJson(response, 200, buildVariants(body));
     } catch (error: unknown) {
       writeJson(response, errorStatusCode(error), {
         error: error instanceof Error ? error.message : 'Invalid variants request.',

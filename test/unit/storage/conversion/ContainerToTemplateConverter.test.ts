@@ -118,7 +118,11 @@ describe('A ContainerToTemplateConverter', (): void => {
         identifier: container.path,
         name: 'test.com',
         container: true,
-        children: expect.objectContaining({ length: 3 }),
+        children: expect.arrayContaining([
+          expect.objectContaining({ identifier: `${container.path}a` }),
+          expect.objectContaining({ identifier: `${container.path}b` }),
+          expect.objectContaining({ identifier: `${container.path}c` }),
+        ]),
         parents: [],
       },
     });

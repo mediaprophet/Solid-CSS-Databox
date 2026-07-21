@@ -1,7 +1,6 @@
-// @ts-nocheck
 import React, { useMemo, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useCreate } from "@refinedev/core";
+import { useCreate } from "../../hooks/useCreate";
 import { InformationCategories } from "./InformationCategories";
 import { VerticalProfilePicker } from "./VerticalProfilePicker";
 import { INFO_CATEGORIES, recommendCategories, vocabFor } from "../../data/informationCategories";

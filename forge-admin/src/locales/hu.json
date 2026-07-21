@@ -1,0 +1,237 @@
+{
+  "app": {
+    "title": "Databox CMS",
+    "subtitle": "Solid-native tartalomkezelés"
+  },
+  "nav": {
+    "setup": "Beállítás",
+    "modules": "Modulok",
+    "hosting": "Hosting",
+    "pos": "POS terminál",
+    "waiter": "Pincér rendelések",
+    "customerOrder": "Vásárlói önrendelés",
+    "display": "Promóciós kijelző",
+    "receipts": "Nyugták",
+    "programs": "Programok",
+    "mappings": "Leképezések",
+    "events": "Események",
+    "dataPortability": "Adathordozhatóság",
+    "accessRequests": "Hozzáférési kérelmek",
+    "corrections": "Javítások",
+    "consumerLedger": "Fogyasztói nyilvántartás"
+  },
+  "common": {
+    "save": "Mentés",
+    "cancel": "Mégse",
+    "delete": "Törlés",
+    "edit": "Szerkesztés",
+    "create": "Létrehozás",
+    "search": "Keresés",
+    "loading": "Betöltés...",
+    "error": "Hiba",
+    "success": "Siker",
+    "close": "Bezárás",
+    "back": "Vissza",
+    "next": "Tovább",
+    "confirm": "Megerősítés",
+    "yes": "Igen",
+    "no": "Nem",
+    "enabled": "Engedélyezve",
+    "disabled": "Letiltva",
+    "status": "Állapot",
+    "mode": "Mód",
+    "actions": "Műveletek",
+    "name": "Név",
+    "description": "Leírás",
+    "type": "Típus",
+    "date": "Dátum",
+    "time": "Idő",
+    "amount": "Összeg",
+    "total": "Összesen",
+    "language": "Nyelv"
+  },
+  "hosting": {
+    "title": "Hosting beállítás",
+    "apexDomain": "Fő tartomány",
+    "apexDomainPlaceholder": "pelda.org",
+    "originTarget": "Forráscél",
+    "originTargetPlaceholder": "IP-cím vagy gazdanév",
+    "databoxLabel": "Databox altartomány",
+    "databoxLabelPlaceholder": "databox",
+    "wwwEnabled": "www altartomány engedélyezése",
+    "proxied": "Proxied (Cloudflare)",
+    "planButton": "Terv generálása",
+    "applyButton": "Alkalmazás a Cloudflare-re",
+    "persistButton": "Konfiguráció mentése",
+    "bindButton": "Forrás kötése",
+    "cloudflareToken": "Cloudflare API token",
+    "cloudflareTokenPlaceholder": "Adja meg a Cloudflare API tokent",
+    "downloadArtifacts": "Artefaktumok letöltése",
+    "dnsRecords": "DNS rekordok",
+    "launchCommand": "Indítási parancs",
+    "baseUrl": "Alap URL",
+    "planSuccess": "Hosting terv sikeresen generálva",
+    "planError": "Nem sikerült a hosting terv generálása",
+    "applySuccess": "DNS rekordok és alagút sikeresen konfigurálva",
+    "applyError": "Nem sikerült a hosting konfiguráció alkalmazása",
+    "persistSuccess": "Konfiguráció RDF erőforrásként mentve",
+    "persistError": "Nem sikerült a konfiguráció mentése",
+    "bindSuccess": "Forrás TenantBinding-ként kötve",
+    "bindError": "Nem sikerült a forrás kötése"
+  },
+  "governance": {
+    "title": "Irányítás",
+    "subtitle": "Szerepkör-kötések, ODRL szabályok, jóváhagyási kapuk és határozatok."
+  },
+  "credentials": {
+    "title": "Hitelesítések",
+    "subtitle": "Ellenőrizhető hitelesítések kiadása, ellenőrzése és visszavonása."
+  },
+  "members": {
+    "title": "Tagok",
+    "subtitle": "Tag podok biztosítása, életciklus kezelése és értesítések küldése LDN-en keresztül."
+  },
+  "operations": {
+    "title": "Műveletek",
+    "subtitle": "3. fázis operatív horizontálisai: hozzájárulás, delegálás, vészhelyzet, készlet, hűség, árazás és több."
+  },
+  "modules": {
+    "title": "CMS modulok",
+    "enabled": "Engedélyezve",
+    "disabled": "Letiltva",
+    "enable": "Engedélyezés",
+    "disable": "Letiltás",
+    "configure": "Konfigurálás",
+    "capabilities": "Képességek",
+    "routes": "Útvonalak",
+    "configShape": "Konfigurációs alak",
+    "noModules": "Nincsenek telepített modulok"
+  },
+  "pos": {
+    "title": "POS terminál",
+    "cart": "Kosár",
+    "checkout": "Pénztár",
+    "subtotal": "Részösszeg",
+    "tax": "Adó",
+    "total": "Összesen",
+    "payment": "Fizetés",
+    "cash": "Készpénz",
+    "card": "Kártya",
+    "completeSale": "Értékesítés befejezése",
+    "voidSale": "Értékesítés érvénytelenítése",
+    "selectProduct": "Válasszon terméket",
+    "noProducts": "Nincsenek elérhető termékek",
+    "orderConfirmed": "Rendelés megerősítve",
+    "paymentReceived": "Fizetés megkapva",
+    "receiptGenerated": "Nyugta generálva"
+  },
+  "waiter": {
+    "title": "Pincér rendelések",
+    "selectTable": "Válasszon asztalt",
+    "currentOrder": "Jelenlegi rendelés",
+    "addToOrder": "Hozzáadás a rendeléshez",
+    "sendToKitchen": "Küldés a konyhába",
+    "clearOrder": "Rendelés törlése",
+    "table": "Asztal",
+    "items": "Tételek",
+    "quantity": "Mennyiség",
+    "price": "Ár"
+  },
+  "setup": {
+    "title": "Beállítási varázsló",
+    "welcome": "Üdvözli a Databox CMS",
+    "chooseProfile": "Válassza ki a szervezet típusát",
+    "legalEntity": "Jogi személy adatai",
+    "orgName": "Szervezet neve",
+    "orgType": "Szervezet típusa",
+    "complete": "Beállítás befejezése",
+    "step": "Lépés",
+    "of": "/"
+  },
+  "receipts": {
+    "title": "Nyugták",
+    "orderId": "Rendelés ID",
+    "customer": "Vásárló",
+    "date": "Dátum",
+    "total": "Összesen",
+    "viewReceipt": "Nyugta megtekintése",
+    "noReceipts": "Nincsenek nyugták"
+  },
+  "programs": {
+    "title": "Programok",
+    "createProgram": "Program létrehozása",
+    "programName": "Program neve",
+    "programType": "Program típusa",
+    "noPrograms": "Nincsenek definiált programok"
+  },
+  "mappings": {
+    "title": "Csatlakozó leképezések",
+    "sourceType": "Forrástípus",
+    "odbc": "ODBC",
+    "ldap": "LDAP",
+    "connectionString": "Kapcsolati sztring",
+    "query": "Lekérdezés",
+    "url": "URL",
+    "searchBase": "Keresési bázis",
+    "simulate": "Szimulálás",
+    "results": "Eredmények"
+  },
+  "accessRequests": {
+    "title": "Hozzáférési kérelmek",
+    "requester": "Kérelmező",
+    "resource": "Erőforrás",
+    "status": "Állapot",
+    "approve": "Jóváhagyás",
+    "deny": "Elutasítás",
+    "noRequests": "Nincsenek hozzáférési kérelmek"
+  },
+  "corrections": {
+    "title": "Javítások",
+    "requestedBy": "Kérte",
+    "field": "Mező",
+    "currentValue": "Jelenlegi érték",
+    "requestedValue": "Kért érték",
+    "approve": "Jóváhagyás",
+    "deny": "Elutasítás",
+    "noCorrections": "Nincsenek javítási kérelmek"
+  },
+  "consumerLedger": {
+    "title": "Fogyasztói nyilvántartás",
+    "consumer": "Fogyasztó",
+    "event": "Esemény",
+    "timestamp": "Időbélyeg",
+    "details": "Részletek",
+    "noEntries": "Nincsenek nyilvántartási bejegyzések"
+  },
+  "dataPortability": {
+    "title": "Adathordozhatósági nyilvántartás",
+    "export": "Adatok exportálása",
+    "import": "Adatok importálása",
+    "format": "Formátum",
+    "status": "Állapot"
+  },
+  "events": {
+    "title": "Esemény diszpécser",
+    "eventType": "Esemény típusa",
+    "payload": "Payload",
+    "dispatch": "Diszpécser",
+    "result": "Eredmény"
+  },
+  "errors": {
+    "hosting": {
+      "invalid_domain": "A hosting tervhez fő tartomány szükséges, mint \"acme.org\".",
+      "invalid_origin": "A hosting tervhez forráscél szükséges (IP vagy gazdanév).",
+      "api_token_required": "Cloudflare API token szükséges a terv alkalmazásához.",
+      "api_request_failed": "A Cloudflare API kérelem sikertelen.",
+      "dns_record_exists": "A DNS rekord már létezik.",
+      "tunnel_creation_failed": "Nem sikerült a Cloudflare alagút létrehozása."
+    },
+    "general": {
+      "not_authenticated": "Nincs hitelesítve.",
+      "forbidden": "Nincs jogosultsága a művelet végrehajtására.",
+      "not_found": "A kért erőforrás nem található.",
+      "internal_error": "Belső kiszolgálóhiba történt.",
+      "network_error": "Hálózati hiba történt."
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import TTLCache from '@isaacs/ttlcache';
+import { TTLCache } from '@isaacs/ttlcache';
 import fetch from 'cross-fetch';
 import { readJsonSync } from 'fs-extra';
 import type { IJsonLdContext } from 'jsonld-context-parser';

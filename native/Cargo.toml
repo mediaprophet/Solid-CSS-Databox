@@ -2,5 +2,6 @@
 members = [
     "tray-supervisor",
     "pos-edge",
+    "installer",
 ]
 resolver = "2"

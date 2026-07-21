@@ -1,0 +1,237 @@
+{
+  "app": {
+    "title": "Databox CMS",
+    "subtitle": "Управление на съдържание, присъщо за Solid"
+  },
+  "nav": {
+    "setup": "Настройка",
+    "modules": "Модули",
+    "hosting": "Хостинг",
+    "pos": "POS терминал",
+    "waiter": "Поръчки на сервитьор",
+    "customerOrder": "Самообслужване на клиент",
+    "display": "Промоция дисплей",
+    "receipts": "Касови бонове",
+    "programs": "Програми",
+    "mappings": "Съответствия",
+    "events": "Събития",
+    "dataPortability": "Преносимост на данни",
+    "accessRequests": "Заявки за достъп",
+    "corrections": "Корекции",
+    "consumerLedger": "Регистър на потребителя"
+  },
+  "common": {
+    "save": "Запази",
+    "cancel": "Отказ",
+    "delete": "Изтрий",
+    "edit": "Редактирай",
+    "create": "Създай",
+    "search": "Търси",
+    "loading": "Зареждане...",
+    "error": "Грешка",
+    "success": "Успех",
+    "close": "Затвори",
+    "back": "Назад",
+    "next": "Напред",
+    "confirm": "Потвърди",
+    "yes": "Да",
+    "no": "Не",
+    "enabled": "Активирано",
+    "disabled": "Деактивирано",
+    "status": "Статус",
+    "mode": "Режим",
+    "actions": "Действия",
+    "name": "Име",
+    "description": "Описание",
+    "type": "Тип",
+    "date": "Дата",
+    "time": "Час",
+    "amount": "Сума",
+    "total": "Общо",
+    "language": "Език"
+  },
+  "hosting": {
+    "title": "Настройка на хостинг",
+    "apexDomain": "Основен домейн",
+    "apexDomainPlaceholder": "primer.org",
+    "originTarget": "Цел на произход",
+    "originTargetPlaceholder": "IP адрес или име на хост",
+    "databoxLabel": "Databox поддомейн",
+    "databoxLabelPlaceholder": "databox",
+    "wwwEnabled": "Активирай www поддомейн",
+    "proxied": "Проксид (Cloudflare)",
+    "planButton": "Генерирай план",
+    "applyButton": "Приложи в Cloudflare",
+    "persistButton": "Запази конфигурация",
+    "bindButton": "Свържи произход",
+    "cloudflareToken": "Cloudflare API токен",
+    "cloudflareTokenPlaceholder": "Въведете Cloudflare API токен",
+    "downloadArtifacts": "Изтегли артефакти",
+    "dnsRecords": "DNS записи",
+    "launchCommand": "Команда за стартиране",
+    "baseUrl": "Базов URL",
+    "planSuccess": "Хостинг планът е генериран успешно",
+    "planError": "Неуспешно генериране на хостинг план",
+    "applySuccess": "DNS записи и тунел конфигурирани успешно",
+    "applyError": "Неуспешно прилагане на хостинг конфигурация",
+    "persistSuccess": "Конфигурацията е запазена като RDF ресурс",
+    "persistError": "Неуспешно запазване на конфигурация",
+    "bindSuccess": "Произходът е свързан като TenantBinding",
+    "bindError": "Неуспешно свързване на произход"
+  },
+  "governance": {
+    "title": "Управление",
+    "subtitle": "Свързване на роли, ODRL политики, порти за одобрение и резолюции."
+  },
+  "credentials": {
+    "title": "Удостоверения",
+    "subtitle": "Издаване, проверка и отмяна на проверяеми удостоверения."
+  },
+  "members": {
+    "title": "Членове",
+    "subtitle": "Осигуряване на pod-ове за членове, управление на жизнения цикъл и изпращане на известия чрез LDN."
+  },
+  "operations": {
+    "title": "Операции",
+    "subtitle": "Оперативни хоризонтали Фаза 3: съгласие, делегиране, спешен случай, инвентар, лоялност, ценообразуване и др."
+  },
+  "modules": {
+    "title": "CMS модули",
+    "enabled": "Активирано",
+    "disabled": "Деактивирано",
+    "enable": "Активирай",
+    "disable": "Деактивирай",
+    "configure": "Конфигурирай",
+    "capabilities": "Възможности",
+    "routes": "Маршрути",
+    "configShape": "Форма на конфигурация",
+    "noModules": "Няма инсталирани модули"
+  },
+  "pos": {
+    "title": "POS терминал",
+    "cart": "Количка",
+    "checkout": "Каса",
+    "subtotal": "Междинна сума",
+    "tax": "Данък",
+    "total": "Общо",
+    "payment": "Плащане",
+    "cash": "В брой",
+    "card": "Карта",
+    "completeSale": "Завърши продажба",
+    "voidSale": "Анулирай продажба",
+    "selectProduct": "Изберете продукт",
+    "noProducts": "Няма налични продукти",
+    "orderConfirmed": "Поръчката е потвърдена",
+    "paymentReceived": "Плащането е получено",
+    "receiptGenerated": "Касовият бон е генериран"
+  },
+  "waiter": {
+    "title": "Поръчки на сервитьор",
+    "selectTable": "Изберете маса",
+    "currentOrder": "Текуща поръчка",
+    "addToOrder": "Добави към поръчка",
+    "sendToKitchen": "Изпрати в кухнята",
+    "clearOrder": "Изчисти поръчка",
+    "table": "Маса",
+    "items": "Артикули",
+    "quantity": "Количество",
+    "price": "Цена"
+  },
+  "setup": {
+    "title": "Съветник за настройка",
+    "welcome": "Добре дошли в Databox CMS",
+    "chooseProfile": "Изберете тип организация",
+    "legalEntity": "Данни за юридическо лице",
+    "orgName": "Име на организация",
+    "orgType": "Тип организация",
+    "complete": "Завърши настройка",
+    "step": "Стъпка",
+    "of": "от"
+  },
+  "receipts": {
+    "title": "Касови бонове",
+    "orderId": "ID на поръчка",
+    "customer": "Клиент",
+    "date": "Дата",
+    "total": "Общо",
+    "viewReceipt": "Виж касов бон",
+    "noReceipts": "Няма намерени касови бонове"
+  },
+  "programs": {
+    "title": "Програми",
+    "createProgram": "Създай програма",
+    "programName": "Име на програма",
+    "programType": "Тип програма",
+    "noPrograms": "Няма дефинирани програми"
+  },
+  "mappings": {
+    "title": "Съответствия на конектор",
+    "sourceType": "Тип източник",
+    "odbc": "ODBC",
+    "ldap": "LDAP",
+    "connectionString": "Низ за връзка",
+    "query": "Заявка",
+    "url": "URL",
+    "searchBase": "База за търсене",
+    "simulate": "Симулирай",
+    "results": "Резултати"
+  },
+  "accessRequests": {
+    "title": "Заявки за достъп",
+    "requester": "Заявител",
+    "resource": "Ресурс",
+    "status": "Статус",
+    "approve": "Одобри",
+    "deny": "Отказ",
+    "noRequests": "Няма заявки за достъп"
+  },
+  "corrections": {
+    "title": "Корекции",
+    "requestedBy": "Заявено от",
+    "field": "Поле",
+    "currentValue": "Текуща стойност",
+    "requestedValue": "Заявена стойност",
+    "approve": "Одобри",
+    "deny": "Отказ",
+    "noCorrections": "Няма заявки за корекция"
+  },
+  "consumerLedger": {
+    "title": "Регистър на потребителя",
+    "consumer": "Потребител",
+    "event": "Събитие",
+    "timestamp": "Времево клеймо",
+    "details": "Детайли",
+    "noEntries": "Няма записи в регистъра"
+  },
+  "dataPortability": {
+    "title": "Регистър за преносимост на данни",
+    "export": "Експорт на данни",
+    "import": "Импорт на данни",
+    "format": "Формат",
+    "status": "Статус"
+  },
+  "events": {
+    "title": "Диспечер на събития",
+    "eventType": "Тип събитие",
+    "payload": "Payload",
+    "dispatch": "Диспечирай",
+    "result": "Резултат"
+  },
+  "errors": {
+    "hosting": {
+      "invalid_domain": "Хостинг планът се нуждае от основен домейн като \"acme.org\".",
+      "invalid_origin": "Хостинг планът се нуждае от цел на произход (IP или име на хост).",
+      "api_token_required": "Необходим е Cloudflare API токен за прилагане на плана.",
+      "api_request_failed": "Заявката към Cloudflare API е неуспешна.",
+      "dns_record_exists": "DNS записът вече съществува.",
+      "tunnel_creation_failed": "Неуспешно създаване на Cloudflare тунел."
+    },
+    "general": {
+      "not_authenticated": "Не сте удостоверени.",
+      "forbidden": "Нямате разрешение да извършите това действие.",
+      "not_found": "Заявеният ресурс не е намерен.",
+      "internal_error": "Възникна вътрешна грешка на сървъра.",
+      "network_error": "Възникна мрежова грешка."
+    }
+  }
+}

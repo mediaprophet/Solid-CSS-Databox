@@ -1,0 +1,10 @@
+{
+  "name": "Databox Org App",
+  "short_name": "Databox",
+  "description": "Unified WASM/PWA container for org-facing mobile apps",
+  "theme_color": "#0f172a",
+  "background_color": "#0f172a",
+  "display": "standalone",
+  "start_url": "/",
+  "icons": []
+}

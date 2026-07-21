@@ -1,0 +1,237 @@
+{
+  "app": {
+    "title": "Databox CMS",
+    "subtitle": "Pamamahala ng nilalaman na Solid-native"
+  },
+  "nav": {
+    "setup": "Setup",
+    "modules": "Mga Module",
+    "hosting": "Hosting",
+    "pos": "POS Terminal",
+    "waiter": "Order ng Waiter",
+    "customerOrder": "Customer Self-Order",
+    "display": "Promo Display",
+    "receipts": "Mga Resibo",
+    "programs": "Mga Programa",
+    "mappings": "Mga Pagmamapa",
+    "events": "Mga Kaganapan",
+    "dataPortability": "Data Portability",
+    "accessRequests": "Mga Kahilingan sa Pag-access",
+    "corrections": "Mga Pagwawasto",
+    "consumerLedger": "Consumer Ledger"
+  },
+  "common": {
+    "save": "I-save",
+    "cancel": "Kanselahin",
+    "delete": "Tanggalin",
+    "edit": "I-edit",
+    "create": "Likain",
+    "search": "Maghanap",
+    "loading": "Naglo-load...",
+    "error": "Error",
+    "success": "Tagumpay",
+    "close": "Isara",
+    "back": "Bumalik",
+    "next": "Susunod",
+    "confirm": "Kumpirmahin",
+    "yes": "Oo",
+    "no": "Hindi",
+    "enabled": "Pinagana",
+    "disabled": "Hindi Pinagana",
+    "status": "Status",
+    "mode": "Mode",
+    "actions": "Mga Aksyon",
+    "name": "Pangalan",
+    "description": "Paglalarawan",
+    "type": "Uri",
+    "date": "Petsa",
+    "time": "Oras",
+    "amount": "Halaga",
+    "total": "Kabuuan",
+    "language": "Wika"
+  },
+  "hosting": {
+    "title": "Hosting Setup",
+    "apexDomain": "Pangunahing Domain",
+    "apexDomainPlaceholder": "halimbawa.org",
+    "originTarget": "Target ng Origin",
+    "originTargetPlaceholder": "IP address o hostname",
+    "databoxLabel": "Databox Subdomain",
+    "databoxLabelPlaceholder": "databox",
+    "wwwEnabled": "I-enable ang www subdomain",
+    "proxied": "Proxied (Cloudflare)",
+    "planButton": "Bumuo ng Plano",
+    "applyButton": "I-apply sa Cloudflare",
+    "persistButton": "I-save ang Configuration",
+    "bindButton": "I-bind ang Origin",
+    "cloudflareToken": "Cloudflare API Token",
+    "cloudflareTokenPlaceholder": "Ilagay ang Cloudflare API token",
+    "downloadArtifacts": "I-download ang Artifacts",
+    "dnsRecords": "Mga DNS Record",
+    "launchCommand": "Launch Command",
+    "baseUrl": "Base URL",
+    "planSuccess": "Matagumpay na nabuo ang hosting plan",
+    "planError": "Nabigo ang pagbuo ng hosting plan",
+    "applySuccess": "Matagumpay na na-configure ang DNS records at tunnel",
+    "applyError": "Nabigo ang pag-apply ng hosting configuration",
+    "persistSuccess": "Na-save ang configuration bilang RDF resource",
+    "persistError": "Nabigo ang pag-save ng configuration",
+    "bindSuccess": "Na-bind ang origin bilang TenantBinding",
+    "bindError": "Nabigo ang pag-bind ng origin"
+  },
+  "governance": {
+    "title": "Pamamahala",
+    "subtitle": "Role bindings, ODRL policies, approval gates, at resolutions."
+  },
+  "credentials": {
+    "title": "Mga Kredensyal",
+    "subtitle": "Mag-isyu, mag-verify, at mag-revoke ng verifiable credentials."
+  },
+  "members": {
+    "title": "Mga Miyembro",
+    "subtitle": "Mag-provision ng member pods, pamahalaan ang lifecycle, at magpadala ng notifications via LDN."
+  },
+  "operations": {
+    "title": "Operasyon",
+    "subtitle": "Operational horizontals ng Phase 3: consent, delegation, emergency, inventory, loyalty, pricing, at higit pa."
+  },
+  "modules": {
+    "title": "Mga CMS Module",
+    "enabled": "Pinagana",
+    "disabled": "Hindi Pinagana",
+    "enable": "Paganahin",
+    "disable": "Hindi Paganahin",
+    "configure": "I-configure",
+    "capabilities": "Mga Kakayahan",
+    "routes": "Mga Route",
+    "configShape": "Config Shape",
+    "noModules": "Walang naka-install na module"
+  },
+  "pos": {
+    "title": "POS Terminal",
+    "cart": "Cart",
+    "checkout": "Checkout",
+    "subtotal": "Subtotal",
+    "tax": "Buwis",
+    "total": "Kabuuan",
+    "payment": "Pagbabayad",
+    "cash": "Cash",
+    "card": "Kard",
+    "completeSale": "Tapusin ang Pagbebenta",
+    "voidSale": "Kanselahin ang Pagbebenta",
+    "selectProduct": "Pumili ng produkto",
+    "noProducts": "Walang available na produkto",
+    "orderConfirmed": "Nakumpirma ang order",
+    "paymentReceived": "Natanggap ang pagbabayad",
+    "receiptGenerated": "Nabuo ang resibo"
+  },
+  "waiter": {
+    "title": "Order ng Waiter",
+    "selectTable": "Pumili ng lamesa",
+    "currentOrder": "Kasalukuyang Order",
+    "addToOrder": "Idagdag sa Order",
+    "sendToKitchen": "Ipadala sa Kusina",
+    "clearOrder": "I-clear ang Order",
+    "table": "Lamesa",
+    "items": "Mga Item",
+    "quantity": "Dami",
+    "price": "Presyo"
+  },
+  "setup": {
+    "title": "Setup Wizard",
+    "welcome": "Maligayang pagdating sa Databox CMS",
+    "chooseProfile": "Piliin ang uri ng organisasyon",
+    "legalEntity": "Detalye ng Legal Entity",
+    "orgName": "Pangalan ng Organisasyon",
+    "orgType": "Uri ng Organisasyon",
+    "complete": "Tapusin ang Setup",
+    "step": "Hakbang",
+    "of": "/"
+  },
+  "receipts": {
+    "title": "Mga Resibo",
+    "orderId": "Order ID",
+    "customer": "Customer",
+    "date": "Petsa",
+    "total": "Kabuuan",
+    "viewReceipt": "Tingnan ang Resibo",
+    "noReceipts": "Walang nahanap na resibo"
+  },
+  "programs": {
+    "title": "Mga Programa",
+    "createProgram": "Likhain ang Programa",
+    "programName": "Pangalan ng Programa",
+    "programType": "Uri ng Programa",
+    "noPrograms": "Walang nakakahulugang programa"
+  },
+  "mappings": {
+    "title": "Connector Mappings",
+    "sourceType": "Uri ng Source",
+    "odbc": "ODBC",
+    "ldap": "LDAP",
+    "connectionString": "Connection String",
+    "query": "Query",
+    "url": "URL",
+    "searchBase": "Search Base",
+    "simulate": "Simulatin",
+    "results": "Mga Resulta"
+  },
+  "accessRequests": {
+    "title": "Mga Kahilingan sa Pag-access",
+    "requester": "Naghiling",
+    "resource": "Resource",
+    "status": "Status",
+    "approve": "Aprubahan",
+    "deny": "Tanggihan",
+    "noRequests": "Walang kahilingan sa pag-access"
+  },
+  "corrections": {
+    "title": "Mga Pagwawasto",
+    "requestedBy": "Hiniling ni",
+    "field": "Field",
+    "currentValue": "Kasalukuyang Halaga",
+    "requestedValue": "Hiniling na Halaga",
+    "approve": "Aprubahan",
+    "deny": "Tanggihan",
+    "noCorrections": "Walang kahilingan ng pagwawasto"
+  },
+  "consumerLedger": {
+    "title": "Consumer Ledger",
+    "consumer": "Consumer",
+    "event": "Kaganapan",
+    "timestamp": "Timestamp",
+    "details": "Mga Detalye",
+    "noEntries": "Walang entry sa ledger"
+  },
+  "dataPortability": {
+    "title": "Data Portability Registry",
+    "export": "I-export ang Data",
+    "import": "I-import ang Data",
+    "format": "Format",
+    "status": "Status"
+  },
+  "events": {
+    "title": "Event Dispatcher",
+    "eventType": "Uri ng Kaganapan",
+    "payload": "Payload",
+    "dispatch": "I-dispatch",
+    "result": "Resulta"
+  },
+  "errors": {
+    "hosting": {
+      "invalid_domain": "Kailangan ng hosting plan ng pangunahing domain tulad ng \"acme.org\".",
+      "invalid_origin": "Kailangan ng hosting plan ng target ng origin (IP o hostname).",
+      "api_token_required": "Kailangan ng Cloudflare API token para i-apply ang plano.",
+      "api_request_failed": "Nabigo ang Cloudflare API request.",
+      "dns_record_exists": "Mayroon nang DNS record.",
+      "tunnel_creation_failed": "Nabigo ang paglikha ng Cloudflare tunnel."
+    },
+    "general": {
+      "not_authenticated": "Hindi ka naka-authenticate.",
+      "forbidden": "Wala kang pahintulot na gawin ang aksyong ito.",
+      "not_found": "Hindi nahanap ang hiniling na resource.",
+      "internal_error": "Nagkaroon ng internal server error.",
+      "network_error": "Nagkaroon ng network error."
+    }
+  }
+}

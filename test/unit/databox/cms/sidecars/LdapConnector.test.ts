@@ -1,28 +1,34 @@
-import { runLdapSync } from '../../../../../src/databox/cms/sidecars/LdapConnector';
+import { describe, it, expect } from '@jest/globals';
+import {
+  LdapPackageMissingError,
+  LdapConnectionError,
+  LdapSearchError,
+  executeLdapSearch,
+} from '../../../../../src/databox/cms/sidecars/LdapConnector';
 
 describe('LdapConnector', (): void => {
-  it('maps LDAP entries to Solid WebID profiles', async(): Promise<void> => {
-    const config = {
-      url: 'ldap://example.com',
+  it('throws LdapPackageMissingError when ldapjs package is not installed', async (): Promise<void> => {
+    await expect(executeLdapSearch({
+      url: 'ldap://localhost:389',
       bindDn: 'cn=admin',
-      searchBase: 'ou=users,dc=example,dc=com',
-    };
-    
-    const result = await runLdapSync(config);
-    expect(result).toHaveLength(2);
-    expect(result[0]).toEqual({
-      '@context': 'https://schema.org/',
-      '@type': 'Person',
-      '@id': 'urn:ldap:cn=admin,ou=users,dc=example,dc=com',
-      name: 'Admin User',
-      givenName: 'Admin',
-      familyName: 'User',
-      email: 'admin@example.com',
-      identifier: 'cn=admin,ou=users,dc=example,dc=com',
-    });
+      searchBase: 'dc=example,dc=com',
+      timeoutMs: 1_000,
+    })).rejects.toThrow(LdapPackageMissingError);
   });
 
-  it('throws an error if configuration is missing', async(): Promise<void> => {
-    await expect(runLdapSync({ url: '', bindDn: '', searchBase: '' })).rejects.toThrow('LDAP sync requires a URL and searchBase.');
+  it('throws LdapConnectionError for empty URL', async (): Promise<void> => {
+    await expect(executeLdapSearch({
+      url: '',
+      bindDn: 'cn=admin',
+      searchBase: 'dc=example,dc=com',
+    })).rejects.toThrow(LdapConnectionError);
+  });
+
+  it('throws LdapSearchError for empty searchBase', async (): Promise<void> => {
+    await expect(executeLdapSearch({
+      url: 'ldap://localhost:389',
+      bindDn: 'cn=admin',
+      searchBase: '',
+    })).rejects.toThrow(LdapSearchError);
   });
 });

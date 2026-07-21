@@ -1,0 +1,34 @@
+@prefix schema: <https://schema.org/> .
+@prefix solid: <https://www.w3.org/ns/solid/v1> .
+
+<https://databox.example.org/apps/referee-app/>
+  a schema:SoftwareApplication, solid:SolidApp ;
+  schema:name "Referee App" ;
+  schema:description "Match officiation — fouls, timeouts, player management, match report submission" ;
+  schema:softwareVersion "1.0.0" ;
+  schema:identifier "referee-app" ;
+  solid:networkScope "remote-capable" ;
+  solid:requiredModules ( "events" "records" ) ;
+  solid:verticalProfiles ( "sport.league-team" "sport.compliance-safety" ) ;
+  solid:installUrl <https://databox.example.org/apps/referee-app/> ;
+  schema:featureList [
+    a schema:FeatureSpecification ;
+    schema:identifier "officiate" ;
+    solid:moduleId "events" ;
+    schema:name "Officiate" ;
+    schema:url "/.databox/cms/events" ;
+    schema:icon "whistle" ;
+    schema:position 1 ;
+    solid:requiredPermission "events:officiate" ;
+  ], [
+    a schema:FeatureSpecification ;
+    schema:identifier "report" ;
+    solid:moduleId "records" ;
+    schema:name "Match Report" ;
+    schema:url "/.databox/cms/records" ;
+    schema:icon "file-text" ;
+    schema:position 2 ;
+    solid:requiredPermission "records:write" ;
+  ] ;
+  schema:permission ( "events:officiate" "records:write" ) ;
+.

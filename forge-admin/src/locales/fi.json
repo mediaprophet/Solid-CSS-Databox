@@ -1,0 +1,237 @@
+{
+  "app": {
+    "title": "Databox CMS",
+    "subtitle": "Solid-native sisällönhallinta"
+  },
+  "nav": {
+    "setup": "Asetukset",
+    "modules": "Moduulit",
+    "hosting": "Hosting",
+    "pos": "POS-pääte",
+    "waiter": "Tarjoilijan tilaukset",
+    "customerOrder": "Asiakkaan itsetilaus",
+    "display": "Kampanjanäyttö",
+    "receipts": "Kuitit",
+    "programs": "Ohjelmat",
+    "mappings": "Kartoitukset",
+    "events": "Tapahtumat",
+    "dataPortability": "Tietojen siirrettävyys",
+    "accessRequests": "Pääsypyynnöt",
+    "corrections": "Korjaukset",
+    "consumerLedger": "Kuluttajarekisteri"
+  },
+  "common": {
+    "save": "Tallenna",
+    "cancel": "Peruuta",
+    "delete": "Poista",
+    "edit": "Muokkaa",
+    "create": "Luo",
+    "search": "Hae",
+    "loading": "Ladataan...",
+    "error": "Virhe",
+    "success": "Onnistui",
+    "close": "Sulje",
+    "back": "Takaisin",
+    "next": "Seuraava",
+    "confirm": "Vahvista",
+    "yes": "Kyllä",
+    "no": "Ei",
+    "enabled": "Käytössä",
+    "disabled": "Pois käytöstä",
+    "status": "Tila",
+    "mode": "Tila",
+    "actions": "Toiminnot",
+    "name": "Nimi",
+    "description": "Kuvaus",
+    "type": "Tyyppi",
+    "date": "Päivämäärä",
+    "time": "Aika",
+    "amount": "Määrä",
+    "total": "Yhteensä",
+    "language": "Kieli"
+  },
+  "hosting": {
+    "title": "Hosting-asetukset",
+    "apexDomain": "Pääverkkotunnus",
+    "apexDomainPlaceholder": "esimerkki.org",
+    "originTarget": "Alkuperäiskohde",
+    "originTargetPlaceholder": "IP-osoite tai isäntänimi",
+    "databoxLabel": "Databox-aliverkkotunnus",
+    "databoxLabelPlaceholder": "databox",
+    "wwwEnabled": "Ota www-aliverkkotunnus käyttöön",
+    "proxied": "Proxied (Cloudflare)",
+    "planButton": "Luo Suunnitelma",
+    "applyButton": "Käytä Cloudflareen",
+    "persistButton": "Tallenna Asetukset",
+    "bindButton": "Sido Alkuperä",
+    "cloudflareToken": "Cloudflare API-token",
+    "cloudflareTokenPlaceholder": "Syötä Cloudflare API-token",
+    "downloadArtifacts": "Lataa Artefaktit",
+    "dnsRecords": "DNS-tietueet",
+    "launchCommand": "Käynnistyskomento",
+    "baseUrl": "Perus-URL",
+    "planSuccess": "Hosting-suunnitelma luotu onnistuneesti",
+    "planError": "Hosting-suunnitelman luonti epäonnistui",
+    "applySuccess": "DNS-tietueet ja tunneli määritetty onnistuneesti",
+    "applyError": "Hosting-asetusten käyttö epäonnistui",
+    "persistSuccess": "Asetukset tallennettu RDF-resurssina",
+    "persistError": "Asetusten tallennus epäonnistui",
+    "bindSuccess": "Alkuperä sidottu TenantBindingina",
+    "bindError": "Alkuperän sidos epäonnistui"
+  },
+  "governance": {
+    "title": "Hallinto",
+    "subtitle": "Roolisidokset, ODRL-käytännöt, hyväksymisportit ja päätökset."
+  },
+  "credentials": {
+    "title": "Todistukset",
+    "subtitle": "Myönnä, varmenna ja kumoa varmennettavia todistuksia."
+  },
+  "members": {
+    "title": "Jäsenet",
+    "subtitle": "Varusta jäsen-podit, hallitse elinkaarta ja lähetä ilmoituksia LDN:n kautta."
+  },
+  "operations": {
+    "title": "Operaatiot",
+    "subtitle": "Vaiheen 3 operatiiviset horizontaalit: suostumus, delegointi, hätätila, varasto, uskollisuus, hinnoittelu ja enemmän."
+  },
+  "modules": {
+    "title": "CMS-moduulit",
+    "enabled": "Käytössä",
+    "disabled": "Pois käytöstä",
+    "enable": "Ota käyttöön",
+    "disable": "Poista käytöstä",
+    "configure": "Määritä",
+    "capabilities": "Ominaisuudet",
+    "routes": "Reitit",
+    "configShape": "Määritysmuoto",
+    "noModules": "Ei moduuleja asennettuna"
+  },
+  "pos": {
+    "title": "POS-pääte",
+    "cart": "Ostoskori",
+    "checkout": "Kassa",
+    "subtotal": "Välisumma",
+    "tax": "Vero",
+    "total": "Yhteensä",
+    "payment": "Maksu",
+    "cash": "Käteinen",
+    "card": "Kortti",
+    "completeSale": "Viimeistele Myynti",
+    "voidSale": "Mitätöi Myynti",
+    "selectProduct": "Valitse tuote",
+    "noProducts": "Ei tuotteita saatavilla",
+    "orderConfirmed": "Tilaus vahvistettu",
+    "paymentReceived": "Maksu vastaanotettu",
+    "receiptGenerated": "Kuitti luotu"
+  },
+  "waiter": {
+    "title": "Tarjoilijan tilaukset",
+    "selectTable": "Valitse pöytä",
+    "currentOrder": "Nykyinen Tilaus",
+    "addToOrder": "Lisää Tilaukseen",
+    "sendToKitchen": "Lähetä Keittiöön",
+    "clearOrder": "Tyhjennä Tilaus",
+    "table": "Pöytä",
+    "items": "Tuotteet",
+    "quantity": "Määrä",
+    "price": "Hinta"
+  },
+  "setup": {
+    "title": "Asennusohjattu toiminto",
+    "welcome": "Tervetuloa Databox CMS:ään",
+    "chooseProfile": "Valitse organisaatiotyyppi",
+    "legalEntity": "Yrityksen Tiedot",
+    "orgName": "Organisaation Nimi",
+    "orgType": "Organisaatiotyyppi",
+    "complete": "Viimeistele Asetukset",
+    "step": "Vaihe",
+    "of": "/"
+  },
+  "receipts": {
+    "title": "Kuitit",
+    "orderId": "Tilaus-ID",
+    "customer": "Asiakas",
+    "date": "Päivämäärä",
+    "total": "Yhteensä",
+    "viewReceipt": "Näytä Kuitti",
+    "noReceipts": "Ei kuitteja löytynyt"
+  },
+  "programs": {
+    "title": "Ohjelmat",
+    "createProgram": "Luo Ohjelma",
+    "programName": "Ohjelman Nimi",
+    "programType": "Ohjelmatyyppi",
+    "noPrograms": "Ei ohjelmia määritetty"
+  },
+  "mappings": {
+    "title": "Liittimen kartoitukset",
+    "sourceType": "Lähdetyyppi",
+    "odbc": "ODBC",
+    "ldap": "LDAP",
+    "connectionString": "Yhteysmerkkijono",
+    "query": "Kysely",
+    "url": "URL",
+    "searchBase": "Hakukanta",
+    "simulate": "Simuloi",
+    "results": "Tulokset"
+  },
+  "accessRequests": {
+    "title": "Pääsypyynnöt",
+    "requester": "Pyytäjä",
+    "resource": "Resurssi",
+    "status": "Tila",
+    "approve": "Hyväksy",
+    "deny": "Hylkää",
+    "noRequests": "Ei pääsypyyntöjä"
+  },
+  "corrections": {
+    "title": "Korjaukset",
+    "requestedBy": "Pyytäjä",
+    "field": "Kenttä",
+    "currentValue": "Nykyinen Arvo",
+    "requestedValue": "Pyydetty Arvo",
+    "approve": "Hyväksy",
+    "deny": "Hylkää",
+    "noCorrections": "Ei korjauspyyntöjä"
+  },
+  "consumerLedger": {
+    "title": "Kuluttajarekisteri",
+    "consumer": "Kuluttaja",
+    "event": "Tapahtuma",
+    "timestamp": "Aikaleima",
+    "details": "Tiedot",
+    "noEntries": "Ei rekisterimerkintöjä"
+  },
+  "dataPortability": {
+    "title": "Tietojen siirrettävyysrekisteri",
+    "export": "Vie Tietoja",
+    "import": "Tuo Tietoja",
+    "format": "Muoto",
+    "status": "Tila"
+  },
+  "events": {
+    "title": "Tapahtumajakelu",
+    "eventType": "Tapahtumatyyppi",
+    "payload": "Payload",
+    "dispatch": "Lähetä",
+    "result": "Tulos"
+  },
+  "errors": {
+    "hosting": {
+      "invalid_domain": "Hosting-suunnitelma tarvitsee pääverkkotunnuksen kuten \"acme.org\".",
+      "invalid_origin": "Hosting-suunnitelma tarvitsee alkuperäiskohteen (IP tai isäntänimi).",
+      "api_token_required": "Cloudflare API-token vaaditaan suunnitelman käyttämiseen.",
+      "api_request_failed": "Cloudflare API-pyyntö epäonnistui.",
+      "dns_record_exists": "DNS-tietue on jo olemassa.",
+      "tunnel_creation_failed": "Cloudflare-tunnelin luonti epäonnistui."
+    },
+    "general": {
+      "not_authenticated": "Et ole todennettu.",
+      "forbidden": "Sinulla ei ole oikeutta suorittaa tätä toimintoa.",
+      "not_found": "Pyydettyä resurssia ei löytynyt.",
+      "internal_error": "Tapahtui sisäinen palvelinvirhe.",
+      "network_error": "Tapahtui verkkovirhe."
+    }
+  }
+}

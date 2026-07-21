@@ -2,11 +2,10 @@
  * Checks if the input is an {@link Error}.
  */
 export function isError(error: unknown): error is Error {
-  return Error.isError(error) ||
-    (Boolean(error) &&
-      typeof (error as Error).name === 'string' &&
-      typeof (error as Error).message === 'string' &&
-      (typeof (error as Error).stack === 'undefined' || typeof (error as Error).stack === 'string'));
+  return Boolean(error) &&
+    typeof (error as Error).name === 'string' &&
+    typeof (error as Error).message === 'string' &&
+    (typeof (error as Error).stack === 'undefined' || typeof (error as Error).stack === 'string');
 }
 
 /**

@@ -5,6 +5,11 @@ import type { AlgJwk } from '../../../../src/identity/configuration/JwkGenerator
 import type { KeyValueStorage } from '../../../../src/storage/keyvalue/KeyValueStorage';
 import type { JWKS } from '../../../../templates/types/oidc-provider';
 
+jest.mock('jose', (): any => ({
+  ...jest.requireActual('jose'),
+  generateKeyPair: jest.fn(jest.requireActual('jose').generateKeyPair),
+}));
+
 describe('A CachedJwkGenerator', (): void => {
   const alg = 'ES256';
   const storageKey = 'jwks';
@@ -44,7 +49,8 @@ describe('A CachedJwkGenerator', (): void => {
   });
 
   it('caches the private key in memory.', async(): Promise<void> => {
-    const spy = jest.spyOn(jose, 'generateKeyPair');
+    const spy = jose.generateKeyPair as jest.Mock;
+    spy.mockClear();
     const privateKey = await generator.getPrivateKey();
     // 1 call from checking the storage
     expect(storage.get).toHaveBeenCalledTimes(1);
@@ -54,11 +60,11 @@ describe('A CachedJwkGenerator', (): void => {
     expect(privateKey).toBe(privateKey2);
     expect(spy).toHaveBeenCalledTimes(1);
     expect(storage.get).toHaveBeenCalledTimes(1);
-    spy.mockRestore();
   });
 
   it('caches the public key in memory.', async(): Promise<void> => {
-    const spy = jest.spyOn(jose, 'generateKeyPair');
+    const spy = jose.generateKeyPair as jest.Mock;
+    spy.mockClear();
     const publicKey = await generator.getPublicKey();
     // 1 call from checking the storage
     expect(storage.get).toHaveBeenCalledTimes(1);
@@ -68,11 +74,11 @@ describe('A CachedJwkGenerator', (): void => {
     expect(publicKey).toBe(publicKey2);
     expect(spy).toHaveBeenCalledTimes(1);
     expect(storage.get).toHaveBeenCalledTimes(1);
-    spy.mockRestore();
   });
 
   it('caches the key in storage in case of server restart.', async(): Promise<void> => {
-    const spy = jest.spyOn(jose, 'generateKeyPair');
+    const spy = jose.generateKeyPair as jest.Mock;
+    spy.mockClear();
     const privateKey = await generator.getPrivateKey();
     // 1 call from checking the storage
     expect(storage.get).toHaveBeenCalledTimes(1);
@@ -84,6 +90,5 @@ describe('A CachedJwkGenerator', (): void => {
     expect(privateKey).toBe(privateKey2);
     expect(spy).toHaveBeenCalledTimes(1);
     expect(storage.get).toHaveBeenCalledTimes(2);
-    spy.mockRestore();
   });
 });

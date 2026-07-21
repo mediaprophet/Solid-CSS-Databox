@@ -1,0 +1,237 @@
+{
+  "app": {
+    "title": "Databox CMS",
+    "subtitle": "Pengurusan kandungan asli Solid"
+  },
+  "nav": {
+    "setup": "Persediaan",
+    "modules": "Modul",
+    "hosting": "Hos",
+    "pos": "Terminal POS",
+    "waiter": "Pesanan Pelayan",
+    "customerOrder": "Pesanan Kendiri",
+    "display": "Paparan Promosi",
+    "receipts": "Resit",
+    "programs": "Program",
+    "mappings": "Pemetaan",
+    "events": "Peristiwa",
+    "dataPortability": "Kebolehportabilitasan Data",
+    "accessRequests": "Permintaan Akses",
+    "corrections": "Pembetulan",
+    "consumerLedger": "Lejar Pengguna"
+  },
+  "common": {
+    "save": "Simpan",
+    "cancel": "Batal",
+    "delete": "Padam",
+    "edit": "Sunting",
+    "create": "Cipta",
+    "search": "Cari",
+    "loading": "Memuatkan...",
+    "error": "Ralat",
+    "success": "Berjaya",
+    "close": "Tutup",
+    "back": "Kembali",
+    "next": "Seterusnya",
+    "confirm": "Sahkan",
+    "yes": "Ya",
+    "no": "Tidak",
+    "enabled": "Diaktifkan",
+    "disabled": "Dinyahaktifkan",
+    "status": "Status",
+    "mode": "Mod",
+    "actions": "Tindakan",
+    "name": "Nama",
+    "description": "Penerangan",
+    "type": "Jenis",
+    "date": "Tarikh",
+    "time": "Masa",
+    "amount": "Jumlah",
+    "total": "Jumlah Keseluruhan",
+    "language": "Bahasa"
+  },
+  "hosting": {
+    "title": "Persediaan Hos",
+    "apexDomain": "Domain Utama",
+    "apexDomainPlaceholder": "contoh.org",
+    "originTarget": "Sasaran Asal",
+    "originTargetPlaceholder": "Alamat IP atau nama hos",
+    "databoxLabel": "Subdomain Databox",
+    "databoxLabelPlaceholder": "databox",
+    "wwwEnabled": "Aktifkan subdomain www",
+    "proxied": "Diproksi (Cloudflare)",
+    "planButton": "Jana Pelan",
+    "applyButton": "Laksanakan ke Cloudflare",
+    "persistButton": "Simpan Konfigurasi",
+    "bindButton": "Ikat Asal",
+    "cloudflareToken": "Token API Cloudflare",
+    "cloudflareTokenPlaceholder": "Masukkan token API Cloudflare",
+    "downloadArtifacts": "Muat Turun Artifak",
+    "dnsRecords": "Rekod DNS",
+    "launchCommand": "Arahan Pelancaran",
+    "baseUrl": "URL Asas",
+    "planSuccess": "Pelan hos berjaya dijana",
+    "planError": "Gagal menjana pelan hos",
+    "applySuccess": "Rekod DNS dan terowong berjaya dikonfigurasi",
+    "applyError": "Gagal melaksanakan konfigurasi hos",
+    "persistSuccess": "Konfigurasi disimpan sebagai sumber RDF",
+    "persistError": "Gagal menyimpan konfigurasi",
+    "bindSuccess": "Asal diikat sebagai TenantBinding",
+    "bindError": "Gagal mengikat asal"
+  },
+  "governance": {
+    "title": "Tadbir Urus",
+    "subtitle": "Pengikatan peranan, dasar ODRL, pintu kelulusan, dan resolusi."
+  },
+  "credentials": {
+    "title": "Kredensial",
+    "subtitle": "Mengeluarkan, mengesahkan, dan membatalkan kredensial boleh disahkan."
+  },
+  "members": {
+    "title": "Ahli",
+    "subtitle": "Menyediakan pod ahli, mengurus kitaran hayat, dan menghantar pemberitahuan melalui LDN."
+  },
+  "operations": {
+    "title": "Operasi",
+    "subtitle": "Horizontal operasi Fasa 3: persetujuan, perwakilan, kecemasan, inventori, kesetiaan, penentuan harga, dan lain-lain."
+  },
+  "modules": {
+    "title": "Modul CMS",
+    "enabled": "Diaktifkan",
+    "disabled": "Dinyahaktifkan",
+    "enable": "Aktifkan",
+    "disable": "Nyahaktifkan",
+    "configure": "Konfigurasi",
+    "capabilities": "Keupayaan",
+    "routes": "Laluan",
+    "configShape": "Bentuk Konfigurasi",
+    "noModules": "Tiada modul dipasang"
+  },
+  "pos": {
+    "title": "Terminal POS",
+    "cart": "Troli",
+    "checkout": "Bayar",
+    "subtotal": "Subjumlah",
+    "tax": "Cukai",
+    "total": "Jumlah Keseluruhan",
+    "payment": "Bayaran",
+    "cash": "Tunai",
+    "card": "Kad",
+    "completeSale": "Selesaikan Jualan",
+    "voidSale": "Batalkan Jualan",
+    "selectProduct": "Pilih produk",
+    "noProducts": "Tiada produk tersedia",
+    "orderConfirmed": "Pesanan disahkan",
+    "paymentReceived": "Bayaran diterima",
+    "receiptGenerated": "Resit dijana"
+  },
+  "waiter": {
+    "title": "Pesanan Pelayan",
+    "selectTable": "Pilih meja",
+    "currentOrder": "Pesanan Semasa",
+    "addToOrder": "Tambah ke Pesanan",
+    "sendToKitchen": "Hantar ke Dapur",
+    "clearOrder": "Kosongkan Pesanan",
+    "table": "Meja",
+    "items": "Item",
+    "quantity": "Kuantiti",
+    "price": "Harga"
+  },
+  "setup": {
+    "title": "Wizard Persediaan",
+    "welcome": "Selamat datang ke Databox CMS",
+    "chooseProfile": "Pilih jenis organisasi",
+    "legalEntity": "Butiran Entiti Undang-undang",
+    "orgName": "Nama Organisasi",
+    "orgType": "Jenis Organisasi",
+    "complete": "Selesaikan Persediaan",
+    "step": "Langkah",
+    "of": "/"
+  },
+  "receipts": {
+    "title": "Resit",
+    "orderId": "ID Pesanan",
+    "customer": "Pelanggan",
+    "date": "Tarikh",
+    "total": "Jumlah Keseluruhan",
+    "viewReceipt": "Lihat Resit",
+    "noReceipts": "Tiada resit dijumpai"
+  },
+  "programs": {
+    "title": "Program",
+    "createProgram": "Cipta Program",
+    "programName": "Nama Program",
+    "programType": "Jenis Program",
+    "noPrograms": "Tiada program ditentukan"
+  },
+  "mappings": {
+    "title": "Pemetaan Penyambung",
+    "sourceType": "Jenis Sumber",
+    "odbc": "ODBC",
+    "ldap": "LDAP",
+    "connectionString": "Sambungan Rentetan",
+    "query": "Pertanyaan",
+    "url": "URL",
+    "searchBase": "Asas Carian",
+    "simulate": "Simulasi",
+    "results": "Keputusan"
+  },
+  "accessRequests": {
+    "title": "Permintaan Akses",
+    "requester": "Pemohon",
+    "resource": "Sumber",
+    "status": "Status",
+    "approve": "Luluskan",
+    "deny": "Tolak",
+    "noRequests": "Tiada permintaan akses"
+  },
+  "corrections": {
+    "title": "Pembetulan",
+    "requestedBy": "Diminta oleh",
+    "field": "Medan",
+    "currentValue": "Nilai Semasa",
+    "requestedValue": "Nilai Diminta",
+    "approve": "Luluskan",
+    "deny": "Tolak",
+    "noCorrections": "Tiada permintaan pembetulan"
+  },
+  "consumerLedger": {
+    "title": "Lejar Pengguna",
+    "consumer": "Pengguna",
+    "event": "Peristiwa",
+    "timestamp": "Cap Masa",
+    "details": "Butiran",
+    "noEntries": "Tiada entri lejar"
+  },
+  "dataPortability": {
+    "title": "Daftar Kebolehportabilitasan Data",
+    "export": "Eksport Data",
+    "import": "Import Data",
+    "format": "Format",
+    "status": "Status"
+  },
+  "events": {
+    "title": "Penghantar Peristiwa",
+    "eventType": "Jenis Peristiwa",
+    "payload": "Muatan",
+    "dispatch": "Hantar",
+    "result": "Keputusan"
+  },
+  "errors": {
+    "hosting": {
+      "invalid_domain": "Pelan hos memerlukan domain utama seperti \"acme.org\".",
+      "invalid_origin": "Pelan hos memerlukan sasaran asal (IP atau nama hos).",
+      "api_token_required": "Token API Cloudflare diperlukan untuk melaksanakan pelan.",
+      "api_request_failed": "Permintaan API Cloudflare gagal.",
+      "dns_record_exists": "Rekod DNS sudah wujud.",
+      "tunnel_creation_failed": "Gagal mencipta terowong Cloudflare."
+    },
+    "general": {
+      "not_authenticated": "Anda tidak disahkan.",
+      "forbidden": "Anda tidak mempunyai kebenaran untuk melakukan tindakan ini.",
+      "not_found": "Sumber yang diminta tidak dijumpai.",
+      "internal_error": "Berlaku ralat pelayan dalaman.",
+      "network_error": "Berlaku ralat rangkaian."
+    }
+  }
+}

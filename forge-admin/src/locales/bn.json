@@ -1,0 +1,237 @@
+{
+  "app": {
+    "title": "Databox CMS",
+    "subtitle": "Solid-নেটিভ কন্টেন্ট ব্যবস্থাপনা"
+  },
+  "nav": {
+    "setup": "সেটআপ",
+    "modules": "মডিউল",
+    "hosting": "হোস্টিং",
+    "pos": "POS টার্মিনাল",
+    "waiter": "ওয়েটার অর্ডার",
+    "customerOrder": "গ্রাহক স্ব-অর্ডার",
+    "display": "প্রোমো ডিসপ্লে",
+    "receipts": "রসিদ",
+    "programs": "প্রোগ্রাম",
+    "mappings": "ম্যাপিং",
+    "events": "ইভেন্ট",
+    "dataPortability": "ডেটা পোর্টেবিলিটি",
+    "accessRequests": "অ্যাক্সেস অনুরোধ",
+    "corrections": "সংশোধন",
+    "consumerLedger": "ভোক্তা খাতা"
+  },
+  "common": {
+    "save": "সংরক্ষণ",
+    "cancel": "বাতিল",
+    "delete": "মুছুন",
+    "edit": "সম্পাদনা",
+    "create": "তৈরি",
+    "search": "অনুসন্ধান",
+    "loading": "লোড হচ্ছে...",
+    "error": "ত্রুটি",
+    "success": "সফল",
+    "close": "বন্ধ",
+    "back": "পিছনে",
+    "next": "পরবর্তী",
+    "confirm": "নিশ্চিত",
+    "yes": "হ্যাঁ",
+    "no": "না",
+    "enabled": "সক্ষম",
+    "disabled": "অক্ষম",
+    "status": "অবস্থা",
+    "mode": "মোড",
+    "actions": "ক্রিয়া",
+    "name": "নাম",
+    "description": "বিবরণ",
+    "type": "প্রকার",
+    "date": "তারিখ",
+    "time": "সময়",
+    "amount": "পরিমাণ",
+    "total": "মোট",
+    "language": "ভাষা"
+  },
+  "hosting": {
+    "title": "হোস্টিং সেটআপ",
+    "apexDomain": "প্রধান ডোমেইন",
+    "apexDomainPlaceholder": "উদাহরণ.org",
+    "originTarget": "মূল লক্ষ্য",
+    "originTargetPlaceholder": "IP ঠিকানা বা হোস্টনাম",
+    "databoxLabel": "Databox সাবডোমেইন",
+    "databoxLabelPlaceholder": "databox",
+    "wwwEnabled": "www সাবডোমেইন সক্ষম করুন",
+    "proxied": "প্রক্সিকৃত (Cloudflare)",
+    "planButton": "পরিকল্পনা তৈরি",
+    "applyButton": "Cloudflare-এ প্রয়োগ করুন",
+    "persistButton": "কনফিগারেশন সংরক্ষণ",
+    "bindButton": "মূল বাঁধাই",
+    "cloudflareToken": "Cloudflare API টোকেন",
+    "cloudflareTokenPlaceholder": "Cloudflare API টোকেন লিখুন",
+    "downloadArtifacts": "আর্টিফ্যাক্ট ডাউনলোড",
+    "dnsRecords": "DNS রেকর্ড",
+    "launchCommand": "লঞ্চ কমান্ড",
+    "baseUrl": "ভিত্তি URL",
+    "planSuccess": "হোস্টিং পরিকল্পনা সফলভাবে তৈরি",
+    "planError": "হোস্টিং পরিকল্পনা তৈরিতে ব্যর্থ",
+    "applySuccess": "DNS রেকর্ড এবং টানেল সফলভাবে কনফিগার করা হয়েছে",
+    "applyError": "হোস্টিং কনফিগারেশন প্রয়োগে ব্যর্থ",
+    "persistSuccess": "কনফিগারেশন RDF সম্পদ হিসেবে সংরক্ষিত",
+    "persistError": "কনফিগারেশন সংরক্ষণে ব্যর্থ",
+    "bindSuccess": "মূল TenantBinding হিসেবে বাঁধাই করা হয়েছে",
+    "bindError": "মূল বাঁধাইয়ে ব্যর্থ"
+  },
+  "governance": {
+    "title": "শাসন",
+    "subtitle": "ভূমিকা বাঁধাই, ODRL নীতি, অনুমোদন গেট, এবং প্রস্তাব."
+  },
+  "credentials": {
+    "title": "ক্রেডেনশিয়াল",
+    "subtitle": "যাচাইযোগ্য ক্রেডেনশিয়াল প্রদান, যাচাই, এবং প্রত্যাহার."
+  },
+  "members": {
+    "title": "সদস্য",
+    "subtitle": "সদস্য পড প্রদান, জীবনচক্র ব্যবস্থাপনা, এবং LDN এর মাধ্যমে বিজ্ঞপ্তি প্রেরণ."
+  },
+  "operations": {
+    "title": "পরিচালনা",
+    "subtitle": "ধাপ ৩ পরিচালনামূলক অনুভূমিক: সম্মতি, প্রতিনিধিত্ব, জরুরি, ইনভেন্টরি, আনুগত্য, মূল্য নির্ধারণ, এবং আরও."
+  },
+  "modules": {
+    "title": "CMS মডিউল",
+    "enabled": "সক্ষম",
+    "disabled": "অক্ষম",
+    "enable": "সক্ষম করুন",
+    "disable": "অক্ষম করুন",
+    "configure": "কনফিগার",
+    "capabilities": "সক্ষমতা",
+    "routes": "রুট",
+    "configShape": "কনফিগারেশন আকৃতি",
+    "noModules": "কোন মডিউল ইনস্টল করা নেই"
+  },
+  "pos": {
+    "title": "POS টার্মিনাল",
+    "cart": "কার্ট",
+    "checkout": "চেকআউট",
+    "subtotal": "উপমোট",
+    "tax": "কর",
+    "total": "মোট",
+    "payment": "পেমেন্ট",
+    "cash": "নগদ",
+    "card": "কার্ড",
+    "completeSale": "বিক্রয় সম্পূর্ণ",
+    "voidSale": "বিক্রয় বাতিল",
+    "selectProduct": "পণ্য নির্বাচন",
+    "noProducts": "কোন পণ্য নেই",
+    "orderConfirmed": "অর্ডার নিশ্চিত",
+    "paymentReceived": "পেমেন্ট গৃহীত",
+    "receiptGenerated": "রসিদ তৈরি"
+  },
+  "waiter": {
+    "title": "ওয়েটার অর্ডার",
+    "selectTable": "টেবিল নির্বাচন",
+    "currentOrder": "বর্তমান অর্ডার",
+    "addToOrder": "অর্ডারে যোগ",
+    "sendToKitchen": "রান্নাঘরে পাঠান",
+    "clearOrder": "অর্ডার মুছুন",
+    "table": "টেবিল",
+    "items": "আইটেম",
+    "quantity": "পরিমাণ",
+    "price": "মূল্য"
+  },
+  "setup": {
+    "title": "সেটআপ উইজার্ড",
+    "welcome": "Databox CMS-এ স্বাগতম",
+    "chooseProfile": "আপনার সংস্থার ধরন বেছে নিন",
+    "legalEntity": "আইনি সংস্থার বিবরণ",
+    "orgName": "সংস্থার নাম",
+    "orgType": "সংস্থার ধরন",
+    "complete": "সেটআপ সম্পূর্ণ",
+    "step": "ধাপ",
+    "of": "/"
+  },
+  "receipts": {
+    "title": "রসিদ",
+    "orderId": "অর্ডার ID",
+    "customer": "গ্রাহক",
+    "date": "তারিখ",
+    "total": "মোট",
+    "viewReceipt": "রসিদ দেখুন",
+    "noReceipts": "কোন রসিদ পাওয়া যায়নি"
+  },
+  "programs": {
+    "title": "প্রোগ্রাম",
+    "createProgram": "প্রোগ্রাম তৈরি",
+    "programName": "প্রোগ্রামের নাম",
+    "programType": "প্রোগ্রামের ধরন",
+    "noPrograms": "কোন প্রোগ্রাম সংজ্ঞায়িত নেই"
+  },
+  "mappings": {
+    "title": "কানেক্টর ম্যাপিং",
+    "sourceType": "উৎসের ধরন",
+    "odbc": "ODBC",
+    "ldap": "LDAP",
+    "connectionString": "কানেকশন স্ট্রিং",
+    "query": "ক্যোয়ারী",
+    "url": "URL",
+    "searchBase": "অনুসন্ধান ভিত্তি",
+    "simulate": "সিমুলেট",
+    "results": "ফলাফল"
+  },
+  "accessRequests": {
+    "title": "অ্যাক্সেস অনুরোধ",
+    "requester": "অনুরোধকারী",
+    "resource": "সম্পদ",
+    "status": "অবস্থা",
+    "approve": "অনুমোদন",
+    "deny": "প্রত্যাখ্যান",
+    "noRequests": "কোন অ্যাক্সেস অনুরোধ নেই"
+  },
+  "corrections": {
+    "title": "সংশোধন",
+    "requestedBy": "অনুরোধকারী",
+    "field": "ক্ষেত্র",
+    "currentValue": "বর্তমান মান",
+    "requestedValue": "অনুরোধিত মান",
+    "approve": "অনুমোদন",
+    "deny": "প্রত্যাখ্যান",
+    "noCorrections": "কোন সংশোধন অনুরোধ নেই"
+  },
+  "consumerLedger": {
+    "title": "ভোক্তা খাতা",
+    "consumer": "ভোক্তা",
+    "event": "ইভেন্ট",
+    "timestamp": "টাইমস্ট্যাম্প",
+    "details": "বিবরণ",
+    "noEntries": "খাতায় কোন এন্ট্রি নেই"
+  },
+  "dataPortability": {
+    "title": "ডেটা পোর্টেবিলিটি রেজিস্ট্রি",
+    "export": "ডেটা রপ্তানি",
+    "import": "ডেটা আমদানি",
+    "format": "বিন্যাস",
+    "status": "অবস্থা"
+  },
+  "events": {
+    "title": "ইভেন্ট ডিসপ্যাচার",
+    "eventType": "ইভেন্টের ধরন",
+    "payload": "পেলোড",
+    "dispatch": "প্রেরণ",
+    "result": "ফলাফল"
+  },
+  "errors": {
+    "hosting": {
+      "invalid_domain": "হোস্টিং পরিকল্পনায় \"acme.org\" এর মতো প্রধান ডোমেইন প্রয়োজন।",
+      "invalid_origin": "হোস্টিং পরিকল্পনায় মূল লক্ষ্য (IP বা হোস্টনাম) প্রয়োজন।",
+      "api_token_required": "পরিকল্পনা প্রয়োগের জন্য Cloudflare API টোকেন প্রয়োজন।",
+      "api_request_failed": "Cloudflare API অনুরোধ ব্যর্থ।",
+      "dns_record_exists": "DNS রেকর্ড ইতিমধ্যে বিদ্যমান।",
+      "tunnel_creation_failed": "Cloudflare টানেল তৈরিতে ব্যর্থ।"
+    },
+    "general": {
+      "not_authenticated": "আপনি প্রমাণিত নন।",
+      "forbidden": "এই ক্রিয়া সম্পাদনের অনুমতি আপনার নেই।",
+      "not_found": "অনুরোধকৃত সম্পদ পাওয়া যায়নি।",
+      "internal_error": "অভ্যন্তরীণ সার্ভার ত্রুটি ঘটেছে।",
+      "network_error": "নেটওয়ার্ক ত্রুটি ঘটেছে।"
+    }
+  }
+}

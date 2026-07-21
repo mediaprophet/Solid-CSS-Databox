@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useList } from "@refinedev/core";
 import { createPosOperationsSnapshot } from "../../data/posOperations";
 

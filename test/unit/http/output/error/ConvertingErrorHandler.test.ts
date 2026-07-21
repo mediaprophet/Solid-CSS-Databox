@@ -1,5 +1,5 @@
 import 'jest-rdf';
-import arrayifyStream from 'arrayify-stream';
+import { arrayifyStream } from 'arrayify-stream';
 import { DataFactory } from 'n3';
 import type { PreferenceParser } from '../../../../../src/http/input/preferences/PreferenceParser';
 import { ConvertingErrorHandler } from '../../../../../src/http/output/error/ConvertingErrorHandler';

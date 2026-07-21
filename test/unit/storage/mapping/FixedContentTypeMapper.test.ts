@@ -70,7 +70,7 @@ describe('An FixedContentTypeMapper', (): void => {
       it('throws 400 if the given content-type is not supported.', async(): Promise<void> => {
         await expect(mapper.mapUrlToFilePath({ path: `${base}test.ttl` }, false, 'application/n-quads')).rejects
           .toThrow(
-            new BadRequestHttpError(`Unsupported content type application/n-quads, only text/turtle is allowed`),
+            'Unsupported content type application/n-quads, only text/turtle is allowed',
           );
       });
     });
@@ -157,7 +157,7 @@ describe('An FixedContentTypeMapper', (): void => {
       it('throws 400 if the given content-type is not supported.', async(): Promise<void> => {
         await expect(mapper.mapUrlToFilePath({ path: `${base}test.ttl` }, false, 'application/n-quads')).rejects
           .toThrow(
-            new BadRequestHttpError(`Unsupported content type application/n-quads, only text/turtle is allowed`),
+            'Unsupported content type application/n-quads, only text/turtle is allowed',
           );
       });
     });
@@ -243,7 +243,7 @@ describe('An FixedContentTypeMapper', (): void => {
       it('throws 400 if the given content-type is not supported.', async(): Promise<void> => {
         await expect(mapper.mapUrlToFilePath({ path: `${base}test.ttl` }, false, 'application/n-quads')).rejects
           .toThrow(
-            new BadRequestHttpError(`Unsupported content type application/n-quads, only text/turtle is allowed`),
+            'Unsupported content type application/n-quads, only text/turtle is allowed',
           );
       });
     });

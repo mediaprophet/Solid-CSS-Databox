@@ -1,15 +1,19 @@
 {
-  "extends": "@tsconfig/node24/tsconfig.json",
   "compilerOptions": {
     "incremental": true,
-    "moduleResolution": "node16",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "target": "es2024",
+    "lib": ["es2024"],
     "declaration": true,
     "inlineSources": true,
     "newLine": "lf",
     "outDir": "dist",
+    "rootDir": "src",
     "preserveConstEnums": true,
     "sourceMap": true,
-    "stripInternal": true
+    "stripInternal": true,
+    "skipLibCheck": true
   },
   "include": [
     "src"

@@ -1,0 +1,237 @@
+{
+  "app": {
+    "title": "Databox CMS",
+    "subtitle": "Διαχείριση περιεχομένου εγγενές Solid"
+  },
+  "nav": {
+    "setup": "Εγκατάσταση",
+    "modules": "Ενότητες",
+    "hosting": "Φιλοξενία",
+    "pos": "Τερματικό POS",
+    "waiter": "Παραγγελίες Σερβιτόρου",
+    "customerOrder": "Παραγγελία Πελάτη",
+    "display": "Προβολή Προσφοράς",
+    "receipts": "Αποδείξεις",
+    "programs": "Προγράμματα",
+    "mappings": "Αντιστοιχίσεις",
+    "events": "Γεγονότα",
+    "dataPortability": "Φορητότητα Δεδομένων",
+    "accessRequests": "Αιτήματα Πρόσβασης",
+    "corrections": "Διορθώσεις",
+    "consumerLedger": "Μητρώο Καταναλωτή"
+  },
+  "common": {
+    "save": "Αποθήκευση",
+    "cancel": "Ακύρωση",
+    "delete": "Διαγραφή",
+    "edit": "Επεξεργασία",
+    "create": "Δημιουργία",
+    "search": "Αναζήτηση",
+    "loading": "Φόρτωση...",
+    "error": "Σφάλμα",
+    "success": "Επιτυχία",
+    "close": "Κλείσιμο",
+    "back": "Πίσω",
+    "next": "Επόμενο",
+    "confirm": "Επιβεβαίωση",
+    "yes": "Ναι",
+    "no": "Όχι",
+    "enabled": "Ενεργοποιημένο",
+    "disabled": "Απενεργοποιημένο",
+    "status": "Κατάσταση",
+    "mode": "Λειτουργία",
+    "actions": "Ενέργειες",
+    "name": "Όνομα",
+    "description": "Περιγραφή",
+    "type": "Τύπος",
+    "date": "Ημερομηνία",
+    "time": "Ώρα",
+    "amount": "Ποσό",
+    "total": "Σύνολο",
+    "language": "Γλώσσα"
+  },
+  "hosting": {
+    "title": "Ρύθμιση Φιλοξενίας",
+    "apexDomain": "Κύριος Τομέας",
+    "apexDomainPlaceholder": "paradeigma.org",
+    "originTarget": "Στόχος Προέλευσης",
+    "originTargetPlaceholder": "Διεύθυνση IP ή όνομα κεντρικού",
+    "databoxLabel": "Υποτομέας Databox",
+    "databoxLabelPlaceholder": "databox",
+    "wwwEnabled": "Ενεργοποίηση υποτομέα www",
+    "proxied": "Μέσω Proxy (Cloudflare)",
+    "planButton": "Δημιουργία Σχεδίου",
+    "applyButton": "Εφαρμογή στο Cloudflare",
+    "persistButton": "Αποθήκευση Ρυθμίσεων",
+    "bindButton": "Σύνδεση Προέλευσης",
+    "cloudflareToken": "Cloudflare API Token",
+    "cloudflareTokenPlaceholder": "Εισαγωγή Cloudflare API token",
+    "downloadArtifacts": "Λήψη Αρχείων",
+    "dnsRecords": "Εγγραφές DNS",
+    "launchCommand": "Εντολή Εκκίνησης",
+    "baseUrl": "Βασικό URL",
+    "planSuccess": "Σχέδιο φιλοξενίας δημιουργήθηκε επιτυχώς",
+    "planError": "Αποτυχία δημιουργίας σχεδίου φιλοξενίας",
+    "applySuccess": "Εγγραφές DNS και σήραγδα ρυθμίστηκαν επιτυχώς",
+    "applyError": "Αποτυχία εφαρμογής ρυθμίσεων φιλοξενίας",
+    "persistSuccess": "Οι ρυθμίσεις αποθηκεύτηκαν ως RDF πόρος",
+    "persistError": "Αποτυχία αποθήκευσης ρυθμίσεων",
+    "bindSuccess": "Η προέλευση συνδέθηκε ως TenantBinding",
+    "bindError": "Αποτυχία σύνδεσης προέλευσης"
+  },
+  "governance": {
+    "title": "Διακυβέρνηση",
+    "subtitle": "Δεσμοί ρόλων, πολιτικές ODRL, πύλες έγκρισης και ψηφίσματα."
+  },
+  "credentials": {
+    "title": "Διαπιστευτήρια",
+    "subtitle": "Έκδοση, επαλήθευση και ανάκληση επαληθεύσιμων διαπιστευτηρίων."
+  },
+  "members": {
+    "title": "Μέλη",
+    "subtitle": "Παροχή pods μελών, διαχείριση κύκλου ζωής και αποστολή ειδοποιήσεων μέσω LDN."
+  },
+  "operations": {
+    "title": "Λειτουργίες",
+    "subtitle": "Λειτουργικά οριζόντια της Φάσης 3: συγκατάθεση, ανάθεση, έκτακτη ανάγκη, απόθεμα, πιστότητα, τιμολόγηση και άλλα."
+  },
+  "modules": {
+    "title": "Ενότητες CMS",
+    "enabled": "Ενεργοποιημένο",
+    "disabled": "Απενεργοποιημένο",
+    "enable": "Ενεργοποίηση",
+    "disable": "Απενεργοποίηση",
+    "configure": "Διαμόρφωση",
+    "capabilities": "Δυνατότητες",
+    "routes": "Διαδρομές",
+    "configShape": "Μορφή Διαμόρφωσης",
+    "noModules": "Δεν υπάρχουν εγκατεστημένες ενότητες"
+  },
+  "pos": {
+    "title": "Τερματικό POS",
+    "cart": "Καλάθι",
+    "checkout": "Ταμειακή",
+    "subtotal": "Υποσύνολο",
+    "tax": "Φόρος",
+    "total": "Σύνολο",
+    "payment": "Πληρωμή",
+    "cash": "Μετρητά",
+    "card": "Κάρτα",
+    "completeSale": "Ολοκλήρωση Πώλησης",
+    "voidSale": "Ακύρωση Πώλησης",
+    "selectProduct": "Επιλογή προϊόντος",
+    "noProducts": "Δεν υπάρχουν διαθέσιμα προϊόντα",
+    "orderConfirmed": "Η παραγγελία επιβεβαιώθηκε",
+    "paymentReceived": "Η πληρωμή ελήφθη",
+    "receiptGenerated": "Η απόδειξη δημιουργήθηκε"
+  },
+  "waiter": {
+    "title": "Παραγγελίες Σερβιτόρου",
+    "selectTable": "Επιλογή τραπεζιού",
+    "currentOrder": "Τρέχουσα Παραγγελία",
+    "addToOrder": "Προσθήκη στην Παραγγελία",
+    "sendToKitchen": "Αποστολή στην Κουζίνα",
+    "clearOrder": "Καθαρισμός Παραγγελίας",
+    "table": "Τραπέζι",
+    "items": "Είδη",
+    "quantity": "Ποσότητα",
+    "price": "Τιμή"
+  },
+  "setup": {
+    "title": "Οδηγός Εγκατάστασης",
+    "welcome": "Καλώς ήρθατε στο Databox CMS",
+    "chooseProfile": "Επιλέξτε τον τύπο οργανισμού σας",
+    "legalEntity": "Στοιχεία Νομικής Οντότητας",
+    "orgName": "Όνομα Οργανισμού",
+    "orgType": "Τύπος Οργανισμού",
+    "complete": "Ολοκλήρωση Εγκατάστασης",
+    "step": "Βήμα",
+    "of": "από"
+  },
+  "receipts": {
+    "title": "Αποδείξεις",
+    "orderId": "ID Παραγγελίας",
+    "customer": "Πελάτης",
+    "date": "Ημερομηνία",
+    "total": "Σύνολο",
+    "viewReceipt": "Προβολή Απόδειξης",
+    "noReceipts": "Δεν βρέθηκαν αποδείξεις"
+  },
+  "programs": {
+    "title": "Προγράμματα",
+    "createProgram": "Δημιουργία Προγράμματος",
+    "programName": "Όνομα Προγράμματος",
+    "programType": "Τύπος Προγράμματος",
+    "noPrograms": "Δεν έχουν οριστεί προγράμματα"
+  },
+  "mappings": {
+    "title": "Αντιστοιχίσεις Συνδέσμου",
+    "sourceType": "Τύπος Πηγής",
+    "odbc": "ODBC",
+    "ldap": "LDAP",
+    "connectionString": "Συμβολοσειρά Σύνδεσης",
+    "query": "Ερώτημα",
+    "url": "URL",
+    "searchBase": "Βάση Αναζήτησης",
+    "simulate": "Προσομοίωση",
+    "results": "Αποτελέσματα"
+  },
+  "accessRequests": {
+    "title": "Αιτήματα Πρόσβασης",
+    "requester": "Αιτών",
+    "resource": "Πόρος",
+    "status": "Κατάσταση",
+    "approve": "Έγκριση",
+    "deny": "Απόρριψη",
+    "noRequests": "Δεν υπάρχουν αιτήματα πρόσβασης"
+  },
+  "corrections": {
+    "title": "Διορθώσεις",
+    "requestedBy": "Αιτήθηκε από",
+    "field": "Πεδίο",
+    "currentValue": "Τρέχουσα Τιμή",
+    "requestedValue": "Ζητούμενη Τιμή",
+    "approve": "Έγκριση",
+    "deny": "Απόρριψη",
+    "noCorrections": "Δεν υπάρχουν αιτήματα διόρθωσης"
+  },
+  "consumerLedger": {
+    "title": "Μητρώο Καταναλωτή",
+    "consumer": "Καταναλωτής",
+    "event": "Γεγονός",
+    "timestamp": "Χρονοσήμανση",
+    "details": "Λεπτομέρειες",
+    "noEntries": "Δεν υπάρχουν εγγραφές μητρώου"
+  },
+  "dataPortability": {
+    "title": "Μητρώο Φορητότητας Δεδομένων",
+    "export": "Εξαγωγή Δεδομένων",
+    "import": "Εισαγωγή Δεδομένων",
+    "format": "Μορφή",
+    "status": "Κατάσταση"
+  },
+  "events": {
+    "title": "Διανομέας Γεγονότων",
+    "eventType": "Τύπος Γεγονότος",
+    "payload": "Φορτίο",
+    "dispatch": "Διανομή",
+    "result": "Αποτέλεσμα"
+  },
+  "errors": {
+    "hosting": {
+      "invalid_domain": "Ένα σχέδιο φιλοξενίας χρειάζεται έναν κύριο τομέα όπως \"acme.org\".",
+      "invalid_origin": "Ένα σχέδιο φιλοξενίας χρειάζεται έναν στόχο προέλευσης (IP ή όνομα κεντρικού).",
+      "api_token_required": "Απαιτείται Cloudflare API token για την εφαρμογή του σχεδίου.",
+      "api_request_failed": "Το Cloudflare API αίτημα απέτυχε.",
+      "dns_record_exists": "Η εγγραφή DNS υπάρχει ήδη.",
+      "tunnel_creation_failed": "Αποτυχία δημιουργίας σήραγγας Cloudflare."
+    },
+    "general": {
+      "not_authenticated": "Δεν είστε αυθenticποιημένοι.",
+      "forbidden": "Δεν έχετε άδεια να εκτελέσετε αυτή την ενέργεια.",
+      "not_found": "Ο ζητούμενος πόρος δεν βρέθηκε.",
+      "internal_error": "Προέκυψε εσωτερικό σφάλμα διακομιστή.",
+      "network_error": "Προέκυψε σφάλμα δικτύου."
+    }
+  }
+}

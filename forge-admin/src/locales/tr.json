@@ -1,0 +1,237 @@
+{
+  "app": {
+    "title": "Databox CMS",
+    "subtitle": "Solid-native içerik yönetimi"
+  },
+  "nav": {
+    "setup": "Kurulum",
+    "modules": "Modüller",
+    "hosting": "Hosting",
+    "pos": "POS Terminali",
+    "waiter": "Garson Siparişleri",
+    "customerOrder": "Müşteri Self-Sipariş",
+    "display": "Promosyon Ekranı",
+    "receipts": "Fişler",
+    "programs": "Programlar",
+    "mappings": "Eşlemeler",
+    "events": "Olaylar",
+    "dataPortability": "Veri Taşınabilirliği",
+    "accessRequests": "Erişim İstekleri",
+    "corrections": "Düzeltmeler",
+    "consumerLedger": "Tüketici Defteri"
+  },
+  "common": {
+    "save": "Kaydet",
+    "cancel": "İptal",
+    "delete": "Sil",
+    "edit": "Düzenle",
+    "create": "Oluştur",
+    "search": "Ara",
+    "loading": "Yükleniyor...",
+    "error": "Hata",
+    "success": "Başarılı",
+    "close": "Kapat",
+    "back": "Geri",
+    "next": "İleri",
+    "confirm": "Onayla",
+    "yes": "Evet",
+    "no": "Hayır",
+    "enabled": "Etkin",
+    "disabled": "Devre dışı",
+    "status": "Durum",
+    "mode": "Mod",
+    "actions": "Eylemler",
+    "name": "Ad",
+    "description": "Açıklama",
+    "type": "Tür",
+    "date": "Tarih",
+    "time": "Saat",
+    "amount": "Tutar",
+    "total": "Toplam",
+    "language": "Dil"
+  },
+  "hosting": {
+    "title": "Hosting Kurulumu",
+    "apexDomain": "Ana Alan Adı",
+    "apexDomainPlaceholder": "ornek.org",
+    "originTarget": "Kaynak Hedefi",
+    "originTargetPlaceholder": "IP adresi veya ana bilgisayar adı",
+    "databoxLabel": "Databox Alt Alan Adı",
+    "databoxLabelPlaceholder": "databox",
+    "wwwEnabled": "www alt alan adını etkinleştir",
+    "proxied": "Proksili (Cloudflare)",
+    "planButton": "Plan Oluştur",
+    "applyButton": "Cloudflare'e Uygula",
+    "persistButton": "Yapılandırmayı Kaydet",
+    "bindButton": "Kaynağı Bağla",
+    "cloudflareToken": "Cloudflare API Token",
+    "cloudflareTokenPlaceholder": "Cloudflare API token girin",
+    "downloadArtifacts": "Yapıtları İndir",
+    "dnsRecords": "DNS Kayıtları",
+    "launchCommand": "Başlatma Komutu",
+    "baseUrl": "Temel URL",
+    "planSuccess": "Hosting planı başarıyla oluşturuldu",
+    "planError": "Hosting planı oluşturulamadı",
+    "applySuccess": "DNS kayıtları ve tüneller başarıyla yapılandırıldı",
+    "applyError": "Hosting yapılandırması uygulanamadı",
+    "persistSuccess": "Yapılandırma RDF kaynağı olarak kaydedildi",
+    "persistError": "Yapılandırma kaydedilemedi",
+    "bindSuccess": "Kaynak TenantBinding olarak bağlandı",
+    "bindError": "Kaynak bağlanamadı"
+  },
+  "governance": {
+    "title": "Yönetişim",
+    "subtitle": "Rol bağlamaları, ODRL politikaları, onay kapıları ve kararlar."
+  },
+  "credentials": {
+    "title": "Kimlik Bilgileri",
+    "subtitle": "Doğrulanabilir kimlik bilgileri verme, doğrulama ve iptal etme."
+  },
+  "members": {
+    "title": "Üyeler",
+    "subtitle": "Üye pod'larını sağlama, yaşam döngüsü yönetimi ve LDN aracılığıyla bildirim gönderme."
+  },
+  "operations": {
+    "title": "Operasyonlar",
+    "subtitle": "Aşama 3 operasyonel yatayları: onam, delegasyon, acil durum, envanter, sadakat, fiyatlandırma ve daha fazlası."
+  },
+  "modules": {
+    "title": "CMS Modülleri",
+    "enabled": "Etkin",
+    "disabled": "Devre dışı",
+    "enable": "Etkinleştir",
+    "disable": "Devre dışı bırak",
+    "configure": "Yapılandır",
+    "capabilities": "Yetenekler",
+    "routes": "Rotalar",
+    "configShape": "Yapılandırma Şekli",
+    "noModules": "Yüklü modül yok"
+  },
+  "pos": {
+    "title": "POS Terminali",
+    "cart": "Sepet",
+    "checkout": "Ödeme",
+    "subtotal": "Ara toplam",
+    "tax": "Vergi",
+    "total": "Toplam",
+    "payment": "Ödeme",
+    "cash": "Nakit",
+    "card": "Kart",
+    "completeSale": "Satışı Tamamla",
+    "voidSale": "Satışı İptal Et",
+    "selectProduct": "Ürün seç",
+    "noProducts": "Kullanılabilir ürün yok",
+    "orderConfirmed": "Sipariş onaylandı",
+    "paymentReceived": "Ödeme alındı",
+    "receiptGenerated": "Fiş oluşturuldu"
+  },
+  "waiter": {
+    "title": "Garson Siparişleri",
+    "selectTable": "Masa seç",
+    "currentOrder": "Mevcut Sipariş",
+    "addToOrder": "Siparişe Ekle",
+    "sendToKitchen": "Mutfağa Gönder",
+    "clearOrder": "Siparişi Temizle",
+    "table": "Masa",
+    "items": "Kalemler",
+    "quantity": "Miktar",
+    "price": "Fiyat"
+  },
+  "setup": {
+    "title": "Kurulum Sihirbazı",
+    "welcome": "Databox CMS'ye Hoş Geldiniz",
+    "chooseProfile": "Kuruluş türünüzü seçin",
+    "legalEntity": "Tüzel Kişi Bilgileri",
+    "orgName": "Kuruluş Adı",
+    "orgType": "Kuruluş Türü",
+    "complete": "Kurulumu Tamamla",
+    "step": "Adım",
+    "of": "/"
+  },
+  "receipts": {
+    "title": "Fişler",
+    "orderId": "Sipariş ID",
+    "customer": "Müşteri",
+    "date": "Tarih",
+    "total": "Toplam",
+    "viewReceipt": "Fişi Görüntüle",
+    "noReceipts": "Fiş bulunamadı"
+  },
+  "programs": {
+    "title": "Programlar",
+    "createProgram": "Program Oluştur",
+    "programName": "Program Adı",
+    "programType": "Program Türü",
+    "noPrograms": "Tanımlı program yok"
+  },
+  "mappings": {
+    "title": "Bağlayıcı Eşlemeleri",
+    "sourceType": "Kaynak Türü",
+    "odbc": "ODBC",
+    "ldap": "LDAP",
+    "connectionString": "Bağlantı Dizesi",
+    "query": "Sorgu",
+    "url": "URL",
+    "searchBase": "Arama Tabanı",
+    "simulate": "Simüle Et",
+    "results": "Sonuçlar"
+  },
+  "accessRequests": {
+    "title": "Erişim İstekleri",
+    "requester": "İstek Sahibi",
+    "resource": "Kaynak",
+    "status": "Durum",
+    "approve": "Onayla",
+    "deny": "Reddet",
+    "noRequests": "Erişim isteği yok"
+  },
+  "corrections": {
+    "title": "Düzeltmeler",
+    "requestedBy": "İsteyen",
+    "field": "Alan",
+    "currentValue": "Mevcut Değer",
+    "requestedValue": "İstenen Değer",
+    "approve": "Onayla",
+    "deny": "Reddet",
+    "noCorrections": "Düzeltme isteği yok"
+  },
+  "consumerLedger": {
+    "title": "Tüketici Defteri",
+    "consumer": "Tüketici",
+    "event": "Olay",
+    "timestamp": "Zaman Damgası",
+    "details": "Detaylar",
+    "noEntries": "Defterde giriş yok"
+  },
+  "dataPortability": {
+    "title": "Veri Taşınabilirliği Kaydı",
+    "export": "Verileri Dışa Aktar",
+    "import": "Verileri İçe Aktar",
+    "format": "Format",
+    "status": "Durum"
+  },
+  "events": {
+    "title": "Olay Dağıtıcı",
+    "eventType": "Olay Türü",
+    "payload": "Yük",
+    "dispatch": "Dağıt",
+    "result": "Sonuç"
+  },
+  "errors": {
+    "hosting": {
+      "invalid_domain": "Hosting planı \"acme.org\" gibi bir ana alan adı gerektirir.",
+      "invalid_origin": "Hosting planı bir kaynak hedefi (IP veya ana bilgisayar adı) gerektirir.",
+      "api_token_required": "Planı uygulamak için Cloudflare API token gereklidir.",
+      "api_request_failed": "Cloudflare API isteği başarısız oldu.",
+      "dns_record_exists": "DNS kaydı zaten mevcut.",
+      "tunnel_creation_failed": "Cloudflare tüneli oluşturulamadı."
+    },
+    "general": {
+      "not_authenticated": "Kimliğiniz doğrulanmadı.",
+      "forbidden": "Bu eylemi gerçekleştirme izniniz yok.",
+      "not_found": "İstenen kaynak bulunamadı.",
+      "internal_error": "Dahili sunucu hatası oluştu.",
+      "network_error": "Ağ hatası oluştu."
+    }
+  }
+}

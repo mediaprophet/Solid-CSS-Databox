@@ -1,0 +1,237 @@
+{
+  "app": {
+    "title": "Databox CMS",
+    "subtitle": "Solid-native satura pārvaldība"
+  },
+  "nav": {
+    "setup": "Iestatīšana",
+    "modules": "Moduļi",
+    "hosting": "Hostings",
+    "pos": "POS termināls",
+    "waiter": "Viesmīļa pasūtījumi",
+    "customerOrder": "Klienta pašapkalpošanās",
+    "display": "Promocijas ekrāns",
+    "receipts": "Kvītis",
+    "programs": "Programmas",
+    "mappings": "Kartējumi",
+    "events": "Notikumi",
+    "dataPortability": "Datu portabilitāte",
+    "accessRequests": "Piekļuves pieprasījumi",
+    "corrections": "Labojumi",
+    "consumerLedger": "Patērētāju reģistrs"
+  },
+  "common": {
+    "save": "Saglabāt",
+    "cancel": "Atcelt",
+    "delete": "Dzēst",
+    "edit": "Rediģēt",
+    "create": "Izveidot",
+    "search": "Meklēt",
+    "loading": "Ielādē...",
+    "error": "Kļūda",
+    "success": "Veiksmīgi",
+    "close": "Aizvērt",
+    "back": "Atpakaļ",
+    "next": "Tālāk",
+    "confirm": "Apstiprināt",
+    "yes": "Jā",
+    "no": "Nē",
+    "enabled": "Aktivizēts",
+    "disabled": "Deaktivizēts",
+    "status": "Statuss",
+    "mode": "Režīms",
+    "actions": "Darbības",
+    "name": "Nosaukums",
+    "description": "Apraksts",
+    "type": "Tips",
+    "date": "Datums",
+    "time": "Laiks",
+    "amount": "Summa",
+    "total": "Kopā",
+    "language": "Valoda"
+  },
+  "hosting": {
+    "title": "Hostinga iestatīšana",
+    "apexDomain": "Galvenais domēns",
+    "apexDomainPlaceholder": "piemers.org",
+    "originTarget": "Izcelsmes mērķis",
+    "originTargetPlaceholder": "IP adrese vai resursdatora nosaukums",
+    "databoxLabel": "Databox apakšdomēns",
+    "databoxLabelPlaceholder": "databox",
+    "wwwEnabled": "Iespējot www apakšdomēnu",
+    "proxied": "Proxied (Cloudflare)",
+    "planButton": "Ģenerēt plānu",
+    "applyButton": "Pielietot Cloudflare",
+    "persistButton": "Saglabāt konfigurāciju",
+    "bindButton": "Saistīt izcelsmi",
+    "cloudflareToken": "Cloudflare API tokens",
+    "cloudflareTokenPlaceholder": "Ievadiet Cloudflare API tokenu",
+    "downloadArtifacts": "Lejupielādēt artefaktus",
+    "dnsRecords": "DNS ieraksti",
+    "launchCommand": "Startēšanas komanda",
+    "baseUrl": "Bāzes URL",
+    "planSuccess": "Hostinga plāns veiksmīgi izveidots",
+    "planError": "Neizdevās izveidot hostinga plānu",
+    "applySuccess": "DNS ieraksti un tunelis veiksmīgi konfigurēti",
+    "applyError": "Neizdevās pielietot hostinga konfigurāciju",
+    "persistSuccess": "Konfigurācija saglabāta kā RDF resurss",
+    "persistError": "Neizdevās saglabāt konfigurāciju",
+    "bindSuccess": "Izcelsme saistīta kā TenantBinding",
+    "bindError": "Neizdevās saistīt izcelsmi"
+  },
+  "governance": {
+    "title": "Pārvaldība",
+    "subtitle": "Lomu saistījumi, ODRL politikas, apstiprinājuma vārti un rezolūcijas."
+  },
+  "credentials": {
+    "title": "Akreditācijas",
+    "subtitle": "Izdod, pārbauda un atsauc verificējamas akreditācijas."
+  },
+  "members": {
+    "title": "Dalībnieki",
+    "subtitle": "Nodrošināt dalībnieku pod-us, pārvaldīt dzīves ciklu un sūtīt paziņojumus caur LDN."
+  },
+  "operations": {
+    "title": "Operācijas",
+    "subtitle": "3. fāzes operatīvie horizontāli: piekrišana, delegēšana, ārkārtas situācija, krājumi, lojalitāte, cenu noteikšana un vairāk."
+  },
+  "modules": {
+    "title": "CMS moduļi",
+    "enabled": "Aktivizēts",
+    "disabled": "Deaktivizēts",
+    "enable": "Aktivizēt",
+    "disable": "Deaktivizēt",
+    "configure": "Konfigurēt",
+    "capabilities": "Iespējas",
+    "routes": "Maršruti",
+    "configShape": "Konfigurācijas forma",
+    "noModules": "Nav instalētu moduļu"
+  },
+  "pos": {
+    "title": "POS termināls",
+    "cart": "Grozs",
+    "checkout": "Kase",
+    "subtotal": "Starpsumma",
+    "tax": "Nodoklis",
+    "total": "Kopā",
+    "payment": "Maksājums",
+    "cash": "Skaidra nauda",
+    "card": "Karte",
+    "completeSale": "Pabeigt pārdošanu",
+    "voidSale": "Atcelt pārdošanu",
+    "selectProduct": "Izvēlieties produktu",
+    "noProducts": "Nav pieejamu produktu",
+    "orderConfirmed": "Pasūtījums apstiprināts",
+    "paymentReceived": "Maksājums saņemts",
+    "receiptGenerated": "Kvīts izveidota"
+  },
+  "waiter": {
+    "title": "Viesmīļa pasūtījumi",
+    "selectTable": "Izvēlieties galdu",
+    "currentOrder": "Pašreizējais pasūtījums",
+    "addToOrder": "Pievienot pasūtījumam",
+    "sendToKitchen": "Sūtīt uz virtuvi",
+    "clearOrder": "Notīrīt pasūtījumu",
+    "table": "Galds",
+    "items": "Preces",
+    "quantity": "Daudzums",
+    "price": "Cena"
+  },
+  "setup": {
+    "title": "Iestatīšanas vednis",
+    "welcome": "Laipni lūdzam Databox CMS",
+    "chooseProfile": "Izvēlieties organizācijas tipu",
+    "legalEntity": "Juridiskās personas dati",
+    "orgName": "Organizācijas nosaukums",
+    "orgType": "Organizācijas tips",
+    "complete": "Pabeigt iestatīšanu",
+    "step": "Solis",
+    "of": "no"
+  },
+  "receipts": {
+    "title": "Kvītis",
+    "orderId": "Pasūtījuma ID",
+    "customer": "Klients",
+    "date": "Datums",
+    "total": "Kopā",
+    "viewReceipt": "Skatīt kvīti",
+    "noReceipts": "Kvītis nav atrastas"
+  },
+  "programs": {
+    "title": "Programmas",
+    "createProgram": "Izveidot programmu",
+    "programName": "Programmas nosaukums",
+    "programType": "Programmas tips",
+    "noPrograms": "Nav definētu programmu"
+  },
+  "mappings": {
+    "title": "Savienotāju kartējumi",
+    "sourceType": "Avota tips",
+    "odbc": "ODBC",
+    "ldap": "LDAP",
+    "connectionString": "Savienojuma virkne",
+    "query": "Vaicājums",
+    "url": "URL",
+    "searchBase": "Meklēšanas bāze",
+    "simulate": "Simulēt",
+    "results": "Rezultāti"
+  },
+  "accessRequests": {
+    "title": "Piekļuves pieprasījumi",
+    "requester": "Pieprasītājs",
+    "resource": "Resurss",
+    "status": "Statuss",
+    "approve": "Apstiprināt",
+    "deny": "Noraidīt",
+    "noRequests": "Nav piekļuves pieprasījumu"
+  },
+  "corrections": {
+    "title": "Labojumi",
+    "requestedBy": "Pieprasīja",
+    "field": "Lauks",
+    "currentValue": "Pašreizējā vērtība",
+    "requestedValue": "Pieprasītā vērtība",
+    "approve": "Apstiprināt",
+    "deny": "Noraidīt",
+    "noCorrections": "Nav labojumu pieprasījumu"
+  },
+  "consumerLedger": {
+    "title": "Patērētāju reģistrs",
+    "consumer": "Patērētājs",
+    "event": "Notikums",
+    "timestamp": "Laikspiedols",
+    "details": "Detaļas",
+    "noEntries": "Nav reģistra ierakstu"
+  },
+  "dataPortability": {
+    "title": "Datu portabilitātes reģistrs",
+    "export": "Eksportēt datus",
+    "import": "Importēt datus",
+    "format": "Formāts",
+    "status": "Statuss"
+  },
+  "events": {
+    "title": "Notikumu izplatītājs",
+    "eventType": "Notikuma tips",
+    "payload": "Payload",
+    "dispatch": "Izplatīt",
+    "result": "Rezultāts"
+  },
+  "errors": {
+    "hosting": {
+      "invalid_domain": "Hostinga plānam vajag galveno domēnu kā \"acme.org\".",
+      "invalid_origin": "Hostinga plānam vajag izcelsmes mērķi (IP vai resursdatora nosaukumu).",
+      "api_token_required": "Cloudflare API tokens ir nepieciešams plāna pielietošanai.",
+      "api_request_failed": "Cloudflare API pieprasījums neizdevās.",
+      "dns_record_exists": "DNS ieraksts jau eksistē.",
+      "tunnel_creation_failed": "Neizdevās izveidot Cloudflare tuneli."
+    },
+    "general": {
+      "not_authenticated": "Jūs neesat autentificēts.",
+      "forbidden": "Jums nav atļaujas veikt šo darbību.",
+      "not_found": "Pieprasītais resurss nav atrasts.",
+      "internal_error": "Radās servera iekšēja kļūda.",
+      "network_error": "Radās tīkla kļūda."
+    }
+  }
+}

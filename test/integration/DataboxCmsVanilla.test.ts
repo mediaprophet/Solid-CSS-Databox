@@ -1,9 +1,9 @@
-import { instantiateFromConfig } from './Config';
+import { getDefaultVariables, instantiateFromConfig } from './Config';
 import type { App } from '../../src/init/App';
 import fetch from 'cross-fetch';
 import { getPort } from '../util/Util';
 
-const port = getPort('DataboxCms');
+const port = getPort('DataboxCmsVanilla');
 const baseUrl = `http://localhost:${port}/`;
 
 describe('Databox CMS Vanilla Solid Degradation', (): void => {
@@ -15,9 +15,8 @@ describe('Databox CMS Vanilla Solid Degradation', (): void => {
       'urn:solid-server:default:App',
       'config/cms/cms.json',
       {
-        'urn:solid-server:default:variable:port': port,
-        'urn:solid-server:default:variable:baseUrl': baseUrl,
-        'urn:solid-server:default:variable:loggingLevel': 'off',
+        ...getDefaultVariables(port, baseUrl),
+        'urn:solid-server:cms:variable:controlToken': 'cms-vanilla-control-token-00000001',
       },
     ) as App;
     await app.start();

@@ -1,5 +1,5 @@
 import type { Quad } from '@rdfjs/types';
-import arrayifyStream from 'arrayify-stream';
+import { arrayifyStream } from 'arrayify-stream';
 import { DataFactory } from 'n3';
 import { BasicRepresentation } from '../../http/representation/BasicRepresentation';
 import type { ResourceIdentifier } from '../../http/representation/ResourceIdentifier';

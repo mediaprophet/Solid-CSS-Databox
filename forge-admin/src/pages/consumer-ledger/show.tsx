@@ -1,5 +1,3 @@
-// @ts-nocheck
-import React from "react";
 import { useShow, useNavigation } from "@refinedev/core";
 
 export const ConsumerLedgerShow = () => {

@@ -1,6 +1,6 @@
 import 'jest-rdf';
 import type { Readable } from 'node:stream';
-import arrayifyStream from 'arrayify-stream';
+import { arrayifyStream } from 'arrayify-stream';
 import { DataFactory, Store } from 'n3';
 import type { Conditions } from '../../../src';
 import { CONTENT_TYPE_TERM, XSD } from '../../../src';

@@ -1,0 +1,237 @@
+{
+  "app": {
+    "title": "Databox CMS",
+    "subtitle": "Správa obsahu natívna Solid"
+  },
+  "nav": {
+    "setup": "Nastavenie",
+    "modules": "Moduly",
+    "hosting": "Hosting",
+    "pos": "POS terminál",
+    "waiter": "Objednávky čašníka",
+    "customerOrder": "Samoobslužná objednávka",
+    "display": "Propagačný displej",
+    "receipts": "Účtenky",
+    "programs": "Programy",
+    "mappings": "Mapovania",
+    "events": "Udalosti",
+    "dataPortability": "Prenosnosť dát",
+    "accessRequests": "Žiadosti o prístup",
+    "corrections": "Opravy",
+    "consumerLedger": "Register spotrebiteľa"
+  },
+  "common": {
+    "save": "Uložiť",
+    "cancel": "Zrušiť",
+    "delete": "Vymazať",
+    "edit": "Upraviť",
+    "create": "Vytvoriť",
+    "search": "Hľadať",
+    "loading": "Načítava sa...",
+    "error": "Chyba",
+    "success": "Úspech",
+    "close": "Zavrieť",
+    "back": "Späť",
+    "next": "Ďalej",
+    "confirm": "Potvrdiť",
+    "yes": "Áno",
+    "no": "Nie",
+    "enabled": "Aktivované",
+    "disabled": "Deaktivované",
+    "status": "Stav",
+    "mode": "Režim",
+    "actions": "Akcie",
+    "name": "Názov",
+    "description": "Popis",
+    "type": "Typ",
+    "date": "Dátum",
+    "time": "Čas",
+    "amount": "Suma",
+    "total": "Celkom",
+    "language": "Jazyk"
+  },
+  "hosting": {
+    "title": "Nastavenie hostingu",
+    "apexDomain": "Hlavná doména",
+    "apexDomainPlaceholder": "priklad.sk",
+    "originTarget": "Cieľ pôvodu",
+    "originTargetPlaceholder": "IP adresa alebo názov hostiteľa",
+    "databoxLabel": "Subdoména Databox",
+    "databoxLabelPlaceholder": "databox",
+    "wwwEnabled": "Povoliť subdoménu www",
+    "proxied": "Proxied (Cloudflare)",
+    "planButton": "Generovať plán",
+    "applyButton": "Použiť na Cloudflare",
+    "persistButton": "Uložiť konfiguráciu",
+    "bindButton": "Prepojiť pôvod",
+    "cloudflareToken": "Cloudflare API token",
+    "cloudflareTokenPlaceholder": "Zadajte Cloudflare API token",
+    "downloadArtifacts": "Stiahnuť artefakty",
+    "dnsRecords": "DNS záznamy",
+    "launchCommand": "Spúšťací príkaz",
+    "baseUrl": "Základné URL",
+    "planSuccess": "Hostingový plán úspešne vygenerovaný",
+    "planError": "Generovanie hostingového plánu zlyhalo",
+    "applySuccess": "DNS záznamy a tunel úspešne nakonfigurované",
+    "applyError": "Aplikácia hostingovej konfigurácie zlyhala",
+    "persistSuccess": "Konfigurácia uložená ako RDF zdroj",
+    "persistError": "Uloženie konfigurácie zlyhalo",
+    "bindSuccess": "Pôvod prepojený ako TenantBinding",
+    "bindError": "Prepojenie pôvodu zlyhalo"
+  },
+  "governance": {
+    "title": "Správa a riadenie",
+    "subtitle": "Väzby rolí, ODRL politiky, brány schvaľovania a rezolúcie."
+  },
+  "credentials": {
+    "title": "Overenia",
+    "subtitle": "Vydávať, overovať a odvolávať overiteľné poverenia."
+  },
+  "members": {
+    "title": "Členovia",
+    "subtitle": "Poskytovať pody členov, spravovať životný cyklus a odosielať oznámenia cez LDN."
+  },
+  "operations": {
+    "title": "Operácie",
+    "subtitle": "Provozné horizontály Fázy 3: súhlas, delegovanie, núdzový prípad, zásoby, vernosť, oceňovanie a ďalšie."
+  },
+  "modules": {
+    "title": "CMS moduly",
+    "enabled": "Aktivované",
+    "disabled": "Deaktivované",
+    "enable": "Aktivovať",
+    "disable": "Deaktivovať",
+    "configure": "Konfigurovať",
+    "capabilities": "Schopnosti",
+    "routes": "Trasy",
+    "configShape": "Konfiguračný tvar",
+    "noModules": "Žiadne moduly nenainštalované"
+  },
+  "pos": {
+    "title": "POS terminál",
+    "cart": "Košík",
+    "checkout": "Pokladňa",
+    "subtotal": "Medzisúčet",
+    "tax": "Daň",
+    "total": "Celkom",
+    "payment": "Platba",
+    "cash": "Hotovosť",
+    "card": "Karta",
+    "completeSale": "Dokončiť predaj",
+    "voidSale": "Zrušiť predaj",
+    "selectProduct": "Vyberte produkt",
+    "noProducts": "Žiadne produkty k dispozícii",
+    "orderConfirmed": "Objednávka potvrdená",
+    "paymentReceived": "Platba prijatá",
+    "receiptGenerated": "Účtenka vygenerovaná"
+  },
+  "waiter": {
+    "title": "Objednávky čašníka",
+    "selectTable": "Vyberte stôl",
+    "currentOrder": "Aktuálna objednávka",
+    "addToOrder": "Pridať do objednávky",
+    "sendToKitchen": "Odoslať do kuchyne",
+    "clearOrder": "Vyčistiť objednávku",
+    "table": "Stôl",
+    "items": "Položky",
+    "quantity": "Množstvo",
+    "price": "Cena"
+  },
+  "setup": {
+    "title": "Sprievodca nastavením",
+    "welcome": "Vitajte v Databox CMS",
+    "chooseProfile": "Vyberte typ organizácie",
+    "legalEntity": "Údaje právnickej osoby",
+    "orgName": "Názov organizácie",
+    "orgType": "Typ organizácie",
+    "complete": "Dokončiť nastavenie",
+    "step": "Krok",
+    "of": "z"
+  },
+  "receipts": {
+    "title": "Účtenky",
+    "orderId": "ID objednávky",
+    "customer": "Zákazník",
+    "date": "Dátum",
+    "total": "Celkom",
+    "viewReceipt": "Zobraziť účtenku",
+    "noReceipts": "Žiadne účtenky nenájdené"
+  },
+  "programs": {
+    "title": "Programy",
+    "createProgram": "Vytvoriť program",
+    "programName": "Názov programu",
+    "programType": "Typ programu",
+    "noPrograms": "Žiadne programy definované"
+  },
+  "mappings": {
+    "title": "Mapovania konektora",
+    "sourceType": "Typ zdroja",
+    "odbc": "ODBC",
+    "ldap": "LDAP",
+    "connectionString": "Reťazec pripojenia",
+    "query": "Dopyt",
+    "url": "URL",
+    "searchBase": "Základ vyhľadávania",
+    "simulate": "Simulovať",
+    "results": "Výsledky"
+  },
+  "accessRequests": {
+    "title": "Žiadosti o prístup",
+    "requester": "Žiadateľ",
+    "resource": "Zdroj",
+    "status": "Stav",
+    "approve": "Schváliť",
+    "deny": "Zamietnuť",
+    "noRequests": "Žiadne žiadosti o prístup"
+  },
+  "corrections": {
+    "title": "Opravy",
+    "requestedBy": "Požadované od",
+    "field": "Pole",
+    "currentValue": "Aktuálna hodnota",
+    "requestedValue": "Požadovaná hodnota",
+    "approve": "Schváliť",
+    "deny": "Zamietnuť",
+    "noCorrections": "Žiadne žiadosti o opravu"
+  },
+  "consumerLedger": {
+    "title": "Register spotrebiteľa",
+    "consumer": "Spotrebiteľ",
+    "event": "Udalosť",
+    "timestamp": "Časová pečiatka",
+    "details": "Detaily",
+    "noEntries": "Žiadne záznamy v registri"
+  },
+  "dataPortability": {
+    "title": "Register prenosnosti dát",
+    "export": "Exportovať dáta",
+    "import": "Importovať dáta",
+    "format": "Formát",
+    "status": "Stav"
+  },
+  "events": {
+    "title": "Distribútor udalostí",
+    "eventType": "Typ udalosti",
+    "payload": "Payload",
+    "dispatch": "Distribuovať",
+    "result": "Výsledok"
+  },
+  "errors": {
+    "hosting": {
+      "invalid_domain": "Hostingový plán vyžaduje hlavnú doménu ako \"acme.org\".",
+      "invalid_origin": "Hostingový plán vyžaduje cieľ pôvodu (IP alebo názov hostiteľa).",
+      "api_token_required": "Cloudflare API token je vyžadovaný pre aplikáciu plánu.",
+      "api_request_failed": "Požiadavka Cloudflare API zlyhala.",
+      "dns_record_exists": "DNS záznam už existuje.",
+      "tunnel_creation_failed": "Vytvorenie Cloudflare tunela zlyhalo."
+    },
+    "general": {
+      "not_authenticated": "Nie ste overený.",
+      "forbidden": "Nemáte oprávnenie vykonať túto akciu.",
+      "not_found": "Požadovaný zdroj nebol nájdený.",
+      "internal_error": "Vyskytla sa interná chyba servera.",
+      "network_error": "Vyskytla sa chyba siete."
+    }
+  }
+}

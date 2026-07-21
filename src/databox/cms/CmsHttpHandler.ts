@@ -23,6 +23,9 @@ import { registerBookingsRoutes } from './modules/bookings/BookingsApi';
 import { registerCatalogueRoutes } from './modules/catalogue/CatalogueApi';
 import { registerFeedsRoutes } from './modules/feeds/FeedsApi';
 import { registerHostingRoutes } from './modules/hosting/HostingApi';
+import { registerGovernanceRoutes } from './modules/governance/GovernanceApi';
+import { registerCredentialRoutes } from './modules/credentials/CredentialApi';
+import { registerProfileRoutes } from './modules/profile/ProfileApi';
 import { registerMenuRoutes } from './modules/menu/MenuApi';
 import { registerEventsRoutes } from './modules/events/EventsApi';
 import { registerTicketingRoutes } from './modules/ticketing/TicketingApi';
@@ -33,11 +36,41 @@ import { registerLicensingRoutes } from './modules/licensing/LicensingApi';
 import { registerReputationRoutes } from './modules/reputation/ReputationApi';
 import { registerDeliveryRoutes } from './modules/delivery/DeliveryApi';
 import { registerAccessRoutes } from './modules/access/AccessApi';
+import { registerConsentRoutes } from './modules/consent/ConsentApi';
+import { registerDelegationRoutes } from './modules/delegation/DelegationApi';
+import { registerEmergencyRoutes } from './modules/emergency/EmergencyApi';
+import { registerHouseholdRoutes } from './modules/household/HouseholdApi';
+import { registerInventoryRoutes } from './modules/inventory/InventoryApi';
+import { registerLoyaltyRoutes } from './modules/loyalty/LoyaltyApi';
+import { registerOrgNetworkRoutes } from './modules/orgnetwork/OrgNetworkApi';
+import { registerPricingRoutes } from './modules/pricing/PricingApi';
+import { registerA11yRoutes } from './modules/a11y/A11yApi';
+import { registerBusinessRoutes } from './modules/business/BusinessApi';
+import { registerConsumerRoutes } from './modules/consumer/ConsumerApi';
+import { registerI18nRoutes } from './modules/i18n/I18nApi';
+import { registerIntegrationRoutes } from './modules/integration/IntegrationApi';
+import { registerThemingRoutes } from './modules/theming/ThemingApi';
 import { registerPosRoutes } from './modules/pos/PosApi';
 import { registerReceiptRoutes } from './modules/receipt/ReceiptApi';
 import { registerWebsiteRoutes } from './modules/website/WebsiteApi';
 import { registerMcpRoutes, MCP_SERVER_MODULE_MANIFEST } from './modules/mcp/McpServerApi';
 import { registerQuotationsRoutes, QUOTATION_MODULE_MANIFEST } from './modules/quotations/QuotationApi';
+import { registerTaxRoutes } from './modules/tax/TaxApi';
+import { registerConcessionsRoutes } from './modules/concessions/ConcessionsApi';
+import { registerDiscountsRoutes } from './modules/discounts/DiscountsApi';
+import { registerDonationsRoutes } from './modules/donations/DonationsApi';
+import { registerNotificationsRoutes } from './modules/notifications/NotificationsApi';
+import { registerAllergyProfileRoutes } from './modules/allergy-profile/AllergyProfileApi';
+import { registerDeviceAuthRoutes } from './modules/device-auth/DeviceAuthApi';
+import { registerHrRoutes } from './modules/hr/HrApi';
+import { registerDriverManagementRoutes } from './modules/delivery/DriverManagementApi';
+import { registerPrintShopRoutes } from './modules/print/PrintShopApi';
+import { registerBarcodeRoutes } from './modules/barcode/BarcodeApi';
+import { registerEftposRoutes } from './modules/eftpos/EftposApi';
+import { registerBackupRoutes } from './modules/backups/BackupApi';
+import { registerAccountingRoutes } from './modules/accounting/AccountingApi';
+import { registerOrgAppRoutes } from './OrgAppApi';
+import { getConfigShape } from './ModuleConfigShapes';
 import { QuotationRenderer } from './modules/quotations/QuotationRenderer';
 import type { MenuInput } from './modules/menu/Menu';
 import { MENU_MODULE_MANIFEST } from './modules/menu/Menu';
@@ -116,6 +149,9 @@ export class CmsHttpHandler extends HttpHandler {
     registerCatalogueRoutes(this.router);
     registerFeedsRoutes(this.router);
     registerHostingRoutes(this.router);
+    registerGovernanceRoutes(this.router);
+    registerCredentialRoutes(this.router);
+    registerProfileRoutes(this.router);
     registerEventsRoutes(this.router);
     registerTicketingRoutes(this.router);
     registerProvenanceRoutes(this.router);
@@ -125,6 +161,20 @@ export class CmsHttpHandler extends HttpHandler {
     registerReputationRoutes(this.router);
     registerDeliveryRoutes(this.router);
     registerAccessRoutes(this.router);
+    registerConsentRoutes(this.router);
+    registerDelegationRoutes(this.router);
+    registerEmergencyRoutes(this.router);
+    registerHouseholdRoutes(this.router);
+    registerInventoryRoutes(this.router);
+    registerLoyaltyRoutes(this.router);
+    registerOrgNetworkRoutes(this.router);
+    registerPricingRoutes(this.router);
+    registerA11yRoutes(this.router);
+    registerBusinessRoutes(this.router);
+    registerConsumerRoutes(this.router);
+    registerI18nRoutes(this.router);
+    registerIntegrationRoutes(this.router);
+    registerThemingRoutes(this.router);
     registerMenuRoutes(this.router);
     registerPosRoutes(this.router, this.orderStore, this.cashRegisterStore, this.customerDisplayStore, this.tableSessionStore);
     registerReceiptRoutes(this.router);
@@ -133,6 +183,21 @@ export class CmsHttpHandler extends HttpHandler {
     const quotationRenderer = new QuotationRenderer();
     registerQuotationsRoutes(this.router, quotationRenderer);
     registerMcpRoutes(this.router);
+    registerTaxRoutes(this.router);
+    registerConcessionsRoutes(this.router);
+    registerDiscountsRoutes(this.router);
+    registerDonationsRoutes(this.router);
+    registerNotificationsRoutes(this.router);
+    registerAllergyProfileRoutes(this.router);
+    registerDeviceAuthRoutes(this.router);
+    registerHrRoutes(this.router);
+    registerDriverManagementRoutes(this.router);
+    registerPrintShopRoutes(this.router);
+    registerBarcodeRoutes(this.router);
+    registerEftposRoutes(this.router);
+    registerBackupRoutes(this.router);
+    registerAccountingRoutes(this.router);
+    registerOrgAppRoutes(this.router);
 
     // Dynamic Module Route
     this.router.register('GET', '/modules', async({ response }): Promise<void> => {
@@ -191,6 +256,11 @@ export class CmsHttpHandler extends HttpHandler {
       return;
     }
     response.setHeader('cache-control', 'no-store');
+    const configShapeRequest = parseConfigShapeRoute(this.routeBase, request.method ?? 'GET', request.url ?? '/');
+    if (configShapeRequest) {
+      await this.handleConfigShape(configShapeRequest, { response });
+      return;
+    }
     const moduleRequest = parseModuleStateRoute(this.routeBase, request.method ?? 'GET', request.url ?? '/');
     if (moduleRequest) {
       await this.handleModuleState(moduleRequest, { request, response });
@@ -247,6 +317,28 @@ export class CmsHttpHandler extends HttpHandler {
     }
   }
 
+  private async handleConfigShape(
+    { id }: { id: string },
+    { response }: Pick<HttpHandlerInput, 'response'>,
+  ): Promise<void> {
+    const manifest = this.registry.get(id);
+    if (!manifest) {
+      writeJson(response, 404, { error: 'module-not-found' });
+      return;
+    }
+    if (!manifest.configShape) {
+      writeJson(response, 404, { error: 'no-config-shape' });
+      return;
+    }
+    const turtle = getConfigShape(manifest.configShape);
+    if (!turtle) {
+      writeJson(response, 404, { error: 'config-shape-not-defined', configShape: manifest.configShape });
+      return;
+    }
+    response.setHeader('content-type', 'text/turtle; charset=utf-8');
+    response.end(turtle);
+  }
+
   private async handleModuleState(
     { method, id }: { method: string; id: string },
     { request, response }: HttpHandlerInput,
@@ -280,16 +372,17 @@ export class CmsHttpHandler extends HttpHandler {
       }
 
       if (body.enabled !== undefined) {
-        this.registry.setEnabled(id, body.enabled);
-      }
-      if (this.configStore) {
-        let turtle = body.configTurtle ?? await this.configStore.load(id) ?? '';
-        if (body.enabled !== undefined) {
-          turtle = await setModuleEnabledFlag(this.moduleStateIri(id), turtle, body.enabled);
-        }
-        if (body.configTurtle !== undefined || body.enabled !== undefined) {
+        const enabled = body.enabled as boolean;
+        this.registry.setEnabled(id, enabled);
+        if (this.configStore) {
+          let turtle: string = body.configTurtle !== undefined
+            ? body.configTurtle as string
+            : await this.configStore.load(id) ?? '';
+          turtle = await setModuleEnabledFlag(this.moduleStateIri(id), turtle, enabled);
           await this.configStore.save(id, turtle);
         }
+      } else if (this.configStore && body.configTurtle !== undefined) {
+        await this.configStore.save(id, body.configTurtle as string);
       }
 
       writeJson(response, 200, await this.moduleState(manifest));
@@ -439,10 +532,77 @@ function ensureBuiltIns(registry: DataboxModuleRegistry): void {
       version: '0.1.0',
       description: 'Guided domain, DNS and launch-configuration planning for the CMS profile.',
       capabilities: [ 'cms:hosting', 'cms:dns-plan' ],
-      routes: [ 'POST /.databox/cms/hosting/plan' ],
+      routes: [
+        'POST /.databox/cms/hosting/plan',
+        'POST /.databox/cms/hosting/apply',
+        'POST /.databox/cms/hosting/persist',
+        'POST /.databox/cms/hosting/bind',
+        'POST /.databox/cms/hosting/artifacts',
+      ],
       adminUi: {
         navLabel: 'Hosting',
         path: '/hosting',
+      },
+    });
+  }
+  if (!registry.get('governance')) {
+    registry.register({
+      id: 'governance',
+      name: 'Governance',
+      version: '0.1.0',
+      description: 'Role-to-authority bindings, ODRL policy encoding, approval gates, and resolution recording.',
+      capabilities: [ 'cms:governance', 'cms:odrl', 'cms:approval-gate', 'cms:resolution' ],
+      routes: [
+        'POST /.databox/cms/governance/role/bind',
+        'POST /.databox/cms/governance/odrl/policy',
+        'POST /.databox/cms/governance/approval-gate',
+        'POST /.databox/cms/governance/resolution',
+      ],
+      adminUi: {
+        navLabel: 'Governance',
+        path: '/governance',
+      },
+    });
+  }
+  if (!registry.get('credentials')) {
+    registry.register({
+      id: 'credentials',
+      name: 'Credentials',
+      version: '0.1.0',
+      description: 'Verifiable credential issuance, verification, and revocation lifecycle.',
+      capabilities: [ 'cms:credentials', 'cms:vc-issuance', 'cms:vc-verification', 'cms:vc-revocation' ],
+      routes: [
+        'POST /.databox/cms/credentials/issue',
+        'POST /.databox/cms/credentials/verify',
+        'POST /.databox/cms/credentials/revoke',
+      ],
+      adminUi: {
+        navLabel: 'Credentials',
+        path: '/credentials',
+      },
+    });
+  }
+  if (!registry.get('profile')) {
+    registry.register({
+      id: 'profile',
+      name: 'Member Pods & Profiles',
+      version: '0.1.0',
+      description: 'Member/person pod provisioning, LDN inbox communication, bidirectional interaction, and lifecycle management.',
+      capabilities: [ 'cms:profile', 'cms:member-pod', 'cms:ldn-inbox', 'cms:member-interaction', 'cms:member-lifecycle' ],
+      routes: [
+        'POST /.databox/cms/profile/build',
+        'POST /.databox/cms/members/provision',
+        'POST /.databox/cms/members/lifecycle',
+        'POST /.databox/cms/ldn/notification',
+        'POST /.databox/cms/ldn/inbox/create',
+        'POST /.databox/cms/ldn/send',
+        'POST /.databox/cms/members/notify',
+        'POST /.databox/cms/members/notify-organisation',
+        'POST /.databox/cms/members/access-grant',
+      ],
+      adminUi: {
+        navLabel: 'Members',
+        path: '/members',
       },
     });
   }
@@ -537,6 +697,15 @@ function ensureBuiltIns(registry: DataboxModuleRegistry): void {
   if (!registry.isEnabled('hosting')) {
     registry.setEnabled('hosting', true);
   }
+  if (!registry.isEnabled('governance')) {
+    registry.setEnabled('governance', true);
+  }
+  if (!registry.isEnabled('credentials')) {
+    registry.setEnabled('credentials', true);
+  }
+  if (!registry.isEnabled('profile')) {
+    registry.setEnabled('profile', true);
+  }
   if (!registry.isEnabled('receipt')) {
     registry.setEnabled('receipt', true);
   }
@@ -560,6 +729,213 @@ function ensureBuiltIns(registry: DataboxModuleRegistry): void {
   }
   if (!registry.isEnabled(TABLE_SESSION_MODULE_MANIFEST.id)) {
     registry.setEnabled(TABLE_SESSION_MODULE_MANIFEST.id, true);
+  }
+
+  const phase3Modules: Record<string, { name: string; description: string; capabilities: string[]; routes: string[]; navLabel: string; path: string }> = {
+    consent: {
+      name: 'Consent Management',
+      description: 'DPV-shaped consent records (grant/withdraw) as JSON-LD.',
+      capabilities: [ 'cms:consent' ],
+      routes: [ 'POST /.databox/cms/consent/build' ],
+      navLabel: 'Consent',
+      path: '/consent',
+    },
+    delegation: {
+      name: 'Delegation & Assisted Agency',
+      description: 'Scoped, revocable delegation grants and validation.',
+      capabilities: [ 'cms:delegation' ],
+      routes: [ 'POST /.databox/cms/delegation/build', 'POST /.databox/cms/delegation/validate' ],
+      navLabel: 'Delegation',
+      path: '/delegation',
+    },
+    emergency: {
+      name: 'Emergency / Break-Glass Access',
+      description: 'Break-glass access evaluation with audit trail.',
+      capabilities: [ 'cms:break-glass' ],
+      routes: [ 'POST /.databox/cms/emergency/break-glass' ],
+      navLabel: 'Emergency',
+      path: '/emergency',
+    },
+    household: {
+      name: 'Household / Domestic Collective',
+      description: 'Household entity with shared stewardship members.',
+      capabilities: [ 'cms:household' ],
+      routes: [ 'POST /.databox/cms/household/build' ],
+      navLabel: 'Household',
+      path: '/household',
+    },
+    inventory: {
+      name: 'Inventory & Stock',
+      description: 'Stock fulfillment checks and auditable stock records.',
+      capabilities: [ 'cms:inventory', 'cms:stock' ],
+      routes: [ 'POST /.databox/cms/inventory/check', 'POST /.databox/cms/inventory/record' ],
+      navLabel: 'Inventory',
+      path: '/inventory',
+    },
+    loyalty: {
+      name: 'Loyalty Programs',
+      description: 'Loyalty points earn/redeem transactions and records.',
+      capabilities: [ 'cms:loyalty' ],
+      routes: [ 'POST /.databox/cms/loyalty/apply', 'POST /.databox/cms/loyalty/record' ],
+      navLabel: 'Loyalty',
+      path: '/loyalty',
+    },
+    orgnetwork: {
+      name: 'Federated Org Networks',
+      description: 'Organizational unit hierarchy with parent relationships.',
+      capabilities: [ 'cms:orgnetwork', 'cms:org-unit' ],
+      routes: [ 'POST /.databox/cms/orgnetwork/unit' ],
+      navLabel: 'Org Networks',
+      path: '/orgnetwork',
+    },
+    pricing: {
+      name: 'Wholesale / B2B Pricing',
+      description: 'Tiered wholesale pricing with MOQ enforcement.',
+      capabilities: [ 'cms:pricing', 'cms:wholesale' ],
+      routes: [ 'POST /.databox/cms/pricing/wholesale' ],
+      navLabel: 'Pricing',
+      path: '/pricing',
+    },
+    a11y: {
+      name: 'Accessibility Audit',
+      description: 'Audit media and controls for accessibility issues.',
+      capabilities: [ 'cms:a11y' ],
+      routes: [ 'POST /.databox/cms/a11y/audit' ],
+      navLabel: 'Accessibility',
+      path: '/a11y',
+    },
+    business: {
+      name: 'Business Hours',
+      description: 'Opening hours schema.org records and open/closed checks.',
+      capabilities: [ 'cms:business-hours' ],
+      routes: [ 'POST /.databox/cms/business/hours/build', 'POST /.databox/cms/business/hours/check' ],
+      navLabel: 'Business Hours',
+      path: '/business',
+    },
+    consumer: {
+      name: 'Consumer Rights',
+      description: 'Data-subject access and correction requests.',
+      capabilities: [ 'cms:consumer-rights', 'cms:access-request', 'cms:correction-request' ],
+      routes: [ 'POST /.databox/cms/consumer/access-request', 'POST /.databox/cms/consumer/correction-request' ],
+      navLabel: 'Consumer Rights',
+      path: '/consumer',
+    },
+    i18n: {
+      name: 'Internationalization',
+      description: 'Locale negotiation from Accept-Language headers.',
+      capabilities: [ 'cms:i18n', 'cms:locale-negotiation' ],
+      routes: [ 'POST /.databox/cms/i18n/negotiate' ],
+      navLabel: 'i18n',
+      path: '/i18n',
+    },
+    integration: {
+      name: 'Enterprise Connectors',
+      description: 'Portable connector manifest and job validation.',
+      capabilities: [ 'cms:integration', 'cms:connector' ],
+      routes: [ 'POST /.databox/cms/integration/manifest/validate', 'POST /.databox/cms/integration/job/validate' ],
+      navLabel: 'Integration',
+      path: '/integration',
+    },
+    theming: {
+      name: 'Theming & Design Tokens',
+      description: 'W3C DTCG design token validation, CSS compilation, and Forge token projection.',
+      capabilities: [ 'cms:theming', 'cms:design-tokens' ],
+      routes: [ 'POST /.databox/cms/theming/validate', 'POST /.databox/cms/theming/css', 'POST /.databox/cms/theming/forge-tokens' ],
+      navLabel: 'Theming',
+      path: '/theming',
+    },
+    events: {
+      name: 'Event Dispatcher',
+      description: 'Dispatch and track schema.org events with attendance and status.',
+      capabilities: [ 'cms:events', 'cms:event-dispatch' ],
+      routes: [ 'POST /.databox/cms/events/event' ],
+      navLabel: 'Events',
+      path: '/events',
+    },
+    ticketing: {
+      name: 'Ticketing',
+      description: 'Issue and track tickets with QR codes and seat assignments.',
+      capabilities: [ 'cms:ticketing', 'cms:tickets' ],
+      routes: [ 'POST /.databox/cms/ticketing/ticket' ],
+      navLabel: 'Ticketing',
+      path: '/ticketing',
+    },
+    provenance: {
+      name: 'Provenance Tracking',
+      description: 'W3C PROV-O provenance records for data lineage and audit.',
+      capabilities: [ 'cms:provenance', 'cms:prov' ],
+      routes: [ 'POST /.databox/cms/provenance' ],
+      navLabel: 'Provenance',
+      path: '/provenance',
+    },
+    social: {
+      name: 'Social Posts',
+      description: 'Activity Streams social notes and posts.',
+      capabilities: [ 'cms:social', 'cms:notes' ],
+      routes: [ 'POST /.databox/cms/social/note' ],
+      navLabel: 'Social',
+      path: '/social',
+    },
+    records: {
+      name: 'Records Management',
+      description: 'Official record entries with retention and classification.',
+      capabilities: [ 'cms:records', 'cms:record-entries' ],
+      routes: [ 'POST /.databox/cms/records/entry' ],
+      navLabel: 'Records',
+      path: '/records',
+    },
+    licensing: {
+      name: 'Licensing & Permits',
+      description: 'Issue licences and permits with scope and validity periods.',
+      capabilities: [ 'cms:licensing', 'cms:licences', 'cms:permits' ],
+      routes: [ 'POST /.databox/cms/licensing/licence', 'POST /.databox/cms/licensing/permit' ],
+      navLabel: 'Licensing',
+      path: '/licensing',
+    },
+    reputation: {
+      name: 'Reputation & Reviews',
+      description: 'Aggregate ratings and reviews into reputation scores.',
+      capabilities: [ 'cms:reputation', 'cms:reviews' ],
+      routes: [ 'POST /.databox/cms/reputation/aggregate' ],
+      navLabel: 'Reputation',
+      path: '/reputation',
+    },
+    delivery: {
+      name: 'Delivery Management',
+      description: 'Delivery requests with routing, tracking, and status.',
+      capabilities: [ 'cms:delivery', 'cms:delivery-requests' ],
+      routes: [ 'POST /.databox/cms/delivery/request' ],
+      navLabel: 'Delivery',
+      path: '/delivery',
+    },
+    access: {
+      name: 'Access Control',
+      description: 'Evaluate access requests against credential gate policies.',
+      capabilities: [ 'cms:access', 'cms:credential-gate' ],
+      routes: [ 'POST /.databox/cms/access/evaluate' ],
+      navLabel: 'Access Control',
+      path: '/access',
+    },
+  };
+
+  for (const [ id, mod ] of Object.entries(phase3Modules)) {
+    if (!registry.get(id)) {
+      registry.register({
+        id,
+        name: mod.name,
+        version: '0.1.0',
+        description: mod.description,
+        capabilities: mod.capabilities,
+        routes: mod.routes,
+        adminUi: {
+          navLabel: mod.navLabel,
+          path: mod.path,
+        },
+      });
+    }
+    if (!registry.isEnabled(id)) {
+      registry.setEnabled(id, true);
+    }
   }
 }
 
@@ -609,6 +985,32 @@ function absoluteRequestBaseUrl(url: string | undefined): string | undefined {
 
 function firstHeader(value: string | string[] | undefined): string | undefined {
   return Array.isArray(value) ? value[0] : value;
+}
+
+function parseConfigShapeRoute(
+  routeBase: string,
+  method: string,
+  url: string,
+): { id: string } | undefined {
+  if (method.toUpperCase() !== 'GET') {
+    return;
+  }
+  const path = new URL(url, 'http://localhost').pathname;
+  const prefix = `${routeBase}/modules/`;
+  if (!path.startsWith(prefix)) {
+    return;
+  }
+  const suffix = '/config-shape';
+  if (!path.endsWith(suffix)) {
+    return;
+  }
+  const encoded = path.slice(prefix.length, -suffix.length);
+  if (encoded.length === 0 || encoded.includes('/')) {
+    return;
+  }
+  try {
+    return { id: decodeURIComponent(encoded) };
+  } catch {}
 }
 
 function parseModuleStateRoute(

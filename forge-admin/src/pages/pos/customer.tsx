@@ -1,7 +1,7 @@
-// @ts-nocheck
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { CapabilityStrip, StatusBadge } from "./shared";
 import { money, orderTotal, standardIntent, usePosSnapshot } from "./operations";
+import { FSANZ_ALLERGEN_CATEGORIES } from "./allergens";
 
 const qrCells = Array.from({ length: 81 }, (_, index) => index);
 
@@ -183,7 +183,7 @@ export const CustomerSelfOrderPage = () => {
               <span className="text-sm text-slate-200">Connect customer Solid vault</span>
             </label>
             <div className="flex flex-wrap gap-2">
-              {["milk", "egg", "gluten", "sesame"].map((allergen) => (
+              {FSANZ_ALLERGEN_CATEGORIES.map((allergen) => (
                 <button
                   key={allergen}
                   type="button"

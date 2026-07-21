@@ -1,0 +1,23 @@
+{
+  "app": { "title": "Databox CMS", "subtitle": "Solid原生内容管理" },
+  "nav": { "setup": "设置", "modules": "模块", "hosting": "托管", "pos": "POS终端", "waiter": "服务员订单", "customerOrder": "客户自助点餐", "display": "促销显示", "receipts": "收据", "programs": "程序", "mappings": "映射", "events": "事件", "dataPortability": "数据可移植性", "accessRequests": "访问请求", "corrections": "更正", "consumerLedger": "消费者账本" },
+  "common": { "save": "保存", "cancel": "取消", "delete": "删除", "edit": "编辑", "create": "创建", "search": "搜索", "loading": "加载中...", "error": "错误", "success": "成功", "close": "关闭", "back": "返回", "next": "下一步", "confirm": "确认", "yes": "是", "no": "否", "enabled": "已启用", "disabled": "已禁用", "status": "状态", "mode": "模式", "actions": "操作", "name": "名称", "description": "描述", "type": "类型", "date": "日期", "time": "时间", "amount": "金额", "total": "总计", "language": "语言" },
+  "hosting": { "title": "托管设置", "apexDomain": "主域名", "apexDomainPlaceholder": "example.org", "originTarget": "源目标", "originTargetPlaceholder": "IP地址或主机名", "databoxLabel": "Databox子域名", "databoxLabelPlaceholder": "databox", "wwwEnabled": "启用www子域名", "proxied": "代理(Cloudflare)", "planButton": "生成计划", "applyButton": "应用到Cloudflare", "persistButton": "保存配置", "bindButton": "绑定源", "cloudflareToken": "Cloudflare API令牌", "cloudflareTokenPlaceholder": "输入Cloudflare API令牌", "downloadArtifacts": "下载工件", "dnsRecords": "DNS记录", "launchCommand": "启动命令", "baseUrl": "基础URL", "planSuccess": "托管计划生成成功", "planError": "生成托管计划失败", "applySuccess": "DNS记录和隧道配置成功", "applyError": "应用托管配置失败", "persistSuccess": "配置已保存为RDF资源", "persistError": "保存配置失败", "bindSuccess": "源已绑定为TenantBinding", "bindError": "绑定源失败" },
+  "governance": { "title": "治理", "subtitle": "角色绑定、ODRL策略、审批门和决议。" },
+  "credentials": { "title": "凭证", "subtitle": "颁发、验证和撤销可验证凭证。" },
+  "members": { "title": "成员", "subtitle": "配置成员Pod、管理生命周期并通过LDN发送通知。" },
+  "operations": { "title": "运营", "subtitle": "第三阶段运营横向：同意、授权、紧急、库存、忠诚度、定价等。" },
+  "modules": { "title": "CMS模块", "enabled": "已启用", "disabled": "已禁用", "enable": "启用", "disable": "禁用", "configure": "配置", "capabilities": "功能", "routes": "路由", "configShape": "配置形状", "noModules": "未安装任何模块" },
+  "pos": { "title": "POS终端", "cart": "购物车", "checkout": "结账", "subtotal": "小计", "tax": "税", "total": "总计", "payment": "付款", "cash": "现金", "card": "卡", "completeSale": "完成销售", "voidSale": "取消销售", "selectProduct": "选择产品", "noProducts": "无可用产品", "orderConfirmed": "订单已确认", "paymentReceived": "已收到付款", "receiptGenerated": "收据已生成" },
+  "waiter": { "title": "服务员订单", "selectTable": "选择桌位", "currentOrder": "当前订单", "addToOrder": "加入订单", "sendToKitchen": "发送到厨房", "clearOrder": "清除订单", "table": "桌位", "items": "项目", "quantity": "数量", "price": "价格" },
+  "setup": { "title": "设置向导", "welcome": "欢迎使用Databox CMS", "chooseProfile": "选择您的组织类型", "legalEntity": "法人实体详情", "orgName": "组织名称", "orgType": "组织类型", "complete": "完成设置", "step": "步骤", "of": "/" },
+  "receipts": { "title": "收据", "orderId": "订单ID", "customer": "客户", "date": "日期", "total": "总计", "viewReceipt": "查看收据", "noReceipts": "未找到收据" },
+  "programs": { "title": "程序", "createProgram": "创建程序", "programName": "程序名称", "programType": "程序类型", "noPrograms": "未定义程序" },
+  "mappings": { "title": "连接器映射", "sourceType": "源类型", "odbc": "ODBC", "ldap": "LDAP", "connectionString": "连接字符串", "query": "查询", "url": "URL", "searchBase": "搜索基础", "simulate": "模拟", "results": "结果" },
+  "accessRequests": { "title": "访问请求", "requester": "请求者", "resource": "资源", "status": "状态", "approve": "批准", "deny": "拒绝", "noRequests": "无访问请求" },
+  "corrections": { "title": "更正", "requestedBy": "请求人", "field": "字段", "currentValue": "当前值", "requestedValue": "请求值", "approve": "批准", "deny": "拒绝", "noCorrections": "无更正请求" },
+  "consumerLedger": { "title": "消费者账本", "consumer": "消费者", "event": "事件", "timestamp": "时间戳", "details": "详情", "noEntries": "无账本条目" },
+  "dataPortability": { "title": "数据可移植性注册", "export": "导出数据", "import": "导入数据", "format": "格式", "status": "状态" },
+  "events": { "title": "事件分发器", "eventType": "事件类型", "payload": "载荷", "dispatch": "分发", "result": "结果" },
+  "errors": { "hosting": { "invalid_domain": "托管计划需要主域名，如\"acme.org\"。", "invalid_origin": "托管计划需要源目标（IP或主机名）。", "api_token_required": "需要Cloudflare API令牌来应用计划。", "api_request_failed": "Cloudflare API请求失败。", "dns_record_exists": "DNS记录已存在。", "tunnel_creation_failed": "创建Cloudflare隧道失败。" }, "general": { "not_authenticated": "您未通过身份验证。", "forbidden": "您没有权限执行此操作。", "not_found": "未找到请求的资源。", "internal_error": "发生内部服务器错误。", "network_error": "发生网络错误。" } }
+}

@@ -1,0 +1,237 @@
+{
+  "app": {
+    "title": "Databox CMS",
+    "subtitle": "Quản lý nội dung native Solid"
+  },
+  "nav": {
+    "setup": "Cài đặt",
+    "modules": "Mô-đun",
+    "hosting": "Lưu trữ",
+    "pos": "Thiết bị POS",
+    "waiter": "Đặt món bồi bàn",
+    "customerOrder": "Khách tự đặt",
+    "display": "Hiển thị khuyến mãi",
+    "receipts": "Biên lai",
+    "programs": "Chương trình",
+    "mappings": "Ánh xạ",
+    "events": "Sự kiện",
+    "dataPortability": "Tính di động dữ liệu",
+    "accessRequests": "Yêu cầu truy cập",
+    "corrections": "Sửa đổi",
+    "consumerLedger": "Sổ cái người tiêu dùng"
+  },
+  "common": {
+    "save": "Lưu",
+    "cancel": "Hủy",
+    "delete": "Xóa",
+    "edit": "Chỉnh sửa",
+    "create": "Tạo",
+    "search": "Tìm kiếm",
+    "loading": "Đang tải...",
+    "error": "Lỗi",
+    "success": "Thành công",
+    "close": "Đóng",
+    "back": "Quay lại",
+    "next": "Tiếp theo",
+    "confirm": "Xác nhận",
+    "yes": "Có",
+    "no": "Không",
+    "enabled": "Đã bật",
+    "disabled": "Đã tắt",
+    "status": "Trạng thái",
+    "mode": "Chế độ",
+    "actions": "Hành động",
+    "name": "Tên",
+    "description": "Mô tả",
+    "type": "Loại",
+    "date": "Ngày",
+    "time": "Giờ",
+    "amount": "Số tiền",
+    "total": "Tổng cộng",
+    "language": "Ngôn ngữ"
+  },
+  "hosting": {
+    "title": "Cấu hình Lưu trữ",
+    "apexDomain": "Tên miền chính",
+    "apexDomainPlaceholder": "vidu.org",
+    "originTarget": "Đích nguồn",
+    "originTargetPlaceholder": "Địa chỉ IP hoặc tên máy chủ",
+    "databoxLabel": "Tên miền con Databox",
+    "databoxLabelPlaceholder": "databox",
+    "wwwEnabled": "Bật tên miền con www",
+    "proxied": "Đã proxy (Cloudflare)",
+    "planButton": "Tạo kế hoạch",
+    "applyButton": "Áp dụng cho Cloudflare",
+    "persistButton": "Lưu cấu hình",
+    "bindButton": "Liên kết nguồn",
+    "cloudflareToken": "Token API Cloudflare",
+    "cloudflareTokenPlaceholder": "Nhập token API Cloudflare",
+    "downloadArtifacts": "Tải xuống artifacts",
+    "dnsRecords": "Bản ghi DNS",
+    "launchCommand": "Lệnh khởi động",
+    "baseUrl": "URL cơ sở",
+    "planSuccess": "Kế hoạch lưu trữ đã được tạo thành công",
+    "planError": "Tạo kế hoạch lưu trữ thất bại",
+    "applySuccess": "Bản ghi DNS và đường hầm đã được cấu hình thành công",
+    "applyError": "Áp dụng cấu hình lưu trữ thất bại",
+    "persistSuccess": "Cấu hình đã được lưu dưới dạng tài nguyên RDF",
+    "persistError": "Lưu cấu hình thất bại",
+    "bindSuccess": "Nguồn đã được liên kết dưới dạng TenantBinding",
+    "bindError": "Liên kết nguồn thất bại"
+  },
+  "governance": {
+    "title": "Quản trị",
+    "subtitle": "Gán vai trò, chính sách ODRL, cổng phê duyệt và nghị quyết."
+  },
+  "credentials": {
+    "title": "Chứng chỉ",
+    "subtitle": "Phát hành, xác minh và thu hồi chứng chỉ có thể xác minh."
+  },
+  "members": {
+    "title": "Thành viên",
+    "subtitle": "Cung cấp pod thành viên, quản lý vòng đời và gửi thông báo qua LDN."
+  },
+  "operations": {
+    "title": "Vận hành",
+    "subtitle": "Chức năng vận hành Giai đoạn 3: đồng ý, ủy quyền, khẩn cấp, hàng tồn kho, khách hàng thân thiết, định giá và hơn thế nữa."
+  },
+  "modules": {
+    "title": "Mô-đun CMS",
+    "enabled": "Đã bật",
+    "disabled": "Đã tắt",
+    "enable": "Bật",
+    "disable": "Tắt",
+    "configure": "Cấu hình",
+    "capabilities": "Khả năng",
+    "routes": "Tuyến",
+    "configShape": "Hình cấu hình",
+    "noModules": "Không có mô-đun nào được cài đặt"
+  },
+  "pos": {
+    "title": "Thiết bị POS",
+    "cart": "Giỏ hàng",
+    "checkout": "Thanh toán",
+    "subtotal": "Tổng phụ",
+    "tax": "Thuế",
+    "total": "Tổng cộng",
+    "payment": "Thanh toán",
+    "cash": "Tiền mặt",
+    "card": "Thẻ",
+    "completeSale": "Hoàn tất bán hàng",
+    "voidSale": "Hủy bán hàng",
+    "selectProduct": "Chọn sản phẩm",
+    "noProducts": "Không có sản phẩm nào",
+    "orderConfirmed": "Đơn hàng đã được xác nhận",
+    "paymentReceived": "Đã nhận thanh toán",
+    "receiptGenerated": "Biên lai đã được tạo"
+  },
+  "waiter": {
+    "title": "Đặt món bồi bàn",
+    "selectTable": "Chọn bàn",
+    "currentOrder": "Đơn hàng hiện tại",
+    "addToOrder": "Thêm vào đơn hàng",
+    "sendToKitchen": "Gửi đến bếp",
+    "clearOrder": "Xóa đơn hàng",
+    "table": "Bàn",
+    "items": "Mặt hàng",
+    "quantity": "Số lượng",
+    "price": "Giá"
+  },
+  "setup": {
+    "title": "Trình hướng dẫn cài đặt",
+    "welcome": "Chào mừng đến với Databox CMS",
+    "chooseProfile": "Chọn loại tổ chức",
+    "legalEntity": "Chi tiết pháp nhân",
+    "orgName": "Tên tổ chức",
+    "orgType": "Loại tổ chức",
+    "complete": "Hoàn tất cài đặt",
+    "step": "Bước",
+    "of": "/"
+  },
+  "receipts": {
+    "title": "Biên lai",
+    "orderId": "ID đơn hàng",
+    "customer": "Khách hàng",
+    "date": "Ngày",
+    "total": "Tổng cộng",
+    "viewReceipt": "Xem biên lai",
+    "noReceipts": "Không tìm thấy biên lai"
+  },
+  "programs": {
+    "title": "Chương trình",
+    "createProgram": "Tạo chương trình",
+    "programName": "Tên chương trình",
+    "programType": "Loại chương trình",
+    "noPrograms": "Chưa có chương trình nào được định nghĩa"
+  },
+  "mappings": {
+    "title": "Ánh xạ kết nối",
+    "sourceType": "Loại nguồn",
+    "odbc": "ODBC",
+    "ldap": "LDAP",
+    "connectionString": "Chuỗi kết nối",
+    "query": "Truy vấn",
+    "url": "URL",
+    "searchBase": "Cơ sở tìm kiếm",
+    "simulate": "Mô phỏng",
+    "results": "Kết quả"
+  },
+  "accessRequests": {
+    "title": "Yêu cầu truy cập",
+    "requester": "Người yêu cầu",
+    "resource": "Tài nguyên",
+    "status": "Trạng thái",
+    "approve": "Phê duyệt",
+    "deny": "Từ chối",
+    "noRequests": "Không có yêu cầu truy cập"
+  },
+  "corrections": {
+    "title": "Sửa đổi",
+    "requestedBy": "Yêu cầu bởi",
+    "field": "Trường",
+    "currentValue": "Giá trị hiện tại",
+    "requestedValue": "Giá trị yêu cầu",
+    "approve": "Phê duyệt",
+    "deny": "Từ chối",
+    "noCorrections": "Không có yêu cầu sửa đổi"
+  },
+  "consumerLedger": {
+    "title": "Sổ cái người tiêu dùng",
+    "consumer": "Người tiêu dùng",
+    "event": "Sự kiện",
+    "timestamp": "Dấu thời gian",
+    "details": "Chi tiết",
+    "noEntries": "Không có mục nào trong sổ cái"
+  },
+  "dataPortability": {
+    "title": "Đăng ký tính di động dữ liệu",
+    "export": "Xuất dữ liệu",
+    "import": "Nhập dữ liệu",
+    "format": "Định dạng",
+    "status": "Trạng thái"
+  },
+  "events": {
+    "title": "Bộ phân phối sự kiện",
+    "eventType": "Loại sự kiện",
+    "payload": "Payload",
+    "dispatch": "Phân phối",
+    "result": "Kết quả"
+  },
+  "errors": {
+    "hosting": {
+      "invalid_domain": "Kế hoạch lưu trữ cần tên miền chính như \"acme.org\".",
+      "invalid_origin": "Kế hoạch lưu trữ cần đích nguồn (IP hoặc tên máy chủ).",
+      "api_token_required": "Cần token API Cloudflare để áp dụng kế hoạch.",
+      "api_request_failed": "Yêu cầu API Cloudflare đã thất bại.",
+      "dns_record_exists": "Bản ghi DNS đã tồn tại.",
+      "tunnel_creation_failed": "Tạo đường hầm Cloudflare thất bại."
+    },
+    "general": {
+      "not_authenticated": "Bạn chưa được xác thực.",
+      "forbidden": "Bạn không có quyền thực hiện hành động này.",
+      "not_found": "Không tìm thấy tài nguyên được yêu cầu.",
+      "internal_error": "Đã xảy ra lỗi máy chủ nội bộ.",
+      "network_error": "Đã xảy ra lỗi mạng."
+    }
+  }
+}

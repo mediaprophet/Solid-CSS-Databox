@@ -10,9 +10,12 @@ import type { CanBePromise } from '../../templates/types/oidc-provider';
  * This can be detected via the env variables: https://jestjs.io/docs/environment-variables.
  * There have been reports of `JEST_WORKER_ID` being undefined, so to be sure we check both.
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+declare const jest: { requireActual: (name: string) => any };
+
 export function importOidcProvider(): CanBePromise<typeof import('../../templates/types/oidc-provider')> {
   if (process.env.JEST_WORKER_ID ?? process.env.NODE_ENV === 'test') {
-    return jest.requireActual('oidc-provider');
+    return jest.requireActual('oidc-provider') as typeof import('../../templates/types/oidc-provider');
   }
   return import('oidc-provider');
 }

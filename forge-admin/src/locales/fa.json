@@ -1,0 +1,237 @@
+{
+  "app": {
+    "title": "Databox CMS",
+    "subtitle": "مدیریت محتوای بومی Solid"
+  },
+  "nav": {
+    "setup": "نصب",
+    "modules": "ماژول‌ها",
+    "hosting": "هاستینگ",
+    "pos": "ترمینال POS",
+    "waiter": "سفارش‌های گارسون",
+    "customerOrder": "سفارش خودکار مشتری",
+    "display": "نمایش تبلیغات",
+    "receipts": "رسیدها",
+    "programs": "برنامه‌ها",
+    "mappings": "نگاشت‌ها",
+    "events": "رویدادها",
+    "dataPortability": "قابلیت انتقال داده",
+    "accessRequests": "درخواست‌های دسترسی",
+    "corrections": "اصلاحات",
+    "consumerLedger": "دفتر مصرف‌کننده"
+  },
+  "common": {
+    "save": "ذخیره",
+    "cancel": "لغو",
+    "delete": "حذف",
+    "edit": "ویرایش",
+    "create": "ایجاد",
+    "search": "جستجو",
+    "loading": "در حال بارگذاری...",
+    "error": "خطا",
+    "success": "موفقیت",
+    "close": "بستن",
+    "back": "بازگشت",
+    "next": "بعدی",
+    "confirm": "تأیید",
+    "yes": "بله",
+    "no": "خیر",
+    "enabled": "فعال",
+    "disabled": "غیرفعال",
+    "status": "وضعیت",
+    "mode": "حالت",
+    "actions": "اقدامات",
+    "name": "نام",
+    "description": "توضیحات",
+    "type": "نوع",
+    "date": "تاریخ",
+    "time": "زمان",
+    "amount": "مبلغ",
+    "total": "مجموع",
+    "language": "زبان"
+  },
+  "hosting": {
+    "title": "تنظیمات هاستینگ",
+    "apexDomain": "دامنه اصلی",
+    "apexDomainPlaceholder": "example.org",
+    "originTarget": "هدف مبدأ",
+    "originTargetPlaceholder": "آدرس IP یا نام میزبان",
+    "databoxLabel": "زیردامنه Databox",
+    "databoxLabelPlaceholder": "databox",
+    "wwwEnabled": "فعال‌سازی زیردامنه www",
+    "proxied": "پروکسی (Cloudflare)",
+    "planButton": "ایجاد طرح",
+    "applyButton": "اعمال در Cloudflare",
+    "persistButton": "ذخیره پیکربندی",
+    "bindButton": "اتصال مبدأ",
+    "cloudflareToken": "توکن Cloudflare API",
+    "cloudflareTokenPlaceholder": "توکن Cloudflare API را وارد کنید",
+    "downloadArtifacts": "دانلود مصنوعات",
+    "dnsRecords": "رکوردهای DNS",
+    "launchCommand": "فرمان راه‌اندازی",
+    "baseUrl": "URL پایه",
+    "planSuccess": "طرح هاستینگ با موفقیت ایجاد شد",
+    "planError": "ایجاد طرح هاستینگ ناموفق بود",
+    "applySuccess": "رکوردهای DNS و تونل با موفقیت پیکربندی شدند",
+    "applyError": "اعمال پیکربندی هاستینگ ناموفق بود",
+    "persistSuccess": "پیکربندی به عنوان منبع RDF ذخیره شد",
+    "persistError": "ذخیره پیکربندی ناموفق بود",
+    "bindSuccess": "مبدأ به عنوان TenantBinding متصل شد",
+    "bindError": "اتصال مبدأ ناموفق بود"
+  },
+  "governance": {
+    "title": "حاکمیت",
+    "subtitle": "اتصال نقش‌ها، سیاست‌های ODRL، دروازه‌های تأیید، و قطعنامه‌ها."
+  },
+  "credentials": {
+    "title": "اعتبارنامه‌ها",
+    "subtitle": "صدور، تأیید و ابطال اعتبارنامه‌های قابل‌تأیید."
+  },
+  "members": {
+    "title": "اعضا",
+    "subtitle": "تأمین پاد اعضا، مدیریت چرخه حیات، و ارسال اعلان‌ها از طریق LDN."
+  },
+  "operations": {
+    "title": "عملیات",
+    "subtitle": "افق‌های عملیاتی مرحله ۳: رضایت، تفویض، اضطراری، موجودی، وفاداری، قیمت‌گذاری و بیشتر."
+  },
+  "modules": {
+    "title": "ماژول‌های CMS",
+    "enabled": "فعال",
+    "disabled": "غیرفعال",
+    "enable": "فعال‌سازی",
+    "disable": "غیرفعال‌سازی",
+    "configure": "پیکربندی",
+    "capabilities": "قابلیت‌ها",
+    "routes": "مسیرها",
+    "configShape": "شکل پیکربندی",
+    "noModules": "هیچ ماژولی نصب نشده است"
+  },
+  "pos": {
+    "title": "ترمینال POS",
+    "cart": "سبد خرید",
+    "checkout": "پرداخت",
+    "subtotal": "جمع جزء",
+    "tax": "مالیات",
+    "total": "مجموع",
+    "payment": "پرداخت",
+    "cash": "نقد",
+    "card": "کارت",
+    "completeSale": "تکمیل فروش",
+    "voidSale": "ابطال فروش",
+    "selectProduct": "انتخاب محصول",
+    "noProducts": "هیچ محصولی در دسترس نیست",
+    "orderConfirmed": "سفارش تأیید شد",
+    "paymentReceived": "پرداخت دریافت شد",
+    "receiptGenerated": "رسید ایجاد شد"
+  },
+  "waiter": {
+    "title": "سفارش‌های گارسون",
+    "selectTable": "انتخاب میز",
+    "currentOrder": "سفارش فعلی",
+    "addToOrder": "افزودن به سفارش",
+    "sendToKitchen": "ارسال به آشپزخانه",
+    "clearOrder": "پاک کردن سفارش",
+    "table": "میز",
+    "items": "اقلام",
+    "quantity": "تعداد",
+    "price": "قیمت"
+  },
+  "setup": {
+    "title": "جادوگر نصب",
+    "welcome": "به Databox CMS خوش آمدید",
+    "chooseProfile": "نوع سازمان خود را انتخاب کنید",
+    "legalEntity": "جزئیات شخص حقوقی",
+    "orgName": "نام سازمان",
+    "orgType": "نوع سازمان",
+    "complete": "تکمیل نصب",
+    "step": "مرحله",
+    "of": "از"
+  },
+  "receipts": {
+    "title": "رسیدها",
+    "orderId": "شناسه سفارش",
+    "customer": "مشتری",
+    "date": "تاریخ",
+    "total": "مجموع",
+    "viewReceipt": "مشاهده رسید",
+    "noReceipts": "رسیدی یافت نشد"
+  },
+  "programs": {
+    "title": "برنامه‌ها",
+    "createProgram": "ایجاد برنامه",
+    "programName": "نام برنامه",
+    "programType": "نوع برنامه",
+    "noPrograms": "هیچ برنامه‌ای تعریف نشده است"
+  },
+  "mappings": {
+    "title": "نگاشت‌های رابط",
+    "sourceType": "نوع منبع",
+    "odbc": "ODBC",
+    "ldap": "LDAP",
+    "connectionString": "رشته اتصال",
+    "query": "پرس‌وجو",
+    "url": "URL",
+    "searchBase": "پایگاه جستجو",
+    "simulate": "شبیه‌سازی",
+    "results": "نتایج"
+  },
+  "accessRequests": {
+    "title": "درخواست‌های دسترسی",
+    "requester": "درخواست‌کننده",
+    "resource": "منبع",
+    "status": "وضعیت",
+    "approve": "تأیید",
+    "deny": "رد",
+    "noRequests": "هیچ درخواست دسترسی وجود ندارد"
+  },
+  "corrections": {
+    "title": "اصلاحات",
+    "requestedBy": "درخواست توسط",
+    "field": "فیلد",
+    "currentValue": "مقدار فعلی",
+    "requestedValue": "مقدار درخواستی",
+    "approve": "تأیید",
+    "deny": "رد",
+    "noCorrections": "هیچ درخواست اصلاحی وجود ندارد"
+  },
+  "consumerLedger": {
+    "title": "دفتر مصرف‌کننده",
+    "consumer": "مصرف‌کننده",
+    "event": "رویداد",
+    "timestamp": "مهر زمان",
+    "details": "جزئیات",
+    "noEntries": "هیچ مدخلی در دفتر وجود ندارد"
+  },
+  "dataPortability": {
+    "title": "ثبت قابلیت انتقال داده",
+    "export": "صادرات داده",
+    "import": "واردات داده",
+    "format": "قالب",
+    "status": "وضعیت"
+  },
+  "events": {
+    "title": "توزیع‌کننده رویداد",
+    "eventType": "نوع رویداد",
+    "payload": "بار",
+    "dispatch": "توزیع",
+    "result": "نتیجه"
+  },
+  "errors": {
+    "hosting": {
+      "invalid_domain": "طرح هاستینگ به دامنه اصلی مانند \"acme.org\" نیاز دارد.",
+      "invalid_origin": "طرح هاستینگ به هدف مبدأ (IP یا نام میزبان) نیاز دارد.",
+      "api_token_required": "توکن Cloudflare API برای اعمال طرح لازم است.",
+      "api_request_failed": "درخواست Cloudflare API ناموفق بود.",
+      "dns_record_exists": "رکورد DNS از قبل وجود دارد.",
+      "tunnel_creation_failed": "ایجاد تونل Cloudflare ناموفق بود."
+    },
+    "general": {
+      "not_authenticated": "شما احراز هویت نشده‌اید.",
+      "forbidden": "شما اجازه انجام این اقدام را ندارید.",
+      "not_found": "منبع درخواستی یافت نشد.",
+      "internal_error": "خطای داخلی سرور رخ داد.",
+      "network_error": "خطای شبکه رخ داد."
+    }
+  }
+}

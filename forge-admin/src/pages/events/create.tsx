@@ -1,6 +1,6 @@
-// @ts-nocheck
 import React, { useEffect, useMemo, useState } from "react";
-import { useCreate, useList } from "@refinedev/core";
+import { useList } from "@refinedev/core";
+import { useCreate } from "../../hooks/useCreate";
 
 export const EventDispatcher = () => {
   const { mutate, isPending: isLoading } = useCreate();

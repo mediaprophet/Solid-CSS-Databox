@@ -12,6 +12,8 @@ export interface HostingInput {
   readonly originTarget: string;
   /** Whether the databox/www records go through the Cloudflare proxy (default `true`). */
   readonly proxied?: boolean;
+  /** The origin port the databox listens on (default `3000`). */
+  readonly originPort?: number;
 }
 
 export type DnsRecordType = 'A' | 'AAAA' | 'CNAME';
@@ -86,4 +88,33 @@ export function planHosting(input: HostingInput): HostingPlan {
     dnsRecords,
     launchCommand: `npm run start:cms -- --baseUrl ${baseUrl} --cmsControlToken <32+ byte token>`,
   };
+}
+
+/**
+ * Generate a `cloudflared` tunnel configuration YAML for the guided-artifacts fallback path.
+ * Used when the operator does not provide a Cloudflare API token and must configure manually.
+ */
+export function generateCloudflaredConfig(plan: HostingPlan, originTarget: string, originPort = 3000): string {
+  const rules: string[] = [
+    `  - hostname: ${plan.databoxHost}`,
+    `    service: http://${originTarget}:${originPort}`,
+  ];
+  if (plan.wwwHost) {
+    rules.push(
+      `  - hostname: ${plan.wwwHost}`,
+      `    service: http://${originTarget}:${originPort}`,
+    );
+  }
+  rules.push(
+    `  - hostname: ${plan.devicesHost}`,
+    `    service: http://${originTarget}:${originPort}`,
+  );
+  rules.push(`  - service: http_status:404`);
+
+  return `tunnel: <tunnel-id>
+credentials-file: /root/.cloudflared/<tunnel-id>.json
+
+ingress:
+${rules.join('\n')}
+`;
 }

@@ -16,12 +16,12 @@ function assertFeedInput(body: unknown): asserts body is FeedInput {
 }
 
 export function registerFeedsRoutes(router: CmsModuleRouter<(input: HttpHandlerInput) => Promise<void>>): void {
-  router.register('POST', '/feeds/products', async({ request, response }): Promise<void> => {
+  router.register('POST', '/feeds/products/build', async({ request, response }): Promise<void> => {
     try {
       const body = await readJsonBody<Record<string, unknown>>(request);
       assertFeedInput(body);
       const feed = buildProductFeed(body);
-      writeJson(response, 201, feed, 'application/ld+json');
+      writeJson(response, 200, feed, 'application/ld+json');
     } catch (error: unknown) {
       writeJson(response, errorStatusCode(error), {
         error: error instanceof Error ? error.message : 'Invalid feeds request.',

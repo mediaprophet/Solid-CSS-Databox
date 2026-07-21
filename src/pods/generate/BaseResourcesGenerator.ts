@@ -122,8 +122,8 @@ export class BaseResourcesGenerator implements TemplatedResourcesGenerator {
 
     yield* this.generateResource(folderLink, options, metaLink);
 
-    // Make sure the results are sorted
-    for (const { link, meta } of Object.values(links).sort(comparator)) {
+    // Filter out metadata-only entries (no corresponding resource link) and sort
+    for (const { link, meta } of Object.values(links).filter((v): v is { link: TemplateResourceLink; meta?: TemplateResourceLink } => Boolean(v.link)).sort(comparator)) {
       if (isContainerIdentifier(link.identifier)) {
         yield* this.processFolder(link, mapper, options);
       } else {
@@ -158,13 +158,13 @@ export class BaseResourcesGenerator implements TemplatedResourcesGenerator {
    * and combines the results so resources and their metadata are grouped together.
    */
   private async groupLinks(folderPath: string, mapper: FileIdentifierMapper):
-  Promise<Record<string, { link: TemplateResourceLink; meta?: TemplateResourceLink }>> {
+  Promise<Record<string, { link?: TemplateResourceLink; meta?: TemplateResourceLink }>> {
     const files = await fsPromises.readdir(folderPath);
-    const links: Record<string, { link: TemplateResourceLink; meta?: TemplateResourceLink }> = {};
+    const links: Record<string, { link?: TemplateResourceLink; meta?: TemplateResourceLink }> = {};
     for (const name of files) {
       const link = await this.toTemplateLink(joinFilePath(folderPath, name), mapper);
       const { path } = link.identifier;
-      links[path] = Object.assign(links[path] || {}, link.isMetadata ? { meta: link } : { link });
+      links[path] = Object.assign(links[path] ?? {}, link.isMetadata ? { meta: link } : { link });
     }
     return links;
   }

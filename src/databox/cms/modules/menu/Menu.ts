@@ -1,4 +1,5 @@
 import { BadRequestHttpError } from '../../../../util/errors/BadRequestHttpError';
+import { CMS } from '../../../../util/Vocabularies';
 import type { SolidModuleManifest } from '../../SolidModuleManifest';
 
 // JSON-LD keywords as constants so they can be used as computed keys (the linter's naming
@@ -19,6 +20,7 @@ export const MENU_MODULE_MANIFEST: SolidModuleManifest = {
     'cms:css-enhanced-menu-build-route',
   ],
   routes: [ 'POST /.databox/cms/menu/build' ],
+  configShape: `${CMS.namespace}MenuConfigShape`,
 };
 
 export interface MenuItem {

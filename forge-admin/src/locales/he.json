@@ -1,0 +1,237 @@
+{
+  "app": {
+    "title": "Databox CMS",
+    "subtitle": "ניהול תוכן מקורי Solid"
+  },
+  "nav": {
+    "setup": "הגדרה",
+    "modules": "מודולים",
+    "hosting": "אירוח",
+    "pos": "מסוף POS",
+    "waiter": "הזמנות מלצר",
+    "customerOrder": "הזמנה עצמית של לקוח",
+    "display": "מסך פרסום",
+    "receipts": "קבלות",
+    "programs": "תוכניות",
+    "mappings": "מיפויים",
+    "events": "אירועים",
+    "dataPortability": "ניידות נתונים",
+    "accessRequests": "בקשות גישה",
+    "corrections": "תיקונים",
+    "consumerLedger": "פנקס צרכן"
+  },
+  "common": {
+    "save": "שמור",
+    "cancel": "ביטול",
+    "delete": "מחק",
+    "edit": "עריכה",
+    "create": "צור",
+    "search": "חיפוש",
+    "loading": "טוען...",
+    "error": "שגיאה",
+    "success": "הצלחה",
+    "close": "סגור",
+    "back": "חזור",
+    "next": "הבא",
+    "confirm": "אישור",
+    "yes": "כן",
+    "no": "לא",
+    "enabled": "מופעל",
+    "disabled": "מבוטל",
+    "status": "סטטוס",
+    "mode": "מצב",
+    "actions": "פעולות",
+    "name": "שם",
+    "description": "תיאור",
+    "type": "סוג",
+    "date": "תאריך",
+    "time": "שעה",
+    "amount": "סכום",
+    "total": "סה\"כ",
+    "language": "שפה"
+  },
+  "hosting": {
+    "title": "הגדרת אירוח",
+    "apexDomain": "דומיין ראשי",
+    "apexDomainPlaceholder": "example.org",
+    "originTarget": "יעד מקור",
+    "originTargetPlaceholder": "כתובת IP או שם מארח",
+    "databoxLabel": "תת-דומיין Databox",
+    "databoxLabelPlaceholder": "databox",
+    "wwwEnabled": "הפעל תת-דומיין www",
+    "proxied": "דרך פרוקסי (Cloudflare)",
+    "planButton": "צור תוכנית",
+    "applyButton": "החל על Cloudflare",
+    "persistButton": "שמור תצורה",
+    "bindButton": "קשר מקור",
+    "cloudflareToken": "אסימון Cloudflare API",
+    "cloudflareTokenPlaceholder": "הזן אסימון Cloudflare API",
+    "downloadArtifacts": "הורד חפצים",
+    "dnsRecords": "רשומות DNS",
+    "launchCommand": "פקודת הפעלה",
+    "baseUrl": "URL בסיסי",
+    "planSuccess": "תוכנית אירוח נוצרה בהצלחה",
+    "planError": "יצירת תוכנית אירוח נכשלה",
+    "applySuccess": "רשומות DNS ומנהרה הוגדרו בהצלחה",
+    "applyError": "החלת תצורת אירוח נכשלה",
+    "persistSuccess": "תצורה נשמרה כמשאב RDF",
+    "persistError": "שמירת תצורה נכשלה",
+    "bindSuccess": "מקור נקשר כ-TenantBinding",
+    "bindError": "קשירת מקור נכשלה"
+  },
+  "governance": {
+    "title": "ממשל",
+    "subtitle": "קשירת תפקידים, מדיניות ODRL, שערי אישור, והחלטות."
+  },
+  "credentials": {
+    "title": "אישורים",
+    "subtitle": "הנפקה, אימות וביטול אישורים מאומתים."
+  },
+  "members": {
+    "title": "חברים",
+    "subtitle": "הקצאת פודים לחברים, ניהול מחזור חיים, ושליחת הודעות דרך LDN."
+  },
+  "operations": {
+    "title": "תפעול",
+    "subtitle": "אופקים תפעוליים של שלב 3: הסכמה, האצלה, חירום, מלאי, נאמנות, תמחור, ועוד."
+  },
+  "modules": {
+    "title": "מודולי CMS",
+    "enabled": "מופעל",
+    "disabled": "מבוטל",
+    "enable": "הפעל",
+    "disable": "בטל",
+    "configure": "הגדר",
+    "capabilities": "יכולות",
+    "routes": "מסלולים",
+    "configShape": "צורת תצורה",
+    "noModules": "אין מודולים מותקנים"
+  },
+  "pos": {
+    "title": "מסוף POS",
+    "cart": "עגלה",
+    "checkout": "קופה",
+    "subtotal": "סיכום ביניים",
+    "tax": "מס",
+    "total": "סה\"כ",
+    "payment": "תשלום",
+    "cash": "מזומן",
+    "card": "כרטיס",
+    "completeSale": "השלם מכירה",
+    "voidSale": "בטל מכירה",
+    "selectProduct": "בחר מוצר",
+    "noProducts": "אין מוצרים זמינים",
+    "orderConfirmed": "הזמנה אושרה",
+    "paymentReceived": "תשלום התקבל",
+    "receiptGenerated": "קבלה נוצרה"
+  },
+  "waiter": {
+    "title": "הזמנות מלצר",
+    "selectTable": "בחר שולחן",
+    "currentOrder": "הזמנה נוכחית",
+    "addToOrder": "הוסף להזמנה",
+    "sendToKitchen": "שלח למטבח",
+    "clearOrder": "נקה הזמנה",
+    "table": "שולחן",
+    "items": "פריטים",
+    "quantity": "כמות",
+    "price": "מחיר"
+  },
+  "setup": {
+    "title": "אשף הגדרה",
+    "welcome": "ברוכים הבאים ל-Databox CMS",
+    "chooseProfile": "בחר סוג ארגון",
+    "legalEntity": "פרטי ישות משפטית",
+    "orgName": "שם ארגון",
+    "orgType": "סוג ארגון",
+    "complete": "השלם הגדרה",
+    "step": "שלב",
+    "of": "מתוך"
+  },
+  "receipts": {
+    "title": "קבלות",
+    "orderId": "מזהה הזמנה",
+    "customer": "לקוח",
+    "date": "תאריך",
+    "total": "סה\"כ",
+    "viewReceipt": "צפה בקבלה",
+    "noReceipts": "לא נמצאו קבלות"
+  },
+  "programs": {
+    "title": "תוכניות",
+    "createProgram": "צור תוכנית",
+    "programName": "שם תוכנית",
+    "programType": "סוג תוכנית",
+    "noPrograms": "אין תוכניות מוגדרות"
+  },
+  "mappings": {
+    "title": "מיפויי מחבר",
+    "sourceType": "סוג מקור",
+    "odbc": "ODBC",
+    "ldap": "LDAP",
+    "connectionString": "מחרוזת חיבור",
+    "query": "שאילתה",
+    "url": "URL",
+    "searchBase": "בסיס חיפוש",
+    "simulate": "סימולציה",
+    "results": "תוצאות"
+  },
+  "accessRequests": {
+    "title": "בקשות גישה",
+    "requester": "מבקש",
+    "resource": "משאב",
+    "status": "סטטוס",
+    "approve": "אשר",
+    "deny": "דחה",
+    "noRequests": "אין בקשות גישה"
+  },
+  "corrections": {
+    "title": "תיקונים",
+    "requestedBy": "התבקש על ידי",
+    "field": "שדה",
+    "currentValue": "ערך נוכחי",
+    "requestedValue": "ערך מבוקש",
+    "approve": "אשר",
+    "deny": "דחה",
+    "noCorrections": "אין בקשות תיקון"
+  },
+  "consumerLedger": {
+    "title": "פנקס צרכן",
+    "consumer": "צרכן",
+    "event": "אירוע",
+    "timestamp": "חותמת זמן",
+    "details": "פרטים",
+    "noEntries": "אין רשומות בפנקס"
+  },
+  "dataPortability": {
+    "title": "רישום ניידות נתונים",
+    "export": "ייצוא נתונים",
+    "import": "ייבוא נתונים",
+    "format": "פורמט",
+    "status": "סטטוס"
+  },
+  "events": {
+    "title": "מפיץ אירועים",
+    "eventType": "סוג אירוע",
+    "payload": "מטען",
+    "dispatch": "שלח",
+    "result": "תוצאה"
+  },
+  "errors": {
+    "hosting": {
+      "invalid_domain": "תוכנית אירוח דורשת דומיין ראשי כמו \"acme.org\".",
+      "invalid_origin": "תוכנית אירוח דורשת יעד מקור (IP או שם מארח).",
+      "api_token_required": "נדרש אסימון Cloudflare API להחלת התוכנית.",
+      "api_request_failed": "בקשת Cloudflare API נכשלה.",
+      "dns_record_exists": "רשומת DNS כבר קיימת.",
+      "tunnel_creation_failed": "יצירת מנהרת Cloudflare נכשלה."
+    },
+    "general": {
+      "not_authenticated": "אינך מאומת.",
+      "forbidden": "אין לך הרשאה לבצע פעולה זו.",
+      "not_found": "המשאב המבוקש לא נמצא.",
+      "internal_error": "אירעה שגיאת שרת פנימית.",
+      "network_error": "אירעה שגיאת רשת."
+    }
+  }
+}

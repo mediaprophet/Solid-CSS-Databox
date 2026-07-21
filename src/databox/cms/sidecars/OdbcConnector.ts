@@ -1,46 +1,247 @@
+/**
+ * Real ODBC connector using the `odbc` NPM package.
+ *
+ * Dynamically imports `odbc` at runtime so the package is an optional peer
+ * dependency — the CMS builds without it, and the connector throws a clear
+ * error if the package is not installed when a sync is attempted.
+ */
+
+/** Configuration for an ODBC sync job. */
 export interface OdbcConfig {
+  /** ODBC connection string (e.g. `DSN=MyDSN;UID=user;PWD=pass`). */
   connectionString: string;
+  /** SQL query to execute. May contain `?` placeholders for parameters. */
   query: string;
+  /** Optional bind parameters for the query. */
+  parameters?: (string | number | boolean | null)[];
+  /** Query timeout in milliseconds (default: 30 000). */
+  timeoutMs?: number;
+  /** Pool size (default: 4). */
+  poolSize?: number;
+}
+
+/** A row from an ODBC query result, keyed by column name. */
+export type OdbcRow = Record<string, unknown>;
+
+/** Column metadata from the ODBC driver. */
+export interface OdbcColumn {
+  name: string;
+  dataType: number;
+  columnSize: number;
+  nullable: boolean;
+}
+
+/** Result set from an ODBC query. */
+export interface OdbcResult {
+  rows: OdbcRow[];
+  columns: OdbcColumn[];
+  rowCount: number;
+}
+
+/** Error thrown when the `odbc` package is not installed. */
+export class OdbcPackageMissingError extends Error {
+  public constructor() {
+    super(
+      'The `odbc` NPM package is not installed. Install it with `npm install odbc` to use the ODBC connector.',
+    );
+    this.name = 'OdbcPackageMissingError';
+  }
+}
+
+/** Error thrown when the ODBC connection fails. */
+export class OdbcConnectionError extends Error {
+  public constructor(message: string) {
+    super(`ODBC connection error: ${message}`);
+    this.name = 'OdbcConnectionError';
+  }
+}
+
+/** Error thrown when the ODBC query fails (including timeouts). */
+export class OdbcQueryError extends Error {
+  public constructor(message: string) {
+    super(`ODBC query error: ${message}`);
+    this.name = 'OdbcQueryError';
+  }
+}
+
+const DEFAULT_TIMEOUT_MS = 30_000;
+const DEFAULT_POOL_SIZE = 4;
+
+// Cache the dynamically imported module and pools
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let odbcModule: any | null = null;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let poolCache: Map<string, any> = new Map();
+
+async function loadOdbc(): Promise<Record<string, unknown>> {
+  if (odbcModule) {
+    return odbcModule;
+  }
+  try {
+    // Use Function to avoid TypeScript module resolution for optional peer dep
+    odbcModule = await (new Function('return import("odbc")')() as Promise<Record<string, unknown>>);
+    return odbcModule;
+  } catch {
+    throw new OdbcPackageMissingError();
+  }
+}
+
+async function getPool(connectionString: string, poolSize: number): Promise<{ connect: () => Promise<unknown> }> {
+  const cacheKey = `${connectionString}:${poolSize}`;
+  const cached = poolCache.get(cacheKey);
+  if (cached) {
+    return cached;
+  }
+  const odbc = await loadOdbc();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const pool: any = await (odbc as any).pool({
+    connectionString,
+    initialSize: poolSize,
+    maxSize: poolSize,
+  });
+  poolCache.set(cacheKey, pool);
+  return pool;
 }
 
 /**
- * Executes a mock ODBC SQL query and returns the mapped RDF (JSON-LD) output.
+ * Execute an ODBC query and return the results.
+ *
+ * @throws {OdbcPackageMissingError} if the `odbc` package is not installed.
+ * @throws {OdbcConnectionError} if the connection fails.
+ * @throws {OdbcQueryError} if the query fails or times out.
  */
-export async function runOdbcSync(config: OdbcConfig): Promise<Record<string, unknown>[]> {
-  // In a real implementation, we would use the `odbc` NPM package to execute the query.
-  // For this stub, we return mock data based on the config.
-  
-  if (!config.connectionString || !config.query) {
-    throw new Error('ODBC sync requires a connectionString and query.');
+export async function executeOdbcQuery(config: OdbcConfig): Promise<OdbcResult> {
+  if (!config.connectionString) {
+    throw new OdbcConnectionError('connectionString is required.');
+  }
+  if (!config.query) {
+    throw new OdbcQueryError('query is required.');
   }
 
-  // Mock SQL ResultSet
-  const rows = [
-    {
-      id: 101,
-      name: 'Acme Corp',
-      status: 'ACTIVE',
-    },
-    {
-      id: 102,
-      name: 'Globex Inc',
-      status: 'INACTIVE',
-    },
-  ];
+  const timeoutMs = config.timeoutMs ?? DEFAULT_TIMEOUT_MS;
+  const poolSize = config.poolSize ?? DEFAULT_POOL_SIZE;
 
-  // Map to Solid schema.org Organization profiles
-  return rows.map((row): Record<string, unknown> => ({
-    '@context': 'https://schema.org/',
-    '@type': 'Organization',
-    '@id': `urn:odbc:org:${row.id}`,
-    name: row.name,
-    identifier: String(row.id),
-    additionalProperty: [
-      {
-        '@type': 'PropertyValue',
-        name: 'status',
-        value: row.status,
-      },
-    ],
-  }));
+  let connection: { close: () => Promise<void>; query: (...args: unknown[]) => Promise<unknown> } | null = null;
+  try {
+    const pool = await getPool(config.connectionString, poolSize);
+    const rawConn = await pool.connect();
+    connection = rawConn as { close: () => Promise<void>; query: (...args: unknown[]) => Promise<unknown> };
+
+    const result = await Promise.race([
+      connection.query(config.query, config.parameters ?? []),
+      new Promise<never>((_, reject): void => {
+        setTimeout((): void => {
+          reject(new OdbcQueryError(`Query timed out after ${timeoutMs}ms.`));
+        }, timeoutMs);
+      }),
+    ]);
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const rawResult = result as any;
+    const columns: OdbcColumn[] = (rawResult.columns ?? []).map(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (col: any): OdbcColumn => ({
+        name: col.name,
+        dataType: col.dataType,
+        columnSize: col.columnSize,
+        nullable: col.nullable,
+      }),
+    );
+
+    const rows: OdbcRow[] = [];
+    for (const row of rawResult) {
+      const obj: OdbcRow = {};
+      for (const col of columns) {
+        obj[col.name] = row[col.name];
+      }
+      rows.push(obj);
+    }
+
+    return {
+      rows,
+      columns,
+      rowCount: rawResult.count ?? rows.length,
+    };
+  } catch (err: unknown) {
+    if (err instanceof OdbcQueryError || err instanceof OdbcPackageMissingError) {
+      throw err;
+    }
+    if (err instanceof Error) {
+      const msg = err.message.toLowerCase();
+      if (msg.includes('connect') || msg.includes('login') || msg.includes('auth') ||
+          msg.includes('dsn') || msg.includes('driver')) {
+        throw new OdbcConnectionError(err.message);
+      }
+      throw new OdbcQueryError(err.message);
+    }
+    throw new OdbcQueryError(String(err));
+  } finally {
+    if (connection) {
+      try {
+        await connection.close();
+      } catch {
+        // Ignore close errors
+      }
+    }
+  }
+}
+
+/**
+ * Execute an ODBC query and stream rows via an async generator.
+ */
+export async function* streamOdbcQuery(
+  config: OdbcConfig,
+): AsyncGenerator<OdbcRow, void, unknown> {
+  const result = await executeOdbcQuery(config);
+  for (const row of result.rows) {
+    yield row;
+  }
+}
+
+/**
+ * Browse the schema (tables) of an ODBC data source.
+ */
+export async function browseOdbcSchema(
+  connectionString: string,
+  timeoutMs?: number,
+): Promise<{ tables: { name: string; schema: string; type: string }[] }> {
+  const config: OdbcConfig = {
+    connectionString,
+    query: `
+      SELECT TABLE_SCHEMA, TABLE_NAME, TABLE_TYPE
+      FROM INFORMATION_SCHEMA.TABLES
+      ORDER BY TABLE_SCHEMA, TABLE_NAME
+    `,
+    timeoutMs,
+  };
+  const result = await executeOdbcQuery(config);
+  return {
+    tables: result.rows.map((row): { name: string; schema: string; type: string } => ({
+      schema: String(row.TABLE_SCHEMA ?? ''),
+      name: String(row.TABLE_NAME ?? ''),
+      type: String(row.TABLE_TYPE ?? ''),
+    })),
+  };
+}
+
+/**
+ * Close all cached ODBC pools. Should be called on shutdown.
+ */
+export async function closeOdbcPools(): Promise<void> {
+  for (const [, pool] of poolCache) {
+    try {
+      await pool.close();
+    } catch {
+      // Ignore close errors
+    }
+  }
+  poolCache = new Map();
+}
+
+/**
+ * Backward-compatible wrapper: runs an ODBC query and returns raw rows.
+ */
+export async function runOdbcSync(config: OdbcConfig): Promise<Record<string, unknown>[]> {
+  const result = await executeOdbcQuery(config);
+  return result.rows;
 }
