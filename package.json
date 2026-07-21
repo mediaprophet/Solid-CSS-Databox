@@ -81,7 +81,7 @@
     "lint": "npm run lint:eslint && npm run lint:markdown",
     "lint:eslint": "node ./scripts/run-eslint.mjs",
     "lint:markdown": "markdownlint-cli2",
-    "prepare": "npm run build",
+    "prepare": "husky",
     "postinstall": "patch-package",
     "release": "commit-and-tag-version",
     "postrelease": "ts-node ./scripts/finalizeRelease.ts",
@@ -190,12 +190,6 @@
     "ts-node": "^10.9.2",
     "typedoc": "^0.28.20",
     "typescript": "~6.0.2"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run build && npm run lint && npm run test:unit && npm run test:integration",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
   },
   "commit-and-tag-version": {
     "scripts": {

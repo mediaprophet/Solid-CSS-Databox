@@ -468,7 +468,7 @@ describe('the Databox CMS control plane in Community Solid Server', (): void => 
         },
       }),
     });
-    if (publishResponse.status !== 201) { console.error(SEO_ERROR: ); } expect(publishResponse.status).toBe(201);
+    if (publishResponse.status !== 201) { console.error('SEO publish failed: ', await publishResponse.text()); } expect(publishResponse.status).toBe(201);
     const published = (await publishResponse.json()).published;
     expect(published).toEqual(expect.arrayContaining([
       expect.objectContaining({ role: 'html', iri: `${baseUrl}www-int/index.html` }),
