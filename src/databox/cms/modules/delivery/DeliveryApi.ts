@@ -1,0 +1,33 @@
+import type { CmsModuleRouter } from '../../CmsModuleRouter';
+import type { HttpHandlerInput } from '../../../../server/HttpHandler';
+import { errorStatusCode, isRecord, readJsonBody, writeJson } from '../../CmsHttpUtils';
+import { buildDeliveryRequest } from './DeliveryRequest';
+import type { DeliveryInput } from './DeliveryRequest';
+
+function assertDeliveryInput(body: unknown): asserts body is DeliveryInput {
+  if (
+    !isRecord(body) ||
+    typeof (body as Record<string, unknown>).id !== 'string' ||
+    typeof (body as Record<string, unknown>).order !== 'string' ||
+    typeof (body as Record<string, unknown>).requestedBy !== 'string' ||
+    typeof (body as Record<string, unknown>).pickup !== 'string' ||
+    typeof (body as Record<string, unknown>).dropoff !== 'string'
+  ) {
+    throw new TypeError('A delivery request needs id, order, requestedBy, pickup, and dropoff strings.');
+  }
+}
+
+export function registerDeliveryRoutes(router: CmsModuleRouter<(input: HttpHandlerInput) => Promise<void>>): void {
+  router.register('POST', '/delivery/request', async({ request, response }): Promise<void> => {
+    try {
+      const body = await readJsonBody<Record<string, unknown>>(request);
+      assertDeliveryInput(body);
+      const deliveryRender = buildDeliveryRequest(body);
+      writeJson(response, 201, deliveryRender, 'application/ld+json');
+    } catch (error: unknown) {
+      writeJson(response, errorStatusCode(error), {
+        error: error instanceof Error ? error.message : 'Invalid delivery request.',
+      });
+    }
+  });
+}

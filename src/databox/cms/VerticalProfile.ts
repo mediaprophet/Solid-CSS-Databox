@@ -86,6 +86,7 @@ export const FOOD_RESTAURANT_VERTICAL_PROFILE: VerticalProfileManifest = {
       turtle: '<> <https://schema.org/servesCuisine> "local" .',
     }),
     moduleRef('website-seo', 'Website SEO publishes JSON-LD and discovery metadata without requiring CSS routes.'),
+    moduleRef('mcp-server', 'MCP Server provides an AI-native interface for the public restaurant menu and bookings.'),
   ],
 };
 
@@ -110,9 +111,303 @@ export const HEALTH_PRIVACY_CONSENT_VERTICAL_PROFILE: VerticalProfileManifest = 
   ],
 };
 
+export const AUTO_PORTABLE_RECORDS_VERTICAL_PROFILE: VerticalProfileManifest = {
+  id: 'auto.portable-records',
+  name: 'Auto / Portable Records',
+  version: '0.1.0',
+  description: 'Automotive bundle demonstrating owner-controlled longitudinal vehicle logs and booking flow.',
+  useCases: [ 'AUTO' ],
+  modules: [
+    moduleRef('catalogue', 'Catalogue stores repair services and parts as typed schema.org services.', {
+      turtle: '<> <https://schema.org/category> "AutomotiveRepair" .',
+    }),
+    moduleRef('bookings', 'Bookings manages service appointments, bays, and mechanic slots.'),
+    moduleRef('records', 'Records issues append-only, customer-owned vehicle service histories.'),
+    moduleRef('website-seo', 'Website SEO for local auto repair visibility.'),
+    moduleRef('jobs', 'Jobs handles the physical work-order intake, queuing, and completion pipeline.', {
+      turtle: '<> <urn:solid-server:databox:cms#pipelineMode> "vehicle-repair" .',
+    }),
+  ],
+};
+
+export const MEMBER_GOVERNANCE_VERTICAL_PROFILE: VerticalProfileManifest = {
+  id: 'member.governance',
+  name: 'Member / Governance',
+  version: '0.1.0',
+  description: 'Membership bundle for clubs/co-ops with pluralistic voting and VC-issued credentials.',
+  useCases: [ 'MEMBER' ],
+  modules: [
+    moduleRef('governance', 'Governance manages one-member-one-vote resolutions and approval chains.', {
+      turtle: '<> <urn:solid-server:databox:cms#votingModel> "democratic" .',
+    }),
+    moduleRef('events', 'Events models club meetups, AGMs, and tournaments.'),
+    moduleRef('ticketing', 'Ticketing issues verifiable tickets and VC-based membership cards.'),
+    moduleRef('social', 'Social enables member directory interaction and noticeboards.'),
+    moduleRef('payments', 'Payments collects recurring membership dues and event fees.'),
+  ],
+};
+
+export const SPORTING_CLUB_BASE_PROFILE: VerticalProfileManifest = {
+  id: 'sport.club-base',
+  name: 'Sporting Club / Base',
+  version: '0.1.0',
+  description: 'Foundational bundle for any sporting club, providing membership governance, social directory, dues collection, and a POS canteen.',
+  useCases: [ 'SPORT' ],
+  modules: [
+    moduleRef('governance', 'Governance manages club resolutions, committee voting, and AGMs.'),
+    moduleRef('social', 'Social enables member directories and club noticeboards.'),
+    moduleRef('payments', 'Payments collects recurring club membership dues.'),
+    moduleRef('pos', 'POS runs the physical club canteen and merchandise shop.', {
+      turtle: '<> <urn:solid-server:databox:cms#posMode> "canteen" .',
+    }),
+  ],
+};
+
+export const SPORTING_LEAGUE_PROFILE: VerticalProfileManifest = {
+  id: 'sport.league-team',
+  name: 'Sporting League / Team Sports',
+  version: '0.1.0',
+  description: 'Specialized profile for team sports (AFL, Soccer, Netball) requiring rostering, match events, and ladder records.',
+  useCases: [ 'SPORT', 'LEAGUE' ],
+  modules: [
+    ...SPORTING_CLUB_BASE_PROFILE.modules,
+    moduleRef('events', 'Events models the weekly match fixtures and training sessions.'),
+    moduleRef('records', 'Records is used to store longitudinal ladders, standings, and match results.'),
+  ],
+};
+
+export const SPORTING_FACILITY_PROFILE: VerticalProfileManifest = {
+  id: 'sport.facility-court',
+  name: 'Sporting Facility / Court & Course',
+  version: '0.1.0',
+  description: 'Specialized profile for facility sports (Tennis, Golf, Lawn Bowls) requiring granular court/course bookings and physical access control.',
+  useCases: [ 'SPORT', 'FACILITY' ],
+  modules: [
+    ...SPORTING_CLUB_BASE_PROFILE.modules,
+    moduleRef('bookings', 'Bookings manages 30-min court intervals or Golf Tee-Times.', {
+      turtle: '<> <urn:solid-server:databox:cms#bookingGranularity> "PT30M"^^<http://www.w3.org/2001/XMLSchema#duration> .',
+    }),
+    moduleRef('access', 'Access links bookings to physical gates and lighting controllers.'),
+  ],
+};
+
+export const SPORTING_COMPLIANCE_PROFILE: VerticalProfileManifest = {
+  id: 'sport.compliance-safety',
+  name: 'Sporting Compliance / Safety & Grading',
+  version: '0.1.0',
+  description: 'Specialized profile for high-risk or graded sports (Life Saving, Equestrian, Martial Arts) requiring WWCC checks, belts, and emergency access.',
+  useCases: [ 'SPORT', 'SAFETY' ],
+  modules: [
+    ...SPORTING_CLUB_BASE_PROFILE.modules,
+    moduleRef('credentials', 'Credentials issues and verifies safety certifications, Working With Children Checks, and grading belts.'),
+    moduleRef('emergency', 'Emergency provides break-glass access to member medical info during a sporting incident.'),
+  ],
+};
+
+export const GLAM_BASE_PROFILE: VerticalProfileManifest = {
+  id: 'glam.base',
+  name: 'GLAM / Base',
+  version: '0.1.0',
+  description: 'Foundational bundle for GLAM institutions focusing on cataloguing physical/digital artifacts and public discovery.',
+  useCases: [ 'GLAM' ],
+  modules: [
+    moduleRef('catalogue', 'Catalogue stores structured metadata about collections using Dublin Core standards.', {
+      turtle: `
+        @prefix dc: <http://purl.org/dc/terms/> .
+        <> <https://schema.org/genre> "Collection" ;
+           dc:publisher "GLAM Institution" ;
+           dc:rights "All Rights Reserved" ;
+           dc:format "Digital Archive" .
+      `,
+    }),
+    moduleRef('website-seo', 'Website SEO exposes finding aids and digital collections to public search engines.'),
+    moduleRef('mcp-server', 'MCP Server exposes the public catalog and discovery endpoints to AI agents.'),
+  ],
+};
+
+export const GLAM_GALLERY_MUSEUM_PROFILE: VerticalProfileManifest = {
+  id: 'glam.gallery-museum',
+  name: 'GLAM / Gallery & Museum',
+  version: '0.1.0',
+  description: 'Specialized profile for Galleries and Museums requiring exhibitions, timed ticketing, and strict provenance tracking.',
+  useCases: [ 'GLAM', 'MUSEUM' ],
+  modules: [
+    ...GLAM_BASE_PROFILE.modules,
+    moduleRef('events', 'Events schedules exhibitions and guided tours.'),
+    moduleRef('ticketing', 'Ticketing handles timed-entry passes and special access.'),
+    moduleRef('provenance', 'Provenance tracks the chain of custody, acquisition history, and C2PA cryptographic authenticity of artifacts.', {
+      turtle: `
+        @prefix c2pa: <https://c2pa.org/terms/> .
+        <> a c2pa:Manifest ;
+           c2pa:action "c2pa.created" ;
+           c2pa:softwareAgent "Databox CMS GLAM Module" .
+      `,
+    }),
+  ],
+};
+
+export const GLAM_LIBRARY_PROFILE: VerticalProfileManifest = {
+  id: 'glam.library',
+  name: 'GLAM / Library',
+  version: '0.1.0',
+  description: 'Specialized profile for Libraries focusing on OPAC lending, inventory management, and digital credentials.',
+  useCases: [ 'GLAM', 'LIBRARY' ],
+  modules: [
+    ...GLAM_BASE_PROFILE.modules,
+    moduleRef('inventory', 'Inventory tracks physical copies and their condition.'),
+    moduleRef('bookings', 'Bookings manages the lending and return dates of media, and reservations of reading rooms.'),
+    moduleRef('credentials', 'Credentials provides VC-based digital library cards for patrons.'),
+  ],
+};
+
+export const GLAM_ARCHIVE_PROFILE: VerticalProfileManifest = {
+  id: 'glam.archive',
+  name: 'GLAM / Archive',
+  version: '0.1.0',
+  description: 'Specialized profile for Archives requiring deep hierarchical cataloguing, high-res digital scans, and restricted access.',
+  useCases: [ 'GLAM', 'ARCHIVE' ],
+  modules: [
+    ...GLAM_BASE_PROFILE.modules,
+    moduleRef('hosting', 'Hosting provides storage for high-resolution digital preservation scans.'),
+    moduleRef('access', 'Access ensures culturally sensitive or legally restricted artifacts are only viewed by authorized researchers.'),
+  ],
+};
+
+export const GLAM_HISTORICAL_SOCIETY_PROFILE: VerticalProfileManifest = {
+  id: 'glam.historical-society',
+  name: 'GLAM / Historical Society',
+  version: '0.1.0',
+  description: 'Composite profile for Historical Societies combining club governance with archival and storytelling tools.',
+  useCases: [ 'GLAM', 'MUSEUM', 'ARCHIVE', 'CLUB' ],
+  modules: [
+    ...GLAM_BASE_PROFILE.modules,
+    moduleRef('governance', 'Governance handles the society committee, voting, and constitution.'),
+    moduleRef('social', 'Social enables community engagement and member directories.'),
+    moduleRef('payments', 'Payments collects annual society membership dues.'),
+    moduleRef('provenance', 'Provenance tracks local artifacts and genealogical materials, utilizing C2PA for digital authenticity validation.', {
+      turtle: `
+        @prefix c2pa: <https://c2pa.org/terms/> .
+        <> a c2pa:Manifest ;
+           c2pa:action "c2pa.published" ;
+           c2pa:softwareAgent "Databox Historical Society" .
+      `,
+    }),
+    moduleRef('feeds', 'Feeds publishes local history blogs and monthly newsletters.'),
+  ],
+};
+
+export const HOME_SERVICES_BASE_PROFILE: VerticalProfileManifest = {
+  id: 'home-services.base',
+  name: 'Home Services / Base',
+  version: '0.1.0',
+  description: 'Foundational bundle for routine domestic service businesses, focusing on recurring routes, task management, and client billing.',
+  useCases: [ 'HOME_SERVICES' ],
+  modules: [
+    moduleRef('jobs', 'Jobs tracks the daily task list and execution checklists.', {
+      turtle: '<> <http://schema.org/repeatFrequency> "P1W"^^<http://www.w3.org/2001/XMLSchema#duration> .',
+    }),
+    moduleRef('bookings', 'Bookings manages the recurring service routes and time slots.'),
+    moduleRef('quotations', 'Quotations issues upfront pricing for one-off cleanups or ongoing contracts.'),
+    moduleRef('payments', 'Payments collects automated subscription billing for recurring services.'),
+  ],
+};
+
+export const HOME_SERVICES_MAINTENANCE_PROFILE: VerticalProfileManifest = {
+  id: 'home-services.maintenance',
+  name: 'Home Services / Pool & Garden Care',
+  version: '0.1.0',
+  description: 'Specialized profile for Pool & Garden care requiring chemical logs, before/after photos, and materials inventory.',
+  useCases: [ 'HOME_SERVICES', 'MAINTENANCE' ],
+  modules: [
+    ...HOME_SERVICES_BASE_PROFILE.modules,
+    moduleRef('records', 'Records stores structured logs of pool pH levels, chemical dosing, and garden treatments applied.'),
+    moduleRef('inventory', 'Inventory tracks the usage of physical materials (chlorine, mulch) across the service route.'),
+  ],
+};
+
+export const HOME_SERVICES_DOMESTIC_PROFILE: VerticalProfileManifest = {
+  id: 'home-services.domestic',
+  name: 'Home Services / House-Keeping',
+  version: '0.1.0',
+  description: 'Specialized profile for House-Keeping requiring strict property access management and staff credentialing.',
+  useCases: [ 'HOME_SERVICES', 'DOMESTIC' ],
+  modules: [
+    ...HOME_SERVICES_BASE_PROFILE.modules,
+    moduleRef('access', 'Access securely stores client alarm codes, lockbox combinations, and smart-lock keys.'),
+    moduleRef('credentials', 'Credentials verifies staff Police Clearances, Working With Children Checks, and bonded insurance.'),
+  ],
+};
+
+export const WELLNESS_PRACTITIONER_PROFILE: VerticalProfileManifest = {
+  id: 'wellness.practitioner',
+  name: 'Wellness / Independent Practitioner',
+  version: '0.1.0',
+  description: 'Profile for nomadic wellness practitioners (Yoga, Somatics, Breathwork) requiring cross-pod scheduling and verifiable credentials.',
+  useCases: [ 'WELLNESS', 'PRACTITIONER' ],
+  modules: [
+    moduleRef('events', 'Events schedules group classes across federated venue locations.', {
+      turtle: `
+        @prefix schema: <https://schema.org/> .
+        <> a schema:Event ;
+           schema:eventAttendanceMode schema:MixedEventAttendanceMode .
+      `,
+    }),
+    moduleRef('bookings', 'Bookings manages 1-on-1 private sessions and consultations.'),
+    moduleRef('credentials', 'Credentials publicly displays verifiable certifications and insurance.'),
+    moduleRef('payments', 'Payments collects class and session fees directly to the practitioner.'),
+  ],
+};
+
+export const WELLNESS_VENUE_PROFILE: VerticalProfileManifest = {
+  id: 'wellness.venue',
+  name: 'Wellness / Venue & Studio',
+  version: '0.1.0',
+  description: 'Profile for physical wellness spaces (Studios, Halls, Domes) that hire out space to practitioners.',
+  useCases: [ 'WELLNESS', 'VENUE' ],
+  modules: [
+    moduleRef('bookings', 'Bookings handles the hiring of the physical space by practitioners.'),
+    moduleRef('access', 'Access automatically issues digital lockbox codes to the practitioner during their hired time-slot.'),
+    moduleRef('inventory', 'Inventory manages the rental of physical equipment (Yoga mats, Reformers).'),
+    moduleRef('website-seo', 'Website SEO aggregates and renders the federated schedules of all visiting practitioners.'),
+    moduleRef('mcp-server', 'MCP Server provides AI agents direct access to query wellness schedules and studio availability.'),
+  ],
+};
+
+export const WELLNESS_CLINIC_PROFILE: VerticalProfileManifest = {
+  id: 'wellness.clinic',
+  name: 'Wellness / Multi-Disciplinary Clinic',
+  version: '0.1.0',
+  description: 'Composite profile for clinics that host multiple in-house modalities and practitioners under one brand.',
+  useCases: [ 'WELLNESS', 'VENUE', 'CLINIC' ],
+  modules: [
+    ...WELLNESS_VENUE_PROFILE.modules,
+    moduleRef('governance', 'Governance handles internal clinic policies and voting.'),
+    moduleRef('social', 'Social provides an internal directory and communication channel for the employed practitioners.'),
+    moduleRef('events', 'Events publishes the unified clinic timetable.'),
+    moduleRef('payments', 'Payments acts as the central merchant of record before remitting to practitioners.'),
+  ],
+};
+
 export const LIGHTHOUSE_VERTICAL_PROFILES: readonly VerticalProfileManifest[] = [
   FOOD_RESTAURANT_VERTICAL_PROFILE,
   HEALTH_PRIVACY_CONSENT_VERTICAL_PROFILE,
+  AUTO_PORTABLE_RECORDS_VERTICAL_PROFILE,
+  MEMBER_GOVERNANCE_VERTICAL_PROFILE,
+  SPORTING_CLUB_BASE_PROFILE,
+  SPORTING_LEAGUE_PROFILE,
+  SPORTING_FACILITY_PROFILE,
+  SPORTING_COMPLIANCE_PROFILE,
+  GLAM_BASE_PROFILE,
+  GLAM_GALLERY_MUSEUM_PROFILE,
+  GLAM_LIBRARY_PROFILE,
+  GLAM_ARCHIVE_PROFILE,
+  GLAM_HISTORICAL_SOCIETY_PROFILE,
+  HOME_SERVICES_BASE_PROFILE,
+  HOME_SERVICES_MAINTENANCE_PROFILE,
+  HOME_SERVICES_DOMESTIC_PROFILE,
+  WELLNESS_PRACTITIONER_PROFILE,
+  WELLNESS_VENUE_PROFILE,
+  WELLNESS_CLINIC_PROFILE,
 ];
 
 export function validateVerticalProfileBundle(

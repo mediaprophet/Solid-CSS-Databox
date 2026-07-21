@@ -1,0 +1,6 @@
+[workspace]
+members = [
+    "tray-supervisor",
+    "pos-edge",
+]
+resolver = "2"

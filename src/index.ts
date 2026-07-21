@@ -647,6 +647,8 @@ export * from './databox/cms/modules/pos/NativePosDeviceContract';
 export * from './databox/cms/modules/pos/CustomerOrdering';
 export * from './databox/cms/modules/pos/TableSession';
 export * from './databox/cms/modules/website/PublicFeedRenderer';
+export * from './databox/cms/modules/website/Seo';
+export * from './databox/cms/modules/website/SitemapRobots';
 export * from './databox/context/AuthenticatedContextExtractor';
 export * from './databox/context/DataboxRequestContext';
 export * from './databox/evidence/Evidence';

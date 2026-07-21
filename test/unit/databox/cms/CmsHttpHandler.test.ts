@@ -131,6 +131,24 @@ function websitePublishBody(overrides: Record<string, unknown> = {}): string {
   });
 }
 
+function websiteSeoBody(overrides: Record<string, unknown> = {}): string {
+  return JSON.stringify({
+    baseIri: 'http://localhost:3000/www/',
+    sitemap: { pages: ['http://localhost:3000/www/'] },
+    robots: { siteUrl: 'http://localhost:3000/', sitemapUrl: 'http://localhost:3000/www/sitemap.xml' },
+    ...overrides,
+  });
+}
+
+function websiteSitemapBody(overrides: Record<string, unknown> = {}): string {
+  return JSON.stringify({
+    baseIri: 'http://localhost:3000/www/',
+    businessUrl: 'http://localhost:3000/',
+    catalogueItemIds: ['http://localhost:3000/catalogue/flat-white#item'],
+    ...overrides,
+  });
+}
+
 describe('A CmsHttpHandler', (): void => {
   let registry: InMemoryDataboxModuleRegistry;
   let handler: CmsHttpHandler;
@@ -1028,6 +1046,69 @@ describe('A CmsHttpHandler', (): void => {
       }));
       expect(res.statusCode).toBe(400);
       expect(JSON.parse(res.body).error).toContain('feed object');
+    });
+
+    it('publishes rendered SEO assets (sitemap and robots) through the ResourceStore.', async(): Promise<void> => {
+      handler = posStoresHandler();
+      const res = new MockResponse();
+      await handler.handle(input(res, {
+        url: '/.databox/cms/website/seo',
+        method: 'POST',
+        auth: `Bearer ${token}`,
+        body: websiteSeoBody(),
+      }));
+      expect(res.statusCode).toBe(201);
+      const published = JSON.parse(res.body).published;
+      expect(published).toEqual(expect.arrayContaining([
+        expect.objectContaining({ role: 'sitemap', iri: 'http://localhost:3000/www/sitemap.xml' }),
+        expect.objectContaining({ role: 'robots', iri: 'http://localhost:3000/www/robots.txt' }),
+      ]));
+    });
+
+    it('returns 400 for a website seo request missing a pages array.', async(): Promise<void> => {
+      handler = posStoresHandler();
+      const res = new MockResponse();
+      await handler.handle(input(res, {
+        url: '/.databox/cms/website/seo',
+        method: 'POST',
+        auth: `Bearer ${token}`,
+        body: JSON.stringify({
+          baseIri: 'http://localhost:3000/www/',
+          sitemap: { lastmod: '2026-07-20T00:00:00.000Z' },
+        }),
+      }));
+      expect(res.statusCode).toBe(400);
+      expect(JSON.parse(res.body).error).toContain('pages array');
+    });
+
+    it('publishes a sitemap derived from business parameters through the ResourceStore.', async(): Promise<void> => {
+      handler = posStoresHandler();
+      const res = new MockResponse();
+      await handler.handle(input(res, {
+        url: '/.databox/cms/website/sitemap',
+        method: 'POST',
+        auth: `Bearer ${token}`,
+        body: websiteSitemapBody(),
+      }));
+      expect(res.statusCode).toBe(201);
+      const body = JSON.parse(res.body);
+      expect(body.published).toEqual(expect.arrayContaining([
+        expect.objectContaining({ role: 'sitemap', iri: 'http://localhost:3000/www/sitemap.xml' }),
+      ]));
+      expect(body.sitemap.xml).toContain('http://localhost:3000/catalogue/flat-white#item');
+    });
+
+    it('returns 400 for a website sitemap request missing a businessUrl.', async(): Promise<void> => {
+      handler = posStoresHandler();
+      const res = new MockResponse();
+      await handler.handle(input(res, {
+        url: '/.databox/cms/website/sitemap',
+        method: 'POST',
+        auth: `Bearer ${token}`,
+        body: JSON.stringify({ baseIri: 'http://localhost:3000/www/' }),
+      }));
+      expect(res.statusCode).toBe(400);
+      expect(JSON.parse(res.body).error).toContain('businessUrl');
     });
 
     it('returns 404 for an unknown authorized route (including a missing URL).', async(): Promise<void> => {
