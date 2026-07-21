@@ -76,6 +76,7 @@ describe('CMS vertical profiles', (): void => {
       'events',
       'opening-hours',
       'website-seo',
+      'mcp-server',
     ]);
   });
 
@@ -96,6 +97,7 @@ describe('CMS vertical profiles', (): void => {
       'events',
       'opening-hours',
       'website-seo',
+      'mcp-server',
     ]);
     expect(data.get('https://databox.example/.databox/cms/modules/catalogue'))
       .toContain('https://schema.org/itemListOrder');
@@ -116,6 +118,23 @@ describe('CMS vertical profiles', (): void => {
     expect(LIGHTHOUSE_VERTICAL_PROFILES.map((profile): string => profile.id)).toEqual([
       'food.restaurant',
       'health.privacy-consent',
+      'auto.portable-records',
+      'member.governance',
+      'sport.club-base',
+      'sport.league-team',
+      'sport.facility-court',
+      'sport.compliance-safety',
+      'glam.base',
+      'glam.gallery-museum',
+      'glam.library',
+      'glam.archive',
+      'glam.historical-society',
+      'home-services.base',
+      'home-services.maintenance',
+      'home-services.domestic',
+      'wellness.practitioner',
+      'wellness.venue',
+      'wellness.clinic',
     ]);
     expect(FOOD_RESTAURANT_VERTICAL_PROFILE.modules.map((module): string => module.moduleId))
       .toEqual(expect.arrayContaining([ 'menu', 'catalogue', 'payments', 'receipt', 'bookings', 'events' ]));

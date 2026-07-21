@@ -9,3 +9,6 @@
 /test/tmp
 /typedocs
 /work-files
+/rust/connector-sidecar/target
+/rust/pos-edge-proxy/target
+/rust/tray-supervisor/target
