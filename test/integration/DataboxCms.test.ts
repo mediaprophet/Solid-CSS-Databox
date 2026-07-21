@@ -1,4 +1,5 @@
 import fetch from 'cross-fetch';
+import { WebSocket } from 'ws';
 import type { App } from '../../src/init/App';
 import { parseModuleManifestIndexRdf } from '../../src/databox/cms/ModuleManifestDiscovery';
 import { parseModuleManifestRdf } from '../../src/databox/cms/ModuleManifestRdf';
@@ -177,12 +178,71 @@ describe('the Databox CMS control plane in Community Solid Server', (): void => 
         modules: [
           {
             manifest: {
-              id: 'catalogue',
-              name: 'Catalogue',
+              id: 'jobs',
+              name: 'Jobs / Work Orders',
               version: '0.1.0',
-              description: 'Product catalogue.',
-              capabilities: [ 'cms:catalogue' ],
-              routes: [],
+              description: 'Production workflows (intake -> queue -> produce -> finish -> ready).',
+              capabilities: [ 'cms:jobs', 'cms:work-orders' ],
+              routes: [ 'POST /.databox/cms/jobs/advance' ],
+              adminUi: { navLabel: 'Jobs', path: '/jobs' },
+            },
+            enabled: true,
+            state: { contentType: 'text/turtle', turtle: '<> <urn:example:imported> "yes" .' },
+          },
+          {
+            manifest: {
+              id: 'payments',
+              name: 'Payments & Receipts',
+              version: '0.1.0',
+              description: 'Payment logic including taxes, splits, subscriptions, refunds, and verifiable receipts.',
+              capabilities: [ 'cms:payments', 'cms:receipts' ],
+              routes: [
+                'POST /.databox/cms/payments/receipt/build',
+                'POST /.databox/cms/payments/refund/compute',
+                'POST /.databox/cms/payments/split/compute',
+                'POST /.databox/cms/payments/subscription/next-date',
+                'POST /.databox/cms/payments/subscription/is-due',
+                'POST /.databox/cms/payments/tax/compute',
+              ],
+              adminUi: { navLabel: 'Payments', path: '/payments' },
+            },
+            enabled: true,
+            state: { contentType: 'text/turtle', turtle: '<> <urn:example:imported> "yes" .' },
+          },
+          {
+            manifest: {
+              id: 'bookings',
+              name: 'Bookings & Availability',
+              version: '0.1.0',
+              description: 'Compute free time slots and issue schema.org reservations.',
+              capabilities: [ 'cms:bookings', 'cms:availability', 'cms:reservation' ],
+              routes: [
+                'POST /.databox/cms/bookings/availability',
+                'POST /.databox/cms/bookings/reservation/build',
+              ],
+              adminUi: {
+                navLabel: 'Bookings',
+                path: '/bookings',
+              },
+            },
+            enabled: true,
+            state: {
+              contentType: 'text/turtle',
+              turtle: '<> <urn:example:imported> "yes" .',
+            },
+          },
+          {
+            manifest: {
+              id: 'catalogue',
+              name: 'Catalogue Variants',
+              version: '0.1.0',
+              description: 'Expand a product\'s options into the full variant / SKU matrix.',
+              capabilities: [ 'cms:catalogue', 'cms:catalogue-variants' ],
+              routes: [ 'POST /.databox/cms/catalogue/variants/build' ],
+              adminUi: {
+                navLabel: 'Catalogue',
+                path: '/catalogue',
+              },
             },
             enabled: true,
             state: {
@@ -195,8 +255,18 @@ describe('the Databox CMS control plane in Community Solid Server', (): void => 
     });
     expect(response.status).toBe(200);
     const body = await response.json();
-    expect(body.type).toBe('DataboxCmsWorks');
-    expect(body.modules).toEqual(expect.arrayContaining([
+      expect(body.type).toBe('DataboxCmsWorks');
+      expect(body.modules).toEqual(expect.arrayContaining([
+        expect.objectContaining({ manifest: expect.objectContaining({ id: 'jobs' }), enabled: true }),
+        expect.objectContaining({ manifest: expect.objectContaining({ id: 'payments' }), enabled: true }),
+        expect.objectContaining({
+        manifest: expect.objectContaining({ id: 'bookings' }),
+        enabled: true,
+        state: {
+          contentType: 'text/turtle',
+          turtle: expect.stringContaining('urn:example:imported'),
+        },
+      }),
       expect.objectContaining({
         manifest: expect.objectContaining({ id: 'catalogue' }),
         enabled: true,
@@ -333,8 +403,60 @@ describe('the Databox CMS control plane in Community Solid Server', (): void => 
     expect(ldp.headers.get('content-type')).toContain('text/turtle');
   });
 
-  it('publishes public website assets that are served as ordinary resources via plain LDP.', async():
-  Promise<void> => {
+  it('updates display clients through CSS/Solid notifications.', async(): Promise<void> => {
+    const displayIri = `${baseUrl}pos/display-int`;
+    
+    // Initialize the display state first so the resource exists
+    const initState = await fetch(`${baseUrl}.databox/cms/pos/display/state`, {
+      method: 'POST',
+      headers: { authorization: `Bearer ${controlToken}`, 'content-type': 'application/json' },
+      body: JSON.stringify({
+        displayIri,
+        state: { mode: 'idle', lastUpdatedAt: new Date().toISOString() },
+      }),
+    });
+    if (initState.status !== 201) { console.error("INIT_ERROR: ", await initState.text()); }
+    expect(initState.status).toBe(201);
+
+    // Subscribe using the WebSocketChannel2023 endpoint
+    const subUrl = new URL('/.notifications/WebSocketChannel2023/', baseUrl).href;
+    const subRes = await fetch(subUrl, {
+      method: 'POST',
+      headers: { 'content-type': 'application/ld+json' },
+      body: JSON.stringify({
+        '@context': ['https://www.w3.org/ns/solid/notification/v1'],
+        type: 'http://www.w3.org/ns/solid/notifications#WebSocketChannel2023',
+        topic: `${displayIri}-state`
+      })
+    });
+    expect(subRes.status).toBe(200);
+    const body = await subRes.json();
+    const ws = new WebSocket(body.receiveFrom);
+
+    const notificationPromise = new Promise<Buffer>((resolve): any => ws.once('message', resolve));
+    await new Promise<void>((resolve): any => ws.once('open', resolve));
+
+    // Push an incremental state update to trigger the notification
+    const stateUpdate = await fetch(`${baseUrl}.databox/cms/pos/display/state`, {
+      method: 'POST',
+      headers: { authorization: `Bearer ${controlToken}`, 'content-type': 'application/json' },
+      body: JSON.stringify({
+        displayIri,
+        state: { mode: 'transaction', lastUpdatedAt: new Date().toISOString() },
+      }),
+    });
+    if (stateUpdate.status !== 201) { console.error("STATE_ERROR: ", await stateUpdate.text()); }
+    expect(stateUpdate.status).toBe(201);
+
+    // Verify the WebSocket received the update
+    const notification = JSON.parse((await notificationPromise).toString());
+    ws.close();
+
+    expect(notification.type).toBe('Update');
+    expect(notification.object).toBe(`${displayIri}-state`);
+  });
+
+  it('publishes public website assets that are served as ordinary resources via plain LDP.', async(): Promise<void> => {
     const publishResponse = await fetch(`${baseUrl}.databox/cms/website/publish`, {
       method: 'POST',
       headers: { authorization: `Bearer ${controlToken}`, 'content-type': 'application/json' },
@@ -346,16 +468,224 @@ describe('the Databox CMS control plane in Community Solid Server', (): void => 
         },
       }),
     });
-    expect(publishResponse.status).toBe(201);
+    if (publishResponse.status !== 201) { console.error(SEO_ERROR: ); } expect(publishResponse.status).toBe(201);
     const published = (await publishResponse.json()).published;
     expect(published).toEqual(expect.arrayContaining([
       expect.objectContaining({ role: 'html', iri: `${baseUrl}www-int/index.html` }),
+      expect.objectContaining({ role: 'json-ld', iri: `${baseUrl}www-int/data.jsonld` }),
     ]));
 
+    // Fetch the HTML (publicly accessible due to WAC ACL)
     const html = await fetch(`${baseUrl}www-int/index.html`, { headers: { accept: 'text/html' }});
     expect(html.status).toBe(200);
     expect(html.headers.get('content-type')).toContain('text/html');
     await expect(html.text()).resolves.toContain('Test Cafe');
+
+    // Fetch the JSON-LD Feed (publicly accessible)
+    const jsonLd = await fetch(`${baseUrl}www-int/data.jsonld`, { headers: { accept: 'application/ld+json' }});
+    expect(jsonLd.status).toBe(200);
+    expect(jsonLd.headers.get('content-type')).toContain('application/ld+json');
+
+    // Fetch the JSON-LD Feed using content negotiation for Turtle (CSS handles this via representation converters)
+    const turtle = await fetch(`${baseUrl}www-int/data.jsonld`, { headers: { accept: 'text/turtle' }});
+    expect(turtle.status).toBe(200);
+    expect(turtle.headers.get('content-type')).toContain('text/turtle');
+    await expect(turtle.text()).resolves.toContain('Test Cafe');
+  });
+
+  it('publishes public SEO assets (sitemap, robots) that are served as ordinary resources.', async(): Promise<void> => {
+    const publishResponse = await fetch(`${baseUrl}.databox/cms/website/seo`, {
+      method: 'POST',
+      headers: { authorization: `Bearer ${controlToken}`, 'content-type': 'application/json' },
+      body: JSON.stringify({
+        baseIri: `${baseUrl}www-int/`,
+        sitemap: { pages: [ `${baseUrl}www-int/`, `${baseUrl}www-int/menu` ] },
+        robots: { siteUrl: baseUrl, sitemapUrl: `${baseUrl}www-int/sitemap.xml` },
+      }),
+    });
+    if (publishResponse.status !== 201) { console.error("SEO_ERROR: ", await publishResponse.text()); }
+    expect(publishResponse.status).toBe(201);
+
+    // Fetch the Sitemap (publicly accessible)
+    const sitemap = await fetch(`${baseUrl}www-int/sitemap.xml`, { headers: { accept: 'application/xml' }});
+    expect(sitemap.status).toBe(200);
+    expect(sitemap.headers.get('content-type')).toContain('application/xml');
+    await expect(sitemap.text()).resolves.toContain('<loc>http://localhost:');
+
+    // Fetch the Robots.txt (publicly accessible)
+    const robots = await fetch(`${baseUrl}www-int/robots.txt`, { headers: { accept: 'text/plain' }});
+    expect(robots.status).toBe(200);
+    expect(robots.headers.get('content-type')).toContain('text/plain');
+    await expect(robots.text()).resolves.toContain('Sitemap: ');
+  });
+
+  it('exposes a POST route to expand a product into a SKU matrix (catalogue variants).', async(): Promise<void> => {
+    const response = await fetch(`${baseUrl}.databox/cms/catalogue/variants/build`, {
+      method: 'POST',
+      headers: {
+        authorization: `Bearer ${controlToken}`,
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        productId: 'tshirt',
+        options: [
+          { name: 'size', values: ['S', 'M'] },
+          { name: 'color', values: ['red', 'blue'] }
+        ]
+      }),
+    });
+    expect(response.status).toBe(200);
+    const variants = await response.json() as any[];
+    expect(variants).toHaveLength(4);
+    expect(variants[0].sku).toBe('tshirt-S-red');
+    expect(variants[3].sku).toBe('tshirt-M-blue');
+  });
+
+  it('exposes a POST route to build an RDF syndication feed (schema.org JSON-LD).', async(): Promise<void> => {
+    const response = await fetch(`${baseUrl}.databox/cms/feeds/products/build`, {
+      method: 'POST',
+      headers: {
+        authorization: `Bearer ${controlToken}`,
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        products: [
+          { id: 'item1', name: 'Coffee', price: 4.5, currency: 'AUD' }
+        ]
+      }),
+    });
+    expect(response.status).toBe(200);
+    expect(response.headers.get('content-type')).toContain('application/ld+json');
+    const feed = await response.json() as any;
+    expect(feed['@type']).toBe('ItemList');
+    expect(feed.itemListElement[0].item.name).toBe('Coffee');
+    expect(feed.itemListElement[0].item.offers.price).toBe('4.50');
+  });
+
+  it('exposes a POST route to compute free booking slots (availability).', async(): Promise<void> => {
+    const response = await fetch(`${baseUrl}.databox/cms/bookings/availability`, {
+      method: 'POST',
+      headers: {
+        authorization: `Bearer ${controlToken}`,
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        windowStart: 480, // 8:00 AM
+        windowEnd: 720, // 12:00 PM
+        slotMinutes: 60,
+        bookings: [
+          { start: 540, end: 600 } // 9:00 AM - 10:00 AM
+        ],
+      }),
+    });
+    expect(response.status).toBe(200);
+    const slots = await response.json() as any[];
+    expect(slots).toHaveLength(3);
+    expect(slots[0]).toEqual({ start: 480, end: 540 });
+    expect(slots[1]).toEqual({ start: 600, end: 660 });
+    expect(slots[2]).toEqual({ start: 660, end: 720 });
+  });
+
+  it('exposes a POST route to build a schema.org Reservation.', async(): Promise<void> => {
+    const response = await fetch(`${baseUrl}.databox/cms/bookings/reservation/build`, {
+      method: 'POST',
+      headers: {
+        authorization: `Bearer ${controlToken}`,
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        id: 'https://example.com/res1',
+        reservationFor: 'https://example.com/event',
+        holder: 'https://example.com/user',
+        startTime: '2026-10-10T10:00:00Z',
+      }),
+    });
+    expect(response.status).toBe(200);
+    const reservation = await response.json() as any;
+    expect(reservation['@type']).toBe('Reservation');
+    expect(reservation.startTime).toBe('2026-10-10T10:00:00Z');
+  });
+
+  it('exposes a POST route to advance a job state.', async(): Promise<void> => {
+    const response = await fetch(`${baseUrl}.databox/cms/jobs/advance`, {
+      method: 'POST',
+      headers: { authorization: `Bearer ${controlToken}`, 'content-type': 'application/json' },
+      body: JSON.stringify({ current: 'intake', event: 'queue' }),
+    });
+    expect(response.status).toBe(200);
+    const result = await response.json() as any;
+    expect(result.state).toBe('queued');
+  });
+
+  it('exposes a POST route to build a schema.org Receipt.', async(): Promise<void> => {
+    const response = await fetch(`${baseUrl}.databox/cms/payments/receipt/build`, {
+      method: 'POST',
+      headers: { authorization: `Bearer ${controlToken}`, 'content-type': 'application/json' },
+      body: JSON.stringify({
+        orderId: '123',
+        seller: 'Test Store',
+        currency: 'USD',
+        orderDate: '2026-10-10T10:00:00Z',
+        items: [ { name: 'Item 1', quantity: 2, unitPrice: 10 } ],
+      }),
+    });
+    expect(response.status).toBe(200);
+    const receipt = await response.json() as any;
+    expect(receipt['@type']).toBe('Order');
+    expect(receipt.totalPaymentDue.price).toBe('20.00');
+  });
+
+  it('exposes a POST route to compute refunds.', async(): Promise<void> => {
+    const response = await fetch(`${baseUrl}.databox/cms/payments/refund/compute`, {
+      method: 'POST',
+      headers: { authorization: `Bearer ${controlToken}`, 'content-type': 'application/json' },
+      body: JSON.stringify({ originalTotal: 100, refundAmount: 20 }),
+    });
+    expect(response.status).toBe(200);
+    const result = await response.json() as any;
+    expect(result.remaining).toBe(80);
+  });
+
+  it('exposes a POST route to compute split payments.', async(): Promise<void> => {
+    const response = await fetch(`${baseUrl}.databox/cms/payments/split/compute`, {
+      method: 'POST',
+      headers: { authorization: `Bearer ${controlToken}`, 'content-type': 'application/json' },
+      body: JSON.stringify({ total: 100, feePercent: 10, payees: [ { id: 'a', share: 50 }, { id: 'b', share: 50 } ] }),
+    });
+    expect(response.status).toBe(200);
+    const result = await response.json() as any;
+    expect(result.platformFee).toBe(10);
+    expect(result.payouts[0].amount).toBe(45);
+  });
+
+  it('exposes POST routes for subscription dates.', async(): Promise<void> => {
+    const response1 = await fetch(`${baseUrl}.databox/cms/payments/subscription/next-date`, {
+      method: 'POST',
+      headers: { authorization: `Bearer ${controlToken}`, 'content-type': 'application/json' },
+      body: JSON.stringify({ lastBilledIso: '2026-01-31', interval: 'monthly' }),
+    });
+    expect(response1.status).toBe(200);
+    expect((await response1.json() as any).nextDate).toBe('2026-02-28');
+
+    const response2 = await fetch(`${baseUrl}.databox/cms/payments/subscription/is-due`, {
+      method: 'POST',
+      headers: { authorization: `Bearer ${controlToken}`, 'content-type': 'application/json' },
+      body: JSON.stringify({ lastBilledIso: '2026-01-31', interval: 'monthly', asOfIso: '2026-03-01' }),
+    });
+    expect(response2.status).toBe(200);
+    expect((await response2.json() as any).due).toBe(true);
+  });
+
+  it('exposes a POST route to compute tax.', async(): Promise<void> => {
+    const response = await fetch(`${baseUrl}.databox/cms/payments/tax/compute`, {
+      method: 'POST',
+      headers: { authorization: `Bearer ${controlToken}`, 'content-type': 'application/json' },
+      body: JSON.stringify({ amount: 110, ratePercent: 10, inclusive: true }),
+    });
+    expect(response.status).toBe(200);
+    const result = await response.json() as any;
+    expect(result.tax).toBe(10);
+    expect(result.net).toBe(100);
   });
 
   it('leaves the base Solid server untouched: its OIDC discovery still responds.', async(): Promise<void> => {

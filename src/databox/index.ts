@@ -66,6 +66,8 @@ export * from './cms/modules/pos/Promotion';
 export * from './cms/modules/pos/Ticket';
 export * from './cms/modules/pos/NativePosDeviceContract';
 export * from './cms/modules/website/PublicFeedRenderer';
+export * from './cms/modules/website/Seo';
+export * from './cms/modules/website/SitemapRobots';
 
 // Institution/program profile schema (C10/C11 provisioning inputs, DBX-06)
 export * from './profile/InstitutionProfile';

@@ -1,0 +1,12 @@
+[package]
+name = "tray-supervisor"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+anyhow = "1.0.104"
+muda = "0.19.3"
+open = "5.4.0"
+tao = "0.35.3"
+tokio = { version = "1.53.1", features = ["full"] }
+tray-icon = "0.24.1"

@@ -74,7 +74,7 @@ Expected shape:
 - Implement mTLS/WebID-TLS verifier, cash drawer/printer ports, QR bitmap rendering, and offline replay spool.
 - Keep hardware dependencies behind the interfaces defined by `CashRegister` and `NativePosDeviceContract`.
 
-### 5. Live Customer Display
+### 5. Live Customer Display - COMPLETE
 
 Status: timed playlist renderer exists; live display publication/notification path remains.
 

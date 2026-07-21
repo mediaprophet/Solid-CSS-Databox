@@ -174,11 +174,38 @@ export const CMS = createVocabulary(
   'config',
 );
 
+export const C2PA = createVocabulary(
+  'https://c2pa.org/terms/',
+  'Action',
+  'Assertion',
+  'Claim',
+  'Ingredient',
+  'Manifest',
+  'Signature',
+  'action',
+  'hash',
+  'ingredient',
+  'softwareAgent',
+);
+
 export const DC = createVocabulary(
   'http://purl.org/dc/terms/',
+  'contributor',
+  'coverage',
+  'creator',
+  'date',
   'description',
+  'format',
+  'identifier',
+  'language',
   'modified',
+  'publisher',
+  'relation',
+  'rights',
+  'source',
+  'subject',
   'title',
+  'type',
 );
 
 export const FOAF = createVocabulary(
