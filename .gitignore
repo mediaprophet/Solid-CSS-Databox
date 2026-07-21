@@ -6,6 +6,7 @@ coverage
 data
 dist
 node_modules
+**/node_modules
 test/tmp
 test/tsconfig.tsbuildinfo
 typedocs
