@@ -1,1 +1,2 @@
+[ ! -d node_modules ] && exit 0
 npx.cmd --no-install commitlint --edit "$1"

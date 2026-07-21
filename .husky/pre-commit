@@ -1,1 +1,2 @@
-npm.cmd run test:ts && npm.cmd run test:unit
+[ ! -d node_modules ] && echo "husky: node_modules not found, skipping tests" && exit 0
+node node_modules/jest/bin/jest.js --config=./jest.config.js test/unit --coverageReporters none

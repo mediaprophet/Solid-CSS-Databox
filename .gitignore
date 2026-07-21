@@ -7,6 +7,7 @@ data
 dist
 node_modules
 test/tmp
+test/tsconfig.tsbuildinfo
 typedocs
 work-files
 rust/connector-sidecar/target
@@ -14,4 +15,6 @@ rust/pos-edge-proxy/target
 rust/tray-supervisor/target
 native/target
 native/target-bin
+native/**/target
+native/**/target-cli
 CommunitySolidServer/dist
