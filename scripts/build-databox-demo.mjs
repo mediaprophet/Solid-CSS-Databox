@@ -9,7 +9,7 @@
 // Usage: `npm run build:demo` (from the repo root), or run in CI.
 
 import { execSync } from 'node:child_process';
-import { cpSync, mkdirSync, rmSync } from 'node:fs';
+import { cpSync, mkdirSync, rmSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -17,6 +17,11 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const forgeDir = join(root, 'forge-admin');
 const distDir = join(forgeDir, 'dist');
 const outDir = join(root, 'docs', 'admin');
+
+if (!existsSync(join(forgeDir, 'node_modules'))) {
+  console.log('› Installing forge-admin dependencies …');
+  execSync('npm ci', { cwd: forgeDir, stdio: 'inherit' });
+}
 
 console.log('› Building forge-admin demo (VITE_DEMO=true, base=./) …');
 execSync('npx vite build --base=./', {
