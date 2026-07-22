@@ -47,6 +47,8 @@ jobs:
           ref: ${{ inputs.branch || github.ref }}
       - name: Install dependencies and run build scripts
         run: npm ci
+      - name: Build project
+        run: npm run build
       - name: Start the server in the background
         run: npm start > server-output.log  &
       - name: Create the necessary folders
