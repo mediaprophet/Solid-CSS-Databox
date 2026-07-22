@@ -81,12 +81,52 @@ organisation's system.
 - Provides planning and synthetic fixtures for welfare coordination, restaurants, loyalty programs, donations,
   budgeting, resource pools and inter-organisational claims.
 
+### CMS module system
+
+The Databox CMS (`src/databox/cms/`) is a dynamic module system with **50+ built-in industry modules**, each with
+capability declarations, route management, and enable/disable toggles. Modules are organised into industry verticals
+(restaurant, welfare, retail, loyalty, print, trade) and can be tailored per organisation profile. The CMS HTTP
+handler serves module APIs, an admin panel, and Oxigraph-backed synchronisation.
+
+| Group | Modules |
+|---|---|
+| Commerce & retail | POS (cart, cash register, customer ordering, table sessions, promotions, tickets, native device contract), menu, catalogue, pricing, discounts, loyalty, barcode, EFTPOS, payments (refunds, splits, subscriptions) |
+| Food & health safety | Allergy profile (allergen matching, ingredient declarations), concessions, emergency break-glass, consent, delegation, device auth |
+| Operations & logistics | Delivery (driver dispatch, driver management), inventory, bookings, jobs, events, feeds, print shop, quotations |
+| Governance & identity | Governance (role bindings, ODRL policy management, resolution), credentials (W3C VC issuance/verification/revocation), access, consumer rights, provenance, reputation, licensing, org network |
+| Infrastructure & integration | Hosting (Cloudflare DNS/tunnel), integration (ODBC/LDAP connectors, R2RML), backups, accounting bridge, tax engine, notifications, i18n, a11y, theming |
+| Web & social | Website (customer display renderer, public feed renderer, SEO, sitemap/robots), social, business, HR, household, records, receipt, ticketing, MCP |
+
 ### Compliance decision support
 
 The compliance workstream maps pinned legislation and human-rights sources to technical controls, evidence and
 consumer-facing information obligations. It is decision support: it does not self-certify that an organisation or
 deployment is legally compliant. Applicability, exceptions and publication claims remain subject to qualified human
 review.
+
+### Native and Rust components
+
+The Databox ecosystem includes native components for hardware integration, system management, and connector bridging:
+
+- **POS Edge** (`native/pos-edge/`) — Rust native POS edge with ESC/POS thermal printer support, cash drawer control,
+  QR code generation, local HTTP server, IPC, and hardware abstraction.
+- **Installer** (`native/installer/`) — Cross-platform installer with macOS launchd service registration,
+  platform-aware Node.js binary provisioning, pre-flight checks, and deployment handoff.
+- **POS Edge Proxy** (`rust/pos-edge-proxy/`) — Proxy layer for POS edge communication.
+- **Tray Supervisor** (`rust/tray-supervisor/`) — System tray supervisor for desktop lifecycle management.
+- **Connector Sidecar** (`rust/connector-sidecar/`) — Connector sidecar for CMS integration with ODBC/LDAP bridging
+  and RDF mapping.
+
+### Org mobile apps
+
+A unified WASM/PWA container (`org-mobile-apps/`) fetches its identity, features, and permissions from the CMS at
+runtime based on the org's vertical profile and the app's purpose. Instead of building separate apps per purpose, one
+container dynamically loads UI component bundles from the CMS. Six app profiles are defined: waiter, driver, tradie,
+print, scorekeeper, and referee. Each app install receives a Verifiable Credential licence binding app, organisation,
+device, scope, and permissions. Network scope (local-only vs remote-capable) is enforced via service worker.
+
+A full survey of produced functionality versus documented coverage is in the
+[functionality audit](databox/functionality-audit.md).
 
 ## Demonstrator journeys
 
@@ -163,12 +203,18 @@ Two operator front-ends drive this control plane:
 | Location | Contents |
 |---|---|
 | [`src/databox/`](src/databox/) | Databox identity, provisioning, policy, bridge, evidence, review and Forge code |
+| [`src/databox/cms/`](src/databox/cms/) | CMS HTTP handler, 50+ industry modules, vertical profiles, Oxigraph sync |
 | [`config/databox/`](config/databox/) | Experimental live Components.js configuration |
 | [`databox/`](databox/) | Architecture, decisions, threat model, vocabulary, fixtures and implementation plans |
 | [`databox/forge-plan/`](databox/forge-plan/) | Product backplane, application and demonstrator plans |
+| [`databox/functionality-audit.md`](databox/functionality-audit.md) | Functionality audit: produced features vs documented coverage |
 | [`forge-admin/`](forge-admin/README.md) | Refine/React Forge Admin console — the operator control plane |
-| [`test/unit/databox/`](test/unit/databox/) | Databox unit and security-invariant tests |
-| [`test/integration/DataboxLive.test.ts`](test/integration/DataboxLive.test.ts) | Live CSS/OIDC/WAC integration test |
+| [`org-mobile-apps/`](org-mobile-apps/README.md) | WASM/PWA mobile app container with 6 app profiles |
+| [`native/`](native/) | Rust native POS edge and cross-platform installer |
+| [`rust/`](rust/) | Rust connector sidecar, POS edge proxy, and tray supervisor |
+| [`databox/deployment/cms/`](databox/deployment/cms/) | Docker Compose, Kubernetes, and secret templates for CMS deployment |
+| [`test/unit/databox/`](test/unit/databox/) | 188 Databox unit and security-invariant tests across 24 subsystems |
+| [`test/integration/`](test/integration/) | 6 Databox integration tests including live CSS/OIDC/WAC |
 
 Start with the [Databox documentation index](databox/README.md), then read the
 [reference architecture](databox/dbx-04-reference-architecture.md),
@@ -201,6 +247,30 @@ Solid interoperability assessment and DBX-28 release readiness are not yet compl
 This remains a reference and demonstrator implementation. Current production gaps include durable Forge registries,
 KMS-managed keys, durable outbox/feed/idempotency storage, a WORM or equivalently protected evidence substrate,
 production organisation IAM, independent security review, legal-policy review and external interoperability evidence.
+
+## Testing and deployment
+
+### Test coverage
+
+The Databox extension is fail-closed and unit-tested across all 24 subsystems:
+
+- **188 unit test files** under `test/unit/databox/` covering agent, authorization, bridge, CMS (99 tests), compliance,
+  context, credential, evidence, feed, gateway, identifiers, notification, ODRL, policy, profile, proof, provisioning,
+  receipt, review, storage, and tenant.
+- **6 integration tests** including live CSS/OIDC/WAC (`DataboxLive.test.ts`), CMS handler, CMS accessibility, Oxigraph
+  sync, vanilla mode, and vertical profiles.
+- **Fail-closed stubs** verified by a dedicated test — no stub silently permits access or claims conformance.
+
+### Deployment
+
+- **Docker Compose** — CMS deployment via `databox/deployment/cms/docker-compose.cms.yml` with environment configuration.
+- **Kubernetes** — manifests under `databox/deployment/cms/kubernetes/` for production CMS deployment.
+- **Secret management** — templates under `databox/deployment/cms/secrets/`.
+- **Live CSS preset** — experimental Components.js preset under `config/databox/` for mounting the Forge inside a
+  running CSS instance.
+- **Native installer** — cross-platform installer for macOS with launchd service registration.
+
+See the [CMS deployment guide](databox/deployment/cms/README.md) for details.
 
 ## Relationship to Community Solid Server
 
