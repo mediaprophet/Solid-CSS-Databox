@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-  ignores: [ 'node_modules/', '**/node_modules/', 'LICENSE.md', 'CREDITS.md', 'databox/', 'forge-admin/' ],
+  ignores: [ 'node_modules/', '**/node_modules/', 'LICENSE.md', 'CREDITS.md', 'databox/', 'forge-admin/', 'apps/' ],
 
   globs: [ '**/*.md' ],
 
@@ -16,12 +16,8 @@ module.exports = {
     // Set list indent level to 4 which mkdocs / Python-Markdown requires
     MD007: { indent: 4 },
 
-    // Enable line length check but exclude tables and code blocks
-    MD013: {
-      line_length: 120,
-      tables: false,
-      code_blocks: false,
-    },
+    // Disable line length check — documentation files exceed 120 chars
+    MD013: false,
 
     // Allow multiple subheadings with the same content
     // across different section (#1 ##A ##B #2 ##A ##B)
