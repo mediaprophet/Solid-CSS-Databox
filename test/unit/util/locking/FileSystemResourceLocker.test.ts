@@ -88,7 +88,7 @@ describe('A FileSystemResourceLocker', (): void => {
     expect(results).toContain(1);
     expect(results).toContain(2);
     expect(results).toContain(3);
-    expect(results.length).toBe(3);
+    expect(results).toHaveLength(3);
   });
 
   it('can acquire different keys simultaneously.', async(): Promise<void> => {
