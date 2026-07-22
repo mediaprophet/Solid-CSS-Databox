@@ -129,6 +129,8 @@ jobs:
         run: npm run build
       - name: Run deploy tests
         run: npm run test:deploy
+        env:
+          NODE_OPTIONS: --require-module
 
   coveralls:
     # Consolidate test coverage reports from all unit tests
