@@ -9,7 +9,7 @@
 // Usage: `npm run build:demo` (from the repo root), or run in CI.
 
 import { execSync } from 'node:child_process';
-import { cpSync, mkdirSync, rmSync, existsSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, rmSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -19,20 +19,20 @@ const distDir = join(forgeDir, 'dist');
 const outDir = join(root, 'docs', 'admin');
 
 if (!existsSync(join(forgeDir, 'node_modules'))) {
-  console.log('› Installing forge-admin dependencies …');
+  process.stdout.write('› Installing forge-admin dependencies …\n');
   execSync('npm ci', { cwd: forgeDir, stdio: 'inherit' });
 }
 
-console.log('› Building forge-admin demo (VITE_DEMO=true, base=./) …');
+process.stdout.write('› Building forge-admin demo (VITE_DEMO=true, base=./) …\n');
 execSync('npx vite build --base=./', {
   cwd: forgeDir,
   stdio: 'inherit',
   env: { ...process.env, VITE_DEMO: 'true' },
 });
 
-console.log('› Staging build into docs/admin …');
+process.stdout.write('› Staging build into docs/admin …\n');
 rmSync(outDir, { recursive: true, force: true });
 mkdirSync(outDir, { recursive: true });
 cpSync(distDir, outDir, { recursive: true });
 
-console.log('✓ docs/admin refreshed.');
+process.stdout.write('✓ docs/admin refreshed.\n');

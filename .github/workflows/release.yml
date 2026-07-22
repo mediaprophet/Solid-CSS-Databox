@@ -63,15 +63,14 @@ jobs:
       - name: Prepare release files
         run: |
           mkdir -p release-final
-          # Flatten native binary archives
-          cp release-assets/native-*/*.tar.gz release-final/ 2>/dev/null || true
-          cp release-assets/native-*/*.zip release-final/ 2>/dev/null || true
-          # npm tarball
-          cp release-assets/server-artifacts/*.tgz release-final/ 2>/dev/null || true
-          # Forge-admin demo as zip
-          cd release-assets/forge-admin-demo
-          zip -r ../../release-final/forge-admin-demo.zip .
-          cd ../..
+          # Copy all archived build artifacts (native tar.gz, zip, and server tgz)
+          find release-assets -type f \( -name "*.tar.gz" -o -name "*.zip" -o -name "*.tgz" \) -exec cp {} release-final/ \;
+          # Bundle forge-admin demo directory if unarchived
+          if [ -d release-assets/forge-admin-demo ] && [ ! -f release-final/forge-admin-demo.zip ]; then
+            tar -czf release-final/forge-admin-demo.tar.gz -C release-assets/forge-admin-demo .
+          fi
+          echo "=== Release Files Ready ==="
+          ls -la release-final/
 
       - name: Extract release notes
         id: notes
