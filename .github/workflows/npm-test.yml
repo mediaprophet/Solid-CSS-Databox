@@ -1,6 +1,13 @@
 name: NPM test
 
 on:
+  push:
+    branches:
+      - main
+      - 'versions/*'
+    tags:
+      - 'v*'
+  pull_request:
   workflow_call:
 
 jobs:
