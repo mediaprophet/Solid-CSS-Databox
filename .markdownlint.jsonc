@@ -1,6 +1,12 @@
 {
+  // MD001: Heading increment — RELEASE_NOTES.md jumps heading levels
+  "MD001": false,
+  // MD007: Unordered list indentation — RELEASE_NOTES.md uses 4-space indent
+  "MD007": false,
   // MD013: Line length — documentation lines can exceed 120 chars
   "MD013": false,
+  // MD024: No duplicate headings — RELEASE_NOTES.md repeats "New features" etc.
+  "MD024": false,
   // MD059: Descriptive link text — many CSS docs use "[here]" links
   "MD059": false,
   // MD060: Table column style — compact tables are valid markdown
