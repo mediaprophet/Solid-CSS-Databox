@@ -1,0 +1,351 @@
+<!DOCTYPE html><html class="default" lang="en" data-base="../"><head><meta charset="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>AppendOnlyStore | Community Solid Server - v8.0.0</title><meta name="description" content="Documentation for Community Solid Server"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="../assets/highlight.css"/><link rel="stylesheet" href="../assets/custom.css"/><script defer src="../assets/main.js"></script><script async src="../assets/icons.js" id="tsd-icons-script"></script><script async src="../assets/search.js" id="tsd-search-script"></script><script async src="../assets/navigation.js" id="tsd-nav-script"></script><script async src="../assets/hierarchy.js" id="tsd-hierarchy-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => window.app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar">
+<div class="tsd-toolbar-contents container"><a href="../index.html" class="title">Community Solid Server - v8.0.0</a>
+<div id="tsd-toolbar-links"></div><button id="tsd-search-trigger" class="tsd-widget" aria-label="Search"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-search"></use></svg></button><dialog id="tsd-search" aria-label="Search"><input role="combobox" id="tsd-search-input" aria-controls="tsd-search-results" aria-autocomplete="list" aria-expanded="true" autocapitalize="off" autocomplete="off" placeholder="Search the docs" maxLength="100"/>
+<ul role="listbox" id="tsd-search-results"></ul>
+<div id="tsd-search-status" aria-live="polite" aria-atomic="true">
+<div>Preparing search index...</div></div></dialog><a href="#" class="tsd-widget menu" id="tsd-toolbar-menu-trigger" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-menu"></use></svg></a></div></header>
+<div class="container container-main">
+<div class="col-content">
+<div class="tsd-page-title">
+<ul class="tsd-breadcrumb" aria-label="Breadcrumb">
+<li><a href="" aria-current="page">AppendOnlyStore</a></li></ul>
+<h1>Class AppendOnlyStore&lt;T&gt;</h1></div>
+<section class="tsd-panel tsd-comment">
+<div class="tsd-comment tsd-typography"><p>Append-only record store decorator (component C6, DBX-04 §2; ADR-0018; DBX-17/HAK-07).</p>
+<p>Same pattern as CSS <a href="ReadOnlyStore.html" class="tsd-kind-class">ReadOnlyStore</a>, but with a narrower override set: creation is allowed,
+while replace/update/delete of an already-accepted resource is rejected. This sits <em>below</em>
+authorization, so it binds every actor class including consumer, program, owner and administrative
+permissions (invariant 17; no silent overwrite, invariant 7). Because the denial lives below the
+WAC/owner layer, the actor class is irrelevant — no <code>control</code> permission, <code>OwnerPermissionReader</code>
+grant, or ordinary Solid operation can reach past it.</p>
+<p>Sharp edge (DBX-01 §4): <code>setRepresentation</code> is used by CSS for <em>both</em> create and replace. A blanket
+throw (as in <a href="ReadOnlyStore.html" class="tsd-kind-class">ReadOnlyStore</a>) would also block legitimate creation, so this decorator checks
+<a href="../interfaces/ResourceSet.html#hasresource" class="tsd-kind-property">ResourceStore.hasResource</a> first and only rejects the replace case. It fails closed: if
+existence cannot be determined, the write is refused rather than allowed.</p>
+<p>Governance (DBX-17): correction is a <strong>supersession</strong> — a new appended record that links to the prior
+(via <a href="#supersederesource" class="tsd-kind-method">supersedeResource</a>); the prior remains retrievable. Lawful deletion is a <strong>tombstone</strong> —
+recorded state plus an evidence event, never a destructive rewrite (via <a href="#tombstoneresource" class="tsd-kind-method">tombstoneResource</a>).
+Ordinary <code>deleteResource</code>/<code>modifyResource</code> stay denied for every actor; the governed paths are the
+only ways to correct or retire an accepted resource, and neither destroys history (T-26/T-27/T-29).</p>
+<p>This is the deterministic append-only <em>mechanism</em>. It emits evidence to the injected sink but does
+not itself implement the evidence-ledger commit protocol (C13/§7.0); that is layered above by DBX-19.</p>
+</div></section>
+<section class="tsd-panel">
+<h4>Type Parameters</h4>
+<ul class="tsd-type-parameter-list">
+<li><span id="t"><span class="tsd-kind-type-parameter">T</span> <span class="tsd-signature-keyword">extends</span> <a href="../interfaces/ResourceStore.html" class="tsd-signature-type tsd-kind-interface">ResourceStore</a> = <a href="../interfaces/ResourceStore.html" class="tsd-signature-type tsd-kind-interface">ResourceStore</a></span></li></ul></section>
+<section class="tsd-panel tsd-hierarchy" data-refl="13384">
+<h4>Hierarchy (<a href="../hierarchy.html#AppendOnlyStore">View Summary</a>)</h4>
+<ul class="tsd-hierarchy">
+<li class="tsd-hierarchy-item"><a href="PassthroughStore.html" class="tsd-signature-type tsd-kind-class">PassthroughStore</a><span class="tsd-signature-symbol">&lt;</span><a class="tsd-signature-type tsd-kind-type-parameter" href="#t">T</a><span class="tsd-signature-symbol">&gt;</span>
+<ul class="tsd-hierarchy">
+<li class="tsd-hierarchy-item"><span class="tsd-hierarchy-target">AppendOnlyStore</span></li></ul></li></ul></section><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/mediaprophet/Solid-CSS-Databox/blob/5090d711edae0effcb157600a9d529719aad8a51/src/databox/storage/AppendOnlyStore.ts#L71">src/databox/storage/AppendOnlyStore.ts:71</a></li></ul></aside>
+<section class="tsd-panel-group tsd-index-group">
+<section class="tsd-panel tsd-index-panel">
+<details class="tsd-index-content tsd-accordion" open><summary class="tsd-accordion-summary tsd-index-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
+<h5 class="tsd-index-heading uppercase">Index</h5></summary>
+<div class="tsd-accordion-details">
+<section class="tsd-index-section">
+<h3 class="tsd-index-heading tsd-anchor-link" id="constructors">Constructors<a href="#constructors" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<div class="tsd-index-list"><a href="#constructor" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Constructor"><use href="../assets/icons.svg#icon-512"></use></svg><span>constructor</span></a>
+</div></section>
+<section class="tsd-index-section">
+<h3 class="tsd-index-heading tsd-anchor-link" id="properties">Properties<a href="#properties" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<div class="tsd-index-list"><a href="#evidence" class="tsd-index-link tsd-is-protected"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>evidence?</span></a>
+<a href="#now" class="tsd-index-link tsd-is-protected"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>now</span></a>
+<a href="#source" class="tsd-index-link tsd-is-protected tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>source</span></a>
+<a href="#supersessions" class="tsd-index-link tsd-is-protected"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>supersessions</span></a>
+<a href="#tombstones" class="tsd-index-link tsd-is-protected"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>tombstones</span></a>
+</div></section>
+<section class="tsd-index-section">
+<h3 class="tsd-index-heading tsd-anchor-link" id="methods">Methods<a href="#methods" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<div class="tsd-index-list"><a href="#addresource" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>add<wbr/>Resource</span></a>
+<a href="#deleteresource" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>delete<wbr/>Resource</span></a>
+<a href="#getrepresentation" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>get<wbr/>Representation</span></a>
+<a href="#hasresource" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>has<wbr/>Resource</span></a>
+<a href="#istombstoned" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>is<wbr/>Tombstoned</span></a>
+<a href="#modifyresource" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>modify<wbr/>Resource</span></a>
+<a href="#setrepresentation" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>set<wbr/>Representation</span></a>
+<a href="#supersededby" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>superseded<wbr/>By</span></a>
+<a href="#supersederesource" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>supersede<wbr/>Resource</span></a>
+<a href="#tombstoneresource" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>tombstone<wbr/>Resource</span></a>
+</div></section></div></details></section></section>
+<details class="tsd-panel-group tsd-member-group tsd-accordion" open><summary class="tsd-accordion-summary" data-key="section-Constructors"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
+<h2 class="tsd-anchor-link" id="constructors-1">Constructors<a href="#constructors-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2></summary>
+<section>
+<section class="tsd-panel tsd-member">
+<h3 class="tsd-anchor-link" id="constructor"><span>constructor</span><a href="#constructor" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="">
+<div class="tsd-signature tsd-anchor-link" id="constructorappendonlystore"><span class="tsd-signature-keyword">new</span> <span class="tsd-kind-constructor-signature">AppendOnlyStore</span><span class="tsd-signature-symbol">&lt;</span><a class="tsd-signature-type tsd-kind-type-parameter" href="#constructorappendonlystoret">T</a> <span class="tsd-signature-keyword">extends</span> <a href="../interfaces/ResourceStore.html" class="tsd-signature-type tsd-kind-interface">ResourceStore</a> <span class="tsd-signature-symbol">=</span> <a href="../interfaces/ResourceStore.html" class="tsd-signature-type tsd-kind-interface">ResourceStore</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">(</span><br/>    <span class="tsd-kind-parameter">source</span><span class="tsd-signature-symbol">:</span> <a class="tsd-signature-type tsd-kind-type-parameter" href="#t">T</a><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">options</span><span class="tsd-signature-symbol">?:</span> <a href="../interfaces/AppendOnlyStoreOptions.html" class="tsd-signature-type tsd-kind-interface">AppendOnlyStoreOptions</a><span class="tsd-signature-symbol">,</span><br/><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <a href="" class="tsd-signature-type tsd-kind-class">AppendOnlyStore</a><span class="tsd-signature-symbol">&lt;</span><a class="tsd-signature-type tsd-kind-type-parameter" href="#t">T</a><span class="tsd-signature-symbol">&gt;</span><a href="#constructorappendonlystore" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-description">
+<section class="tsd-panel">
+<h4>Type Parameters</h4>
+<ul class="tsd-type-parameter-list">
+<li><span id="constructorappendonlystoret"><span class="tsd-kind-type-parameter">T</span> <span class="tsd-signature-keyword">extends</span> <a href="../interfaces/ResourceStore.html" class="tsd-signature-type tsd-kind-interface">ResourceStore</a> = <a href="../interfaces/ResourceStore.html" class="tsd-signature-type tsd-kind-interface">ResourceStore</a></span></li></ul></section>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li><span><span class="tsd-kind-parameter">source</span>: <a class="tsd-signature-type tsd-kind-type-parameter" href="#t">T</a></span></li>
+<li><span><span class="tsd-kind-parameter">options</span>: <a href="../interfaces/AppendOnlyStoreOptions.html" class="tsd-signature-type tsd-kind-interface">AppendOnlyStoreOptions</a><span class="tsd-signature-symbol"> = {}</span></span></li></ul></div>
+<h4 class="tsd-returns-title">Returns <a href="" class="tsd-signature-type tsd-kind-class">AppendOnlyStore</a><span class="tsd-signature-symbol">&lt;</span><a class="tsd-signature-type tsd-kind-type-parameter" href="#t">T</a><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
+<p>Overrides <a href="PassthroughStore.html">PassthroughStore</a>.<a href="PassthroughStore.html#constructor">constructor</a></p>
+<ul>
+<li>Defined in <a href="https://github.com/mediaprophet/Solid-CSS-Databox/blob/5090d711edae0effcb157600a9d529719aad8a51/src/databox/storage/AppendOnlyStore.ts#L77">src/databox/storage/AppendOnlyStore.ts:77</a></li></ul></aside></div></li></ul></section></section></details>
+<details class="tsd-panel-group tsd-member-group tsd-accordion" open><summary class="tsd-accordion-summary" data-key="section-Properties"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
+<h2 class="tsd-anchor-link" id="properties-1">Properties<a href="#properties-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2></summary>
+<section>
+<section class="tsd-panel tsd-member tsd-is-protected">
+<h3 class="tsd-anchor-link" id="evidence"><code class="tsd-tag">Protected</code> <code class="tsd-tag">Optional</code> <code class="tsd-tag">Readonly</code><span>evidence</span><a href="#evidence" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-property">evidence</span><span class="tsd-signature-symbol">?:</span> <a href="../interfaces/AppendOnlyEvidenceSink.html" class="tsd-signature-type tsd-kind-interface">AppendOnlyEvidenceSink</a></div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/mediaprophet/Solid-CSS-Databox/blob/5090d711edae0effcb157600a9d529719aad8a51/src/databox/storage/AppendOnlyStore.ts#L74">src/databox/storage/AppendOnlyStore.ts:74</a></li></ul></aside></section>
+<section class="tsd-panel tsd-member tsd-is-protected">
+<h3 class="tsd-anchor-link" id="now"><code class="tsd-tag">Protected</code> <code class="tsd-tag">Readonly</code><span>now</span><a href="#now" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-property">now</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">()</span> <span class="tsd-signature-symbol">=&gt;</span> <span class="tsd-signature-type">string</span></div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/mediaprophet/Solid-CSS-Databox/blob/5090d711edae0effcb157600a9d529719aad8a51/src/databox/storage/AppendOnlyStore.ts#L75">src/databox/storage/AppendOnlyStore.ts:75</a></li></ul></aside></section>
+<section class="tsd-panel tsd-member tsd-is-protected tsd-is-inherited">
+<h3 class="tsd-anchor-link" id="source"><code class="tsd-tag">Protected</code> <code class="tsd-tag">Readonly</code><span>source</span><a href="#source" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-property">source</span><span class="tsd-signature-symbol">:</span> <a class="tsd-signature-type tsd-kind-type-parameter" href="#t">T</a></div><aside class="tsd-sources">
+<p>Inherited from <a href="PassthroughStore.html">PassthroughStore</a>.<a href="PassthroughStore.html#source">source</a></p>
+<ul>
+<li>Defined in <a href="https://github.com/mediaprophet/Solid-CSS-Databox/blob/5090d711edae0effcb157600a9d529719aad8a51/src/storage/PassthroughStore.ts#L14">src/storage/PassthroughStore.ts:14</a></li></ul></aside></section>
+<section class="tsd-panel tsd-member tsd-is-protected">
+<h3 class="tsd-anchor-link" id="supersessions"><code class="tsd-tag">Protected</code> <code class="tsd-tag">Readonly</code><span>supersessions</span><a href="#supersessions" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-property">supersessions</span><span class="tsd-signature-symbol">:</span> <a href="../interfaces/SupersessionRegistry.html" class="tsd-signature-type tsd-kind-interface">SupersessionRegistry</a></div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/mediaprophet/Solid-CSS-Databox/blob/5090d711edae0effcb157600a9d529719aad8a51/src/databox/storage/AppendOnlyStore.ts#L73">src/databox/storage/AppendOnlyStore.ts:73</a></li></ul></aside></section>
+<section class="tsd-panel tsd-member tsd-is-protected">
+<h3 class="tsd-anchor-link" id="tombstones"><code class="tsd-tag">Protected</code> <code class="tsd-tag">Readonly</code><span>tombstones</span><a href="#tombstones" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-property">tombstones</span><span class="tsd-signature-symbol">:</span> <a href="../interfaces/TombstoneRegistry.html" class="tsd-signature-type tsd-kind-interface">TombstoneRegistry</a></div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/mediaprophet/Solid-CSS-Databox/blob/5090d711edae0effcb157600a9d529719aad8a51/src/databox/storage/AppendOnlyStore.ts#L72">src/databox/storage/AppendOnlyStore.ts:72</a></li></ul></aside></section></section></details>
+<details class="tsd-panel-group tsd-member-group tsd-accordion" open><summary class="tsd-accordion-summary" data-key="section-Methods"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
+<h2 class="tsd-anchor-link" id="methods-1">Methods<a href="#methods-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2></summary>
+<section>
+<section class="tsd-panel tsd-member tsd-is-inherited">
+<h3 class="tsd-anchor-link" id="addresource"><span>add<wbr/>Resource</span><a href="#addresource" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-is-inherited">
+<li class="tsd-is-inherited">
+<div class="tsd-signature tsd-anchor-link" id="addresource-1"><span class="tsd-kind-call-signature">addResource</span><span class="tsd-signature-symbol">(</span><br/>    <span class="tsd-kind-parameter">container</span><span class="tsd-signature-symbol">:</span> <a href="../interfaces/ResourceIdentifier.html" class="tsd-signature-type tsd-kind-interface">ResourceIdentifier</a><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">representation</span><span class="tsd-signature-symbol">:</span> <a href="../interfaces/Representation.html" class="tsd-signature-type tsd-kind-interface">Representation</a><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">conditions</span><span class="tsd-signature-symbol">?:</span> <a href="../interfaces/Conditions.html" class="tsd-signature-type tsd-kind-interface">Conditions</a><span class="tsd-signature-symbol">,</span><br/><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../types/ChangeMap.html" class="tsd-signature-type tsd-kind-type-alias">ChangeMap</a><span class="tsd-signature-symbol">&gt;</span><a href="#addresource-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Creates a new resource in the container.</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li><span><span class="tsd-kind-parameter">container</span>: <a href="../interfaces/ResourceIdentifier.html" class="tsd-signature-type tsd-kind-interface">ResourceIdentifier</a></span>
+<div class="tsd-comment tsd-typography"><p>Container in which to create a resource.</p>
+</div></li>
+<li><span><span class="tsd-kind-parameter">representation</span>: <a href="../interfaces/Representation.html" class="tsd-signature-type tsd-kind-interface">Representation</a></span>
+<div class="tsd-comment tsd-typography"><p>Representation of the new resource</p>
+</div></li>
+<li><span><code class="tsd-tag">Optional</code><span class="tsd-kind-parameter">conditions</span>: <a href="../interfaces/Conditions.html" class="tsd-signature-type tsd-kind-interface">Conditions</a></span>
+<div class="tsd-comment tsd-typography"><p>Optional conditions under which to proceed.</p>
+</div></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../types/ChangeMap.html" class="tsd-signature-type tsd-kind-type-alias">ChangeMap</a><span class="tsd-signature-symbol">&gt;</span></h4><p>A <a href="../types/ChangeMap.html" class="tsd-kind-type-alias">ChangeMap</a>.</p>
+<aside class="tsd-sources">
+<p>Inherited from <a href="PassthroughStore.html">PassthroughStore</a>.<a href="PassthroughStore.html#addresource">addResource</a></p>
+<ul>
+<li>Defined in <a href="https://github.com/mediaprophet/Solid-CSS-Databox/blob/5090d711edae0effcb157600a9d529719aad8a51/src/storage/PassthroughStore.ts#L32">src/storage/PassthroughStore.ts:32</a></li></ul></aside></div></li></ul></section>
+<section class="tsd-panel tsd-member">
+<h3 class="tsd-anchor-link" id="deleteresource"><span>delete<wbr/>Resource</span><a href="#deleteresource" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="">
+<div class="tsd-signature tsd-anchor-link" id="deleteresource-1"><span class="tsd-kind-call-signature">deleteResource</span><span class="tsd-signature-symbol">(</span><br/>    <span class="tsd-kind-parameter">identifier</span><span class="tsd-signature-symbol">:</span> <a href="../interfaces/ResourceIdentifier.html" class="tsd-signature-type tsd-kind-interface">ResourceIdentifier</a><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">conditions</span><span class="tsd-signature-symbol">?:</span> <a href="../interfaces/Conditions.html" class="tsd-signature-type tsd-kind-interface">Conditions</a><span class="tsd-signature-symbol">,</span><br/><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../types/ChangeMap.html" class="tsd-signature-type tsd-kind-type-alias">ChangeMap</a><span class="tsd-signature-symbol">&gt;</span><a href="#deleteresource-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Ordinary DELETE is denied for every actor class. Lawful deletion goes through the governed
+<a href="#tombstoneresource" class="tsd-kind-method">tombstoneResource</a> path, which never destroys bytes.</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li><span><span class="tsd-kind-parameter">identifier</span>: <a href="../interfaces/ResourceIdentifier.html" class="tsd-signature-type tsd-kind-interface">ResourceIdentifier</a></span></li>
+<li><span><code class="tsd-tag">Optional</code><span class="tsd-kind-parameter">conditions</span>: <a href="../interfaces/Conditions.html" class="tsd-signature-type tsd-kind-interface">Conditions</a></span></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../types/ChangeMap.html" class="tsd-signature-type tsd-kind-type-alias">ChangeMap</a><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
+<p>Overrides <a href="PassthroughStore.html">PassthroughStore</a>.<a href="PassthroughStore.html#deleteresource">deleteResource</a></p>
+<ul>
+<li>Defined in <a href="https://github.com/mediaprophet/Solid-CSS-Databox/blob/5090d711edae0effcb157600a9d529719aad8a51/src/databox/storage/AppendOnlyStore.ts#L108">src/databox/storage/AppendOnlyStore.ts:108</a></li></ul></aside></div></li></ul></section>
+<section class="tsd-panel tsd-member tsd-is-inherited">
+<h3 class="tsd-anchor-link" id="getrepresentation"><span>get<wbr/>Representation</span><a href="#getrepresentation" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-is-inherited">
+<li class="tsd-is-inherited">
+<div class="tsd-signature tsd-anchor-link" id="getrepresentation-1"><span class="tsd-kind-call-signature">getRepresentation</span><span class="tsd-signature-symbol">(</span><br/>    <span class="tsd-kind-parameter">identifier</span><span class="tsd-signature-symbol">:</span> <a href="../interfaces/ResourceIdentifier.html" class="tsd-signature-type tsd-kind-interface">ResourceIdentifier</a><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">preferences</span><span class="tsd-signature-symbol">:</span> <a href="../interfaces/RepresentationPreferences.html" class="tsd-signature-type tsd-kind-interface">RepresentationPreferences</a><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">conditions</span><span class="tsd-signature-symbol">?:</span> <a href="../interfaces/Conditions.html" class="tsd-signature-type tsd-kind-interface">Conditions</a><span class="tsd-signature-symbol">,</span><br/><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/Representation.html" class="tsd-signature-type tsd-kind-interface">Representation</a><span class="tsd-signature-symbol">&gt;</span><a href="#getrepresentation-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Retrieves a representation of a resource.</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li><span><span class="tsd-kind-parameter">identifier</span>: <a href="../interfaces/ResourceIdentifier.html" class="tsd-signature-type tsd-kind-interface">ResourceIdentifier</a></span>
+<div class="tsd-comment tsd-typography"><p>Identifier of the resource to read.</p>
+</div></li>
+<li><span><span class="tsd-kind-parameter">preferences</span>: <a href="../interfaces/RepresentationPreferences.html" class="tsd-signature-type tsd-kind-interface">RepresentationPreferences</a></span>
+<div class="tsd-comment tsd-typography"><p>Preferences indicating desired representations.</p>
+</div></li>
+<li><span><code class="tsd-tag">Optional</code><span class="tsd-kind-parameter">conditions</span>: <a href="../interfaces/Conditions.html" class="tsd-signature-type tsd-kind-interface">Conditions</a></span>
+<div class="tsd-comment tsd-typography"><p>Optional conditions under which to proceed.</p>
+</div></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/Representation.html" class="tsd-signature-type tsd-kind-interface">Representation</a><span class="tsd-signature-symbol">&gt;</span></h4><p>A representation corresponding to the identifier.</p>
+<aside class="tsd-sources">
+<p>Inherited from <a href="PassthroughStore.html">PassthroughStore</a>.<a href="PassthroughStore.html#getrepresentation">getRepresentation</a></p>
+<ul>
+<li>Defined in <a href="https://github.com/mediaprophet/Solid-CSS-Databox/blob/5090d711edae0effcb157600a9d529719aad8a51/src/storage/PassthroughStore.ts#L24">src/storage/PassthroughStore.ts:24</a></li></ul></aside></div></li></ul></section>
+<section class="tsd-panel tsd-member tsd-is-inherited">
+<h3 class="tsd-anchor-link" id="hasresource"><span>has<wbr/>Resource</span><a href="#hasresource" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-is-inherited">
+<li class="tsd-is-inherited">
+<div class="tsd-signature tsd-anchor-link" id="hasresource-1"><span class="tsd-kind-call-signature">hasResource</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">identifier</span><span class="tsd-signature-symbol">:</span> <a href="../interfaces/ResourceIdentifier.html" class="tsd-signature-type tsd-kind-interface">ResourceIdentifier</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span><a href="#hasresource-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Checks whether a resource exists in this ResourceSet.</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li><span><span class="tsd-kind-parameter">identifier</span>: <a href="../interfaces/ResourceIdentifier.html" class="tsd-signature-type tsd-kind-interface">ResourceIdentifier</a></span>
+<div class="tsd-comment tsd-typography"><p>Identifier of resource to check.</p>
+</div></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></h4><p>A promise resolving if the resource already exists.</p>
+<aside class="tsd-sources">
+<p>Inherited from <a href="PassthroughStore.html">PassthroughStore</a>.<a href="PassthroughStore.html#hasresource">hasResource</a></p>
+<ul>
+<li>Defined in <a href="https://github.com/mediaprophet/Solid-CSS-Databox/blob/5090d711edae0effcb157600a9d529719aad8a51/src/storage/PassthroughStore.ts#L20">src/storage/PassthroughStore.ts:20</a></li></ul></aside></div></li></ul></section>
+<section class="tsd-panel tsd-member">
+<h3 class="tsd-anchor-link" id="istombstoned"><span>is<wbr/>Tombstoned</span><a href="#istombstoned" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="">
+<div class="tsd-signature tsd-anchor-link" id="istombstoned-1"><span class="tsd-kind-call-signature">isTombstoned</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">identifier</span><span class="tsd-signature-symbol">:</span> <a href="../interfaces/ResourceIdentifier.html" class="tsd-signature-type tsd-kind-interface">ResourceIdentifier</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span><a href="#istombstoned-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Whether a resource is tombstoned (distinguishes tombstoned from never-existed for read handlers).</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li><span><span class="tsd-kind-parameter">identifier</span>: <a href="../interfaces/ResourceIdentifier.html" class="tsd-signature-type tsd-kind-interface">ResourceIdentifier</a></span></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/mediaprophet/Solid-CSS-Databox/blob/5090d711edae0effcb157600a9d529719aad8a51/src/databox/storage/AppendOnlyStore.ts#L216">src/databox/storage/AppendOnlyStore.ts:216</a></li></ul></aside></div></li></ul></section>
+<section class="tsd-panel tsd-member">
+<h3 class="tsd-anchor-link" id="modifyresource"><span>modify<wbr/>Resource</span><a href="#modifyresource" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="">
+<div class="tsd-signature tsd-anchor-link" id="modifyresource-1"><span class="tsd-kind-call-signature">modifyResource</span><span class="tsd-signature-symbol">(</span><br/>    <span class="tsd-kind-parameter">identifier</span><span class="tsd-signature-symbol">:</span> <a href="../interfaces/ResourceIdentifier.html" class="tsd-signature-type tsd-kind-interface">ResourceIdentifier</a><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">patch</span><span class="tsd-signature-symbol">:</span> <a href="../interfaces/Patch.html" class="tsd-signature-type tsd-kind-interface">Patch</a><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">conditions</span><span class="tsd-signature-symbol">?:</span> <a href="../interfaces/Conditions.html" class="tsd-signature-type tsd-kind-interface">Conditions</a><span class="tsd-signature-symbol">,</span><br/><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../types/ChangeMap.html" class="tsd-signature-type tsd-kind-type-alias">ChangeMap</a><span class="tsd-signature-symbol">&gt;</span><a href="#modifyresource-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>PATCH is denied for every actor class: an accepted resource is never modified in place.</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li><span><span class="tsd-kind-parameter">identifier</span>: <a href="../interfaces/ResourceIdentifier.html" class="tsd-signature-type tsd-kind-interface">ResourceIdentifier</a></span></li>
+<li><span><span class="tsd-kind-parameter">patch</span>: <a href="../interfaces/Patch.html" class="tsd-signature-type tsd-kind-interface">Patch</a></span></li>
+<li><span><code class="tsd-tag">Optional</code><span class="tsd-kind-parameter">conditions</span>: <a href="../interfaces/Conditions.html" class="tsd-signature-type tsd-kind-interface">Conditions</a></span></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../types/ChangeMap.html" class="tsd-signature-type tsd-kind-type-alias">ChangeMap</a><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
+<p>Overrides <a href="PassthroughStore.html">PassthroughStore</a>.<a href="PassthroughStore.html#modifyresource">modifyResource</a></p>
+<ul>
+<li>Defined in <a href="https://github.com/mediaprophet/Solid-CSS-Databox/blob/5090d711edae0effcb157600a9d529719aad8a51/src/databox/storage/AppendOnlyStore.ts#L115">src/databox/storage/AppendOnlyStore.ts:115</a></li></ul></aside></div></li></ul></section>
+<section class="tsd-panel tsd-member">
+<h3 class="tsd-anchor-link" id="setrepresentation"><span>set<wbr/>Representation</span><a href="#setrepresentation" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="">
+<div class="tsd-signature tsd-anchor-link" id="setrepresentation-1"><span class="tsd-kind-call-signature">setRepresentation</span><span class="tsd-signature-symbol">(</span><br/>    <span class="tsd-kind-parameter">identifier</span><span class="tsd-signature-symbol">:</span> <a href="../interfaces/ResourceIdentifier.html" class="tsd-signature-type tsd-kind-interface">ResourceIdentifier</a><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">representation</span><span class="tsd-signature-symbol">:</span> <a href="../interfaces/Representation.html" class="tsd-signature-type tsd-kind-interface">Representation</a><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">conditions</span><span class="tsd-signature-symbol">?:</span> <a href="../interfaces/Conditions.html" class="tsd-signature-type tsd-kind-interface">Conditions</a><span class="tsd-signature-symbol">,</span><br/><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../types/ChangeMap.html" class="tsd-signature-type tsd-kind-type-alias">ChangeMap</a><span class="tsd-signature-symbol">&gt;</span><a href="#setrepresentation-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Allowed only when the resource does not yet exist (create). Replacing an existing resource is
+rejected, and re-creating over a tombstoned path is rejected (that would resurrect/rewrite retired
+history). If existence cannot be confirmed, the write is refused (fail closed).</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li><span><span class="tsd-kind-parameter">identifier</span>: <a href="../interfaces/ResourceIdentifier.html" class="tsd-signature-type tsd-kind-interface">ResourceIdentifier</a></span></li>
+<li><span><span class="tsd-kind-parameter">representation</span>: <a href="../interfaces/Representation.html" class="tsd-signature-type tsd-kind-interface">Representation</a></span></li>
+<li><span><code class="tsd-tag">Optional</code><span class="tsd-kind-parameter">conditions</span>: <a href="../interfaces/Conditions.html" class="tsd-signature-type tsd-kind-interface">Conditions</a></span></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../types/ChangeMap.html" class="tsd-signature-type tsd-kind-type-alias">ChangeMap</a><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
+<p>Overrides <a href="PassthroughStore.html">PassthroughStore</a>.<a href="PassthroughStore.html#setrepresentation">setRepresentation</a></p>
+<ul>
+<li>Defined in <a href="https://github.com/mediaprophet/Solid-CSS-Databox/blob/5090d711edae0effcb157600a9d529719aad8a51/src/databox/storage/AppendOnlyStore.ts#L90">src/databox/storage/AppendOnlyStore.ts:90</a></li></ul></aside></div></li></ul></section>
+<section class="tsd-panel tsd-member">
+<h3 class="tsd-anchor-link" id="supersededby"><span>superseded<wbr/>By</span><a href="#supersededby" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="">
+<div class="tsd-signature tsd-anchor-link" id="supersededby-1"><span class="tsd-kind-call-signature">supersededBy</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">identifier</span><span class="tsd-signature-symbol">:</span> <a href="../interfaces/ResourceIdentifier.html" class="tsd-signature-type tsd-kind-interface">ResourceIdentifier</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">&gt;</span><a href="#supersededby-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Resolves the record that directly supersedes <code>identifier</code>, or <code>undefined</code> if none.</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li><span><span class="tsd-kind-parameter">identifier</span>: <a href="../interfaces/ResourceIdentifier.html" class="tsd-signature-type tsd-kind-interface">ResourceIdentifier</a></span></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/mediaprophet/Solid-CSS-Databox/blob/5090d711edae0effcb157600a9d529719aad8a51/src/databox/storage/AppendOnlyStore.ts#L223">src/databox/storage/AppendOnlyStore.ts:223</a></li></ul></aside></div></li></ul></section>
+<section class="tsd-panel tsd-member">
+<h3 class="tsd-anchor-link" id="supersederesource"><span>supersede<wbr/>Resource</span><a href="#supersederesource" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="">
+<div class="tsd-signature tsd-anchor-link" id="supersederesource-1"><span class="tsd-kind-call-signature">supersedeResource</span><span class="tsd-signature-symbol">(</span><br/>    <span class="tsd-kind-parameter">newIdentifier</span><span class="tsd-signature-symbol">:</span> <a href="../interfaces/ResourceIdentifier.html" class="tsd-signature-type tsd-kind-interface">ResourceIdentifier</a><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">representation</span><span class="tsd-signature-symbol">:</span> <a href="../interfaces/Representation.html" class="tsd-signature-type tsd-kind-interface">Representation</a><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">prior</span><span class="tsd-signature-symbol">:</span> <a href="../interfaces/ResourceIdentifier.html" class="tsd-signature-type tsd-kind-interface">ResourceIdentifier</a><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">conditions</span><span class="tsd-signature-symbol">?:</span> <a href="../interfaces/Conditions.html" class="tsd-signature-type tsd-kind-interface">Conditions</a><span class="tsd-signature-symbol">,</span><br/><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/SupersessionResult.html" class="tsd-signature-type tsd-kind-interface">SupersessionResult</a><span class="tsd-signature-symbol">&gt;</span><a href="#supersederesource-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Governed correction (ADR-0018 §2). Appends a <strong>new</strong> record that supersedes the prior accepted
+record; the prior bytes remain retrievable and unchanged. The new record is created through the
+append-only create path (so create-yes/replace-no still holds), the prior→next link is recorded,
+and a supersession evidence event is emitted.</p>
+<p>Fails closed: the prior must resolve to an existing, non-tombstoned accepted record (no dangling
+supersession, ADR-0018 failure behaviour), and a prior may be superseded at most once (no fork).</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li><span><span class="tsd-kind-parameter">newIdentifier</span>: <a href="../interfaces/ResourceIdentifier.html" class="tsd-signature-type tsd-kind-interface">ResourceIdentifier</a></span></li>
+<li><span><span class="tsd-kind-parameter">representation</span>: <a href="../interfaces/Representation.html" class="tsd-signature-type tsd-kind-interface">Representation</a></span></li>
+<li><span><span class="tsd-kind-parameter">prior</span>: <a href="../interfaces/ResourceIdentifier.html" class="tsd-signature-type tsd-kind-interface">ResourceIdentifier</a></span></li>
+<li><span><code class="tsd-tag">Optional</code><span class="tsd-kind-parameter">conditions</span>: <a href="../interfaces/Conditions.html" class="tsd-signature-type tsd-kind-interface">Conditions</a></span></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/SupersessionResult.html" class="tsd-signature-type tsd-kind-interface">SupersessionResult</a><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/mediaprophet/Solid-CSS-Databox/blob/5090d711edae0effcb157600a9d529719aad8a51/src/databox/storage/AppendOnlyStore.ts#L132">src/databox/storage/AppendOnlyStore.ts:132</a></li></ul></aside></div></li></ul></section>
+<section class="tsd-panel tsd-member">
+<h3 class="tsd-anchor-link" id="tombstoneresource"><span>tombstone<wbr/>Resource</span><a href="#tombstoneresource" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="">
+<div class="tsd-signature tsd-anchor-link" id="tombstoneresource-1"><span class="tsd-kind-call-signature">tombstoneResource</span><span class="tsd-signature-symbol">(</span><br/>    <span class="tsd-kind-parameter">identifier</span><span class="tsd-signature-symbol">:</span> <a href="../interfaces/ResourceIdentifier.html" class="tsd-signature-type tsd-kind-interface">ResourceIdentifier</a><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">request</span><span class="tsd-signature-symbol">:</span> <a href="../interfaces/TombstoneRequest.html" class="tsd-signature-type tsd-kind-interface">TombstoneRequest</a><span class="tsd-signature-symbol">,</span><br/><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/TombstoneEvidence.html" class="tsd-signature-type tsd-kind-interface">TombstoneEvidence</a><span class="tsd-signature-symbol">&gt;</span><a href="#tombstoneresource-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Governed lawful deletion (ADR-0018 §3). Records a tombstone (state + evidence) <strong>without</strong> destroying
+the resource's bytes — no <code>deleteResource</code> is called on the source. Distinguishes tombstoned from
+never-existed: an already-tombstoned target replays idempotently; a target that never existed is a
+404. A request lacking a legal-basis reference is rejected (no silent in-place rewrite).</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li><span><span class="tsd-kind-parameter">identifier</span>: <a href="../interfaces/ResourceIdentifier.html" class="tsd-signature-type tsd-kind-interface">ResourceIdentifier</a></span></li>
+<li><span><span class="tsd-kind-parameter">request</span>: <a href="../interfaces/TombstoneRequest.html" class="tsd-signature-type tsd-kind-interface">TombstoneRequest</a></span></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/TombstoneEvidence.html" class="tsd-signature-type tsd-kind-interface">TombstoneEvidence</a><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/mediaprophet/Solid-CSS-Databox/blob/5090d711edae0effcb157600a9d529719aad8a51/src/databox/storage/AppendOnlyStore.ts#L169">src/databox/storage/AppendOnlyStore.ts:169</a></li></ul></aside></div></li></ul></section></section></details></div>
+<div class="col-sidebar">
+<div class="page-menu">
+<div class="tsd-navigation settings">
+<details class="tsd-accordion"><summary class="tsd-accordion-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
+<h3>Settings</h3></summary>
+<div class="tsd-accordion-details">
+<div class="tsd-filter-visibility"><span class="settings-label">Member Visibility</span>
+<ul id="tsd-filter-options">
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li></ul></div>
+<div class="tsd-theme-toggle"><label class="settings-label" for="tsd-theme">Theme</label><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div>
+<details open class="tsd-accordion tsd-page-navigation"><summary class="tsd-accordion-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
+<h3>On This Page</h3></summary>
+<div class="tsd-accordion-details">
+<details open class="tsd-accordion tsd-page-navigation-section"><summary class="tsd-accordion-summary" data-key="section-Constructors"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>Constructors</summary>
+<div><a href="#constructor"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Constructor"><use href="../assets/icons.svg#icon-512"></use></svg><span>constructor</span></a></div></details>
+<details open class="tsd-accordion tsd-page-navigation-section"><summary class="tsd-accordion-summary" data-key="section-Properties"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>Properties</summary>
+<div><a href="#evidence" class="tsd-is-protected"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>evidence</span></a><a href="#now" class="tsd-is-protected"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>now</span></a><a href="#source" class="tsd-is-protected tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>source</span></a><a href="#supersessions" class="tsd-is-protected"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>supersessions</span></a><a href="#tombstones" class="tsd-is-protected"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>tombstones</span></a></div></details>
+<details open class="tsd-accordion tsd-page-navigation-section"><summary class="tsd-accordion-summary" data-key="section-Methods"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>Methods</summary>
+<div><a href="#addresource" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>add<wbr/>Resource</span></a><a href="#deleteresource"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>delete<wbr/>Resource</span></a><a href="#getrepresentation" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>get<wbr/>Representation</span></a><a href="#hasresource" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>has<wbr/>Resource</span></a><a href="#istombstoned"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>is<wbr/>Tombstoned</span></a><a href="#modifyresource"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>modify<wbr/>Resource</span></a><a href="#setrepresentation"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>set<wbr/>Representation</span></a><a href="#supersededby"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>superseded<wbr/>By</span></a><a href="#supersederesource"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>supersede<wbr/>Resource</span></a><a href="#tombstoneresource"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>tombstone<wbr/>Resource</span></a></div></details></div></details></div>
+<div class="site-menu">
+<nav class="tsd-navigation"><a href="../modules.html">Community Solid Server - v8.0.0</a>
+<ul class="tsd-small-nested-navigation" id="tsd-nav-container">
+<li>Loading...</li></ul></nav></div></div></div><footer></footer>
+<div class="overlay"></div></body></html>
