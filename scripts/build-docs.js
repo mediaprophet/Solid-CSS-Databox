@@ -1,4 +1,3 @@
-/* eslint-disable no-console, no-sync -- CLI build script: console output is intended; sync fs is appropriate here. */
 const fs = require('node:fs');
 const path = require('node:path');
 

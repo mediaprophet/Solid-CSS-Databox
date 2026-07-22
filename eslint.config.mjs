@@ -21,7 +21,7 @@ export default opinionated().append({
 }, {
   files: [ '**/*.ts', '**/*.mts', '**/*.cts', '**/*.tsx' ],
   rules: {
-    // unicorn/no-nested-ternary requires parentheses around nested ternary,
+    // Unicorn/no-nested-ternary requires parentheses around nested ternary,
     // but @stylistic/no-extra-parens removes them — the two rules conflict.
     // Nested ternary is readable when formatted with proper indentation.
     'unicorn/no-nested-ternary': 'off',
