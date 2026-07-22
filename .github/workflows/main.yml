@@ -31,6 +31,8 @@ jobs:
   mkdocs-release:
     # Build and deploy documentation
     uses: ./.github/workflows/mkdocs.yml
+    permissions:
+      contents: write
 
   cross-release:
     # Build and publish cross-platform release artifacts

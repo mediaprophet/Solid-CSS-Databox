@@ -36,6 +36,8 @@ jobs:
     continue-on-error: ${{ inputs.ignore_failures }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    env:
+      NODE_OPTIONS: --require-module
     steps:
       - name: Use Node.js 24.x
         uses: actions/setup-node@v5

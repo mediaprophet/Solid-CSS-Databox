@@ -24,6 +24,9 @@ on:
         type: string
         required: false
 
+env:
+  NODE_OPTIONS: --require-module
+
 permissions:
   contents: write
 
