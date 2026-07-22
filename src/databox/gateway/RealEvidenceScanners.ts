@@ -27,7 +27,6 @@ export interface ClamAvScannerOptions {
 const DEFAULT_TIMEOUT_MS = 30_000;
 const CLAMAV_HOST = 'localhost';
 const CLAMAV_PORT = 3310;
-const CLAMAV_SOCKET = '/var/run/clamd/clamd.sock';
 
 const INSTREAM_CHUNK_SIZE = 64 * 1024;
 
@@ -57,8 +56,9 @@ export class ClamAvScanner implements EvidenceScanner {
     return new Promise<ScanVerdict>((resolve): void => {
       const chunks: Buffer[] = [];
       let settled = false;
+      let timer: NodeJS.Timeout;
 
-      const finish = (verdict: ScanVerdict): void => {
+      function finish(verdict: ScanVerdict): void {
         if (settled) {
           return;
         }
@@ -66,13 +66,15 @@ export class ClamAvScanner implements EvidenceScanner {
         clearTimeout(timer);
         socket.destroy();
         resolve(verdict);
-      };
+      }
 
-      const timer = setTimeout((): void => {
+      timer = setTimeout((): void => {
         finish('error');
       }, this.timeoutMs);
 
-      socket.on('error', (): void => finish('error'));
+      socket.on('error', (): void => {
+        finish('error');
+      });
       socket.on('close', (): void => {
         if (!settled) {
           const response = Buffer.concat(chunks).toString('utf-8').trim();
@@ -89,10 +91,10 @@ export class ClamAvScanner implements EvidenceScanner {
       });
 
       // INSTREAM protocol: send zINSTREAM command, then length-prefixed chunks, then 0-length terminator
-      const sendAll = (): void => {
+      function sendAll(): void {
         socket.write('zINSTREAM\0');
         let offset = 0;
-        const sendNext = (): void => {
+        function sendNext(): void {
           while (offset < bytes.length) {
             const slice = bytes.subarray(offset, offset + INSTREAM_CHUNK_SIZE);
             const header = Buffer.alloc(4);
@@ -210,7 +212,8 @@ export class VirusTotalScanner implements EvidenceScanner {
         signal: AbortSignal.timeout(this.timeoutMs),
       });
       if (res.status === 404) {
-        return null; // Not previously scanned — proceed to upload
+        // Not previously scanned — proceed to upload
+        return null;
       }
       if (!res.ok) {
         return 'error';
@@ -235,7 +238,7 @@ export class VirusTotalScanner implements EvidenceScanner {
   private async uploadFile(bytes: Buffer): Promise<string | null> {
     try {
       const form = new FormData();
-      const blob = new Blob([new Uint8Array(bytes)]);
+      const blob = new Blob([ new Uint8Array(bytes) ]);
       form.append('file', blob, 'evidence.bin');
 
       const res = await fetch(`${this.baseUrl}/files`, {
@@ -279,12 +282,13 @@ export class VirusTotalScanner implements EvidenceScanner {
         if (status === 'failure' || status === 'error') {
           return 'error';
         }
-        // status === 'queued' or 'in-progress' — keep polling
+        // Status === 'queued' or 'in-progress' — keep polling
       } catch {
         return 'error';
       }
     }
-    return 'error'; // Timed out
+    // Timed out
+    return 'error';
   }
 }
 
@@ -318,7 +322,7 @@ export class CompositeScanner implements EvidenceScanner {
       if (verdict === 'malicious') {
         return 'malicious';
       }
-      // error is worse than unknown
+      // Error is worse than unknown
       if (verdict === 'error') {
         worst = 'error';
       }
@@ -332,7 +336,7 @@ async function computeSha256(bytes: Buffer): Promise<string> {
   return createHash('sha256').update(bytes).digest('hex');
 }
 
-function sleep(ms: number): Promise<void> {
+async function sleep(ms: number): Promise<void> {
   return new Promise((resolve): void => {
     setTimeout(resolve, ms);
   });

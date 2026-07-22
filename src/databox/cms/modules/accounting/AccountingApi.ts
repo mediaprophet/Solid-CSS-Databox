@@ -11,7 +11,9 @@ export function registerAccountingRoutes(router: CmsModuleRouter<(input: HttpHan
       const result = exportToAccounting(input as AccountingExportInput);
       writeJson(response, 200, result.record, 'application/ld+json');
     } catch (error: unknown) {
-      writeJson(response, 400, { error: error instanceof Error ? error.message : 'Invalid accounting export request.' });
+      writeJson(response, 400, {
+        error: error instanceof Error ? error.message : 'Invalid accounting export request.',
+      });
     }
   });
 
@@ -21,7 +23,9 @@ export function registerAccountingRoutes(router: CmsModuleRouter<(input: HttpHan
       const result = importFromAccounting(input as AccountingImportInput);
       writeJson(response, 200, result.record, 'application/ld+json');
     } catch (error: unknown) {
-      writeJson(response, 400, { error: error instanceof Error ? error.message : 'Invalid accounting import request.' });
+      writeJson(response, 400, {
+        error: error instanceof Error ? error.message : 'Invalid accounting import request.',
+      });
     }
   });
 }

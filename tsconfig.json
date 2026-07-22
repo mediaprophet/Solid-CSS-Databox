@@ -13,7 +13,8 @@
     "preserveConstEnums": true,
     "sourceMap": true,
     "stripInternal": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "strictNullChecks": true
   },
   "include": [
     "src"

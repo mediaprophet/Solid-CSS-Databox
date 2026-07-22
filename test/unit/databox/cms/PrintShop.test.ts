@@ -1,8 +1,8 @@
 import {
-  createPrintService,
-  createPrintJob,
-  updatePrintJobStatus,
   createInterOrgPrintJob,
+  createPrintJob,
+  createPrintService,
+  updatePrintJobStatus,
 } from '../../../../src/databox/cms/modules/print/PrintShop';
 
 describe('Print Shop module', () => {

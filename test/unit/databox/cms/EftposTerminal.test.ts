@@ -1,9 +1,12 @@
 import {
-  processEftposTransaction,
   processEftposSettlement,
+  processEftposTransaction,
   queryTerminalStatus,
 } from '../../../../src/databox/cms/modules/eftpos/EftposTerminal';
-import type { EftposTerminalConfig, EftposTransactionInput } from '../../../../src/databox/cms/modules/eftpos/EftposTerminal';
+import type {
+  EftposTerminalConfig,
+  EftposTransactionInput,
+} from '../../../../src/databox/cms/modules/eftpos/EftposTerminal';
 
 describe('EFTPOS / Card Reader module', () => {
   const config: EftposTerminalConfig = {
@@ -20,15 +23,15 @@ describe('EFTPOS / Card Reader module', () => {
       const input: EftposTransactionInput = {
         terminalId: 'TERM-001',
         transactionType: 'PURCHASE',
-        amount: 42.50,
+        amount: 42.5,
         currency: 'AUD',
         reference: 'INV-001',
       };
       const result = processEftposTransaction(input, config);
       expect(result.terminalId).toBe('TERM-001');
       expect(result.status).toBe('PENDING');
-      expect(result.amount).toBe(42.50);
-      expect(result.transactionId).toMatch(/^eftpos-txn-/);
+      expect(result.amount).toBe(42.5);
+      expect(result.transactionId).toMatch(/^eftpos-txn-/u);
       expect(result.record['@type']).toBe('PaymentTransaction');
       expect(result.record.provider).toBe('tyro');
     });
@@ -37,21 +40,21 @@ describe('EFTPOS / Card Reader module', () => {
       const result = processEftposTransaction({
         terminalId: 'TERM-001',
         transactionType: 'PURCHASE_PLUS_CASHOUT',
-        amount: 25.00,
+        amount: 25,
         currency: 'AUD',
-        cashoutAmount: 20.00,
-        tipAmount: 2.50,
+        cashoutAmount: 20,
+        tipAmount: 2.5,
       }, config);
-      expect(result.cashoutAmount).toBe(20.00);
-      expect(result.tipAmount).toBe(2.50);
-      expect(result.record.totalAmount).toBe(47.50);
+      expect(result.cashoutAmount).toBe(20);
+      expect(result.tipAmount).toBe(2.5);
+      expect(result.record.totalAmount).toBe(47.5);
     });
 
     it('rejects mismatched terminal ID', () => {
       expect(() => processEftposTransaction({
         terminalId: 'WRONG-ID',
         transactionType: 'PURCHASE',
-        amount: 10.00,
+        amount: 10,
         currency: 'AUD',
       }, config)).toThrow('does not match configured terminal');
     });
@@ -60,7 +63,7 @@ describe('EFTPOS / Card Reader module', () => {
       expect(() => processEftposTransaction({
         terminalId: 'TERM-001',
         transactionType: 'PURCHASE',
-        amount: 10.00,
+        amount: 10,
         currency: 'USD',
       }, config)).toThrow('does not match terminal currency');
     });
@@ -69,7 +72,7 @@ describe('EFTPOS / Card Reader module', () => {
       expect(() => processEftposTransaction({
         terminalId: 'TERM-001',
         transactionType: 'PURCHASE',
-        amount: -5.00,
+        amount: -5,
         currency: 'AUD',
       }, config)).toThrow('non-negative finite');
     });
@@ -78,7 +81,7 @@ describe('EFTPOS / Card Reader module', () => {
       expect(() => processEftposTransaction({
         terminalId: 'TERM-001',
         transactionType: 'PURCHASE',
-        amount: 10.00,
+        amount: 10,
         currency: 'DOLLARS',
       }, config)).toThrow('three-letter ISO 4217');
     });
@@ -89,7 +92,7 @@ describe('EFTPOS / Card Reader module', () => {
       const result = processEftposSettlement('TERM-001', config);
       expect(result.terminalId).toBe('TERM-001');
       expect(result.status).toBe('PENDING');
-      expect(result.settlementId).toMatch(/^eftpos-settlement-/);
+      expect(result.settlementId).toMatch(/^eftpos-settlement-/u);
       expect(result.record['@type']).toBe('SettlementReport');
     });
 

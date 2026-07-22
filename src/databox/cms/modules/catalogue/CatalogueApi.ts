@@ -5,10 +5,10 @@ import { buildVariants } from './Variants';
 import type { VariantInput } from './Variants';
 
 function assertVariantInput(body: unknown): asserts body is VariantInput {
-  if (!isRecord(body) || typeof (body as Record<string, unknown>).productId !== 'string' || !Array.isArray((body as Record<string, unknown>).options)) {
+  if (!isRecord(body) || typeof body.productId !== 'string' || !Array.isArray(body.options)) {
     throw new TypeError('A variants request needs a productId string and an options array.');
   }
-  for (const option of (body as Record<string, unknown>).options as Record<string, unknown>[]) {
+  for (const option of body.options as Record<string, unknown>[]) {
     if (!isRecord(option) || typeof option.name !== 'string' || !Array.isArray(option.values)) {
       throw new TypeError('Each option needs a name string and a values array.');
     }

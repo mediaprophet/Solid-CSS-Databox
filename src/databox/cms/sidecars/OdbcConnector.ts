@@ -6,6 +6,8 @@
  * error if the package is not installed when a sync is attempted.
  */
 
+import { createRequire } from 'node:module';
+
 /** Configuration for an ODBC sync job. */
 export interface OdbcConfig {
   /** ODBC connection string (e.g. `DSN=MyDSN;UID=user;PWD=pass`). */
@@ -67,34 +69,71 @@ export class OdbcQueryError extends Error {
 const DEFAULT_TIMEOUT_MS = 30_000;
 const DEFAULT_POOL_SIZE = 4;
 
-// Cache the dynamically imported module and pools
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-let odbcModule: any | null = null;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-let poolCache: Map<string, any> = new Map();
+/** Minimal type for the odbc module's pool function. */
+interface OdbcPool {
+  connect: () => Promise<OdbcConnection>;
+  close: () => Promise<void>;
+}
 
-async function loadOdbc(): Promise<Record<string, unknown>> {
+/** Minimal type for an ODBC connection. */
+interface OdbcConnection {
+  query: (sql: string, params?: unknown[]) => Promise<OdbcQueryResult>;
+  close: () => Promise<void>;
+}
+
+/** Minimal type for an ODBC query result (array of rows with metadata). */
+interface OdbcQueryResult extends Array<OdbcRow> {
+  columns: OdbcColumn[];
+  count: number;
+}
+
+/** Minimal type for the odbc module. */
+interface OdbcModule {
+  pool: (config: {
+    connectionString: string;
+    initialSize: number;
+    maxSize: number;
+  }) => Promise<OdbcPool>;
+}
+
+const nodeRequire = createRequire(__filename);
+
+function toStr(value: unknown): string {
+  if (value === null || value === undefined) {
+    return '';
+  }
+  if (typeof value === 'string') {
+    return value;
+  }
+  if (typeof value === 'number' || typeof value === 'boolean' || typeof value === 'bigint') {
+    return String(value);
+  }
+  return JSON.stringify(value);
+}
+
+let odbcModule: OdbcModule | null = null;
+let poolCache = new Map<string, OdbcPool>();
+
+function loadOdbc(): OdbcModule {
   if (odbcModule) {
     return odbcModule;
   }
   try {
-    // Use Function to avoid TypeScript module resolution for optional peer dep
-    odbcModule = await (new Function('return import("odbc")')() as Promise<Record<string, unknown>>);
+    odbcModule = nodeRequire('odbc') as OdbcModule;
     return odbcModule;
   } catch {
     throw new OdbcPackageMissingError();
   }
 }
 
-async function getPool(connectionString: string, poolSize: number): Promise<{ connect: () => Promise<unknown> }> {
+async function getPool(connectionString: string, poolSize: number): Promise<OdbcPool> {
   const cacheKey = `${connectionString}:${poolSize}`;
   const cached = poolCache.get(cacheKey);
   if (cached) {
     return cached;
   }
-  const odbc = await loadOdbc();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const pool: any = await (odbc as any).pool({
+  const odbc = loadOdbc();
+  const pool = await odbc.pool({
     connectionString,
     initialSize: poolSize,
     maxSize: poolSize,
@@ -121,11 +160,10 @@ export async function executeOdbcQuery(config: OdbcConfig): Promise<OdbcResult> 
   const timeoutMs = config.timeoutMs ?? DEFAULT_TIMEOUT_MS;
   const poolSize = config.poolSize ?? DEFAULT_POOL_SIZE;
 
-  let connection: { close: () => Promise<void>; query: (...args: unknown[]) => Promise<unknown> } | null = null;
+  let connection: OdbcConnection | null = null;
   try {
     const pool = await getPool(config.connectionString, poolSize);
-    const rawConn = await pool.connect();
-    connection = rawConn as { close: () => Promise<void>; query: (...args: unknown[]) => Promise<unknown> };
+    connection = await pool.connect();
 
     const result = await Promise.race([
       connection.query(config.query, config.parameters ?? []),
@@ -136,11 +174,9 @@ export async function executeOdbcQuery(config: OdbcConfig): Promise<OdbcResult> 
       }),
     ]);
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const rawResult = result as any;
+    const rawResult: OdbcQueryResult = result;
     const columns: OdbcColumn[] = (rawResult.columns ?? []).map(
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (col: any): OdbcColumn => ({
+      (col: OdbcColumn): OdbcColumn => ({
         name: col.name,
         dataType: col.dataType,
         columnSize: col.columnSize,
@@ -169,7 +205,7 @@ export async function executeOdbcQuery(config: OdbcConfig): Promise<OdbcResult> 
     if (err instanceof Error) {
       const msg = err.message.toLowerCase();
       if (msg.includes('connect') || msg.includes('login') || msg.includes('auth') ||
-          msg.includes('dsn') || msg.includes('driver')) {
+        msg.includes('dsn') || msg.includes('driver')) {
         throw new OdbcConnectionError(err.message);
       }
       throw new OdbcQueryError(err.message);
@@ -217,9 +253,9 @@ export async function browseOdbcSchema(
   const result = await executeOdbcQuery(config);
   return {
     tables: result.rows.map((row): { name: string; schema: string; type: string } => ({
-      schema: String(row.TABLE_SCHEMA ?? ''),
-      name: String(row.TABLE_NAME ?? ''),
-      type: String(row.TABLE_TYPE ?? ''),
+      schema: toStr(row.TABLE_SCHEMA),
+      name: toStr(row.TABLE_NAME),
+      type: toStr(row.TABLE_TYPE),
     })),
   };
 }
@@ -228,7 +264,7 @@ export async function browseOdbcSchema(
  * Close all cached ODBC pools. Should be called on shutdown.
  */
 export async function closeOdbcPools(): Promise<void> {
-  for (const [, pool] of poolCache) {
+  for (const [ , pool ] of poolCache) {
     try {
       await pool.close();
     } catch {

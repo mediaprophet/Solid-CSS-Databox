@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-/* eslint-disable no-console -- CLI script: console output is intended. */
 
 import { spawn } from 'node:child_process';
 import { mkdir } from 'node:fs/promises';

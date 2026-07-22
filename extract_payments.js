@@ -1,17 +1,20 @@
-const fs = require('fs');
+const fs = require('node:fs');
+
 const lines = fs.readFileSync('src/databox/cms/CmsHttpHandler.ts', 'utf8').split('\n');
 
-const routes = lines.slice(226, 281).map(l => l.replace(/this\.router\./g, 'router.')).join('\n');
+const routes = lines.slice(226, 281).map(l => l.replaceAll('this.router.', 'router.')).join('\n');
 const assertsStr = [
   'assertReceiptInput',
   'assertRefundInput',
   'assertSplitInput',
   'assertSubscriptionInput',
-  'assertTaxInput'
-].map(name => {
+  'assertTaxInput',
+].map((name) => {
   const start = lines.findIndex(l => l.startsWith(`function ${name}`));
   let end = start;
-  while(lines[end] && lines[end] !== '}') end++;
+  while (lines[end] && lines[end] !== '}') {
+    end++;
+  }
   return lines.slice(start, end + 1).join('\n');
 }).join('\n\n');
 

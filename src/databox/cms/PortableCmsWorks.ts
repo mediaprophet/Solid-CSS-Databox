@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention -- JSON-LD uses @context. */
 import type { Quad, Term } from '@rdfjs/types';
 import { DataFactory, Parser, Writer } from 'n3';
 import { BasicRepresentation } from '../../http/representation/BasicRepresentation';

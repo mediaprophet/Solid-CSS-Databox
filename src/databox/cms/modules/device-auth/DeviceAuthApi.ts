@@ -1,8 +1,8 @@
 import type { CmsModuleRouter } from '../../CmsModuleRouter';
 import type { HttpHandlerInput } from '../../../../server/HttpHandler';
 import { readJsonBody, writeJson } from '../../CmsHttpUtils';
-import type { DeviceEnrolmentInput, DeviceAuthInput, DeviceRevocationInput } from './DeviceAuth';
-import { enrolDevice, verifyDeviceAuth, revokeDevice } from './DeviceAuth';
+import type { DeviceAuthInput, DeviceEnrolmentInput, DeviceRevocationInput } from './DeviceAuth';
+import { enrolDevice, revokeDevice, verifyDeviceAuth } from './DeviceAuth';
 
 export function registerDeviceAuthRoutes(router: CmsModuleRouter<(input: HttpHandlerInput) => Promise<void>>): void {
   router.register('POST', '/device-auth/enrol', async({ request, response }: HttpHandlerInput): Promise<void> => {
@@ -32,7 +32,9 @@ export function registerDeviceAuthRoutes(router: CmsModuleRouter<(input: HttpHan
       const input = await readJsonBody<unknown>(request);
       writeJson(response, 200, revokeDevice(input as DeviceRevocationInput), 'application/ld+json');
     } catch (error: unknown) {
-      writeJson(response, 400, { error: error instanceof Error ? error.message : 'Invalid device revocation request.' });
+      writeJson(response, 400, {
+        error: error instanceof Error ? error.message : 'Invalid device revocation request.',
+      });
     }
   });
 }

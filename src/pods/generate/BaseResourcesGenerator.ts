@@ -123,7 +123,10 @@ export class BaseResourcesGenerator implements TemplatedResourcesGenerator {
     yield* this.generateResource(folderLink, options, metaLink);
 
     // Filter out metadata-only entries (no corresponding resource link) and sort
-    for (const { link, meta } of Object.values(links).filter((v): v is { link: TemplateResourceLink; meta?: TemplateResourceLink } => Boolean(v.link)).sort(comparator)) {
+    const sorted = Object.values(links)
+      .filter((v): v is { link: TemplateResourceLink; meta?: TemplateResourceLink } => Boolean(v.link))
+      .sort(comparator);
+    for (const { link, meta } of sorted) {
       if (isContainerIdentifier(link.identifier)) {
         yield* this.processFolder(link, mapper, options);
       } else {

@@ -1,7 +1,6 @@
 import { timingSafeEqual } from 'node:crypto';
 import type { HttpHandlerInput } from '../../server/HttpHandler';
 import { HttpHandler } from '../../server/HttpHandler';
-import { HttpError } from '../../util/errors/HttpError';
 import { NotImplementedHttpError } from '../../util/errors/NotImplementedHttpError';
 import type { CashRegisterStore } from './CashRegisterStore';
 import { CmsModuleRouter } from './CmsModuleRouter';
@@ -53,8 +52,8 @@ import { registerThemingRoutes } from './modules/theming/ThemingApi';
 import { registerPosRoutes } from './modules/pos/PosApi';
 import { registerReceiptRoutes } from './modules/receipt/ReceiptApi';
 import { registerWebsiteRoutes } from './modules/website/WebsiteApi';
-import { registerMcpRoutes, MCP_SERVER_MODULE_MANIFEST } from './modules/mcp/McpServerApi';
-import { registerQuotationsRoutes, QUOTATION_MODULE_MANIFEST } from './modules/quotations/QuotationApi';
+import { MCP_SERVER_MODULE_MANIFEST, registerMcpRoutes } from './modules/mcp/McpServerApi';
+import { QUOTATION_MODULE_MANIFEST, registerQuotationsRoutes } from './modules/quotations/QuotationApi';
 import { registerTaxRoutes } from './modules/tax/TaxApi';
 import { registerConcessionsRoutes } from './modules/concessions/ConcessionsApi';
 import { registerDiscountsRoutes } from './modules/discounts/DiscountsApi';
@@ -72,21 +71,14 @@ import { registerAccountingRoutes } from './modules/accounting/AccountingApi';
 import { registerOrgAppRoutes } from './OrgAppApi';
 import { getConfigShape } from './ModuleConfigShapes';
 import { QuotationRenderer } from './modules/quotations/QuotationRenderer';
-import type { MenuInput } from './modules/menu/Menu';
 import { MENU_MODULE_MANIFEST } from './modules/menu/Menu';
 import {
   CASH_REGISTER_MODULE_MANIFEST,
 } from './modules/pos/CashRegister';
-import {
-  buildCustomerSelfOrderingFlow,
-  buildWaiterOrderingFlow,
-} from './modules/pos/CustomerOrdering';
-import type { CustomerOrderingFlowInput } from './modules/pos/CustomerOrdering';
 import { NATIVE_POS_DEVICE_MODULE_MANIFEST } from './modules/pos/NativePosDeviceContract';
 import {
   TABLE_SESSION_MODULE_MANIFEST,
 } from './modules/pos/TableSession';
-import type { ReceiptDocInput } from './modules/receipt/ReceiptDoc';
 import {
   WEBSITE_SEO_MODULE_MANIFEST,
 } from './modules/website/PublicFeedRenderer';
@@ -176,7 +168,13 @@ export class CmsHttpHandler extends HttpHandler {
     registerIntegrationRoutes(this.router);
     registerThemingRoutes(this.router);
     registerMenuRoutes(this.router);
-    registerPosRoutes(this.router, this.orderStore, this.cashRegisterStore, this.customerDisplayStore, this.tableSessionStore);
+    registerPosRoutes(
+      this.router,
+      this.orderStore,
+      this.cashRegisterStore,
+      this.customerDisplayStore,
+      this.tableSessionStore,
+    );
     registerReceiptRoutes(this.router);
     registerWebsiteRoutes(this.router, this.publicWebsiteStore);
 
@@ -372,17 +370,16 @@ export class CmsHttpHandler extends HttpHandler {
       }
 
       if (body.enabled !== undefined) {
-        const enabled = body.enabled as boolean;
+        const enabled = body.enabled;
         this.registry.setEnabled(id, enabled);
         if (this.configStore) {
-          let turtle: string = body.configTurtle !== undefined
-            ? body.configTurtle as string
-            : await this.configStore.load(id) ?? '';
+          const loaded = body.configTurtle ?? await this.configStore.load(id) ?? '';
+          let turtle: string = loaded;
           turtle = await setModuleEnabledFlag(this.moduleStateIri(id), turtle, enabled);
           await this.configStore.save(id, turtle);
         }
       } else if (this.configStore && body.configTurtle !== undefined) {
-        await this.configStore.save(id, body.configTurtle as string);
+        await this.configStore.save(id, body.configTurtle);
       }
 
       writeJson(response, 200, await this.moduleState(manifest));
@@ -587,8 +584,15 @@ function ensureBuiltIns(registry: DataboxModuleRegistry): void {
       id: 'profile',
       name: 'Member Pods & Profiles',
       version: '0.1.0',
-      description: 'Member/person pod provisioning, LDN inbox communication, bidirectional interaction, and lifecycle management.',
-      capabilities: [ 'cms:profile', 'cms:member-pod', 'cms:ldn-inbox', 'cms:member-interaction', 'cms:member-lifecycle' ],
+      description: 'Member/person pod provisioning, LDN inbox communication, ' +
+        'bidirectional interaction, and lifecycle management.',
+      capabilities: [
+        'cms:profile',
+        'cms:member-pod',
+        'cms:ldn-inbox',
+        'cms:member-interaction',
+        'cms:member-lifecycle',
+      ],
       routes: [
         'POST /.databox/cms/profile/build',
         'POST /.databox/cms/members/provision',
@@ -731,7 +735,14 @@ function ensureBuiltIns(registry: DataboxModuleRegistry): void {
     registry.setEnabled(TABLE_SESSION_MODULE_MANIFEST.id, true);
   }
 
-  const phase3Modules: Record<string, { name: string; description: string; capabilities: string[]; routes: string[]; navLabel: string; path: string }> = {
+  const phase3Modules: Record<string, {
+    name: string;
+    description: string;
+    capabilities: string[];
+    routes: string[];
+    navLabel: string;
+    path: string;
+  }> = {
     consent: {
       name: 'Consent Management',
       description: 'DPV-shaped consent records (grant/withdraw) as JSON-LD.',
@@ -840,7 +851,11 @@ function ensureBuiltIns(registry: DataboxModuleRegistry): void {
       name: 'Theming & Design Tokens',
       description: 'W3C DTCG design token validation, CSS compilation, and Forge token projection.',
       capabilities: [ 'cms:theming', 'cms:design-tokens' ],
-      routes: [ 'POST /.databox/cms/theming/validate', 'POST /.databox/cms/theming/css', 'POST /.databox/cms/theming/forge-tokens' ],
+      routes: [
+        'POST /.databox/cms/theming/validate',
+        'POST /.databox/cms/theming/css',
+        'POST /.databox/cms/theming/forge-tokens',
+      ],
       navLabel: 'Theming',
       path: '/theming',
     },
@@ -1115,35 +1130,4 @@ function requestChunkToString(chunk: unknown): string {
     return Buffer.from(chunk).toString('utf8');
   }
   throw new TypeError('CMS request body contained an unsupported chunk type.');
-}
-
-function errorStatusCode(error: unknown): number {
-  return error instanceof HttpError && typeof error.statusCode === 'number' ? error.statusCode : 400;
-}
-
-/**
- * Shared read-back for a JSON-LD-backed CMS store: resolves the `?iri=` query parameter and returns the
- * persisted resource, or a safe error. Every persisted resource is also readable through plain LDP; this
- * is the CSS-enhanced convenience leg for the admin control plane.
- */
-
-function buildOrderingFlowFromRequest(value: unknown): ReturnType<typeof buildWaiterOrderingFlow> {
-  if (!isRecord(value)) {
-    throw new TypeError('A POS order request must be a JSON object.');
-  }
-  const { channel, ...rest } = value;
-  if (channel !== 'waiter' && channel !== 'customer-self-order') {
-    throw new TypeError('A POS order request needs channel "waiter" or "customer-self-order".');
-  }
-  // The flow builders perform full field validation (throwing BadRequestHttpError on bad input).
-  if (channel === 'waiter') {
-    return buildWaiterOrderingFlow(rest as Omit<CustomerOrderingFlowInput, 'channel' | 'requireStaffReview'>);
-  }
-  return buildCustomerSelfOrderingFlow(rest as Omit<CustomerOrderingFlowInput, 'channel'>);
-}
-
-
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value);
 }

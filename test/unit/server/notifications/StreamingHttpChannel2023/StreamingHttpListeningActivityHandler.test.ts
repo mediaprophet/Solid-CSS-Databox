@@ -33,7 +33,6 @@ describe('A StreamingHttpListeningActivityHandler', (): void => {
       handleSafe: jest.fn().mockResolvedValue(undefined),
     } as any;
 
-    // eslint-disable-next-line no-new
     new StreamingHttpListeningActivityHandler(emitter, streamMap, notificationHandler);
   });
 

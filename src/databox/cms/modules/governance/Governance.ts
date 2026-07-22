@@ -83,6 +83,7 @@ export function bindRole(input: RoleBindingInput): Record<string, unknown> {
 
 /**
  * Build an ODRL 2.2 policy that encodes a permission or prohibition.
+ *
  * @see https://www.w3.org/TR/odrl-model/
  */
 export function buildOdrlPolicy(input: OdrlPolicyInput): Record<string, unknown> {
@@ -99,7 +100,7 @@ export function buildOdrlPolicy(input: OdrlPolicyInput): Record<string, unknown>
   };
 
   if (input.constraints && input.constraints.length > 0) {
-    rule.constraint = input.constraints.map((c) => ({
+    rule.constraint = input.constraints.map(c => ({
       leftOperand: c.leftOperand,
       operator: c.operator,
       rightOperand: c.rightOperand,
@@ -131,11 +132,11 @@ export function recordApprovalGate(input: ApprovalGateInput): Record<string, unk
     [LD_TYPE]: 'Action',
     [LD_ID]: id,
     agent: { [LD_ID]: requestor },
-    actionStatus: input.status === 'approved'
-      ? 'CompletedActionStatus'
-      : input.status === 'rejected'
-        ? 'FailedActionStatus'
-        : 'PotentialActionStatus',
+    actionStatus: input.status === 'approved' ?
+      'CompletedActionStatus' :
+      input.status === 'rejected' ?
+        'FailedActionStatus' :
+        'PotentialActionStatus',
     object: { [LD_ID]: target },
     description: action,
     instrument: { [LD_ID]: approverRole },

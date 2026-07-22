@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention -- JSON-LD uses @ keywords and compact IRI keys. */
 import { BadRequestHttpError } from '../../../../util/errors/BadRequestHttpError';
 
 // JSON-LD keywords as constants so they can be used as computed keys (the linter's naming

@@ -45,9 +45,9 @@ export function issueCredential(input: CredentialIssuanceInput): Record<string, 
     proof: {
       [LD_TYPE]: 'DataIntegrityProof',
       cryptosuite: 'eddsa-2022',
-      verificationMethod: input.issuer
-        ? `${input.issuer}#key-1`
-        : 'urn:placeholder:verification-method',
+      verificationMethod: input.issuer ?
+        `${input.issuer}#key-1` :
+        'urn:placeholder:verification-method',
       proofPurpose: 'assertionMethod',
       proofValue: 'urn:placeholder:signed-in-production',
     },
@@ -63,7 +63,7 @@ export function verifyCredential(input: CredentialVerificationInput): Credential
   const vc = input.credential;
 
   if (!isRecord(vc)) {
-    return { valid: false, errors: [ 'Credential must be a JSON object.' ] };
+    return { valid: false, errors: [ 'Credential must be a JSON object.' ]};
   }
 
   if (!Array.isArray(vc[LD_TYPE]) || !(vc[LD_TYPE] as unknown[]).includes('VerifiableCredential')) {
@@ -108,12 +108,12 @@ export function verifyCredential(input: CredentialVerificationInput): Credential
  */
 export function revokeCredential(input: CredentialRevocationInput): Record<string, unknown> {
   try {
-    new URL(input.id);
+    void new URL(input.id);
   } catch {
     throw new BadRequestHttpError('A revocation id must be an absolute URI.');
   }
   try {
-    new URL(input.revokedBy);
+    void new URL(input.revokedBy);
   } catch {
     throw new BadRequestHttpError('A revocation revokedBy must be an absolute URI.');
   }

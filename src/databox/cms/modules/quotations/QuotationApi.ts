@@ -1,7 +1,7 @@
 import type { SolidModuleManifest } from '../../SolidModuleManifest';
-import { QuotationRenderer } from './QuotationRenderer';
 import type { CmsModuleRouter } from '../../CmsModuleRouter';
 import type { HttpHandlerInput } from '../../../../server/HttpHandler';
+import type { QuotationRenderer } from './QuotationRenderer';
 
 export const QUOTATION_MODULE_MANIFEST: SolidModuleManifest = {
   id: 'quotations',
@@ -28,17 +28,21 @@ export class QuotationApi {
 
 export function registerQuotationsRoutes(router: CmsModuleRouter, renderer: QuotationRenderer): void {
   const api = new QuotationApi(renderer);
-  
-  router.register('GET', '/quotations/public/:quoteId', async({ request, response }: HttpHandlerInput): Promise<void> => {
-    try {
-      const result = await api.handlePublicQuoteView('dummy-uri');
-      response.setHeader('content-type', 'text/html; charset=utf-8');
-      response.writeHead(200);
-      response.end(result.html);
-    } catch (error: unknown) {
-      response.setHeader('content-type', 'application/json');
-      response.writeHead(400);
-      response.end(JSON.stringify({ error: 'Failed to render quotation' }));
-    }
-  });
+
+  router.register(
+    'GET',
+    '/quotations/public/:quoteId',
+    async({ request: _request, response }: HttpHandlerInput): Promise<void> => {
+      try {
+        const result = await api.handlePublicQuoteView('dummy-uri');
+        response.setHeader('content-type', 'text/html; charset=utf-8');
+        response.writeHead(200);
+        response.end(result.html);
+      } catch {
+        response.setHeader('content-type', 'application/json');
+        response.writeHead(400);
+        response.end(JSON.stringify({ error: 'Failed to render quotation' }));
+      }
+    },
+  );
 }

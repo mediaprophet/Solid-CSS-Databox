@@ -134,7 +134,6 @@ export function mockFileSystem(rootFilepath?: string, time?: Date): { data: any 
   rootFilepath = rootFilepath ?? 'folder';
   time = time ?? new Date();
 
-  // eslint-disable-next-line unicorn/consistent-function-scoping
   function throwSystemError(code: string): void {
     const error = new Error('error') as SystemError;
     error.code = code;

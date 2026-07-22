@@ -16,12 +16,16 @@ export function registerConsumerRoutes(router: CmsModuleRouter<(input: HttpHandl
     }
   });
 
-  router.register('POST', '/consumer/correction-request', async({ request, response }: HttpHandlerInput): Promise<void> => {
-    try {
-      const input = await readJsonBody<unknown>(request);
-      writeJson(response, 200, buildCorrectionRequest(input as CorrectionInput), 'application/ld+json');
-    } catch (error: unknown) {
-      writeJson(response, 400, { error: error instanceof Error ? error.message : 'Invalid correction request.' });
-    }
-  });
+  router.register(
+    'POST',
+    '/consumer/correction-request',
+    async({ request, response }: HttpHandlerInput): Promise<void> => {
+      try {
+        const input = await readJsonBody<unknown>(request);
+        writeJson(response, 200, buildCorrectionRequest(input as CorrectionInput), 'application/ld+json');
+      } catch (error: unknown) {
+        writeJson(response, 400, { error: error instanceof Error ? error.message : 'Invalid correction request.' });
+      }
+    },
+  );
 }

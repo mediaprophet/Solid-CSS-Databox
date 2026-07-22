@@ -40,10 +40,11 @@ function requireNonEmpty(value: string, field: string): string {
 /**
  * Provision a member/person pod — creates the WebID profile document,
  * inbox/outbox declarations, and organisation binding.
+ *
  * @see https://solidproject.org/TR/protocol
  */
 export function provisionMemberPod(input: MemberPodInput): MemberPodRecord {
-  const id = requireUri(input.id, 'id');
+  void requireUri(input.id, 'id');
   const owner = requireUri(input.owner, 'owner');
   const organisation = requireUri(input.organisation, 'organisation');
   const podUrl = requireUri(input.podUrl, 'podUrl');
@@ -96,11 +97,11 @@ export function recordMemberLifecycleChange(input: MemberLifecycleInput): Record
   const decidedAt = requireNonEmpty(input.decidedAt, 'decidedAt');
   const reason = requireNonEmpty(input.reason, 'reason');
 
-  const actionStatus = input.action === 'suspend'
-    ? 'SuspendedActionStatus'
-    : input.action === 'reactivate'
-      ? 'ActiveActionStatus'
-      : 'FailedActionStatus';
+  const actionStatus = input.action === 'suspend' ?
+    'SuspendedActionStatus' :
+    input.action === 'reactivate' ?
+      'ActiveActionStatus' :
+      'FailedActionStatus';
 
   return {
     [LD_CONTEXT]: 'https://schema.org/',

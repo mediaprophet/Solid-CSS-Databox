@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require('node:fs');
 
 const content = `import type { HttpHandlerInput } from '../../server/HttpHandler';
 import { HttpHandler } from '../../server/HttpHandler';

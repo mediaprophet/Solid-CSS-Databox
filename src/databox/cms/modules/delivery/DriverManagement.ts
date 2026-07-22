@@ -184,11 +184,11 @@ export function updateJobStatus(input: JobStatusUpdateInput): Record<string, unk
     throw new BadRequestHttpError(`Job status must be one of: ${validStatuses.join(', ')}.`);
   }
 
-  const actionStatus = input.status === 'delivered'
-    ? 'CompletedActionStatus'
-    : input.status === 'failed'
-      ? 'FailedActionStatus'
-      : 'ActiveActionStatus';
+  const actionStatus = input.status === 'delivered' ?
+    'CompletedActionStatus' :
+    input.status === 'failed' ?
+      'FailedActionStatus' :
+      'ActiveActionStatus';
 
   const record: Record<string, unknown> = {
     [LD_CONTEXT]: 'https://schema.org/',
@@ -240,7 +240,7 @@ export function dispatchMatch(input: DriverMatchInput): DriverMatchResult[] {
       continue;
     }
 
-    const matchingZones = driver.zones.filter((z) => input.jobZones.includes(z));
+    const matchingZones = driver.zones.filter(z => input.jobZones.includes(z));
     if (matchingZones.length === 0) {
       continue;
     }

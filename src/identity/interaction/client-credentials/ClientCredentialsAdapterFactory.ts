@@ -48,7 +48,6 @@ export class ClientCredentialsAdapter extends PassthroughAdapter {
 
       this.logger.debug(`Authenticating as ${credentials.webId} using client credentials`);
 
-      /* eslint-disable @typescript-eslint/naming-convention */
       payload = {
         client_id: label,
         client_secret: credentials.secret,
@@ -56,7 +55,6 @@ export class ClientCredentialsAdapter extends PassthroughAdapter {
         redirect_uris: [],
         response_types: [],
       };
-      /* eslint-enable @typescript-eslint/naming-convention */
     }
     return payload;
   }

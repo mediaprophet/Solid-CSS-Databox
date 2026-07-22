@@ -1,4 +1,9 @@
-import { buildNotification, buildSubscription, markNotificationRead, queryNotifications } from '../../../../src/databox/cms/modules/notifications/Notifications';
+import {
+  buildNotification,
+  buildSubscription,
+  markNotificationRead,
+  queryNotifications,
+} from '../../../../src/databox/cms/modules/notifications/Notifications';
 
 describe('Notifications module', () => {
   const baseNotification = {
@@ -150,7 +155,7 @@ describe('Notifications module', () => {
     });
 
     it('filters by unreadOnly', () => {
-      const readNotifications = notifications.map((n) => ({ ...n, unread: false }));
+      const readNotifications = notifications.map(n => ({ ...n, unread: false }));
       const results = queryNotifications(readNotifications, {
         recipient: baseNotification.recipient,
         unreadOnly: true,

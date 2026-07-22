@@ -1,16 +1,16 @@
-const fs = require('fs');
+const fs = require('node:fs');
+
 const lines = fs.readFileSync('src/databox/cms/CmsHttpHandler.ts', 'utf8').split('\n');
 
 const posStart = 312;
 const posEnd = 484;
 
 const routes = lines.slice(posStart, posEnd + 1).map(l => l
-  .replace(/this\.router\./g, 'router.')
-  .replace(/this\.orderStore/g, 'orderStore')
-  .replace(/this\.cashRegisterStore/g, 'cashRegisterStore')
-  .replace(/this\.customerDisplayStore/g, 'customerDisplayStore')
-  .replace(/this\.tableSessionStore/g, 'tableSessionStore')
-).join('\n');
+  .replaceAll('this.router.', 'router.')
+  .replaceAll('this.orderStore', 'orderStore')
+  .replaceAll('this.cashRegisterStore', 'cashRegisterStore')
+  .replaceAll('this.customerDisplayStore', 'customerDisplayStore')
+  .replaceAll('this.tableSessionStore', 'tableSessionStore')).join('\n');
 
 const content = `import type { CmsModuleRouter } from '../../CmsModuleRouter';
 import type { CmsControlHandler } from '../../CmsModuleRouter';

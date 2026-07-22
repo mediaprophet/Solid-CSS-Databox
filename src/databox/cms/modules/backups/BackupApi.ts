@@ -2,7 +2,7 @@ import type { CmsModuleRouter } from '../../CmsModuleRouter';
 import type { HttpHandlerInput } from '../../../../server/HttpHandler';
 import { readJsonBody, writeJson } from '../../CmsHttpUtils';
 import type { BackupCreateInput, BackupRestoreInput } from './BackupManager';
-import { createBackup, restoreBackup, buildBackupManifest } from './BackupManager';
+import { buildBackupManifest, createBackup, restoreBackup } from './BackupManager';
 
 export function registerBackupRoutes(router: CmsModuleRouter<(input: HttpHandlerInput) => Promise<void>>): void {
   router.register('POST', '/backups/create', async({ request, response }: HttpHandlerInput): Promise<void> => {

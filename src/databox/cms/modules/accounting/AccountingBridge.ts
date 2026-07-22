@@ -8,31 +8,31 @@ const LD_ID = '@id';
  * Supported accounting package formats.
  */
 export type AccountingPackage =
-  | 'xero'
-  | 'myob'
-  | 'quickbooks'
-  | 'sage'
-  | 'csv-generic'
-  | 'ofx'
-  | 'qif'
-  | 'json-ld';
+  | 'xero' |
+  'myob' |
+  'quickbooks' |
+  'sage' |
+  'csv-generic' |
+  'ofx' |
+  'qif' |
+  'json-ld';
 
 export type AccountingExportType =
-  | 'invoices'
-  | 'payments'
-  | 'journal-entries'
-  | 'tax-summary'
-  | 'chart-of-accounts'
-  | 'contacts'
-  | 'items'
-  | 'full-export';
+  | 'invoices' |
+  'payments' |
+  'journal-entries' |
+  'tax-summary' |
+  'chart-of-accounts' |
+  'contacts' |
+  'items' |
+  'full-export';
 
 export type AccountingImportType =
-  | 'chart-of-accounts'
-  | 'contacts'
-  | 'items'
-  | 'opening-balances'
-  | 'journal-entries';
+  | 'chart-of-accounts' |
+  'contacts' |
+  'items' |
+  'opening-balances' |
+  'journal-entries';
 
 /**
  * Export input — converts CMS data to accounting package format.
@@ -187,7 +187,7 @@ function requireDate(value: string, field: string): string {
 
 function requireCurrency(value: string): string {
   const currency = value.trim().toUpperCase();
-  if (!/^[A-Z]{3}$/.test(currency)) {
+  if (!/^[A-Z]{3}$/u.test(currency)) {
     throw new BadRequestHttpError('Accounting currency must be a three-letter ISO 4217 code.');
   }
   return currency;
@@ -223,6 +223,9 @@ export function exportToAccounting(input: AccountingExportInput): AccountingExpo
     case 'quickbooks':
       ({ content, recordCount, totalAmount } = exportQuickBooks(input));
       break;
+    case 'sage':
+      ({ content, recordCount, totalAmount } = exportXero(input));
+      break;
     case 'csv-generic':
       ({ content, recordCount, totalAmount } = exportCsv(input));
       break;
@@ -236,7 +239,7 @@ export function exportToAccounting(input: AccountingExportInput): AccountingExpo
       ({ content, recordCount, totalAmount } = exportQif(input));
       break;
     default:
-      throw new BadRequestHttpError(`Unsupported accounting package: ${pkg}`);
+      throw new BadRequestHttpError(`Unsupported accounting package: ${pkg as string}`);
   }
 
   const record: Record<string, unknown> = {
@@ -281,7 +284,7 @@ export function importFromAccounting(input: AccountingImportInput): AccountingIm
   let skipped = 0;
 
   if (pkg === 'csv-generic' || input.format === 'text/csv') {
-    const lines = input.content.split('\n').filter((l) => l.trim().length > 0);
+    const lines = input.content.split('\n').filter((l): boolean => l.trim().length > 0);
     if (lines.length < 2) {
       return {
         id,
@@ -305,69 +308,97 @@ export function importFromAccounting(input: AccountingImportInput): AccountingIm
       const values = parseCsvLine(lines[i]);
       if (values.length !== headers.length) {
         warnings.push(`Row ${i}: column count mismatch (${values.length} vs ${headers.length}), skipping.`);
-        skipped++;
+        skipped += 1;
         continue;
       }
       const obj: Record<string, unknown> = {};
-      for (let j = 0; j < headers.length; j++) {
-        obj[headers[j]] = values[j];
+      for (const [ j, header ] of headers.entries()) {
+        obj[header] = values[j];
       }
       records.push(obj);
-      imported++;
+      imported += 1;
     }
   } else if (pkg === 'json-ld' || input.format === 'application/ld+json' || input.format === 'application/json') {
-    const parsed = JSON.parse(input.content);
-    const items = Array.isArray(parsed) ? parsed : (parsed.resources ?? parsed.contacts ?? parsed.items ?? [parsed]);
+    const parsed: unknown = JSON.parse(input.content);
+    const items: unknown[] = Array.isArray(parsed) ?
+      parsed :
+        (parsed as Record<string, unknown[]>).resources ??
+        (parsed as Record<string, unknown[]>).contacts ??
+        (parsed as Record<string, unknown[]>).items ??
+        [ parsed ];
     for (const item of items) {
       if (typeof item === 'object' && item !== null) {
         records.push(item as Record<string, unknown>);
-        imported++;
+        imported += 1;
       } else {
-        skipped++;
+        skipped += 1;
       }
     }
   } else if (pkg === 'qif') {
     // QIF format: !Type:Bank, D date, T amount, P payee, M memo, ^ end
-    const blocks = input.content.split(/^\^/m).filter((b) => b.trim().length > 0);
+    const blocks = input.content.split(/^\^/mu).filter((b): boolean => b.trim().length > 0);
     for (const block of blocks) {
       const txn: Record<string, unknown> = {};
       for (const line of block.split('\n')) {
         const trimmed = line.trim();
-        if (trimmed.length === 0) continue;
+        if (trimmed.length === 0) {
+          continue;
+        }
         const code = trimmed[0];
         const value = trimmed.slice(1);
-        if (code === 'D') txn.date = value;
-        if (code === 'T') txn.amount = value;
-        if (code === 'P') txn.payee = value;
-        if (code === 'M') txn.memo = value;
-        if (code === 'N') txn.reference = value;
+        if (code === 'D') {
+          txn.date = value;
+        }
+        if (code === 'T') {
+          txn.amount = value;
+        }
+        if (code === 'P') {
+          txn.payee = value;
+        }
+        if (code === 'M') {
+          txn.memo = value;
+        }
+        if (code === 'N') {
+          txn.reference = value;
+        }
       }
       if (Object.keys(txn).length > 0) {
         records.push(txn);
-        imported++;
+        imported += 1;
       } else {
-        skipped++;
+        skipped += 1;
       }
     }
   } else if (pkg === 'ofx') {
     // OFX format: parse <STMTTRN> blocks
-    const txnRegex = /<STMTTRN>([\s\S]*?)<\/STMTTRN>/g;
-    let match: RegExpExecArray | null;
-    while ((match = txnRegex.exec(input.content)) !== null) {
+    const txnRegex = /<STMTTRN>(.*?)<\/STMTTRN>/gsu;
+    let match = txnRegex.exec(input.content);
+    while (match !== null) {
       const block = match[1];
       const txn: Record<string, unknown> = {};
-      const dtposted = block.match(/<DTPOSTED>([^<]*)/);
-      const trnamt = block.match(/<TRNAMT>([^<]*)/);
-      const name = block.match(/<NAME>([^<]*)/);
-      const memo = block.match(/<MEMO>([^<]*)/);
-      const fitid = block.match(/<FITID>([^<]*)/);
-      if (dtposted) txn.date = dtposted[1].trim();
-      if (trnamt) txn.amount = trnamt[1].trim();
-      if (name) txn.payee = name[1].trim();
-      if (memo) txn.memo = memo[1].trim();
-      if (fitid) txn.reference = fitid[1].trim();
+      const dtposted = /<DTPOSTED>([^<]*)/u.exec(block);
+      const trnamt = /<TRNAMT>([^<]*)/u.exec(block);
+      const name = /<NAME>([^<]*)/u.exec(block);
+      const memo = /<MEMO>([^<]*)/u.exec(block);
+      const fitid = /<FITID>([^<]*)/u.exec(block);
+      if (dtposted) {
+        txn.date = dtposted[1].trim();
+      }
+      if (trnamt) {
+        txn.amount = trnamt[1].trim();
+      }
+      if (name) {
+        txn.payee = name[1].trim();
+      }
+      if (memo) {
+        txn.memo = memo[1].trim();
+      }
+      if (fitid) {
+        txn.reference = fitid[1].trim();
+      }
       records.push(txn);
-      imported++;
+      imported += 1;
+      match = txnRegex.exec(input.content);
     }
   } else {
     warnings.push(`Import from ${pkg} format is not yet supported. Use CSV, JSON-LD, QIF, or OFX.`);
@@ -401,50 +432,94 @@ function exportXero(input: AccountingExportInput): { content: string; recordCoun
   let total = 0;
 
   if (input.exportType === 'invoices' && input.data.invoices) {
-    lines.push('InvoiceNumber,ContactName,IssueDate,DueDate,Status,LineDescription,Quantity,UnitAmount,TaxRate,AccountCode');
+    lines.push(
+      'InvoiceNumber,ContactName,IssueDate,DueDate,Status,' +
+      'LineDescription,Quantity,UnitAmount,TaxRate,AccountCode',
+    );
     for (const inv of input.data.invoices) {
       for (const line of inv.lineItems) {
         lines.push([
-          inv.id, inv.contactName, inv.issueDate, inv.dueDate, inv.status,
-          line.description, line.quantity, line.unitAmount, line.taxRate, line.accountCode ?? '',
+          inv.id,
+          inv.contactName,
+          inv.issueDate,
+          inv.dueDate,
+          inv.status,
+          line.description,
+          line.quantity,
+          line.unitAmount,
+          line.taxRate,
+          line.accountCode ?? '',
         ].join(','));
         total += line.quantity * line.unitAmount;
-        count++;
+        count += 1;
       }
     }
   } else if (input.exportType === 'payments' && input.data.payments) {
     lines.push('PaymentID,InvoiceID,ContactID,Amount,Date,Method,Reference');
     for (const pmt of input.data.payments) {
-      lines.push([pmt.id, pmt.invoiceId ?? '', pmt.contactId, pmt.amount, pmt.date, pmt.method, pmt.reference ?? ''].join(','));
+      lines.push([
+        pmt.id,
+        pmt.invoiceId ?? '',
+        pmt.contactId,
+        pmt.amount,
+        pmt.date,
+        pmt.method,
+        pmt.reference ?? '',
+      ].join(','));
       total += pmt.amount;
-      count++;
+      count += 1;
     }
   } else if (input.exportType === 'journal-entries' && input.data.journalEntries) {
     lines.push('JournalID,Date,Description,AccountCode,AccountName,Debit,Credit');
     for (const je of input.data.journalEntries) {
       for (const line of je.lines) {
-        lines.push([je.id, je.date, je.description, line.accountCode, line.accountName, line.debit, line.credit].join(','));
-        count++;
+        lines.push([
+          je.id,
+          je.date,
+          je.description,
+          line.accountCode,
+          line.accountName,
+          line.debit,
+          line.credit,
+        ].join(','));
+        count += 1;
       }
     }
   } else if (input.exportType === 'tax-summary' && input.data.taxLines) {
     lines.push('JurisdictionCode,TaxRate,TaxableAmount,TaxAmount,Category');
     for (const tl of input.data.taxLines) {
-      lines.push([tl.jurisdictionCode, tl.taxRate, tl.taxableAmount, tl.taxAmount, tl.category].join(','));
+      lines.push([ tl.jurisdictionCode, tl.taxRate, tl.taxableAmount, tl.taxAmount, tl.category ].join(','));
       total += tl.taxAmount;
-      count++;
+      count += 1;
     }
   } else if (input.exportType === 'contacts' && input.data.contacts) {
     lines.push('ContactID,Name,Email,Phone,Address,TaxNumber,IsSupplier,IsCustomer');
     for (const c of input.data.contacts) {
-      lines.push([c.id, c.name, c.email ?? '', c.phone ?? '', c.address ?? '', c.taxNumber ?? '', c.isSupplier, c.isCustomer].join(','));
-      count++;
+      lines.push([
+        c.id,
+        c.name,
+        c.email ?? '',
+        c.phone ?? '',
+        c.address ?? '',
+        c.taxNumber ?? '',
+        c.isSupplier,
+        c.isCustomer,
+      ].join(','));
+      count += 1;
     }
   } else if (input.exportType === 'items' && input.data.items) {
     lines.push('ItemID,Code,Name,Description,UnitPrice,TaxRate,AccountCode');
     for (const item of input.data.items) {
-      lines.push([item.id, item.code, item.name, item.description ?? '', item.unitPrice, item.taxRate, item.accountCode ?? ''].join(','));
-      count++;
+      lines.push([
+        item.id,
+        item.code,
+        item.name,
+        item.description ?? '',
+        item.unitPrice,
+        item.taxRate,
+        item.accountCode ?? '',
+      ].join(','));
+      count += 1;
     }
   } else if (input.exportType === 'full-export') {
     return exportJsonLd(input);
@@ -470,12 +545,21 @@ function exportQuickBooks(input: AccountingExportInput): { content: string; reco
     lines.push('!TRNS\tTRNSTYPE\tDATE\tACCNT\tNAME\tAMOUNT\tDOCNUM');
     lines.push('!SPL\tSPLTYPE\tDATE\tACCNT\tNAME\tAMOUNT\tDOCNUM');
     for (const inv of input.data.invoices) {
-      const invTotal = inv.lineItems.reduce((sum, l) => sum + l.quantity * l.unitAmount * (1 + l.taxRate), 0);
-      lines.push(`TRNS\tINVOICE\t${inv.issueDate}\tAccounts Receivable\t${inv.contactName}\t${round2(invTotal)}\t${inv.id}`);
+      const invTotal = inv.lineItems.reduce(
+        (sum: number, l): number => sum + l.quantity * l.unitAmount * (1 + l.taxRate),
+        0,
+      );
+      lines.push(
+        `TRNS\tINVOICE\t${inv.issueDate}\tAccounts Receivable\t` +
+        `${inv.contactName}\t${round2(invTotal)}\t${inv.id}`,
+      );
       for (const line of inv.lineItems) {
-        lines.push(`SPL\tINVOICE\t${inv.issueDate}\tSales\t${inv.contactName}\t${round2(-line.quantity * line.unitAmount)}\t${inv.id}`);
+        lines.push(
+          `SPL\tINVOICE\t${inv.issueDate}\tSales\t` +
+          `${inv.contactName}\t${round2(-line.quantity * line.unitAmount)}\t${inv.id}`,
+        );
         total += line.quantity * line.unitAmount;
-        count++;
+        count += 1;
       }
       lines.push('ENDTRNS');
     }
@@ -508,13 +592,16 @@ function exportJsonLd(input: AccountingExportInput): { content: string; recordCo
   if (input.data.invoices) {
     data.invoices = input.data.invoices;
     count += input.data.invoices.length;
-    total += input.data.invoices.reduce((s, inv) =>
-      s + inv.lineItems.reduce((ls, l) => ls + l.quantity * l.unitAmount, 0), 0);
+    total += input.data.invoices.reduce(
+      (s: number, inv): number =>
+        s + inv.lineItems.reduce((ls: number, l): number => ls + l.quantity * l.unitAmount, 0),
+      0,
+    );
   }
   if (input.data.payments) {
     data.payments = input.data.payments;
     count += input.data.payments.length;
-    total += input.data.payments.reduce((s, p) => s + p.amount, 0);
+    total += input.data.payments.reduce((s: number, p): number => s + p.amount, 0);
   }
   if (input.data.journalEntries) {
     data.journalEntries = input.data.journalEntries;
@@ -523,7 +610,7 @@ function exportJsonLd(input: AccountingExportInput): { content: string; recordCo
   if (input.data.taxLines) {
     data.taxLines = input.data.taxLines;
     count += input.data.taxLines.length;
-    total += input.data.taxLines.reduce((s, t) => s + t.taxAmount, 0);
+    total += input.data.taxLines.reduce((s: number, t): number => s + t.taxAmount, 0);
   }
   if (input.data.contacts) {
     data.contacts = input.data.contacts;
@@ -552,7 +639,7 @@ function exportOfx(input: AccountingExportInput): { content: string; recordCount
     '<OFX>',
     '<BANKMSGSRSV1>',
     '<STMTTRNRS>',
-    '<CURDEF>' + input.currency,
+    `<CURDEF>${input.currency}`,
     '<BANKTRANLIST>',
   ];
 
@@ -562,13 +649,13 @@ function exportOfx(input: AccountingExportInput): { content: string; recordCount
   if (input.data.payments) {
     for (const pmt of input.data.payments) {
       lines.push('<STMTTRN>');
-      lines.push(`<DTPOSTED>${pmt.date.replace(/-/g, '')}000000`);
+      lines.push(`<DTPOSTED>${pmt.date.replaceAll('-', '')}000000`);
       lines.push(`<TRNAMT>${pmt.amount}`);
       lines.push(`<FITID>${pmt.id}`);
       lines.push(`<NAME>${pmt.reference ?? pmt.contactId}`);
       lines.push('</STMTTRN>');
       total += pmt.amount;
-      count++;
+      count += 1;
     }
   }
 
@@ -593,7 +680,7 @@ function exportQif(input: AccountingExportInput): { content: string; recordCount
       lines.push(`N${pmt.id}`);
       lines.push('^');
       total += pmt.amount;
-      count++;
+      count += 1;
     }
   }
 
@@ -604,6 +691,7 @@ function getFormatMimeType(pkg: AccountingPackage): string {
   switch (pkg) {
     case 'xero':
     case 'myob':
+    case 'sage':
     case 'csv-generic':
       return 'text/csv';
     case 'quickbooks':
@@ -628,7 +716,7 @@ function parseCsvLine(line: string): string[] {
     if (ch === '"') {
       if (inQuotes && line[i + 1] === '"') {
         current += '"';
-        i++;
+        i += 1;
       } else {
         inQuotes = !inQuotes;
       }

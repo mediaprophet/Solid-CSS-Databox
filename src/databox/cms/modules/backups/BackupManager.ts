@@ -1,5 +1,5 @@
+import { createCipheriv, createDecipheriv, createHash, randomBytes, scryptSync } from 'node:crypto';
 import { BadRequestHttpError } from '../../../../util/errors/BadRequestHttpError';
-import { createCipheriv, createDecipheriv, scryptSync, randomBytes, createHash } from 'crypto';
 
 const LD_CONTEXT = '@context';
 const LD_TYPE = '@type';
@@ -8,7 +8,6 @@ const LD_ID = '@id';
 const ALGORITHM = 'aes-256-gcm';
 const SALT_LENGTH = 32;
 const IV_LENGTH = 16;
-const TAG_LENGTH = 16;
 const KEY_LENGTH = 32;
 
 export type BackupFormat = 'json-ld' | 'turtle' | 'n-quads' | 'json';
@@ -261,7 +260,7 @@ function serializeBackupPayload(
   }
 
   if (format === 'n-quads') {
-    return resources.map((r) => r.data).join('\n');
+    return resources.map(r => r.data).join('\n');
   }
 
   return JSON.stringify({ resources });
@@ -286,10 +285,12 @@ function deserializeBackupPayload(
 
   // Turtle — split by resource markers
   const resources: BackupResource[] = [];
-  const blocks = payload.split(/^# Resource: /m);
+  const blocks = payload.split(/^# Resource: /mu);
   for (const block of blocks) {
-    if (block.trim().length === 0) continue;
-    const headerMatch = block.match(/^(.+?) \((.+?)\)\n([\s\S]*)$/);
+    if (block.trim().length === 0) {
+      continue;
+    }
+    const headerMatch = /^(.+?) \((.+?)\)\n([\s\S]*)$/u.exec(block);
     if (headerMatch) {
       resources.push({
         uri: headerMatch[1],

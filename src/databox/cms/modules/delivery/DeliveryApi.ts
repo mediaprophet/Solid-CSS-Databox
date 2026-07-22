@@ -7,11 +7,11 @@ import type { DeliveryInput } from './DeliveryRequest';
 function assertDeliveryInput(body: unknown): asserts body is DeliveryInput {
   if (
     !isRecord(body) ||
-    typeof (body as Record<string, unknown>).id !== 'string' ||
-    typeof (body as Record<string, unknown>).order !== 'string' ||
-    typeof (body as Record<string, unknown>).requestedBy !== 'string' ||
-    typeof (body as Record<string, unknown>).pickup !== 'string' ||
-    typeof (body as Record<string, unknown>).dropoff !== 'string'
+    typeof body.id !== 'string' ||
+    typeof body.order !== 'string' ||
+    typeof body.requestedBy !== 'string' ||
+    typeof body.pickup !== 'string' ||
+    typeof body.dropoff !== 'string'
   ) {
     throw new TypeError('A delivery request needs id, order, requestedBy, pickup, and dropoff strings.');
   }

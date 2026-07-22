@@ -7,15 +7,15 @@ import type { RecordEntryInput } from './RecordEntry';
 function assertRecordEntryInput(body: unknown): asserts body is RecordEntryInput {
   if (
     !isRecord(body) ||
-    typeof (body as Record<string, unknown>).id !== 'string' ||
-    typeof (body as Record<string, unknown>).subject !== 'string' ||
-    typeof (body as Record<string, unknown>).recordedAt !== 'string' ||
-    !isRecord((body as Record<string, unknown>).payload)
+    typeof body.id !== 'string' ||
+    typeof body.subject !== 'string' ||
+    typeof body.recordedAt !== 'string' ||
+    !isRecord(body.payload)
   ) {
     throw new TypeError('A records request needs id, subject, recordedAt strings, and a payload object.');
   }
 
-  if ((body as Record<string, unknown>).previous !== undefined && typeof (body as Record<string, unknown>).previous !== 'string') {
+  if (body.previous !== undefined && typeof body.previous !== 'string') {
     throw new TypeError('previous must be a string if provided.');
   }
 }

@@ -1,11 +1,13 @@
 export class QuotationRenderer {
-  public constructor() {}
+  public constructor() {
+    // No initialization needed
+  }
 
   /**
    * Renders the RDF Quotation resource into a secure HTML document
    * suitable for sending to a client.
    */
-  public async renderHtmlQuote(quoteUri: string): Promise<string> {
+  public async renderHtmlQuote(_quoteUri: string): Promise<string> {
     // In a real implementation, we would extract the line items and costs from the RDF graph
     return `
       <!DOCTYPE html>
@@ -15,8 +17,10 @@ export class QuotationRenderer {
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
           <title>Quotation | TradeSync Pro</title>
           <style>
-              body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background: #f8fafc; color: #1e293b; padding: 2rem; }
-              .card { background: white; max-width: 800px; margin: 0 auto; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); padding: 2.5rem; }
+              body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+                background: #f8fafc; color: #1e293b; padding: 2rem; }
+              .card { background: white; max-width: 800px; margin: 0 auto;
+                border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); padding: 2.5rem; }
               .header { border-bottom: 2px solid #e2e8f0; padding-bottom: 1rem; margin-bottom: 2rem; }
               .header h1 { margin: 0; color: #0f172a; font-size: 2rem; }
               .table { width: 100%; border-collapse: collapse; margin-bottom: 2rem; }
@@ -24,9 +28,13 @@ export class QuotationRenderer {
               .table td { padding: 1rem; border-bottom: 1px solid #e2e8f0; }
               .right { text-align: right; }
               .totals { display: flex; flex-direction: column; align-items: flex-end; }
-              .total-row { width: 300px; display: flex; justify-content: space-between; padding: 0.5rem 0; }
-              .grand-total { font-weight: bold; font-size: 1.5rem; color: #3b82f6; border-top: 2px solid #e2e8f0; margin-top: 1rem; padding-top: 1rem; }
-              .btn { display: inline-block; background: #3b82f6; color: white; text-decoration: none; padding: 1rem 2rem; border-radius: 8px; font-weight: bold; margin-top: 2rem; }
+              .total-row { width: 300px; display: flex; justify-content: space-between;
+                padding: 0.5rem 0; }
+              .grand-total { font-weight: bold; font-size: 1.5rem; color: #3b82f6;
+                border-top: 2px solid #e2e8f0; margin-top: 1rem; padding-top: 1rem; }
+              .btn { display: inline-block; background: #3b82f6; color: white;
+                text-decoration: none; padding: 1rem 2rem; border-radius: 8px;
+                font-weight: bold; margin-top: 2rem; }
           </style>
       </head>
       <body>

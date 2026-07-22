@@ -143,7 +143,7 @@ export function computeTax(input: TaxComputationInput): TaxComputationResult {
 
   const lines: TaxLineResult[] = input.lineItems.map((item) => {
     const amount = requireNonNegativeFinite(item.amount, 'Line item amount');
-    const rate = item.taxRate !== undefined ? requireRate(item.taxRate, 'Line item tax rate') : 0;
+    const rate = item.taxRate === undefined ? 0 : requireRate(item.taxRate, 'Line item tax rate');
     const exempt = exemptionApplied;
 
     if (exempt) {
@@ -224,7 +224,7 @@ export function buildTaxReport(input: TaxReportInput): TaxReportResult {
         currency,
         value: totalTax,
       },
-      referencesOrder: input.lines.map((l) => ({
+      referencesOrder: input.lines.map(l => ({
         [LD_TYPE]: 'OrderItem',
         productID: l.productId,
         category: l.category,

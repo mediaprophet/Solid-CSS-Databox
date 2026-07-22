@@ -139,7 +139,7 @@ export interface AcceptanceReceiptSubject {
  * verifies offline, independent of any live provider resource.
  */
 export interface DataboxAcceptanceReceiptCredential {
-  // eslint-disable-next-line @typescript-eslint/naming-convention -- JSON-LD reserved term.
+
   readonly '@context': readonly string[];
   readonly id: string;
   readonly type: readonly string[];

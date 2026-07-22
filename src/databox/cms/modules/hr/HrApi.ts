@@ -2,18 +2,18 @@ import type { CmsModuleRouter } from '../../CmsModuleRouter';
 import type { HttpHandlerInput } from '../../../../server/HttpHandler';
 import { readJsonBody, writeJson } from '../../CmsHttpUtils';
 import type {
-  OnboardingInput,
-  ShiftInput,
   ComplianceCredentialInput,
-  PayslipInput,
   ExpenseClaimInput,
+  OnboardingInput,
+  PayslipInput,
+  ShiftInput,
 } from './Hr';
 import {
-  onboardEmployee,
   assignShift,
-  trackCompliance,
   generatePayslip,
+  onboardEmployee,
   submitExpenseClaim,
+  trackCompliance,
 } from './Hr';
 
 export function registerHrRoutes(router: CmsModuleRouter<(input: HttpHandlerInput) => Promise<void>>): void {
@@ -40,7 +40,9 @@ export function registerHrRoutes(router: CmsModuleRouter<(input: HttpHandlerInpu
       const input = await readJsonBody<unknown>(request);
       writeJson(response, 200, trackCompliance(input as ComplianceCredentialInput), 'application/ld+json');
     } catch (error: unknown) {
-      writeJson(response, 400, { error: error instanceof Error ? error.message : 'Invalid compliance tracking request.' });
+      writeJson(response, 400, {
+        error: error instanceof Error ? error.message : 'Invalid compliance tracking request.',
+      });
     }
   });
 

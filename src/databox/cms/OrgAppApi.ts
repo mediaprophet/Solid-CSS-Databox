@@ -1,13 +1,13 @@
-import type { CmsModuleRouter } from './CmsModuleRouter';
 import type { HttpHandlerInput } from '../../server/HttpHandler';
+import type { CmsModuleRouter } from './CmsModuleRouter';
 import { readJsonBody, writeJson } from './CmsHttpUtils';
 import {
   buildAppProfile,
-  serialiseAppProfile,
-  issueAppInstallLicence,
-  validateAppInstallLicence,
   buildContainerBootConfig,
   checkNetworkScope,
+  issueAppInstallLicence,
+  serialiseAppProfile,
+  validateAppInstallLicence,
 } from './OrgAppManifest';
 
 export function registerOrgAppRoutes(router: CmsModuleRouter<(input: HttpHandlerInput) => Promise<void>>): void {
@@ -36,7 +36,7 @@ export function registerOrgAppRoutes(router: CmsModuleRouter<(input: HttpHandler
         '@id': licence.licenceId,
         issuer: { '@id': licence.issuedBy },
         issuanceDate: licence.issuedAt,
-        ...(licence.expiresAt ? { expirationDate: licence.expiresAt } : {}),
+        ...licence.expiresAt ? { expirationDate: licence.expiresAt } : {},
         credentialSubject: {
           '@id': licence.deviceId,
           appId: licence.appId,
@@ -52,15 +52,23 @@ export function registerOrgAppRoutes(router: CmsModuleRouter<(input: HttpHandler
   });
 
   // Validate an app install licence
-  router.register('POST', '/org-apps/licence/validate', async({ request, response }: HttpHandlerInput): Promise<void> => {
-    try {
-      const { licence, requestedAt } = await readJsonBody<{ licence: Parameters<typeof validateAppInstallLicence>[0]; requestedAt: string }>(request);
-      const result = validateAppInstallLicence(licence, requestedAt);
-      writeJson(response, 200, result, 'application/ld+json');
-    } catch (error: unknown) {
-      writeJson(response, 400, { error: error instanceof Error ? error.message : 'Invalid licence validation request.' });
-    }
-  });
+  router.register(
+    'POST',
+    '/org-apps/licence/validate',
+    async({ request, response }: HttpHandlerInput): Promise<void> => {
+      try {
+        const { licence, requestedAt } = await readJsonBody<
+          { licence: Parameters<typeof validateAppInstallLicence>[0]; requestedAt: string }
+        >(request);
+        const result = validateAppInstallLicence(licence, requestedAt);
+        writeJson(response, 200, result, 'application/ld+json');
+      } catch (error: unknown) {
+        writeJson(response, 400, {
+          error: error instanceof Error ? error.message : 'Invalid licence validation request.',
+        });
+      }
+    },
+  );
 
   // Container boot — the main endpoint the WASM container calls on startup
   router.register('POST', '/org-apps/boot', async({ request, response }: HttpHandlerInput): Promise<void> => {
@@ -88,17 +96,21 @@ export function registerOrgAppRoutes(router: CmsModuleRouter<(input: HttpHandler
   });
 
   // Check network scope for a request
-  router.register('POST', '/org-apps/network-scope/check', async({ request, response }: HttpHandlerInput): Promise<void> => {
-    try {
-      const { networkScope, requestOrigin, orgLocalNetworks } = await readJsonBody<{
-        networkScope: 'local-only' | 'remote-capable';
-        requestOrigin: string;
-        orgLocalNetworks: string[];
-      }>(request);
-      const result = checkNetworkScope(networkScope, requestOrigin, orgLocalNetworks);
-      writeJson(response, 200, result, 'application/ld+json');
-    } catch (error: unknown) {
-      writeJson(response, 400, { error: error instanceof Error ? error.message : 'Invalid network scope check.' });
-    }
-  });
+  router.register(
+    'POST',
+    '/org-apps/network-scope/check',
+    async({ request, response }: HttpHandlerInput): Promise<void> => {
+      try {
+        const { networkScope, requestOrigin, orgLocalNetworks } = await readJsonBody<{
+          networkScope: 'local-only' | 'remote-capable';
+          requestOrigin: string;
+          orgLocalNetworks: string[];
+        }>(request);
+        const result = checkNetworkScope(networkScope, requestOrigin, orgLocalNetworks);
+        writeJson(response, 200, result, 'application/ld+json');
+      } catch (error: unknown) {
+        writeJson(response, 400, { error: error instanceof Error ? error.message : 'Invalid network scope check.' });
+      }
+    },
+  );
 }

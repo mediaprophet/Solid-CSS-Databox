@@ -1,23 +1,34 @@
 import type { CmsModuleRouter } from '../../CmsModuleRouter';
 import type { HttpHandlerInput } from '../../../../server/HttpHandler';
 import { readJsonBody, writeJson } from '../../CmsHttpUtils';
-import type { DriverRegistrationInput, JobOfferInput, JobStatusUpdateInput, DriverMatchInput } from './DriverManagement';
+import type {
+  DriverMatchInput,
+  DriverRegistrationInput,
+  JobOfferInput,
+  JobStatusUpdateInput,
+} from './DriverManagement';
 import {
-  registerDriver,
   createJobOffer,
-  updateJobStatus,
   dispatchMatch,
+  registerDriver,
+  updateJobStatus,
 } from './DriverManagement';
 
-export function registerDriverManagementRoutes(router: CmsModuleRouter<(input: HttpHandlerInput) => Promise<void>>): void {
-  router.register('POST', '/delivery/driver/register', async({ request, response }: HttpHandlerInput): Promise<void> => {
-    try {
-      const input = await readJsonBody<unknown>(request);
-      writeJson(response, 200, registerDriver(input as DriverRegistrationInput), 'application/ld+json');
-    } catch (error: unknown) {
-      writeJson(response, 400, { error: error instanceof Error ? error.message : 'Invalid driver registration.' });
-    }
-  });
+export function registerDriverManagementRoutes(
+  router: CmsModuleRouter<(input: HttpHandlerInput) => Promise<void>>,
+): void {
+  router.register(
+    'POST',
+    '/delivery/driver/register',
+    async({ request, response }: HttpHandlerInput): Promise<void> => {
+      try {
+        const input = await readJsonBody<unknown>(request);
+        writeJson(response, 200, registerDriver(input as DriverRegistrationInput), 'application/ld+json');
+      } catch (error: unknown) {
+        writeJson(response, 400, { error: error instanceof Error ? error.message : 'Invalid driver registration.' });
+      }
+    },
+  );
 
   router.register('POST', '/delivery/job/offer', async({ request, response }: HttpHandlerInput): Promise<void> => {
     try {

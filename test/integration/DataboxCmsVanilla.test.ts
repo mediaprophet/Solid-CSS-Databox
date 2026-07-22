@@ -1,7 +1,7 @@
-import { getDefaultVariables, instantiateFromConfig } from './Config';
-import type { App } from '../../src/init/App';
 import fetch from 'cross-fetch';
+import type { App } from '../../src/init/App';
 import { getPort } from '../util/Util';
+import { getDefaultVariables, instantiateFromConfig } from './Config';
 
 const port = getPort('DataboxCmsVanilla');
 const baseUrl = `http://localhost:${port}/`;
@@ -42,7 +42,7 @@ describe('Databox CMS Vanilla Solid Degradation', (): void => {
     // Retrieve the standard resource
     const res2 = await fetch(`${baseUrl}test-vanilla.txt`);
     expect(res2.status).toBe(200);
-    expect(await res2.text()).toBe('Standard Solid works perfectly!');
+    await expect(res2.text()).resolves.toBe('Standard Solid works perfectly!');
 
     // Clean up
     await fetch(`${baseUrl}test-vanilla.txt`, { method: 'DELETE' });

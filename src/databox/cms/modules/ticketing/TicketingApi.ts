@@ -7,14 +7,14 @@ import type { TicketInput } from './Ticket';
 function assertTicketInput(body: unknown): asserts body is TicketInput {
   if (
     !isRecord(body) ||
-    typeof (body as Record<string, unknown>).id !== 'string' ||
-    typeof (body as Record<string, unknown>).event !== 'string' ||
-    typeof (body as Record<string, unknown>).holder !== 'string'
+    typeof body.id !== 'string' ||
+    typeof body.event !== 'string' ||
+    typeof body.holder !== 'string'
   ) {
     throw new TypeError('A ticketing request needs an id, event, and holder strings.');
   }
 
-  if ((body as Record<string, unknown>).seat !== undefined && typeof (body as Record<string, unknown>).seat !== 'string') {
+  if (body.seat !== undefined && typeof body.seat !== 'string') {
     throw new TypeError('seat must be a string if provided.');
   }
 }

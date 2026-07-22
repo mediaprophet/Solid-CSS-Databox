@@ -1,8 +1,8 @@
 import type { CmsModuleRouter } from '../../CmsModuleRouter';
 import type { HttpHandlerInput } from '../../../../server/HttpHandler';
 import { readJsonBody, writeJson } from '../../CmsHttpUtils';
-import type { EftposTransactionInput, EftposTerminalConfig } from './EftposTerminal';
-import { processEftposTransaction, processEftposSettlement, queryTerminalStatus } from './EftposTerminal';
+import type { EftposTerminalConfig, EftposTransactionInput } from './EftposTerminal';
+import { processEftposSettlement, processEftposTransaction, queryTerminalStatus } from './EftposTerminal';
 
 export function registerEftposRoutes(router: CmsModuleRouter<(input: HttpHandlerInput) => Promise<void>>): void {
   router.register('POST', '/eftpos/transaction', async({ request, response }: HttpHandlerInput): Promise<void> => {
@@ -11,7 +11,9 @@ export function registerEftposRoutes(router: CmsModuleRouter<(input: HttpHandler
       const result = processEftposTransaction(input.transaction, input.config);
       writeJson(response, 200, result.record, 'application/ld+json');
     } catch (error: unknown) {
-      writeJson(response, 400, { error: error instanceof Error ? error.message : 'Invalid EFTPOS transaction request.' });
+      writeJson(response, 400, {
+        error: error instanceof Error ? error.message : 'Invalid EFTPOS transaction request.',
+      });
     }
   });
 
@@ -21,7 +23,9 @@ export function registerEftposRoutes(router: CmsModuleRouter<(input: HttpHandler
       const result = processEftposSettlement(input.terminalId, input.config);
       writeJson(response, 200, result.record, 'application/ld+json');
     } catch (error: unknown) {
-      writeJson(response, 400, { error: error instanceof Error ? error.message : 'Invalid EFTPOS settlement request.' });
+      writeJson(response, 400, {
+        error: error instanceof Error ? error.message : 'Invalid EFTPOS settlement request.',
+      });
     }
   });
 

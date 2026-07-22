@@ -4,7 +4,9 @@ const LD_CONTEXT = '@context';
 const LD_TYPE = '@type';
 const LD_ID = '@id';
 
-export type PrintJobStatus = 'intake' | 'prepress' | 'proofing' | 'printing' | 'finishing' | 'ready' | 'delivered' | 'cancelled';
+export type PrintJobStatus =
+  'intake' | 'prepress' | 'proofing' | 'printing' |
+  'finishing' | 'ready' | 'delivered' | 'cancelled';
 
 export interface PrintServiceInput {
   readonly id: string;
@@ -104,7 +106,16 @@ function requirePositiveNumber(value: number, field: string): number {
 }
 
 function requirePrintStatus(value: string): PrintJobStatus {
-  const valid: PrintJobStatus[] = [ 'intake', 'prepress', 'proofing', 'printing', 'finishing', 'ready', 'delivered', 'cancelled' ];
+  const valid: PrintJobStatus[] = [
+    'intake',
+    'prepress',
+    'proofing',
+    'printing',
+    'finishing',
+    'ready',
+    'delivered',
+    'cancelled',
+  ];
   if (!valid.includes(value as PrintJobStatus)) {
     throw new BadRequestHttpError(`Print job status must be one of: ${valid.join(', ')}.`);
   }
@@ -159,7 +170,8 @@ export function createPrintJob(input: PrintJobInput): PrintJobResult {
     throw new BadRequestHttpError('A print job must include at least one specification.');
   }
 
-  const estimatedCost = quantity * 10; // Base estimate; real pricing from service catalogue
+  const estimatedCost = quantity * 10;
+  // Base estimate; real pricing from service catalogue
 
   const record: Record<string, unknown> = {
     [LD_CONTEXT]: 'https://schema.org/',
@@ -203,9 +215,10 @@ export function updatePrintJobStatus(input: PrintJobStatusUpdateInput): Record<s
   const status = requirePrintStatus(input.status);
   const updatedAt = requireDate(input.updatedAt, 'updatedAt');
 
-  const orderStatus = status === 'delivered' ? 'OrderDelivered'
-    : status === 'cancelled' ? 'OrderCancelled'
-    : 'OrderProcessing';
+  const orderStatus =
+    status === 'delivered' ?
+      'OrderDelivered' :
+      status === 'cancelled' ? 'OrderCancelled' : 'OrderProcessing';
 
   const record: Record<string, unknown> = {
     [LD_CONTEXT]: 'https://schema.org/',

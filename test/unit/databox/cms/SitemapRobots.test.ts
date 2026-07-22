@@ -54,13 +54,13 @@ describe('renderSitemap', (): void => {
 
   it('rejects an empty page list.', (): void => {
     expect((): void => {
-      renderSitemap({ pages: [] });
+      renderSitemap({ pages: []});
     }).toThrow(BadRequestHttpError);
   });
 
   it('rejects a non-absolute page URI.', (): void => {
     expect((): void => {
-      renderSitemap({ pages: [ '/relative/path' ] });
+      renderSitemap({ pages: [ '/relative/path' ]});
     }).toThrow(BadRequestHttpError);
   });
 
@@ -72,7 +72,8 @@ describe('renderSitemap', (): void => {
 });
 
 describe('renderRobots', (): void => {
-  it('renders a robots.txt that allows all agents, disallows the CMS control plane, and advertises the sitemap.', (): void => {
+  it('renders a robots.txt that allows all agents, disallows the CMS control plane, ' +
+    'and advertises the sitemap.', (): void => {
     const render = renderRobots({
       siteUrl: 'https://www.example.org/',
       sitemapUrl: 'https://www.example.org/sitemap.xml',

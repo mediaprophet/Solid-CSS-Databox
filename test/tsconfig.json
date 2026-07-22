@@ -2,8 +2,10 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "module": "es2022",
-    "moduleResolution": "node",
-    "esModuleInterop": true
+    "moduleResolution": "bundler",
+    "rootDir": "..",
+    "esModuleInterop": true,
+    "types": [ "jest", "node" ]
   },
   "include": [
     "."

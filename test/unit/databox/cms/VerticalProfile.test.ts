@@ -82,7 +82,7 @@ describe('CMS vertical profiles', (): void => {
       'backups',
       'accounting',
     ]);
-    expect(result.missingModules).toEqual(expect.arrayContaining(['barcode', 'eftpos', 'backups', 'accounting']));
+    expect(result.missingModules).toEqual(expect.arrayContaining([ 'barcode', 'eftpos', 'backups', 'accounting' ]));
   });
 
   it('applies enabled defaults and RDF config through the module config store.', async(): Promise<void> => {
@@ -109,7 +109,7 @@ describe('CMS vertical profiles', (): void => {
       'accounting',
     ]);
     expect(registry.listEnabled().map((manifest): string => manifest.id))
-      .toEqual(expect.arrayContaining(['barcode', 'eftpos', 'backups', 'accounting']));
+      .toEqual(expect.arrayContaining([ 'barcode', 'eftpos', 'backups', 'accounting' ]));
     expect(data.get('https://databox.example/.databox/cms/modules/catalogue'))
       .toContain('https://schema.org/itemListOrder');
     expect(data.get('https://databox.example/.databox/cms/modules/receipt'))

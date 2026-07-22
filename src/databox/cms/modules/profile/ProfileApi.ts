@@ -1,12 +1,12 @@
 import type { CmsModuleRouter } from '../../CmsModuleRouter';
 import type { HttpHandlerInput } from '../../../../server/HttpHandler';
 import { readJsonBody, writeJson } from '../../CmsHttpUtils';
-import type { MemberPodInput, MemberLifecycleInput } from './MemberPod';
+import type { MemberLifecycleInput, MemberPodInput } from './MemberPod';
 import { provisionMemberPod, recordMemberLifecycleChange } from './MemberPod';
 import type { LdnNotification } from './LdnInbox';
-import { buildLdnNotification, buildInboxContainer, sendLdnNotification } from './LdnInbox';
+import { buildInboxContainer, buildLdnNotification, sendLdnNotification } from './LdnInbox';
 import type { MemberInteractionInput } from './MemberInteraction';
-import { sendToMember, sendToOrganisation, buildAccessGrant } from './MemberInteraction';
+import { buildAccessGrant, sendToMember, sendToOrganisation } from './MemberInteraction';
 import { buildProfile } from './PersonProfile';
 import type { ProfileInput } from './PersonProfile';
 
@@ -77,15 +77,21 @@ export function registerProfileRoutes(router: CmsModuleRouter<(input: HttpHandle
     }
   });
 
-  router.register('POST', '/members/notify-organisation', async({ request, response }: HttpHandlerInput): Promise<void> => {
-    try {
-      const input = await readJsonBody<unknown>(request);
-      const result = await sendToOrganisation(input as MemberInteractionInput);
-      writeJson(response, 200, result, 'application/ld+json');
-    } catch (error: unknown) {
-      writeJson(response, 400, { error: error instanceof Error ? error.message : 'Organisation notification failed.' });
-    }
-  });
+  router.register(
+    'POST',
+    '/members/notify-organisation',
+    async({ request, response }: HttpHandlerInput): Promise<void> => {
+      try {
+        const input = await readJsonBody<unknown>(request);
+        const result = await sendToOrganisation(input as MemberInteractionInput);
+        writeJson(response, 200, result, 'application/ld+json');
+      } catch (error: unknown) {
+        writeJson(response, 400, {
+          error: error instanceof Error ? error.message : 'Organisation notification failed.',
+        });
+      }
+    },
+  );
 
   router.register('POST', '/members/access-grant', async({ request, response }: HttpHandlerInput): Promise<void> => {
     try {

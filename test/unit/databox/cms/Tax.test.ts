@@ -1,4 +1,4 @@
-import { computeTax, buildTaxReport } from '../../../../src/databox/cms/modules/tax/Tax';
+import { buildTaxReport, computeTax } from '../../../../src/databox/cms/modules/tax/Tax';
 
 describe('Tax module', () => {
   describe('computeTax', () => {
@@ -74,7 +74,15 @@ describe('Tax module', () => {
         periodEnd: '2025-03-31',
         currency: 'AUD',
         lines: [
-          { productId: 'p1', category: 'food', netAmount: 100, taxAmount: 10, grossAmount: 110, taxRate: 0.1, exempt: false },
+          {
+            productId: 'p1',
+            category: 'food',
+            netAmount: 100,
+            taxAmount: 10,
+            grossAmount: 110,
+            taxRate: 0.1,
+            exempt: false,
+          },
         ],
       });
       expect(result.report['@type']).toBe('Invoice');

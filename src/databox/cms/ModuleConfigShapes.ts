@@ -31,7 +31,7 @@ function booleanField(label: string, property: string, defaultValue = false): st
 }
 
 function choiceField(label: string, property: string, options: string[]): string {
-  const opts = options.map((o) => `"${o}"`).join(', ');
+  const opts = options.map(o => `"${o}"`).join(', ');
   return `[ a ui:Choice ;
     ui:label "${label}" ;
     ui:property "${property}" ;
@@ -43,8 +43,8 @@ function numberField(label: string, property: string, min?: number, max?: number
   const parts = [
     `    ui:label "${label}" ;`,
     `    ui:property "${property}" ;`,
-    min !== undefined ? `    ui:min ${min} ;` : '',
-    max !== undefined ? `    ui:max ${max} ;` : '',
+    min === undefined ? '' : `    ui:min ${min} ;`,
+    max === undefined ? '' : `    ui:max ${max} ;`,
   ].filter(Boolean);
   return `[ a ui:Number ;\n${parts.join('\n')}\n  ]`;
 }
@@ -59,7 +59,7 @@ function textArea(label: string, property: string, placeholder?: string): string
 }
 
 function buildForm(shapeIri: string, label: string, comment: string, fields: string[]): string {
-  const partsList = fields.map((f) => `    ${f}`).join(' ;\n');
+  const partsList = fields.map(f => `    ${f}`).join(' ;\n');
   return `@prefix ui: <${UI}> .
 @prefix rdf: <${RDF}> .
 @prefix rdfs: <${RDFS}> .

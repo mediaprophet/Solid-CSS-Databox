@@ -2,7 +2,7 @@ import type { CmsModuleRouter } from '../../CmsModuleRouter';
 import type { HttpHandlerInput } from '../../../../server/HttpHandler';
 import { readJsonBody, writeJson } from '../../CmsHttpUtils';
 import type { StockInput, StockRecordInput } from './Stock';
-import { checkStock, buildStockRecord } from './Stock';
+import { buildStockRecord, checkStock } from './Stock';
 
 export function registerInventoryRoutes(router: CmsModuleRouter<(input: HttpHandlerInput) => Promise<void>>): void {
   router.register('POST', '/inventory/check', async({ request, response }: HttpHandlerInput): Promise<void> => {

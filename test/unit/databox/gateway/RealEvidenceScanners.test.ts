@@ -1,6 +1,11 @@
-import { describe, it, expect, beforeAll, afterAll } from '@jest/globals';
-import { Server, Socket } from 'node:net';
-import { ClamAvScanner, CompositeScanner, VirusTotalScanner } from '../../../../src/databox/gateway/RealEvidenceScanners';
+import type { Socket } from 'node:net';
+import { Server } from 'node:net';
+import { afterAll, beforeAll, describe, expect, it } from '@jest/globals';
+import {
+  ClamAvScanner,
+  CompositeScanner,
+  VirusTotalScanner,
+} from '../../../../src/databox/gateway/RealEvidenceScanners';
 import type { EvidenceScanner } from '../../../../src/databox/gateway/BinaryEvidenceQuarantine';
 import { StubVerdictScanner } from '../../../../src/databox/gateway/BinaryEvidenceQuarantine';
 
@@ -9,9 +14,9 @@ describe('ClamAvScanner', () => {
   let port: number;
   const connections: Socket[] = [];
 
-  let handler: ((socket: Socket) => void) = (): void => { /* no-op */ };
+  let handler: (socket: Socket) => void = (): void => { /* No-op */ };
 
-  beforeAll(async () => {
+  beforeAll(async() => {
     server = new Server();
     await new Promise<void>((resolve): void => {
       server.listen(0, 'localhost', (): void => {
@@ -34,7 +39,7 @@ describe('ClamAvScanner', () => {
     });
   });
 
-  afterAll(async () => {
+  afterAll(async() => {
     for (const conn of connections) {
       conn.destroy();
     }
@@ -43,7 +48,7 @@ describe('ClamAvScanner', () => {
     });
   });
 
-  it('returns clean when ClamAV responds with OK', async () => {
+  it('returns clean when ClamAV responds with OK', async() => {
     handler = (socket: Socket): void => {
       let buf = Buffer.alloc(0);
       let phase: 'command' | 'chunks' = 'command';
@@ -78,7 +83,7 @@ describe('ClamAvScanner', () => {
     expect(verdict).toBe('clean');
   });
 
-  it('returns malicious when ClamAV responds with FOUND', async () => {
+  it('returns malicious when ClamAV responds with FOUND', async() => {
     handler = (socket: Socket): void => {
       let buf = Buffer.alloc(0);
       let phase: 'command' | 'chunks' = 'command';
@@ -113,13 +118,13 @@ describe('ClamAvScanner', () => {
     expect(verdict).toBe('malicious');
   });
 
-  it('returns error when connection fails', async () => {
+  it('returns error when connection fails', async() => {
     const scanner = new ClamAvScanner({ host: 'localhost', port: 1, timeoutMs: 2_000 });
     const verdict = await scanner.scan(Buffer.from('test'));
     expect(verdict).toBe('error');
   });
 
-  it('returns error on timeout', async () => {
+  it('returns error on timeout', async() => {
     handler = (): void => {
       // Never respond — let the scanner time out
     };
@@ -147,7 +152,7 @@ describe('VirusTotalScanner', () => {
     expect(scanner.id).toBe('databox:scanner:virustotal');
   });
 
-  it('returns error on network failure', async () => {
+  it('returns error on network failure', async() => {
     const scanner = new VirusTotalScanner({
       apiKey: 'test-key',
       baseUrl: 'http://localhost:1',
@@ -159,51 +164,51 @@ describe('VirusTotalScanner', () => {
 });
 
 describe('CompositeScanner', () => {
-  it('returns clean if any scanner returns clean', async () => {
+  it('returns clean if any scanner returns clean', async() => {
     const scanners: EvidenceScanner[] = [
-      new StubVerdictScanner((): boolean => false), // clean
-      new StubVerdictScanner((): boolean => true),  // malicious
+      new StubVerdictScanner((): boolean => false), // Clean
+      new StubVerdictScanner((): boolean => true), // Malicious
     ];
     const composite = new CompositeScanner(scanners);
     const verdict = await composite.scan(Buffer.from('test'));
     expect(verdict).toBe('clean');
   });
 
-  it('returns malicious if any scanner returns malicious (and none clean)', async () => {
+  it('returns malicious if any scanner returns malicious (and none clean)', async() => {
     const scanners: EvidenceScanner[] = [
-      new StubVerdictScanner((): boolean => true),  // malicious
-      new StubVerdictScanner((): boolean => false), // clean — but we hit malicious first
+      new StubVerdictScanner((): boolean => true), // Malicious
+      new StubVerdictScanner((): boolean => false), // Clean — but we hit malicious first
     ];
     const composite = new CompositeScanner(scanners);
     const verdict = await composite.scan(Buffer.from('test'));
     expect(verdict).toBe('malicious');
   });
 
-  it('returns unknown when all scanners return unknown', async () => {
-    const failClosed = new (class implements EvidenceScanner {
+  it('returns unknown when all scanners return unknown', async() => {
+    const failClosed = new class implements EvidenceScanner {
       public readonly id = 'test:fail-closed';
       public async scan(): Promise<'unknown'> {
         return 'unknown';
       }
-    })();
+    }();
     const composite = new CompositeScanner([ failClosed ]);
     const verdict = await composite.scan(Buffer.from('test'));
     expect(verdict).toBe('unknown');
   });
 
-  it('returns error when at least one scanner errors and none are clean/malicious', async () => {
-    const errorScanner = new (class implements EvidenceScanner {
+  it('returns error when at least one scanner errors and none are clean/malicious', async() => {
+    const errorScanner = new class implements EvidenceScanner {
       public readonly id = 'test:error';
       public async scan(): Promise<'error'> {
         return 'error';
       }
-    })();
-    const unknownScanner = new (class implements EvidenceScanner {
+    }();
+    const unknownScanner = new class implements EvidenceScanner {
       public readonly id = 'test:unknown';
       public async scan(): Promise<'unknown'> {
         return 'unknown';
       }
-    })();
+    }();
     const composite = new CompositeScanner([ unknownScanner, errorScanner ]);
     const verdict = await composite.scan(Buffer.from('test'));
     expect(verdict).toBe('error');

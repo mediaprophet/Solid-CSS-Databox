@@ -156,7 +156,8 @@ export const SPORTING_CLUB_BASE_PROFILE: VerticalProfileManifest = {
   id: 'sport.club-base',
   name: 'Sporting Club / Base',
   version: '0.1.0',
-  description: 'Foundational bundle for any sporting club, providing membership governance, social directory, dues collection, and a POS canteen.',
+  description: 'Foundational bundle for any sporting club, providing membership ' +
+    'governance, social directory, dues collection, and a POS canteen.',
   useCases: [ 'SPORT' ],
   modules: [
     moduleRef('governance', 'Governance manages club resolutions, committee voting, and AGMs.'),
@@ -172,7 +173,8 @@ export const SPORTING_LEAGUE_PROFILE: VerticalProfileManifest = {
   id: 'sport.league-team',
   name: 'Sporting League / Team Sports',
   version: '0.1.0',
-  description: 'Specialized profile for team sports (AFL, Soccer, Netball) requiring rostering, match events, and ladder records.',
+  description: 'Specialized profile for team sports (AFL, Soccer, Netball) requiring ' +
+    'rostering, match events, and ladder records.',
   useCases: [ 'SPORT', 'LEAGUE' ],
   modules: [
     ...SPORTING_CLUB_BASE_PROFILE.modules,
@@ -185,7 +187,8 @@ export const SPORTING_FACILITY_PROFILE: VerticalProfileManifest = {
   id: 'sport.facility-court',
   name: 'Sporting Facility / Court & Course',
   version: '0.1.0',
-  description: 'Specialized profile for facility sports (Tennis, Golf, Lawn Bowls) requiring granular court/course bookings and physical access control.',
+  description: 'Specialized profile for facility sports (Tennis, Golf, Lawn Bowls) ' +
+    'requiring granular court/course bookings and physical access control.',
   useCases: [ 'SPORT', 'FACILITY' ],
   modules: [
     ...SPORTING_CLUB_BASE_PROFILE.modules,
@@ -200,11 +203,13 @@ export const SPORTING_COMPLIANCE_PROFILE: VerticalProfileManifest = {
   id: 'sport.compliance-safety',
   name: 'Sporting Compliance / Safety & Grading',
   version: '0.1.0',
-  description: 'Specialized profile for high-risk or graded sports (Life Saving, Equestrian, Martial Arts) requiring WWCC checks, belts, and emergency access.',
+  description: 'Specialized profile for high-risk or graded sports (Life Saving, ' +
+    'Equestrian, Martial Arts) requiring WWCC checks, belts, and emergency access.',
   useCases: [ 'SPORT', 'SAFETY' ],
   modules: [
     ...SPORTING_CLUB_BASE_PROFILE.modules,
-    moduleRef('credentials', 'Credentials issues and verifies safety certifications, Working With Children Checks, and grading belts.'),
+    moduleRef('credentials', 'Credentials issues and verifies safety certifications, ' +
+    'Working With Children Checks, and grading belts.'),
     moduleRef('emergency', 'Emergency provides break-glass access to member medical info during a sporting incident.'),
   ],
 };
@@ -213,7 +218,8 @@ export const GLAM_BASE_PROFILE: VerticalProfileManifest = {
   id: 'glam.base',
   name: 'GLAM / Base',
   version: '0.1.0',
-  description: 'Foundational bundle for GLAM institutions focusing on cataloguing physical/digital artifacts and public discovery.',
+  description: 'Foundational bundle for GLAM institutions focusing on cataloguing ' +
+    'physical/digital artifacts and public discovery.',
   useCases: [ 'GLAM' ],
   modules: [
     moduleRef('catalogue', 'Catalogue stores structured metadata about collections using Dublin Core standards.', {
@@ -234,13 +240,15 @@ export const GLAM_GALLERY_MUSEUM_PROFILE: VerticalProfileManifest = {
   id: 'glam.gallery-museum',
   name: 'GLAM / Gallery & Museum',
   version: '0.1.0',
-  description: 'Specialized profile for Galleries and Museums requiring exhibitions, timed ticketing, and strict provenance tracking.',
+  description: 'Specialized profile for Galleries and Museums requiring exhibitions, ' +
+    'timed ticketing, and strict provenance tracking.',
   useCases: [ 'GLAM', 'MUSEUM' ],
   modules: [
     ...GLAM_BASE_PROFILE.modules,
     moduleRef('events', 'Events schedules exhibitions and guided tours.'),
     moduleRef('ticketing', 'Ticketing handles timed-entry passes and special access.'),
-    moduleRef('provenance', 'Provenance tracks the chain of custody, acquisition history, and C2PA cryptographic authenticity of artifacts.', {
+    moduleRef('provenance', 'Provenance tracks the chain of custody, acquisition ' +
+    'history, and C2PA cryptographic authenticity of artifacts.', {
       turtle: `
         @prefix c2pa: <https://c2pa.org/terms/> .
         <> a c2pa:Manifest ;
@@ -255,7 +263,8 @@ export const GLAM_LIBRARY_PROFILE: VerticalProfileManifest = {
   id: 'glam.library',
   name: 'GLAM / Library',
   version: '0.1.0',
-  description: 'Specialized profile for Libraries focusing on OPAC lending, inventory management, and digital credentials.',
+  description: 'Specialized profile for Libraries focusing on OPAC lending, inventory ' +
+    'management, and digital credentials.',
   useCases: [ 'GLAM', 'LIBRARY' ],
   modules: [
     ...GLAM_BASE_PROFILE.modules,
@@ -269,12 +278,15 @@ export const GLAM_ARCHIVE_PROFILE: VerticalProfileManifest = {
   id: 'glam.archive',
   name: 'GLAM / Archive',
   version: '0.1.0',
-  description: 'Specialized profile for Archives requiring deep hierarchical cataloguing, high-res digital scans, and restricted access.',
+  description: 'Specialized profile for Archives requiring deep hierarchical ' +
+    'cataloguing, high-res digital scans, and restricted access.',
   useCases: [ 'GLAM', 'ARCHIVE' ],
   modules: [
     ...GLAM_BASE_PROFILE.modules,
-    moduleRef('hosting', 'Hosting provides storage for high-resolution digital preservation scans.'),
-    moduleRef('access', 'Access ensures culturally sensitive or legally restricted artifacts are only viewed by authorized researchers.'),
+    moduleRef('hosting', 'Hosting provides storage for high-resolution digital ' +
+    'preservation scans.'),
+    moduleRef('access', 'Access ensures culturally sensitive or legally restricted ' +
+    'artifacts are only viewed by authorized researchers.'),
   ],
 };
 
@@ -282,14 +294,16 @@ export const GLAM_HISTORICAL_SOCIETY_PROFILE: VerticalProfileManifest = {
   id: 'glam.historical-society',
   name: 'GLAM / Historical Society',
   version: '0.1.0',
-  description: 'Composite profile for Historical Societies combining club governance with archival and storytelling tools.',
+  description: 'Composite profile for Historical Societies combining club governance ' +
+    'with archival and storytelling tools.',
   useCases: [ 'GLAM', 'MUSEUM', 'ARCHIVE', 'CLUB' ],
   modules: [
     ...GLAM_BASE_PROFILE.modules,
     moduleRef('governance', 'Governance handles the society committee, voting, and constitution.'),
     moduleRef('social', 'Social enables community engagement and member directories.'),
     moduleRef('payments', 'Payments collects annual society membership dues.'),
-    moduleRef('provenance', 'Provenance tracks local artifacts and genealogical materials, utilizing C2PA for digital authenticity validation.', {
+    moduleRef('provenance', 'Provenance tracks local artifacts and genealogical ' +
+    'materials, utilizing C2PA for digital authenticity validation.', {
       turtle: `
         @prefix c2pa: <https://c2pa.org/terms/> .
         <> a c2pa:Manifest ;
@@ -305,7 +319,8 @@ export const HOME_SERVICES_BASE_PROFILE: VerticalProfileManifest = {
   id: 'home-services.base',
   name: 'Home Services / Base',
   version: '0.1.0',
-  description: 'Foundational bundle for routine domestic service businesses, focusing on recurring routes, task management, and client billing.',
+  description: 'Foundational bundle for routine domestic service businesses, focusing ' +
+    'on recurring routes, task management, and client billing.',
   useCases: [ 'HOME_SERVICES' ],
   modules: [
     moduleRef('jobs', 'Jobs tracks the daily task list and execution checklists.', {
@@ -321,12 +336,15 @@ export const HOME_SERVICES_MAINTENANCE_PROFILE: VerticalProfileManifest = {
   id: 'home-services.maintenance',
   name: 'Home Services / Pool & Garden Care',
   version: '0.1.0',
-  description: 'Specialized profile for Pool & Garden care requiring chemical logs, before/after photos, and materials inventory.',
+  description: 'Specialized profile for Pool & Garden care requiring chemical logs, ' +
+    'before/after photos, and materials inventory.',
   useCases: [ 'HOME_SERVICES', 'MAINTENANCE' ],
   modules: [
     ...HOME_SERVICES_BASE_PROFILE.modules,
-    moduleRef('records', 'Records stores structured logs of pool pH levels, chemical dosing, and garden treatments applied.'),
-    moduleRef('inventory', 'Inventory tracks the usage of physical materials (chlorine, mulch) across the service route.'),
+    moduleRef('records', 'Records stores structured logs of pool pH levels, chemical ' +
+    'dosing, and garden treatments applied.'),
+    moduleRef('inventory', 'Inventory tracks the usage of physical materials (chlorine, ' +
+    'mulch) across the service route.'),
   ],
 };
 
@@ -334,12 +352,15 @@ export const HOME_SERVICES_DOMESTIC_PROFILE: VerticalProfileManifest = {
   id: 'home-services.domestic',
   name: 'Home Services / House-Keeping',
   version: '0.1.0',
-  description: 'Specialized profile for House-Keeping requiring strict property access management and staff credentialing.',
+  description: 'Specialized profile for House-Keeping requiring strict property access ' +
+    'management and staff credentialing.',
   useCases: [ 'HOME_SERVICES', 'DOMESTIC' ],
   modules: [
     ...HOME_SERVICES_BASE_PROFILE.modules,
-    moduleRef('access', 'Access securely stores client alarm codes, lockbox combinations, and smart-lock keys.'),
-    moduleRef('credentials', 'Credentials verifies staff Police Clearances, Working With Children Checks, and bonded insurance.'),
+    moduleRef('access', 'Access securely stores client alarm codes, lockbox ' +
+    'combinations, and smart-lock keys.'),
+    moduleRef('credentials', 'Credentials verifies staff Police Clearances, Working With ' +
+    'Children Checks, and bonded insurance.'),
   ],
 };
 
@@ -347,7 +368,8 @@ export const WELLNESS_PRACTITIONER_PROFILE: VerticalProfileManifest = {
   id: 'wellness.practitioner',
   name: 'Wellness / Independent Practitioner',
   version: '0.1.0',
-  description: 'Profile for nomadic wellness practitioners (Yoga, Somatics, Breathwork) requiring cross-pod scheduling and verifiable credentials.',
+  description: 'Profile for nomadic wellness practitioners (Yoga, Somatics, ' +
+    'Breathwork) requiring cross-pod scheduling and verifiable credentials.',
   useCases: [ 'WELLNESS', 'PRACTITIONER' ],
   modules: [
     moduleRef('events', 'Events schedules group classes across federated venue locations.', {
@@ -371,10 +393,14 @@ export const WELLNESS_VENUE_PROFILE: VerticalProfileManifest = {
   useCases: [ 'WELLNESS', 'VENUE' ],
   modules: [
     moduleRef('bookings', 'Bookings handles the hiring of the physical space by practitioners.'),
-    moduleRef('access', 'Access automatically issues digital lockbox codes to the practitioner during their hired time-slot.'),
-    moduleRef('inventory', 'Inventory manages the rental of physical equipment (Yoga mats, Reformers).'),
-    moduleRef('website-seo', 'Website SEO aggregates and renders the federated schedules of all visiting practitioners.'),
-    moduleRef('mcp-server', 'MCP Server provides AI agents direct access to query wellness schedules and studio availability.'),
+    moduleRef('access', 'Access automatically issues digital lockbox codes to the ' +
+    'practitioner during their hired time-slot.'),
+    moduleRef('inventory', 'Inventory manages the rental of physical equipment (Yoga ' +
+    'mats, Reformers).'),
+    moduleRef('website-seo', 'Website SEO aggregates and renders the federated schedules ' +
+    'of all visiting practitioners.'),
+    moduleRef('mcp-server', 'MCP Server provides AI agents direct access to query wellness ' +
+    'schedules and studio availability.'),
   ],
 };
 
@@ -382,12 +408,14 @@ export const WELLNESS_CLINIC_PROFILE: VerticalProfileManifest = {
   id: 'wellness.clinic',
   name: 'Wellness / Multi-Disciplinary Clinic',
   version: '0.1.0',
-  description: 'Composite profile for clinics that host multiple in-house modalities and practitioners under one brand.',
+  description: 'Composite profile for clinics that host multiple in-house modalities ' +
+    'and practitioners under one brand.',
   useCases: [ 'WELLNESS', 'VENUE', 'CLINIC' ],
   modules: [
     ...WELLNESS_VENUE_PROFILE.modules,
     moduleRef('governance', 'Governance handles internal clinic policies and voting.'),
-    moduleRef('social', 'Social provides an internal directory and communication channel for the employed practitioners.'),
+    moduleRef('social', 'Social provides an internal directory and communication ' +
+    'channel for the employed practitioners.'),
     moduleRef('events', 'Events publishes the unified clinic timetable.'),
     moduleRef('payments', 'Payments acts as the central merchant of record before remitting to practitioners.'),
   ],
@@ -397,10 +425,12 @@ export const FOOD_ALLERGY_SAFETY_PROFILE: VerticalProfileManifest = {
   id: 'food.allergy-safety',
   name: 'Food / Allergy Safety',
   version: '0.1.0',
-  description: 'Allergy safety bundle bundling ingredient declarations, consumer allergy profiles, allergen matching, and selective disclosure for secret recipes.',
+  description: 'Allergy safety bundle bundling ingredient declarations, consumer allergy ' +
+    'profiles, allergen matching, and selective disclosure for secret recipes.',
   useCases: [ 'FOOD', 'ALLERGY', 'SAFETY' ],
   modules: [
-    moduleRef('allergy-profile', 'Allergy profile manages consumer allergy/dietary profiles with FSANZ/EU allergen categories and dietary restrictions.'),
+    moduleRef('allergy-profile', 'Allergy profile manages consumer allergy/dietary ' +
+    'profiles with FSANZ/EU allergen categories and dietary restrictions.'),
     moduleRef('menu', 'Menu provides the public food offer surface where allergen data is displayed.'),
     moduleRef('catalogue', 'Catalogue holds menu items linked to ingredient declarations.'),
     moduleRef('pos', 'POS integrates allergen filtering at checkout and customer-facing displays.', {
@@ -415,7 +445,8 @@ export const PRINT_SHOP_PROFILE: VerticalProfileManifest = {
   id: 'print.shop',
   name: 'Print / Shop',
   version: '0.1.0',
-  description: 'Print shop bundle for print service catalogue, job intake, status tracking, inter-org B2B print jobs with ODRL licence enforcement.',
+  description: 'Print shop bundle for print service catalogue, job intake, status ' +
+    'tracking, inter-org B2B print jobs with ODRL licence enforcement.',
   useCases: [ 'PRINT', 'B2B' ],
   modules: [
     moduleRef('print', 'Print shop module provides service catalogue, job intake, and status pipeline.'),
@@ -431,14 +462,16 @@ export const HR_WORKFORCE_PROFILE: VerticalProfileManifest = {
   id: 'hr.workforce',
   name: 'HR / Workforce',
   version: '0.1.0',
-  description: 'HR workforce bundle for employee onboarding, shift management, compliance tracking, payroll, and expense claims.',
+  description: 'HR workforce bundle for employee onboarding, shift management, ' +
+    'compliance tracking, payroll, and expense claims.',
   useCases: [ 'HR', 'WORKFORCE' ],
   modules: [
     moduleRef('hr', 'HR module manages onboarding, shifts, compliance, payslips, and expense claims.'),
     moduleRef('governance', 'Governance handles role bindings and approval gates for HR decisions.'),
     moduleRef('credentials', 'Credentials issues role VCs, compliance certifications, and employment verifications.'),
     moduleRef('payments', 'Payments processes payroll disbursements and expense reimbursements.'),
-    moduleRef('notifications', 'Notifications delivers shift assignments, compliance alerts, and payslip notifications to member pods.'),
+    moduleRef('notifications', 'Notifications delivers shift assignments, compliance ' +
+    'alerts, and payslip notifications to member pods.'),
     moduleRef('driver-management', 'Driver management extends HR for delivery drivers with zone-based dispatch.'),
     moduleRef('backups', 'Password-protected encrypted backups of employee records and compliance data.'),
     moduleRef('accounting', 'Accounting export to Xero/MYOB/QuickBooks for payroll journal entries and STP reporting.'),

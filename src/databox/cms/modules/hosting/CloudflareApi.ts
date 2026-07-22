@@ -3,6 +3,7 @@ import type { DnsRecord, HostingPlan } from './HostingConfig';
 /**
  * Cloudflare API client for applying hosting plans.
  * Uses a scoped API token (Zone:DNS:Edit + Account:Tunnel:Edit).
+ *
  * @see https://developers.cloudflare.com/api/
  */
 export class CloudflareApi {
@@ -20,15 +21,15 @@ export class CloudflareApi {
     const response = await fetch(`${this.baseUrl}${path}`, {
       ...init,
       headers: {
-        'Authorization': `Bearer ${this.apiToken}`,
+        Authorization: `Bearer ${this.apiToken}`,
         'Content-Type': 'application/json',
-        ...init.headers,
+        ...(init.headers as Record<string, string>),
       },
     });
 
     const body = await response.json() as CloudflareResponse;
     if (!response.ok || !body.success) {
-      const errors = body.errors?.map((e) => e.message).join('; ') ?? `HTTP ${response.status}`;
+      const errors = body.errors?.map(e => e.message).join('; ') ?? `HTTP ${response.status}`;
       throw new Error(`Cloudflare API error: ${errors}`);
     }
     return body.result;
@@ -40,7 +41,9 @@ export class CloudflareApi {
   public async getZoneId(apexDomain: string): Promise<string> {
     const result = await this.request(`/zones?name=${encodeURIComponent(apexDomain)}`) as CloudflareZone[];
     if (result.length === 0) {
-      throw new Error(`No Cloudflare zone found for "${apexDomain}". Ensure the domain is added to your Cloudflare account.`);
+      throw new Error(
+        `No Cloudflare zone found for "${apexDomain}". Ensure the domain is added to your Cloudflare account.`,
+      );
     }
     return result[0].id;
   }
@@ -54,7 +57,7 @@ export class CloudflareApi {
 
     for (const record of records) {
       const duplicate = existing.find(
-        (r) => r.type === record.type && r.name === record.name,
+        r => r.type === record.type && r.name === record.name,
       );
       if (duplicate) {
         created.push({ name: record.name, id: duplicate.id, alreadyExisted: true });
@@ -111,7 +114,7 @@ export class CloudflareApi {
     tunnelId: string,
     plan: HostingPlan,
     originTarget: string,
-    originPort: number = 3000,
+    originPort = 3000,
   ): Promise<void> {
     const ingressRules: TunnelIngressRule[] = [
       { hostname: plan.databoxHost, service: `http://${originTarget}:${originPort}` },
@@ -133,7 +136,7 @@ export class CloudflareApi {
   /**
    * Apply a complete hosting plan: find zone, create DNS records, create tunnel + ingress.
    */
-  public async applyPlan(plan: HostingPlan, apexDomain: string, originPort: number = 3000): Promise<ApplyResult> {
+  public async applyPlan(plan: HostingPlan, apexDomain: string, originPort = 3000): Promise<ApplyResult> {
     const zoneId = await this.getZoneId(apexDomain);
     const dnsResults = await this.createDnsRecords(zoneId, plan.dnsRecords);
 
@@ -141,9 +144,9 @@ export class CloudflareApi {
     const zone = await this.request(`/zones/${zoneId}`) as CloudflareZone;
     let tunnel: TunnelResult | undefined;
     try {
-      tunnel = await this.createTunnel(zone.account.id, `databox-${apexDomain.replace(/\./g, '-')}`);
+      tunnel = await this.createTunnel(zone.account.id, `databox-${apexDomain.replaceAll('.', '-')}`);
       await this.createTunnelIngress(zone.account.id, tunnel.tunnelId, plan, plan.dnsRecords[0].content, originPort);
-    } catch (err: unknown) {
+    } catch {
       // Tunnel creation may fail if token lacks tunnel permissions — non-fatal
       tunnel = undefined;
     }

@@ -1,4 +1,8 @@
-import { applyDiscount, buildDiscountRecord, type DiscountCode } from '../../../../src/databox/cms/modules/discounts/Discounts';
+import {
+  applyDiscount,
+  buildDiscountRecord,
+  type DiscountCode,
+} from '../../../../src/databox/cms/modules/discounts/Discounts';
 
 describe('Discounts module', () => {
   const validDiscount: DiscountCode = {
@@ -92,7 +96,7 @@ describe('Discounts module', () => {
     });
 
     it('respects category restrictions', () => {
-      const restricted: DiscountCode = { ...validDiscount, applicableCategories: ['electronics'] };
+      const restricted: DiscountCode = { ...validDiscount, applicableCategories: [ 'electronics' ]};
       const result = applyDiscount(restricted, {
         code: 'SAVE10',
         subtotal: 100,

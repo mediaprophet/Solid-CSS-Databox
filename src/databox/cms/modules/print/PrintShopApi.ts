@@ -2,16 +2,16 @@ import type { CmsModuleRouter } from '../../CmsModuleRouter';
 import type { HttpHandlerInput } from '../../../../server/HttpHandler';
 import { readJsonBody, writeJson } from '../../CmsHttpUtils';
 import type {
-  PrintServiceInput,
+  InterOrgPrintJobInput,
   PrintJobInput,
   PrintJobStatusUpdateInput,
-  InterOrgPrintJobInput,
+  PrintServiceInput,
 } from './PrintShop';
 import {
-  createPrintService,
-  createPrintJob,
-  updatePrintJobStatus,
   createInterOrgPrintJob,
+  createPrintJob,
+  createPrintService,
+  updatePrintJobStatus,
 } from './PrintShop';
 
 export function registerPrintShopRoutes(router: CmsModuleRouter<(input: HttpHandlerInput) => Promise<void>>): void {
@@ -47,7 +47,9 @@ export function registerPrintShopRoutes(router: CmsModuleRouter<(input: HttpHand
       const input = await readJsonBody<unknown>(request);
       writeJson(response, 200, createInterOrgPrintJob(input as InterOrgPrintJobInput), 'application/ld+json');
     } catch (error: unknown) {
-      writeJson(response, 400, { error: error instanceof Error ? error.message : 'Invalid inter-org print job request.' });
+      writeJson(response, 400, {
+        error: error instanceof Error ? error.message : 'Invalid inter-org print job request.',
+      });
     }
   });
 }

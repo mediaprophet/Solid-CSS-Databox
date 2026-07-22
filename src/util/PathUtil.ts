@@ -159,7 +159,6 @@ export function toCanonicalUriPath(path: string): string {
     encodeURIComponent(decodeURIComponent(part)));
 }
 
-/* eslint-disable @typescript-eslint/naming-convention */
 // Characters not allowed in a Windows file path
 const forbiddenSymbols = {
   '<': '%3C',
@@ -171,7 +170,7 @@ const forbiddenSymbols = {
   // `*` does not get converted by `encodeUriComponent`
   '*': '%2A',
 } as const;
-/* eslint-enable @typescript-eslint/naming-convention */
+
 const forbiddenRegex = new RegExp(`[${Object.keys(forbiddenSymbols).join('')}]`, 'gu');
 /**
  * This function is used when converting a URI to a file path. Decodes all components of a URI path,

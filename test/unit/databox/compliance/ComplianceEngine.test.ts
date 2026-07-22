@@ -1,4 +1,4 @@
-/* eslint-disable max-len, @typescript-eslint/explicit-function-return-type */
+/* eslint-disable max-len */
 import {
   AU_APPLICABILITY_PROFILES,
   AU_CONTROL_MAPPINGS,

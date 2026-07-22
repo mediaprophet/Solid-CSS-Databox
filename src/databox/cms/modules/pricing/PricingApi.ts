@@ -10,7 +10,9 @@ export function registerPricingRoutes(router: CmsModuleRouter<(input: HttpHandle
       const input = await readJsonBody<unknown>(request);
       writeJson(response, 200, wholesalePrice(input as WholesaleInput));
     } catch (error: unknown) {
-      writeJson(response, 400, { error: error instanceof Error ? error.message : 'Invalid wholesale pricing request.' });
+      writeJson(response, 400, {
+        error: error instanceof Error ? error.message : 'Invalid wholesale pricing request.',
+      });
     }
   });
 }

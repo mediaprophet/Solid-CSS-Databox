@@ -151,31 +151,92 @@ export function applyDiscount(
   const validUntil = new Date(discount.validUntil);
 
   if (now < validFrom) {
-    return { code: discount.code, type: discount.type, valid: false, reason: 'Discount is not yet active.', discountAmount: 0, lines: [], totalOriginal: subtotal, totalDiscount: 0, totalFinal: subtotal };
+    return {
+      code: discount.code,
+      type: discount.type,
+      valid: false,
+      reason: 'Discount is not yet active.',
+      discountAmount: 0,
+      lines: [],
+      totalOriginal: subtotal,
+      totalDiscount: 0,
+      totalFinal: subtotal,
+    };
   }
 
   if (now > validUntil) {
-    return { code: discount.code, type: discount.type, valid: false, reason: 'Discount has expired.', discountAmount: 0, lines: [], totalOriginal: subtotal, totalDiscount: 0, totalFinal: subtotal };
+    return {
+      code: discount.code,
+      type: discount.type,
+      valid: false,
+      reason: 'Discount has expired.',
+      discountAmount: 0,
+      lines: [],
+      totalOriginal: subtotal,
+      totalDiscount: 0,
+      totalFinal: subtotal,
+    };
   }
 
   if (discount.usageLimit !== undefined && discount.usageCount >= discount.usageLimit) {
-    return { code: discount.code, type: discount.type, valid: false, reason: 'Discount usage limit reached.', discountAmount: 0, lines: [], totalOriginal: subtotal, totalDiscount: 0, totalFinal: subtotal };
+    return {
+      code: discount.code,
+      type: discount.type,
+      valid: false,
+      reason: 'Discount usage limit reached.',
+      discountAmount: 0,
+      lines: [],
+      totalOriginal: subtotal,
+      totalDiscount: 0,
+      totalFinal: subtotal,
+    };
   }
 
   if (discount.minSpend !== undefined && subtotal < discount.minSpend) {
-    return { code: discount.code, type: discount.type, valid: false, reason: `Minimum spend of ${discount.minSpend} not met.`, discountAmount: 0, lines: [], totalOriginal: subtotal, totalDiscount: 0, totalFinal: subtotal };
+    return {
+      code: discount.code,
+      type: discount.type,
+      valid: false,
+      reason: `Minimum spend of ${discount.minSpend} not met.`,
+      discountAmount: 0,
+      lines: [],
+      totalOriginal: subtotal,
+      totalDiscount: 0,
+      totalFinal: subtotal,
+    };
   }
 
   if (input.lineItems.length === 0) {
-    return { code: discount.code, type: discount.type, valid: false, reason: 'No line items to discount.', discountAmount: 0, lines: [], totalOriginal: 0, totalDiscount: 0, totalFinal: 0 };
+    return {
+      code: discount.code,
+      type: discount.type,
+      valid: false,
+      reason: 'No line items to discount.',
+      discountAmount: 0,
+      lines: [],
+      totalOriginal: 0,
+      totalDiscount: 0,
+      totalFinal: 0,
+    };
   }
 
-  const applicableItems = discount.applicableCategories
-    ? input.lineItems.filter((item) => discount.applicableCategories!.includes(item.category))
-    : input.lineItems;
+  const applicableItems = discount.applicableCategories ?
+      input.lineItems.filter((item): boolean =>
+        discount.applicableCategories!.includes(item.category)) :
+    input.lineItems;
 
   if (applicableItems.length === 0) {
-    return { code: discount.code, type: discount.type, valid: false, reason: 'No items match the discount categories.', discountAmount: 0, lines: [], totalOriginal: subtotal, totalDiscount: 0, totalFinal: subtotal };
+    return {
+      code: discount.code,
+      type: discount.type,
+      valid: false,
+      reason: 'No items match the discount categories.',
+      discountAmount: 0,
+      lines: [],
+      totalOriginal: subtotal,
+      totalDiscount: 0,
+      totalFinal: subtotal,
+    };
   }
 
   let totalDiscount = 0;
@@ -204,6 +265,8 @@ export function applyDiscount(
             lineDiscount = round2(originalLineTotal * (discount.value / 100));
           }
           break;
+        default:
+          break;
       }
     }
 
@@ -222,7 +285,7 @@ export function applyDiscount(
   }
 
   totalDiscount = round2(totalDiscount);
-  const totalOriginal = round2(lines.reduce((sum, l) => sum + l.originalLineTotal, 0));
+  const totalOriginal = round2(lines.reduce((sum, l): number => sum + l.originalLineTotal, 0));
   const totalFinal = round2(totalOriginal - totalDiscount);
 
   return {
@@ -253,7 +316,7 @@ export function buildDiscountRecord(input: DiscountRecordInput): DiscountRecordR
       [LD_TYPE]: 'Order',
       [LD_ID]: id,
       seller: { [LD_ID]: organisation },
-      ...(input.customer ? { customer: { [LD_ID]: input.customer } } : {}),
+      ...input.customer ? { customer: { [LD_ID]: input.customer }} : {},
       discount: code,
       discountCode: code,
       orderStatus: 'OrderCompleted',

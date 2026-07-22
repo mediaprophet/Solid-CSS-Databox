@@ -1,19 +1,23 @@
 import {
+  ALLERGEN_CATEGORIES,
   buildAllergyProfile,
   hasAllergen,
   hasDietaryRestriction,
-  ALLERGEN_CATEGORIES,
 } from '../../../../src/databox/cms/modules/allergy-profile/AllergyProfile';
 import {
   buildIngredientDeclaration,
 } from '../../../../src/databox/cms/modules/allergy-profile/IngredientDeclaration';
 import {
-  matchAllergens,
   batchMatchAllergens,
   checkSelectiveDisclosure,
+  matchAllergens,
 } from '../../../../src/databox/cms/modules/allergy-profile/AllergenMatcher';
-import type { AllergyProfileInput, AllergenCategory } from '../../../../src/databox/cms/modules/allergy-profile/AllergyProfile';
-import type { IngredientDeclarationInput } from '../../../../src/databox/cms/modules/allergy-profile/IngredientDeclaration';
+import type {
+  AllergenCategory,
+  AllergyProfileInput,
+} from '../../../../src/databox/cms/modules/allergy-profile/AllergyProfile';
+import type { IngredientDeclarationInput } from
+  '../../../../src/databox/cms/modules/allergy-profile/IngredientDeclaration';
 
 describe('Allergy & Ingredient Safety module', () => {
   const profileInput: AllergyProfileInput = {
@@ -30,8 +34,8 @@ describe('Allergy & Ingredient Safety module', () => {
     organisation: 'https://databox.example.org/org/restaurant',
     ingredients: [
       { name: 'chicken breast', vegetarian: false },
-      { name: 'coconut milk', containsAllergens: [ 'milk' as AllergenCategory ] },
-      { name: 'peanut oil', containsAllergens: [ 'peanuts' as AllergenCategory ] },
+      { name: 'coconut milk', containsAllergens: [ 'milk' ]},
+      { name: 'peanut oil', containsAllergens: [ 'peanuts' ]},
       { name: 'rice' },
     ],
     declaredAt: '2025-07-01T12:00:00Z',
@@ -122,7 +126,7 @@ describe('Allergy & Ingredient Safety module', () => {
       expect(() => buildIngredientDeclaration({
         ...declarationInput,
         ingredients: [
-          { name: 'mystery', containsAllergens: [ 'platinum' as AllergenCategory ] },
+          { name: 'mystery', containsAllergens: [ 'platinum' as AllergenCategory ]},
         ],
       })).toThrow('not a recognised category');
     });
@@ -131,7 +135,7 @@ describe('Allergy & Ingredient Safety module', () => {
       const result = buildIngredientDeclaration({
         ...declarationInput,
         ingredients: [
-          { name: 'chocolate', mayContainAllergens: [ 'tree-nuts' as AllergenCategory ] },
+          { name: 'chocolate', mayContainAllergens: [ 'tree-nuts' ]},
         ],
       });
       expect(result.mayContainAllergens.has('tree-nuts')).toBe(true);
@@ -142,7 +146,7 @@ describe('Allergy & Ingredient Safety module', () => {
       const result = buildIngredientDeclaration({
         ...declarationInput,
         ingredients: [
-          { name: 'rice', isFreeFrom: [ 'gluten', 'dairy' ] },
+          { name: 'rice', isFreeFrom: [ 'gluten', 'dairy' ]},
         ],
       });
       expect(result.freeFrom.has('gluten')).toBe(true);
@@ -173,7 +177,7 @@ describe('Allergy & Ingredient Safety module', () => {
     it('returns safe for non-conflicting item', () => {
       const profile = buildAllergyProfile({
         ...profileInput,
-        allergens: [ 'fish' as AllergenCategory ],
+        allergens: [ 'fish' ],
         dietaryRestrictions: [],
       });
       const declaration = buildIngredientDeclaration({
@@ -192,13 +196,13 @@ describe('Allergy & Ingredient Safety module', () => {
     it('detects may-contain warnings without marking unsafe', () => {
       const profile = buildAllergyProfile({
         ...profileInput,
-        allergens: [ 'tree-nuts' as AllergenCategory ],
+        allergens: [ 'tree-nuts' ],
         dietaryRestrictions: [],
       });
       const declaration = buildIngredientDeclaration({
         ...declarationInput,
         ingredients: [
-          { name: 'chocolate', mayContainAllergens: [ 'tree-nuts' as AllergenCategory ], vegetarian: true },
+          { name: 'chocolate', mayContainAllergens: [ 'tree-nuts' ], vegetarian: true },
         ],
       });
       const result = matchAllergens(profile, declaration);
@@ -216,7 +220,7 @@ describe('Allergy & Ingredient Safety module', () => {
       const declaration = buildIngredientDeclaration({
         ...declarationInput,
         ingredients: [
-          { name: 'wheat flour', containsAllergens: [ 'gluten' as AllergenCategory ], vegetarian: true },
+          { name: 'wheat flour', containsAllergens: [ 'gluten' ], vegetarian: true },
         ],
       });
       const result = matchAllergens(profile, declaration);
@@ -230,18 +234,18 @@ describe('Allergy & Ingredient Safety module', () => {
     it('sorts results with safe items first', () => {
       const profile = buildAllergyProfile({
         ...profileInput,
-        allergens: [ 'peanuts' as AllergenCategory ],
+        allergens: [ 'peanuts' ],
         dietaryRestrictions: [],
       });
       const safeDecl = buildIngredientDeclaration({
         ...declarationInput,
         id: 'https://example.org/decl/safe',
-        ingredients: [ { name: 'rice', vegetarian: true } ],
+        ingredients: [{ name: 'rice', vegetarian: true }],
       });
       const unsafeDecl = buildIngredientDeclaration({
         ...declarationInput,
         id: 'https://example.org/decl/unsafe',
-        ingredients: [ { name: 'peanut sauce', containsAllergens: [ 'peanuts' as AllergenCategory ], vegetarian: true } ],
+        ingredients: [{ name: 'peanut sauce', containsAllergens: [ 'peanuts' ], vegetarian: true }],
       });
       const results = batchMatchAllergens(profile, [ unsafeDecl, safeDecl ]);
 

@@ -10,7 +10,9 @@ export function registerI18nRoutes(router: CmsModuleRouter<(input: HttpHandlerIn
       const locale = negotiateLocale(input.acceptLanguage, input.available, input.defaultLocale);
       writeJson(response, 200, { locale });
     } catch (error: unknown) {
-      writeJson(response, 400, { error: error instanceof Error ? error.message : 'Invalid locale negotiation request.' });
+      writeJson(response, 400, {
+        error: error instanceof Error ? error.message : 'Invalid locale negotiation request.',
+      });
     }
   });
 }

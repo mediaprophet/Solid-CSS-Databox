@@ -1,10 +1,10 @@
-import { describe, it, expect } from '@jest/globals';
+import { describe, expect, it } from '@jest/globals';
 import {
-  applyMappingToTurtle,
   applyMappingToJsonLd,
+  applyMappingToTurtle,
+  type MappingDefinition,
   parseMappingFromTurtle,
   serializeMappingToTurtle,
-  type MappingDefinition,
 } from '../../../../../src/databox/cms/sidecars/RdfMapper';
 
 const SCHEMA = 'https://schema.org/';
@@ -57,7 +57,7 @@ describe('RdfMapper', () => {
           },
         ],
       };
-      const turtle = applyMappingToTurtle(mapping, [ { id: 1 } ]);
+      const turtle = applyMappingToTurtle(mapping, [{ id: 1 }]);
       expect(turtle).toBe('');
     });
 
@@ -77,7 +77,7 @@ describe('RdfMapper', () => {
           },
         ],
       };
-      const turtle = applyMappingToTurtle(mapping, [ { id: 1, desc: 'Hello' } ]);
+      const turtle = applyMappingToTurtle(mapping, [{ id: 1, desc: 'Hello' }]);
       expect(turtle).toContain(`"Hello"@en`);
     });
 
@@ -97,7 +97,7 @@ describe('RdfMapper', () => {
           },
         ],
       };
-      const turtle = applyMappingToTurtle(mapping, [ { id: 1, price: '9.99' } ]);
+      const turtle = applyMappingToTurtle(mapping, [{ id: 1, price: '9.99' }]);
       expect(turtle).toContain(`"9.99"^^<http://www.w3.org/2001/XMLSchema#decimal>`);
     });
 
@@ -117,7 +117,7 @@ describe('RdfMapper', () => {
           },
         ],
       };
-      const turtle = applyMappingToTurtle(mapping, [ { id: 1, friendUri: 'urn:test:2' } ]);
+      const turtle = applyMappingToTurtle(mapping, [{ id: 1, friendUri: 'urn:test:2' }]);
       expect(turtle).toContain(`<${SCHEMA}knows> <urn:test:2>`);
     });
 
@@ -137,7 +137,7 @@ describe('RdfMapper', () => {
           },
         ],
       };
-      const turtle = applyMappingToTurtle(mapping, [ { id: 1, name: 'Hello "World"\n' } ]);
+      const turtle = applyMappingToTurtle(mapping, [{ id: 1, name: 'Hello "World"\n' }]);
       expect(turtle).toContain('\\"World\\"');
       expect(turtle).toContain('\\n');
     });
@@ -169,7 +169,7 @@ describe('RdfMapper', () => {
           },
         ],
       };
-      const jsonld = applyMappingToJsonLd(mapping, [ { id: 1, d: 'Bonjour' } ]);
+      const jsonld = applyMappingToJsonLd(mapping, [{ id: 1, d: 'Bonjour' }]);
       expect(jsonld[0][`${SCHEMA}desc`]).toEqual({ '@value': 'Bonjour', '@language': 'fr' });
     });
   });

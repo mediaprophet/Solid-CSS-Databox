@@ -144,7 +144,7 @@ export interface ConnectionCredentialSubject {
  * `application/vc+jwt` credential; the securing JWS is produced by {@link ConnectionCredentialIssuer}.
  */
 export interface DataboxConnectionCredential {
-  // eslint-disable-next-line @typescript-eslint/naming-convention -- JSON-LD reserved term.
+
   readonly '@context': readonly string[];
   readonly id: string;
   readonly type: readonly string[];

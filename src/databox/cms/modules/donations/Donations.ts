@@ -74,13 +74,6 @@ function round2(value: number): number {
   return Math.round(value * 100) / 100;
 }
 
-function requireNonNegativeFinite(value: number, field: string): number {
-  if (!Number.isFinite(value) || value < 0) {
-    throw new BadRequestHttpError(`${field} must be a non-negative finite number.`);
-  }
-  return value;
-}
-
 function requirePositiveFinite(value: number, field: string): number {
   if (!Number.isFinite(value) || value <= 0) {
     throw new BadRequestHttpError(`${field} must be a positive finite number.`);
@@ -120,7 +113,7 @@ function requireCurrency(value: string): string {
 }
 
 function requireFrequency(value: string): DonationFrequency {
-  const valid: DonationFrequency[] = ['one-off', 'weekly', 'monthly', 'quarterly', 'annually'];
+  const valid: DonationFrequency[] = [ 'one-off', 'weekly', 'monthly', 'quarterly', 'annually' ];
   if (!valid.includes(value as DonationFrequency)) {
     throw new BadRequestHttpError(`Donation frequency must be one of: ${valid.join(', ')}.`);
   }
@@ -149,7 +142,9 @@ export function processDonation(
   }
 
   if (currency !== campaign.currency) {
-    throw new BadRequestHttpError(`Donation currency (${currency}) does not match campaign currency (${campaign.currency}).`);
+    throw new BadRequestHttpError(
+      `Donation currency (${currency}) does not match campaign currency (${campaign.currency}).`,
+    );
   }
 
   const deadline = new Date(campaign.deadline);
@@ -158,9 +153,9 @@ export function processDonation(
   }
 
   const newRaisedTotal = round2(campaign.raisedAmount + amount);
-  const progressPercent = campaign.targetAmount > 0
-    ? Math.min(100, round2((newRaisedTotal / campaign.targetAmount) * 100))
-    : 0;
+  const progressPercent = campaign.targetAmount > 0 ?
+      Math.min(100, round2((newRaisedTotal / campaign.targetAmount) * 100)) :
+    0;
 
   return {
     donationId: `don-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
@@ -244,7 +239,7 @@ export function buildTransparencyReport(input: DonationTransparencyReportInput):
         { name: 'totalRaised', value: totalRaised },
         { name: 'currency', value: currency },
       ],
-      distribution: Array.from(allocations.entries()).map(([allocatedTo, amount]) => ({
+      distribution: [ ...allocations.entries() ].map(([ allocatedTo, amount ]) => ({
         name: allocatedTo,
         amount,
         percent: totalRaised > 0 ? round2((amount / totalRaised) * 100) : 0,

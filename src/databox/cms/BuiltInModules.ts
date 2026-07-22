@@ -1,5 +1,5 @@
-import type { DataboxModuleRegistry } from './DataboxModuleRegistry';
 import { CMS } from '../../util/Vocabularies';
+import type { DataboxModuleRegistry } from './DataboxModuleRegistry';
 import { MENU_MODULE_MANIFEST } from './modules/menu/Menu';
 import { CASH_REGISTER_MODULE_MANIFEST } from './modules/pos/CashRegister';
 import { NATIVE_POS_DEVICE_MODULE_MANIFEST } from './modules/pos/NativePosDeviceContract';
@@ -172,8 +172,15 @@ export function ensureBuiltIns(registry: DataboxModuleRegistry): void {
       id: 'profile',
       name: 'Member Pods & Profiles',
       version: '0.1.0',
-      description: 'Member/person pod provisioning, LDN inbox communication, bidirectional interaction, and lifecycle management.',
-      capabilities: [ 'cms:profile', 'cms:member-pod', 'cms:ldn-inbox', 'cms:member-interaction', 'cms:member-lifecycle' ],
+      description: 'Member/person pod provisioning, LDN inbox communication, ' +
+        'bidirectional interaction, and lifecycle management.',
+      capabilities: [
+        'cms:profile',
+        'cms:member-pod',
+        'cms:ldn-inbox',
+        'cms:member-interaction',
+        'cms:member-lifecycle',
+      ],
       routes: [
         'POST /.databox/cms/profile/build',
         'POST /.databox/cms/members/provision',
@@ -320,7 +327,15 @@ export function ensureBuiltIns(registry: DataboxModuleRegistry): void {
     registry.setEnabled(TABLE_SESSION_MODULE_MANIFEST.id, true);
   }
 
-  const newModules: Record<string, { name: string; description: string; capabilities: string[]; routes: string[]; configShape: string; navLabel: string; path: string }> = {
+  const newModules: Record<string, {
+    name: string;
+    description: string;
+    capabilities: string[];
+    routes: string[];
+    configShape: string;
+    navLabel: string;
+    path: string;
+  }> = {
     consent: {
       name: 'Consent Management',
       description: 'DPV-shaped consent records (grant/withdraw) as JSON-LD.',
@@ -442,7 +457,11 @@ export function ensureBuiltIns(registry: DataboxModuleRegistry): void {
       name: 'Theming & Design Tokens',
       description: 'W3C DTCG design token validation, CSS compilation, and Forge token projection.',
       capabilities: [ 'cms:theming', 'cms:design-tokens' ],
-      routes: [ 'POST /.databox/cms/theming/validate', 'POST /.databox/cms/theming/css', 'POST /.databox/cms/theming/forge-tokens' ],
+      routes: [
+        'POST /.databox/cms/theming/validate',
+        'POST /.databox/cms/theming/css',
+        'POST /.databox/cms/theming/forge-tokens',
+      ],
       configShape: `${CMS.namespace}ThemingConfigShape`,
       navLabel: 'Theming',
       path: '/theming',
@@ -548,7 +567,9 @@ export function ensureBuiltIns(registry: DataboxModuleRegistry): void {
     },
     tax: {
       name: 'Tax Management',
-      description: 'Tax code management (GST/VAT/Sales Tax), tax rate rules per category, tax-inclusive/exclusive pricing, tax exemption certificates, tax reports as RDF.',
+      description: 'Tax code management (GST/VAT/Sales Tax), tax rate rules per ' +
+        'category, tax-inclusive/exclusive pricing, tax exemption certificates, ' +
+        'tax reports as RDF.',
       capabilities: [ 'cms:tax', 'cms:tax-computation', 'cms:tax-exemption', 'cms:tax-report' ],
       routes: [ 'POST /.databox/cms/tax/compute', 'POST /.databox/cms/tax/report' ],
       configShape: `${CMS.namespace}TaxConfigShape`,
@@ -557,16 +578,24 @@ export function ensureBuiltIns(registry: DataboxModuleRegistry): void {
     },
     concessions: {
       name: 'Concessions',
-      description: 'Concession rate management for eligible groups (pensioners, students, veterans), concession eligibility verification via VC, concession pricing rules at POS.',
+      description: 'Concession rate management for eligible groups (pensioners, ' +
+        'students, veterans), concession eligibility verification via VC, ' +
+        'concession pricing rules at POS.',
       capabilities: [ 'cms:concessions', 'cms:concession-eligibility', 'cms:concession-pricing' ],
-      routes: [ 'POST /.databox/cms/concessions/eligibility', 'POST /.databox/cms/concessions/pricing', 'POST /.databox/cms/concessions/record' ],
+      routes: [
+        'POST /.databox/cms/concessions/eligibility',
+        'POST /.databox/cms/concessions/pricing',
+        'POST /.databox/cms/concessions/record',
+      ],
       configShape: `${CMS.namespace}ConcessionsConfigShape`,
       navLabel: 'Concessions',
       path: '/concessions',
     },
     discounts: {
       name: 'Discounts & Promotions',
-      description: 'Discount code management (promo codes, seasonal sales, flash deals), bulk/quantity discounts, bundle discounts, member-only discounts, discount stacking rules.',
+      description: 'Discount code management (promo codes, seasonal sales, flash ' +
+        'deals), bulk/quantity discounts, bundle discounts, member-only ' +
+        'discounts, discount stacking rules.',
       capabilities: [ 'cms:discounts', 'cms:discount-codes', 'cms:promotions' ],
       routes: [ 'POST /.databox/cms/discounts/apply', 'POST /.databox/cms/discounts/record' ],
       configShape: `${CMS.namespace}DiscountsConfigShape`,
@@ -575,106 +604,220 @@ export function ensureBuiltIns(registry: DataboxModuleRegistry): void {
     },
     donations: {
       name: 'Donations & Fundraising',
-      description: 'Donation campaign management, donation intake (one-off and recurring), donor receipts as VCs, transparency reporting, recurring donation scheduling.',
-      capabilities: [ 'cms:donations', 'cms:donation-campaigns', 'cms:donation-receipts', 'cms:donation-transparency' ],
-      routes: [ 'POST /.databox/cms/donations/process', 'POST /.databox/cms/donations/receipt', 'POST /.databox/cms/donations/transparency' ],
+      description: 'Donation campaign management, donation intake (one-off and ' +
+        'recurring), donor receipts as VCs, transparency reporting, recurring ' +
+        'donation scheduling.',
+      capabilities: [
+        'cms:donations',
+        'cms:donation-campaigns',
+        'cms:donation-receipts',
+        'cms:donation-transparency',
+      ],
+      routes: [
+        'POST /.databox/cms/donations/process',
+        'POST /.databox/cms/donations/receipt',
+        'POST /.databox/cms/donations/transparency',
+      ],
       configShape: `${CMS.namespace}DonationsConfigShape`,
       navLabel: 'Donations',
       path: '/donations',
     },
     notifications: {
       name: 'Notifications',
-      description: 'Multi-channel notification management (in-app, email, SMS, push, LDN), channel subscriptions, priority-based dispatch, read tracking, topic filtering.',
+      description: 'Multi-channel notification management (in-app, email, SMS, ' +
+        'push, LDN), channel subscriptions, priority-based dispatch, read ' +
+        'tracking, topic filtering.',
       capabilities: [ 'cms:notifications', 'cms:notification-channels', 'cms:notification-subscriptions' ],
-      routes: [ 'POST /.databox/cms/notifications/create', 'POST /.databox/cms/notifications/subscribe', 'POST /.databox/cms/notifications/read', 'POST /.databox/cms/notifications/query' ],
+      routes: [
+        'POST /.databox/cms/notifications/create',
+        'POST /.databox/cms/notifications/subscribe',
+        'POST /.databox/cms/notifications/read',
+        'POST /.databox/cms/notifications/query',
+      ],
       configShape: `${CMS.namespace}NotificationsConfigShape`,
       navLabel: 'Notifications',
       path: '/notifications',
     },
     'allergy-profile': {
       name: 'Allergy & Ingredient Safety',
-      description: 'Consumer allergy/dietary profile management, retailer ingredient declarations with FSANZ/EU allergen categories, allergen matching engine, selective disclosure for secret recipes.',
-      capabilities: [ 'cms:allergy-profile', 'cms:ingredient-declaration', 'cms:allergen-matching', 'cms:selective-disclosure' ],
-      routes: [ 'POST /.databox/cms/allergy-profile/build', 'POST /.databox/cms/ingredients/declare', 'POST /.databox/cms/allergens/match', 'POST /.databox/cms/allergens/batch-match', 'POST /.databox/cms/allergens/selective-disclosure' ],
+      description: 'Consumer allergy/dietary profile management, retailer ingredient ' +
+        'declarations with FSANZ/EU allergen categories, allergen matching ' +
+        'engine, selective disclosure for secret recipes.',
+      capabilities: [
+        'cms:allergy-profile',
+        'cms:ingredient-declaration',
+        'cms:allergen-matching',
+        'cms:selective-disclosure',
+      ],
+      routes: [
+        'POST /.databox/cms/allergy-profile/build',
+        'POST /.databox/cms/ingredients/declare',
+        'POST /.databox/cms/allergens/match',
+        'POST /.databox/cms/allergens/batch-match',
+        'POST /.databox/cms/allergens/selective-disclosure',
+      ],
       configShape: `${CMS.namespace}AllergyProfileConfigShape`,
       navLabel: 'Allergy Safety',
       path: '/allergy-safety',
     },
     'device-auth': {
       name: 'Device Identity (mTLS)',
-      description: 'Device enrolment with keypair generation, mTLS client certificate verification, device revocation, WebID-TLS authentication for POS terminals, customer displays, and IoT devices.',
+      description: 'Device enrolment with keypair generation, mTLS client certificate ' +
+        'verification, device revocation, WebID-TLS authentication for POS ' +
+        'terminals, customer displays, and IoT devices.',
       capabilities: [ 'cms:device-auth', 'cms:device-enrolment', 'cms:device-revocation', 'cms:mtls' ],
-      routes: [ 'POST /.databox/cms/device-auth/enrol', 'POST /.databox/cms/device-auth/verify', 'POST /.databox/cms/device-auth/revoke' ],
+      routes: [
+        'POST /.databox/cms/device-auth/enrol',
+        'POST /.databox/cms/device-auth/verify',
+        'POST /.databox/cms/device-auth/revoke',
+      ],
       configShape: `${CMS.namespace}DeviceAuthConfigShape`,
       navLabel: 'Device Auth',
       path: '/device-auth',
     },
     hr: {
       name: 'HR & Workforce',
-      description: 'Employee/contractor onboarding, shift assignment, compliance credential tracking, payslip generation, expense claims.',
-      capabilities: [ 'cms:hr', 'cms:hr-onboarding', 'cms:hr-shifts', 'cms:hr-compliance', 'cms:hr-payroll', 'cms:hr-expenses' ],
-      routes: [ 'POST /.databox/cms/hr/onboard', 'POST /.databox/cms/hr/shift/assign', 'POST /.databox/cms/hr/compliance/track', 'POST /.databox/cms/hr/payslip/generate', 'POST /.databox/cms/hr/expense/claim' ],
+      description: 'Employee/contractor onboarding, shift assignment, compliance ' +
+        'credential tracking, payslip generation, expense claims.',
+      capabilities: [
+        'cms:hr',
+        'cms:hr-onboarding',
+        'cms:hr-shifts',
+        'cms:hr-compliance',
+        'cms:hr-payroll',
+        'cms:hr-expenses',
+      ],
+      routes: [
+        'POST /.databox/cms/hr/onboard',
+        'POST /.databox/cms/hr/shift/assign',
+        'POST /.databox/cms/hr/compliance/track',
+        'POST /.databox/cms/hr/payslip/generate',
+        'POST /.databox/cms/hr/expense/claim',
+      ],
       configShape: `${CMS.namespace}HrConfigShape`,
       navLabel: 'HR',
       path: '/hr',
     },
     'driver-management': {
       name: 'Delivery Driver Management',
-      description: 'Driver registration with zones and availability, job offer creation, job status tracking, dispatch matching engine.',
+      description: 'Driver registration with zones and availability, job offer ' +
+        'creation, job status tracking, dispatch matching engine.',
       capabilities: [ 'cms:driver-management', 'cms:driver-registration', 'cms:job-offers', 'cms:dispatch' ],
-      routes: [ 'POST /.databox/cms/delivery/driver/register', 'POST /.databox/cms/delivery/job/offer', 'POST /.databox/cms/delivery/job/status', 'POST /.databox/cms/delivery/dispatch/match' ],
+      routes: [
+        'POST /.databox/cms/delivery/driver/register',
+        'POST /.databox/cms/delivery/job/offer',
+        'POST /.databox/cms/delivery/job/status',
+        'POST /.databox/cms/delivery/dispatch/match',
+      ],
       configShape: `${CMS.namespace}DriverManagementConfigShape`,
       navLabel: 'Drivers',
       path: '/drivers',
     },
     print: {
       name: 'Print Shop',
-      description: 'Print service catalogue, job intake with specifications, job status tracking through prepress/proofing/printing/finishing pipeline, inter-org B2B print job submission with ODRL licence enforcement.',
-      capabilities: [ 'cms:print', 'cms:print-services', 'cms:print-jobs', 'cms:print-inter-org' ],
-      routes: [ 'POST /.databox/cms/print/service/create', 'POST /.databox/cms/print/job/create', 'POST /.databox/cms/print/job/status', 'POST /.databox/cms/print/inter-org/submit' ],
+      description: 'Print service catalogue, job intake with specifications, job status ' +
+        'tracking through prepress/proofing/printing/finishing pipeline, ' +
+        'inter-org B2B print job submission with ODRL licence enforcement.',
+      capabilities: [
+        'cms:print',
+        'cms:print-services',
+        'cms:print-jobs',
+        'cms:print-inter-org',
+      ],
+      routes: [
+        'POST /.databox/cms/print/service/create',
+        'POST /.databox/cms/print/job/create',
+        'POST /.databox/cms/print/job/status',
+        'POST /.databox/cms/print/inter-org/submit',
+      ],
       configShape: `${CMS.namespace}PrintShopConfigShape`,
       navLabel: 'Print Shop',
       path: '/print',
     },
     'org-apps': {
       name: 'Org App Container',
-      description: 'WASM/PWA container that fetches app profiles, UI modules, and per-install licences from the CMS. Supports local-only and remote-capable network scopes, per-install licence VCs, and profile-driven module availability.',
-      capabilities: [ 'cms:org-apps', 'cms:app-profiles', 'cms:app-licences', 'cms:container-boot', 'cms:network-scope' ],
-      routes: [ 'POST /.databox/cms/org-apps/profile/build', 'POST /.databox/cms/org-apps/licence/issue', 'POST /.databox/cms/org-apps/licence/validate', 'POST /.databox/cms/org-apps/boot', 'POST /.databox/cms/org-apps/network-scope/check' ],
+      description: 'WASM/PWA container that fetches app profiles, UI modules, and per-' +
+        'install licences from the CMS. Supports local-only and remote-capable ' +
+        'network scopes, per-install licence VCs, and profile-driven module ' +
+        'availability.',
+      capabilities: [
+        'cms:org-apps',
+        'cms:app-profiles',
+        'cms:app-licences',
+        'cms:container-boot',
+        'cms:network-scope',
+      ],
+      routes: [
+        'POST /.databox/cms/org-apps/profile/build',
+        'POST /.databox/cms/org-apps/licence/issue',
+        'POST /.databox/cms/org-apps/licence/validate',
+        'POST /.databox/cms/org-apps/boot',
+        'POST /.databox/cms/org-apps/network-scope/check',
+      ],
       configShape: `${CMS.namespace}OrgAppsConfigShape`,
       navLabel: 'Org Apps',
       path: '/org-apps',
     },
-    'barcode': {
+    barcode: {
       name: 'Barcode / QR Scanner',
-      description: 'GS1-aware barcode and QR code scanning. Parses GS1 application identifiers (AI), validates GTIN check digits, detects symbology (EAN/UPC/Code-128/Code-39/QR/DataMatrix), and looks up products by GTIN in the catalogue.',
+      description: 'GS1-aware barcode and QR code scanning. Parses GS1 application ' +
+        'identifiers (AI), validates GTIN check digits, detects symbology ' +
+        '(EAN/UPC/Code-128/Code-39/QR/DataMatrix), and looks up products by ' +
+        'GTIN in the catalogue.',
       capabilities: [ 'cms:barcode', 'cms:gs1', 'cms:gtin', 'cms:product-lookup' ],
       routes: [ 'POST /.databox/cms/barcode/scan', 'POST /.databox/cms/barcode/lookup' ],
       configShape: `${CMS.namespace}BarcodeConfigShape`,
       navLabel: 'Barcode Scanner',
       path: '/barcode',
     },
-    'eftpos': {
+    eftpos: {
       name: 'EFTPOS / Card Reader',
-      description: 'EFTPOS terminal integration for card payments. Supports multiple providers (Tyro, Linkly, Westpac, CBA, NAB, ANZ, Stripe Terminal, Square Terminal, Sumup) via IPG/REST/SOAP/HID/SERIAL protocols. Handles purchase, refund, cashout, preauth, void, and settlement transactions.',
-      capabilities: [ 'cms:eftpos', 'cms:card-payment', 'cms:terminal-integration', 'cms:settlement' ],
-      routes: [ 'POST /.databox/cms/eftpos/transaction', 'POST /.databox/cms/eftpos/settlement', 'POST /.databox/cms/eftpos/status' ],
+      description: 'EFTPOS terminal integration for card payments. Supports multiple ' +
+        'providers (Tyro, Linkly, Westpac, CBA, NAB, ANZ, Stripe Terminal, ' +
+        'Square Terminal, Sumup) via IPG/REST/SOAP/HID/SERIAL protocols. ' +
+        'Handles purchase, refund, cashout, preauth, void, and settlement ' +
+        'transactions.',
+      capabilities: [
+        'cms:eftpos',
+        'cms:card-payment',
+        'cms:terminal-integration',
+        'cms:settlement',
+      ],
+      routes: [
+        'POST /.databox/cms/eftpos/transaction',
+        'POST /.databox/cms/eftpos/settlement',
+        'POST /.databox/cms/eftpos/status',
+      ],
       configShape: `${CMS.namespace}EftposConfigShape`,
       navLabel: 'EFTPOS Terminal',
       path: '/eftpos',
     },
-    'backups': {
+    backups: {
       name: 'Password-Protected Backups',
-      description: 'AES-256-GCM encrypted backups of CMS resources with scrypt key derivation. Supports JSON-LD, Turtle, and N-Quads formats. Password-protected with manifest generation for audit trails.',
-      capabilities: [ 'cms:backups', 'cms:encrypted-backup', 'cms:restore', 'cms:backup-manifest' ],
-      routes: [ 'POST /.databox/cms/backups/create', 'POST /.databox/cms/backups/restore', 'POST /.databox/cms/backups/manifest' ],
+      description: 'AES-256-GCM encrypted backups of CMS resources with scrypt key ' +
+        'derivation. Supports JSON-LD, Turtle, and N-Quads formats. Password-' +
+        'protected with manifest generation for audit trails.',
+      capabilities: [
+        'cms:backups',
+        'cms:encrypted-backup',
+        'cms:restore',
+        'cms:backup-manifest',
+      ],
+      routes: [
+        'POST /.databox/cms/backups/create',
+        'POST /.databox/cms/backups/restore',
+        'POST /.databox/cms/backups/manifest',
+      ],
       configShape: `${CMS.namespace}BackupConfigShape`,
       navLabel: 'Backups',
       path: '/backups',
     },
-    'accounting': {
+    accounting: {
       name: 'Accounting Import / Export',
-      description: 'Bridge to leading accounting packages (Xero, MYOB, QuickBooks, Sage) with CSV, OFX, QIF, and JSON-LD format support. Exports invoices, payments, journal entries, tax summaries, contacts, and items. Imports chart of accounts, contacts, items, and opening balances.',
+      description: 'Bridge to leading accounting packages (Xero, MYOB, QuickBooks, ' +
+        'Sage) with CSV, OFX, QIF, and JSON-LD format support. Exports invoices, ' +
+        'payments, journal entries, tax summaries, contacts, and items. Imports ' +
+        'chart of accounts, contacts, items, and opening balances.',
       capabilities: [ 'cms:accounting', 'cms:accounting-export', 'cms:accounting-import', 'cms:chart-of-accounts' ],
       routes: [ 'POST /.databox/cms/accounting/export', 'POST /.databox/cms/accounting/import' ],
       configShape: `${CMS.namespace}AccountingConfigShape`,

@@ -7,23 +7,25 @@ import type { AccessPolicy, PresentedCredential } from './CredentialGate';
 function assertAccessPolicy(policy: unknown): asserts policy is AccessPolicy {
   if (
     !isRecord(policy) ||
-    typeof (policy as Record<string, unknown>).resource !== 'string' ||
-    !Array.isArray((policy as Record<string, unknown>).acceptedIssuers) ||
-    typeof (policy as Record<string, unknown>).requiredClaim !== 'string'
+    typeof policy.resource !== 'string' ||
+    !Array.isArray(policy.acceptedIssuers) ||
+    typeof policy.requiredClaim !== 'string'
   ) {
     throw new TypeError('An access policy needs resource, acceptedIssuers array, and requiredClaim.');
   }
-  for (const issuer of (policy as Record<string, unknown>).acceptedIssuers as unknown[]) {
-    if (typeof issuer !== 'string') throw new TypeError('Each acceptedIssuer must be a string.');
+  for (const issuer of policy.acceptedIssuers as unknown[]) {
+    if (typeof issuer !== 'string') {
+      throw new TypeError('Each acceptedIssuer must be a string.');
+    }
   }
 }
 
 function assertPresentedCredential(cred: unknown): asserts cred is PresentedCredential {
   if (
     !isRecord(cred) ||
-    typeof (cred as Record<string, unknown>).issuer !== 'string' ||
-    !isRecord((cred as Record<string, unknown>).claims) ||
-    typeof (cred as Record<string, unknown>).expired !== 'boolean'
+    typeof cred.issuer !== 'string' ||
+    !isRecord(cred.claims) ||
+    typeof cred.expired !== 'boolean'
   ) {
     throw new TypeError('A presented credential needs issuer, claims object, and expired boolean.');
   }
@@ -33,16 +35,16 @@ export function registerAccessRoutes(router: CmsModuleRouter<(input: HttpHandler
   router.register('POST', '/access/evaluate', async({ request, response }): Promise<void> => {
     try {
       const body = await readJsonBody<Record<string, unknown>>(request);
-      if (!isRecord(body) || !isRecord((body as Record<string, unknown>).policy) || !isRecord((body as Record<string, unknown>).credential)) {
+      if (!isRecord(body) || !isRecord(body.policy) || !isRecord(body.credential)) {
         throw new TypeError('An evaluate request needs policy and credential objects.');
       }
-      
-      const policy = (body as Record<string, unknown>).policy as unknown;
-      const credential = (body as Record<string, unknown>).credential as unknown;
-      
+
+      const policy = body.policy;
+      const credential = body.credential;
+
       assertAccessPolicy(policy);
       assertPresentedCredential(credential);
-      
+
       const decision = evaluateAccess(policy, credential);
       writeJson(response, 200, decision);
     } catch (error: unknown) {

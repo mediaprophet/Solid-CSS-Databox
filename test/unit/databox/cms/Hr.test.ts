@@ -1,9 +1,9 @@
 import {
-  onboardEmployee,
   assignShift,
-  trackCompliance,
   generatePayslip,
+  onboardEmployee,
   submitExpenseClaim,
+  trackCompliance,
 } from '../../../../src/databox/cms/modules/hr/Hr';
 
 describe('HR module', () => {
@@ -42,7 +42,7 @@ describe('HR module', () => {
         contractUrl: 'https://databox.example.org/contracts/001',
         podUrl: 'https://databox.example.org/pods/alice',
       });
-      expect(result.record.target['@id']).toContain('contracts/001');
+      expect((result.record.target as Record<string, unknown>)['@id']).toContain('contracts/001');
       expect(result.record['solid:pod']).toContain('pods/alice');
     });
   });
@@ -157,7 +157,7 @@ describe('HR module', () => {
         grossAmount: 2000,
         netAmount: 1500,
         currency: 'AUD',
-        deductions: [ { label: 'Tax', amount: 100 } ],
+        deductions: [{ label: 'Tax', amount: 100 }],
         payDate: '2025-07-20',
       })).toThrow('does not match');
     });
@@ -169,7 +169,7 @@ describe('HR module', () => {
         id: 'https://databox.example.org/expenses/001',
         person: 'https://databox.example.org/members/alice',
         organisation: 'https://databox.example.org/org/restaurant',
-        amount: 75.50,
+        amount: 75.5,
         currency: 'AUD',
         category: 'Travel',
         description: 'Taxi to supplier',

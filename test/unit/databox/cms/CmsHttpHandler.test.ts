@@ -134,7 +134,7 @@ function websitePublishBody(overrides: Record<string, unknown> = {}): string {
 function websiteSeoBody(overrides: Record<string, unknown> = {}): string {
   return JSON.stringify({
     baseIri: 'http://localhost:3000/www/',
-    sitemap: { pages: ['http://localhost:3000/www/'] },
+    sitemap: { pages: [ 'http://localhost:3000/www/' ]},
     robots: { siteUrl: 'http://localhost:3000/', sitemapUrl: 'http://localhost:3000/www/sitemap.xml' },
     ...overrides,
   });
@@ -144,7 +144,7 @@ function websiteSitemapBody(overrides: Record<string, unknown> = {}): string {
   return JSON.stringify({
     baseIri: 'http://localhost:3000/www/',
     businessUrl: 'http://localhost:3000/',
-    catalogueItemIds: ['http://localhost:3000/catalogue/flat-white#item'],
+    catalogueItemIds: [ 'http://localhost:3000/catalogue/flat-white#item' ],
     ...overrides,
   });
 }

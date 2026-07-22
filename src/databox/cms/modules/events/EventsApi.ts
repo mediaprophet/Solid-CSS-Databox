@@ -7,20 +7,20 @@ import type { EventInput } from './Event';
 function assertEventInput(body: unknown): asserts body is EventInput {
   if (
     !isRecord(body) ||
-    typeof (body as Record<string, unknown>).id !== 'string' ||
-    typeof (body as Record<string, unknown>).name !== 'string' ||
-    typeof (body as Record<string, unknown>).startDate !== 'string'
+    typeof body.id !== 'string' ||
+    typeof body.name !== 'string' ||
+    typeof body.startDate !== 'string'
   ) {
     throw new TypeError('An events request needs an id, name, and startDate strings.');
   }
 
-  if ((body as Record<string, unknown>).endDate !== undefined && typeof (body as Record<string, unknown>).endDate !== 'string') {
+  if (body.endDate !== undefined && typeof body.endDate !== 'string') {
     throw new TypeError('endDate must be a string if provided.');
   }
-  if ((body as Record<string, unknown>).location !== undefined && typeof (body as Record<string, unknown>).location !== 'string') {
+  if (body.location !== undefined && typeof body.location !== 'string') {
     throw new TypeError('location must be a string if provided.');
   }
-  if ((body as Record<string, unknown>).organizer !== undefined && typeof (body as Record<string, unknown>).organizer !== 'string') {
+  if (body.organizer !== undefined && typeof body.organizer !== 'string') {
     throw new TypeError('organizer must be a string if provided.');
   }
 }

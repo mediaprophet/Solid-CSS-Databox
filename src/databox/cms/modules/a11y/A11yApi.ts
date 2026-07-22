@@ -10,7 +10,9 @@ export function registerA11yRoutes(router: CmsModuleRouter<(input: HttpHandlerIn
       const input = await readJsonBody<unknown>(request);
       writeJson(response, 200, auditAccessibility(input as A11yInput));
     } catch (error: unknown) {
-      writeJson(response, 400, { error: error instanceof Error ? error.message : 'Invalid accessibility audit request.' });
+      writeJson(response, 400, {
+        error: error instanceof Error ? error.message : 'Invalid accessibility audit request.',
+      });
     }
   });
 }

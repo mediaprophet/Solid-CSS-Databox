@@ -6,6 +6,7 @@ const LD_ID = '@id';
 
 /**
  * FSANZ / EU standard allergen categories.
+ *
  * @see https://www.foodstandards.gov.au/consumer/foodallergies
  */
 export const ALLERGEN_CATEGORIES = [
@@ -66,14 +67,6 @@ function requireUri(value: string, field: string): string {
   } catch {
     throw new BadRequestHttpError(`An allergy profile ${field} must be an absolute URI.`);
   }
-}
-
-function requireNonEmpty(value: string, field: string): string {
-  const trimmed = value.trim();
-  if (trimmed.length === 0) {
-    throw new BadRequestHttpError(`An allergy profile ${field} must not be empty.`);
-  }
-  return trimmed;
 }
 
 function requireDate(value: string, field: string): string {

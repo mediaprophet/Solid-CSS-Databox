@@ -13,16 +13,16 @@ export type EftposProtocol = 'IPG' | 'REST' | 'SOAP' | 'HID' | 'SERIAL';
  * Supported EFTPOS terminal providers.
  */
 export type EftposProvider =
-  | 'tyro'
-  | 'linkly'
-  | 'westpac'
-  | 'commbank'
-  | 'nab'
-  | 'anz'
-  | 'stripe-terminal'
-  | 'square-terminal'
-  | 'sumup'
-  | 'custom';
+  | 'tyro' |
+  'linkly' |
+  'westpac' |
+  'commbank' |
+  'nab' |
+  'anz' |
+  'stripe-terminal' |
+  'square-terminal' |
+  'sumup' |
+  'custom';
 
 /**
  * EFTPOS terminal connection configuration.
@@ -55,23 +55,23 @@ export interface EftposTransactionInput {
 }
 
 export type EftposTransactionType =
-  | 'PURCHASE'
-  | 'REFUND'
-  | 'CASHOUT'
-  | 'PURCHASE_PLUS_CASHOUT'
-  | 'PREAUTH'
-  | 'PREAUTH_COMPLETE'
-  | 'VOID'
-  | 'SETTLEMENT';
+  | 'PURCHASE' |
+  'REFUND' |
+  'CASHOUT' |
+  'PURCHASE_PLUS_CASHOUT' |
+  'PREAUTH' |
+  'PREAUTH_COMPLETE' |
+  'VOID' |
+  'SETTLEMENT';
 
 export type EftposTransactionStatus =
-  | 'APPROVED'
-  | 'DECLINED'
-  | 'CANCELLED'
-  | 'TIMEOUT'
-  | 'PENDING'
-  | 'SETTLED'
-  | 'FAILED';
+  | 'APPROVED' |
+  'DECLINED' |
+  'CANCELLED' |
+  'TIMEOUT' |
+  'PENDING' |
+  'SETTLED' |
+  'FAILED';
 
 export interface EftposTransactionResult {
   readonly terminalId: string;
@@ -127,7 +127,7 @@ function requirePositiveAmount(value: number, field: string): number {
 
 function requireCurrency(value: string): string {
   const currency = value.trim().toUpperCase();
-  if (!/^[A-Z]{3}$/.test(currency)) {
+  if (!/^[A-Z]{3}$/u.test(currency)) {
     throw new BadRequestHttpError('EFTPOS currency must be a three-letter ISO 4217 code.');
   }
   return currency;
@@ -153,7 +153,9 @@ export function processEftposTransaction(
   const currency = requireCurrency(input.currency);
 
   if (terminalId !== config.terminalId) {
-    throw new BadRequestHttpError(`Terminal ID "${terminalId}" does not match configured terminal "${config.terminalId}".`);
+    throw new BadRequestHttpError(
+      `Terminal ID "${terminalId}" does not match configured terminal "${config.terminalId}".`,
+    );
   }
 
   if (currency !== config.currency) {
@@ -175,7 +177,9 @@ export function processEftposTransaction(
   }
 
   const transactionId = generateTransactionId();
-  const totalAmount = Math.round((amount + (cashoutAmount ?? 0) + (tipAmount ?? 0) + (surchargeAmount ?? 0)) * 100) / 100;
+  const totalAmount = Math.round(
+    (amount + (cashoutAmount ?? 0) + (tipAmount ?? 0) + (surchargeAmount ?? 0)) * 100,
+  ) / 100;
 
   const record: Record<string, unknown> = {
     [LD_CONTEXT]: [ 'https://schema.org/' ],
@@ -189,12 +193,24 @@ export function processEftposTransaction(
     totalAmount,
   };
 
-  if (input.reference) record.reference = input.reference;
-  if (input.receiptNumber) record.receiptNumber = input.receiptNumber;
-  if (input.operatorId) record.operatorId = input.operatorId;
-  if (cashoutAmount !== undefined) record.cashoutAmount = cashoutAmount;
-  if (tipAmount !== undefined) record.tipAmount = tipAmount;
-  if (surchargeAmount !== undefined) record.surchargeAmount = surchargeAmount;
+  if (input.reference) {
+    record.reference = input.reference;
+  }
+  if (input.receiptNumber) {
+    record.receiptNumber = input.receiptNumber;
+  }
+  if (input.operatorId) {
+    record.operatorId = input.operatorId;
+  }
+  if (cashoutAmount !== undefined) {
+    record.cashoutAmount = cashoutAmount;
+  }
+  if (tipAmount !== undefined) {
+    record.tipAmount = tipAmount;
+  }
+  if (surchargeAmount !== undefined) {
+    record.surchargeAmount = surchargeAmount;
+  }
 
   // The actual terminal communication is delegated to the native edge driver.
   // This function produces the validated request that the driver will execute.

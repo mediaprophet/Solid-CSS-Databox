@@ -1,7 +1,7 @@
 import type { CmsModuleRouter } from '../../CmsModuleRouter';
 import type { HttpHandlerInput } from '../../../../server/HttpHandler';
 import { readJsonBody, writeJson } from '../../CmsHttpUtils';
-import type { DiscountCode, DiscountApplicationInput, DiscountRecordInput } from './Discounts';
+import type { DiscountApplicationInput, DiscountCode, DiscountRecordInput } from './Discounts';
 import { applyDiscount, buildDiscountRecord } from './Discounts';
 
 export function registerDiscountsRoutes(router: CmsModuleRouter<(input: HttpHandlerInput) => Promise<void>>): void {
@@ -11,7 +11,9 @@ export function registerDiscountsRoutes(router: CmsModuleRouter<(input: HttpHand
       const { discount, application } = body as { discount: DiscountCode; application: DiscountApplicationInput };
       writeJson(response, 200, applyDiscount(discount, application));
     } catch (error: unknown) {
-      writeJson(response, 400, { error: error instanceof Error ? error.message : 'Invalid discount application request.' });
+      writeJson(response, 400, {
+        error: error instanceof Error ? error.message : 'Invalid discount application request.',
+      });
     }
   });
 

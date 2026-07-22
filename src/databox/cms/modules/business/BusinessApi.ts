@@ -1,7 +1,7 @@
 import type { CmsModuleRouter } from '../../CmsModuleRouter';
 import type { HttpHandlerInput } from '../../../../server/HttpHandler';
 import { readJsonBody, writeJson } from '../../CmsHttpUtils';
-import type { OpeningHoursInput, DayHours } from './OpeningHours';
+import type { DayHours, OpeningHoursInput } from './OpeningHours';
 import { buildOpeningHours, isOpen } from './OpeningHours';
 
 export function registerBusinessRoutes(router: CmsModuleRouter<(input: HttpHandlerInput) => Promise<void>>): void {

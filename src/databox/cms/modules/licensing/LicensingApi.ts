@@ -7,24 +7,28 @@ import type { LicenceInput } from './Licence';
 function assertLicenceInput(body: unknown): asserts body is LicenceInput {
   if (
     !isRecord(body) ||
-    typeof (body as Record<string, unknown>).id !== 'string' ||
-    typeof (body as Record<string, unknown>).asset !== 'string' ||
-    typeof (body as Record<string, unknown>).assignee !== 'string' ||
-    !Array.isArray((body as Record<string, unknown>).permittedActions)
+    typeof body.id !== 'string' ||
+    typeof body.asset !== 'string' ||
+    typeof body.assignee !== 'string' ||
+    !Array.isArray(body.permittedActions)
   ) {
     throw new TypeError('A licensing request needs id, asset, assignee strings, and permittedActions array.');
   }
 
-  for (const action of (body as Record<string, unknown>).permittedActions as unknown[]) {
-    if (typeof action !== 'string') throw new TypeError('Each permitted action must be a string.');
+  for (const action of body.permittedActions as unknown[]) {
+    if (typeof action !== 'string') {
+      throw new TypeError('Each permitted action must be a string.');
+    }
   }
 
-  if ((body as Record<string, unknown>).prohibitedActions !== undefined) {
-    if (!Array.isArray((body as Record<string, unknown>).prohibitedActions)) {
+  if (body.prohibitedActions !== undefined) {
+    if (!Array.isArray(body.prohibitedActions)) {
       throw new TypeError('prohibitedActions must be an array if provided.');
     }
-    for (const action of (body as Record<string, unknown>).prohibitedActions as unknown[]) {
-      if (typeof action !== 'string') throw new TypeError('Each prohibited action must be a string.');
+    for (const action of body.prohibitedActions as unknown[]) {
+      if (typeof action !== 'string') {
+        throw new TypeError('Each prohibited action must be a string.');
+      }
     }
   }
 }
@@ -46,13 +50,13 @@ export function registerLicensingRoutes(router: CmsModuleRouter<(input: HttpHand
   router.register('POST', '/licensing/permit', async({ request, response }): Promise<void> => {
     try {
       const body = await readJsonBody<Record<string, unknown>>(request);
-      if (!isRecord(body) || typeof (body as Record<string, unknown>).action !== 'string' || !isRecord((body as Record<string, unknown>).licence)) {
+      if (!isRecord(body) || typeof body.action !== 'string' || !isRecord(body.licence)) {
         throw new TypeError('A permit request needs a licence object and an action string.');
       }
-      const licence = (body as Record<string, unknown>).licence as unknown;
+      const licence = body.licence;
       assertLicenceInput(licence);
-      
-      const permitted = isActionPermitted(licence, (body as Record<string, unknown>).action as string);
+
+      const permitted = isActionPermitted(licence, body.action);
       writeJson(response, 200, { permitted });
     } catch (error: unknown) {
       writeJson(response, errorStatusCode(error), {

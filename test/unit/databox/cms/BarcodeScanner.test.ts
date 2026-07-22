@@ -1,9 +1,9 @@
 import {
-  processBarcodeScan,
-  parseGs1Data,
-  validateGtinCheckDigit,
-  lookupProductByGtin,
   GS1_AIS,
+  lookupProductByGtin,
+  parseGs1Data,
+  processBarcodeScan,
+  validateGtinCheckDigit,
 } from '../../../../src/databox/cms/modules/barcode/BarcodeScanner';
 
 describe('Barcode / QR Scanner module', () => {

@@ -1,4 +1,3 @@
-/* eslint-disable no-console -- CLI build script: console output is intended. */
 // Builds the forge-admin "Admin" app as a static, backend-free demo and stages
 // it into docs/admin/ for GitHub Pages.
 //

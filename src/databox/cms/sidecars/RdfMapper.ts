@@ -122,11 +122,11 @@ export function applyMappingToJsonLd(mapping: MappingDefinition, rows: SourceRow
         }
 
         if (field.isUri) {
-          obj[field.predicate] = { '@id': String(rawValue) };
+          obj[field.predicate] = { '@id': toStr(rawValue) };
         } else if (field.languageTag) {
-          obj[field.predicate] = { '@value': String(rawValue), '@language': field.languageTag };
+          obj[field.predicate] = { '@value': toStr(rawValue), '@language': field.languageTag };
         } else if (field.datatype) {
-          obj[field.predicate] = { '@value': String(rawValue), '@type': field.datatype };
+          obj[field.predicate] = { '@value': toStr(rawValue), '@type': field.datatype };
         } else {
           obj[field.predicate] = rawValue;
         }
@@ -143,12 +143,12 @@ export function applyMappingToJsonLd(mapping: MappingDefinition, rows: SourceRow
  * Resolve a subject IRI template by replacing `{column}` placeholders with row values.
  */
 function resolveTemplate(template: string, row: SourceRow): string | null {
-  return template.replace(/\{(\w+)\}/g, (match, key: string): string => {
+  return template.replaceAll(/\{(\w+)\}/gu, (match, key: string): string => {
     const value = row[key];
     if (value === null || value === undefined) {
       return '';
     }
-    return encodeURIComponent(String(value));
+    return encodeURIComponent(toStr(value));
   }) || null;
 }
 
@@ -174,7 +174,7 @@ function resolveFieldValue(field: FieldMapping, row: SourceRow): string | null {
     return null;
   }
 
-  const str = String(raw);
+  const str = toStr(raw);
 
   if (field.isUri) {
     return `<${str}>`;
@@ -191,13 +191,23 @@ function resolveFieldValue(field: FieldMapping, row: SourceRow): string | null {
   return `"${escapeTurtle(str)}"`;
 }
 
+function toStr(value: unknown): string {
+  if (typeof value === 'string') {
+    return value;
+  }
+  if (typeof value === 'number' || typeof value === 'boolean' || typeof value === 'bigint') {
+    return String(value);
+  }
+  return JSON.stringify(value);
+}
+
 function escapeTurtle(str: string): string {
   return str
-    .replace(/\\/g, '\\\\')
-    .replace(/"/g, '\\"')
-    .replace(/\n/g, '\\n')
-    .replace(/\r/g, '\\r')
-    .replace(/\t/g, '\\t');
+    .replaceAll('\\', '\\\\')
+    .replaceAll('"', '\\"')
+    .replaceAll('\n', '\\n')
+    .replaceAll('\r', '\\r')
+    .replaceAll('\t', '\\t');
 }
 
 /**
@@ -224,17 +234,15 @@ function escapeTurtle(str: string): string {
 export function parseMappingFromTurtle(turtle: string): MappingDefinition {
   // Simple parser for the subset we support
   // This is a pragmatic parser — not a full R2RML parser
-  const lines = turtle.split('\n').map((l): string => l.trim()).filter(Boolean);
-
   const id = extractId(turtle, 'Mapping') ?? `mapping-${Date.now()}`;
   const name = extractLiteral(turtle, 'name') ?? 'Unnamed Mapping';
   const sourceType = (extractLiteral(turtle, 'sourceType') as 'odbc' | 'ldap') ?? 'odbc';
 
   // Extract triples maps (simplified — looks for TriplesMap subjects)
   const triplesMaps: TriplesMap[] = [];
-  const tmPattern = /<([^>]+)>\s+a\s+[<"]?[^>;]*TriplesMap[">]?/g;
-  let match: RegExpExecArray | null;
-  while ((match = tmPattern.exec(turtle)) !== null) {
+  const tmPattern = /<([^>]+)>\s+a\s[^;>]*TriplesMap[">]?/gu;
+  let match = tmPattern.exec(turtle);
+  while (match !== null) {
     const tmId = match[1];
     const subjectTemplate = extractTemplateForSubject(turtle, tmId) ?? `urn:temp:${tmId}`;
     const classes = extractClassesForSubject(turtle, tmId);
@@ -246,6 +254,7 @@ export function parseMappingFromTurtle(turtle: string): MappingDefinition {
       classes,
       fields,
     });
+    match = tmPattern.exec(turtle);
   }
 
   // If no triples maps found via R2RML, try a simpler JSON-like format
@@ -264,50 +273,49 @@ export function parseMappingFromTurtle(turtle: string): MappingDefinition {
 }
 
 function extractId(turtle: string, type: string): string | undefined {
-  const re = new RegExp(`<([^>]+)>\\s+a\\s+[^;]*${type}`);
+  const re = new RegExp(`<([^>]+)>\\s+a\\s+[^;]*${type}`, 'u');
   const match = re.exec(turtle);
   return match?.[1];
 }
 
 function extractLiteral(turtle: string, predicate: string): string | undefined {
-  const re = new RegExp(`${predicate}\\s+"([^"]*)"`);
+  const re = new RegExp(`${predicate}\\s+"([^"]*)"`, 'u');
   const match = re.exec(turtle);
   return match?.[1];
 }
 
 function extractTemplateForSubject(turtle: string, subjectId: string): string | undefined {
-  const re = new RegExp(`<${escapeRegex(subjectId)}>[\\s\\S]*?rr:template\\s+"([^"]*)"`);
+  const re = new RegExp(`<${escapeRegex(subjectId)}>[\\s\\S]*?rr:template\\s+"([^"]*)"`, 'u');
   const match = re.exec(turtle);
   return match?.[1];
 }
 
 function extractClassesForSubject(turtle: string, subjectId: string): string[] {
   const classes: string[] = [];
-  const re = new RegExp(`<${escapeRegex(subjectId)}>[\\s\\S]*?rr:class\\s+<([^>]+)>`, 'g');
-  let match: RegExpExecArray | null;
-  while ((match = re.exec(turtle)) !== null) {
+  const re = new RegExp(`<${escapeRegex(subjectId)}>[\\s\\S]*?rr:class\\s+<([^>]+)>`, 'gu');
+  let match = re.exec(turtle);
+  while (match !== null) {
     classes.push(match[1]);
+    match = re.exec(turtle);
   }
   return classes;
 }
 
 function extractFieldsForSubject(turtle: string, subjectId: string): FieldMapping[] {
+  void subjectId;
   const fields: FieldMapping[] = [];
   // Match rr:predicateObjectMap blocks
-  const blockRe = new RegExp(
-    `rr:predicateObjectMap\\s+\\[\\s*rr:predicate\\s+<([^>]+)>\\s*;\\s*rr:objectMap\\s+\\[([^\\]]*)\\]`,
-    'g',
-  );
-  let match: RegExpExecArray | null;
-  while ((match = blockRe.exec(turtle)) !== null) {
+  const blockRe = /rr:predicateObjectMap\s+\[\s*rr:predicate\s+<([^>]+)>\s*;\s*rr:objectMap\s+\[([^\]]*)\]/gu;
+  let match = blockRe.exec(turtle);
+  while (match !== null) {
     const predicate = match[1];
     const objectMap = match[2];
 
-    const columnMatch = /rr:column\s+"([^"]*)"/.exec(objectMap);
-    const constantMatch = /rr:constant\s+"([^"]*)"/.exec(objectMap);
-    const langMatch = /rr:language\s+"([^"]*)"/.exec(objectMap);
-    const datatypeMatch = /rr:datatype\s+<([^>]+)>/.exec(objectMap);
-    const uriMatch = /rr:termType\s+rr:IRI/.exec(objectMap);
+    const columnMatch = /rr:column\s+"([^"]*)"/u.exec(objectMap);
+    const constantMatch = /rr:constant\s+"([^"]*)"/u.exec(objectMap);
+    const langMatch = /rr:language\s+"([^"]*)"/u.exec(objectMap);
+    const datatypeMatch = /rr:datatype\s+<([^>]+)>/u.exec(objectMap);
+    const uriMatch = /rr:termType\s+rr:IRI/u.exec(objectMap);
 
     fields.push({
       predicate,
@@ -317,12 +325,13 @@ function extractFieldsForSubject(turtle: string, subjectId: string): FieldMappin
       datatype: datatypeMatch?.[1],
       isUri: Boolean(uriMatch),
     });
+    match = blockRe.exec(turtle);
   }
   return fields;
 }
 
 function escapeRegex(str: string): string {
-  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return str.replaceAll(/[$()*+.?[\\\]^{|}]/gu, '\\$&');
 }
 
 /**
@@ -345,7 +354,13 @@ export function serializeMappingToTurtle(mapping: MappingDefinition): string {
 
   for (const tm of mapping.triplesMaps) {
     lines.push(`<#${tm.id}> a dbx:TriplesMap ;`);
-    lines.push(`  rr:subjectMap [ rr:template "${tm.subjectTemplate}"${tm.classes.length > 0 ? ` ; rr:class ${tm.classes.map((c): string => `<${c}>`).join(', ')}` : ''} ] ;`);
+    lines.push(
+      `  rr:subjectMap [ rr:template "${tm.subjectTemplate}"${
+        tm.classes.length > 0 ?
+          ` ; rr:class ${tm.classes.map((c): string => `<${c}>`).join(', ')}` :
+          ''
+      } ] ;`,
+    );
 
     if (tm.fields.length > 0) {
       const fieldLines = tm.fields.map((f): string => {
@@ -368,9 +383,12 @@ export function serializeMappingToTurtle(mapping: MappingDefinition): string {
         }
         return `  rr:predicateObjectMap [ ${parts[0]} ; rr:objectMap [ ${objParts.join(' ; ')} ] ]`;
       });
-      lines.push(fieldLines.join(' ;\n') + ' .');
-    } else {
-      lines[-1] = lines[lines.length - 1].replace(' ;', ' .');
+      lines.push(`${fieldLines.join(' ;\n')} .`);
+    } else if (lines.length > 0) {
+      const lastLine = lines.at(-1);
+      if (lastLine !== undefined) {
+        lines[lines.length - 1] = lastLine.replace(' ;', ' .');
+      }
     }
     lines.push('');
   }

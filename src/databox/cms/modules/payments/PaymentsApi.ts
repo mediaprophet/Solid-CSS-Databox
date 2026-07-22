@@ -43,26 +43,46 @@ export function registerPaymentsRoutes(router: CmsModuleRouter<(input: HttpHandl
     }
   });
 
-  router.register('POST', '/payments/subscription/next-date', async({ request, response }: HttpHandlerInput): Promise<void> => {
-    try {
-      const input = await readJsonBody<unknown>(request);
-      assertSubscriptionInput(input);
-      writeJson(response, 200, { nextDate: nextBillingDate(input.lastBilledIso, input.interval) });
-    } catch (error: unknown) {
-      writeJson(response, 400, { error: error instanceof Error ? error.message : 'Invalid subscription next-date request.' });
-    }
-  });
+  router.register(
+    'POST',
+    '/payments/subscription/next-date',
+    async({ request, response }: HttpHandlerInput): Promise<void> => {
+      try {
+        const input = await readJsonBody<unknown>(request);
+        assertSubscriptionInput(input);
+        writeJson(response, 200, {
+          nextDate: nextBillingDate(input.lastBilledIso, input.interval),
+        });
+      } catch (error: unknown) {
+        writeJson(response, 400, {
+          error: error instanceof Error ?
+            error.message :
+            'Invalid subscription next-date request.',
+        });
+      }
+    },
+  );
 
-  router.register('POST', '/payments/subscription/is-due', async({ request, response }: HttpHandlerInput): Promise<void> => {
-    try {
-      const input = await readJsonBody<unknown>(request);
-      assertSubscriptionInput(input);
-      const asOfIso = input.asOfIso || new Date().toISOString();
-      writeJson(response, 200, { due: isDue(input.lastBilledIso, input.interval, asOfIso) });
-    } catch (error: unknown) {
-      writeJson(response, 400, { error: error instanceof Error ? error.message : 'Invalid subscription is-due request.' });
-    }
-  });
+  router.register(
+    'POST',
+    '/payments/subscription/is-due',
+    async({ request, response }: HttpHandlerInput): Promise<void> => {
+      try {
+        const input = await readJsonBody<unknown>(request);
+        assertSubscriptionInput(input);
+        const asOfIso = input.asOfIso ?? new Date().toISOString();
+        writeJson(response, 200, {
+          due: isDue(input.lastBilledIso, input.interval, asOfIso),
+        });
+      } catch (error: unknown) {
+        writeJson(response, 400, {
+          error: error instanceof Error ?
+            error.message :
+            'Invalid subscription is-due request.',
+        });
+      }
+    },
+  );
 
   router.register('POST', '/payments/tax/compute', async({ request, response }: HttpHandlerInput): Promise<void> => {
     try {
@@ -76,14 +96,17 @@ export function registerPaymentsRoutes(router: CmsModuleRouter<(input: HttpHandl
 }
 
 function assertReceiptInput(value: unknown): asserts value is ReceiptInput {
-  if (!isRecord(value) || typeof value.orderId !== 'string' || typeof value.seller !== 'string' || typeof value.currency !== 'string' || typeof value.orderDate !== 'string') {
+  if (!isRecord(value) || typeof value.orderId !== 'string' ||
+    typeof value.seller !== 'string' || typeof value.currency !== 'string' ||
+    typeof value.orderDate !== 'string') {
     throw new TypeError('A receipt build request needs orderId, seller, currency, and orderDate strings.');
   }
   if (!Array.isArray(value.items)) {
     throw new TypeError('A receipt build request needs an items array.');
   }
   for (const item of value.items) {
-    if (!isRecord(item) || typeof item.name !== 'string' || typeof item.quantity !== 'number' || typeof item.unitPrice !== 'number') {
+    if (!isRecord(item) || typeof item.name !== 'string' ||
+      typeof item.quantity !== 'number' || typeof item.unitPrice !== 'number') {
       throw new TypeError('Receipt items need name, quantity, and unitPrice.');
     }
   }
@@ -112,14 +135,16 @@ function assertSplitInput(value: unknown): asserts value is SplitInput {
   }
 }
 
-function assertSubscriptionInput(value: unknown): asserts value is { lastBilledIso: string; interval: BillingInterval; asOfIso?: string } {
+function assertSubscriptionInput(value: unknown):
+  asserts value is { lastBilledIso: string; interval: BillingInterval; asOfIso?: string } {
   if (!isRecord(value) || typeof value.lastBilledIso !== 'string' || typeof value.interval !== 'string') {
     throw new TypeError('A subscription request needs lastBilledIso and interval strings.');
   }
 }
 
 function assertTaxInput(value: unknown): asserts value is TaxInput {
-  if (!isRecord(value) || typeof value.amount !== 'number' || typeof value.ratePercent !== 'number' || typeof value.inclusive !== 'boolean') {
+  if (!isRecord(value) || typeof value.amount !== 'number' ||
+    typeof value.ratePercent !== 'number' || typeof value.inclusive !== 'boolean') {
     throw new TypeError('A tax request needs numeric amount and ratePercent, and boolean inclusive.');
   }
 }

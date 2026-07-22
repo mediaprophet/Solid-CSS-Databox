@@ -174,7 +174,7 @@ export function buildAppProfile(input: {
     uiModules: input.uiModules,
     defaultPermissions: input.defaultPermissions,
     installUrl,
-    ...(input.iconUrl ? { iconUrl: requireUri(input.iconUrl, 'iconUrl') } : {}),
+    ...input.iconUrl ? { iconUrl: requireUri(input.iconUrl, 'iconUrl') } : {},
   };
 
   return manifest;
@@ -197,7 +197,7 @@ export function serialiseAppProfile(profile: AppProfileManifest): Record<string,
     'solid:requiredModules': profile.requiredModules,
     'solid:verticalProfiles': profile.verticalProfiles,
     'solid:installUrl': profile.installUrl,
-    featureList: profile.uiModules.map((m) => ({
+    featureList: profile.uiModules.map(m => ({
       [LD_TYPE]: 'FeatureSpecification',
       identifier: m.id,
       'solid:moduleId': m.moduleId,
@@ -205,7 +205,7 @@ export function serialiseAppProfile(profile: AppProfileManifest): Record<string,
       url: m.cmsRoute,
       icon: m.icon,
       position: m.defaultSort,
-      ...(m.requiredPermission ? { 'solid:requiredPermission': m.requiredPermission } : {}),
+      ...m.requiredPermission ? { 'solid:requiredPermission': m.requiredPermission } : {},
     })),
     permission: profile.defaultPermissions,
   };
@@ -255,7 +255,7 @@ export function issueAppInstallLicence(input: {
     scope,
     permissions: input.permissions,
     issuedAt,
-    ...(expiresAt ? { expiresAt } : {}),
+    ...expiresAt ? { expiresAt } : {},
     issuedBy,
   };
 }
@@ -373,7 +373,7 @@ export function buildContainerBootConfig(
     'solid:appId': profile.appId,
     'solid:networkScope': profile.networkScope,
     'solid:licenceScope': licence.scope,
-    'solid:availableModules': availableUiModules.map((m) => m.id),
+    'solid:availableModules': availableUiModules.map(m => m.id),
     'solid:deniedModules': denied,
     'solid:serverUrl': serverUrl,
   };
@@ -397,7 +397,7 @@ export function checkNetworkScope(
     return { allowed: true, reason: 'Remote-capable apps allow any origin.' };
   }
 
-  // local-only: check if origin IP matches any of the org's local network ranges
+  // Local-only: check if origin IP matches any of the org's local network ranges
   // orgLocalNetworks can be CIDR ranges (e.g. "192.168.1.0/24") or exact IPs
   const originIp = extractIp(requestOrigin);
   if (!originIp) {
@@ -415,7 +415,7 @@ export function checkNetworkScope(
 
 function extractIp(origin: string): string | null {
   // Extract IP from "host:port" or bare IP
-  const match = origin.match(/^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/);
+  const match = /^((?:\d{1,3}\.){3}\d{1,3})/u.exec(origin);
   return match ? match[1] : null;
 }
 
@@ -425,7 +425,7 @@ function matchIpInRange(ip: string, range: string): boolean {
   }
   // Simple CIDR match for /24 and /16
   const [ base, prefix ] = range.split('/');
-  const prefixLen = parseInt(prefix, 10);
+  const prefixLen = Number.parseInt(prefix, 10);
   const ipParts = ip.split('.').map(Number);
   const baseParts = base.split('.').map(Number);
 

@@ -9,7 +9,7 @@ if (bindIdx !== -1 && process.argv[bindIdx + 1]) {
   bind = process.argv[bindIdx + 1];
 }
 const [ host, portStr ] = bind.split(':');
-const port = parseInt(portStr || '7878', 10);
+const port = Number.parseInt(portStr || '7878', 10);
 
 const store = new oxigraph.Store();
 
@@ -48,14 +48,16 @@ function formatSparqlJson(result) {
 
   // If it's a SELECT query, result is an array of Maps
   const uniqueVars = new Set();
-  const bindings = result.map(binding => {
+  const bindings = result.map((binding) => {
     const formatted = {};
-    for (const [key, term] of binding.entries()) {
+    for (const [ key, term ] of binding.entries()) {
       uniqueVars.add(key);
       formatted[key] = {
-        type: term.termType === 'NamedNode' ? 'uri' :
-              term.termType === 'BlankNode' ? 'bnode' :
-              term.termType === 'Literal' ? 'literal' : 'literal',
+        type: term.termType === 'NamedNode' ?
+          'uri' :
+          term.termType === 'BlankNode' ?
+            'bnode' :
+            'literal',
         value: term.value,
       };
       if (term.termType === 'Literal') {
@@ -71,7 +73,7 @@ function formatSparqlJson(result) {
 
   return JSON.stringify({
     head: {
-      vars: Array.from(uniqueVars),
+      vars: [ ...uniqueVars ],
     },
     results: {
       bindings,
@@ -80,21 +82,21 @@ function formatSparqlJson(result) {
 }
 
 function getQueryType(query) {
-  const stripped = query.replace(/#[^\r\n]*/g, '');
-  const normalized = stripped.replace(/\s+/g, ' ').trim();
+  const stripped = query.replaceAll(/#[^\n\r]*/gu, '');
+  const normalized = stripped.replaceAll(/\s+/gu, ' ').trim();
   let current = normalized;
   while (true) {
-    const match = current.match(/^(?:PREFIX|BASE)\s+[^\s>]*(?:\s*<[^>]*>)?\s*/i);
+    const match = current.match(/^(?:prefix|base)\s+\S+(?:\s+<[^>]*>)?\s*/iu);
     if (!match) {
       break;
     }
     current = current.slice(match[0].length);
   }
   const firstWord = current.split(' ')[0].toUpperCase();
-  return ['SELECT', 'ASK', 'CONSTRUCT', 'DESCRIBE'].includes(firstWord) ? firstWord : 'SELECT';
+  return [ 'SELECT', 'ASK', 'CONSTRUCT', 'DESCRIBE' ].includes(firstWord) ? firstWord : 'SELECT';
 }
 
-const server = http.createServer(async (req, res) => {
+const server = http.createServer(async(req, res) => {
   setCorsHeaders(res);
 
   if (req.method === 'OPTIONS') {
@@ -107,7 +109,7 @@ const server = http.createServer(async (req, res) => {
   const pathname = url.pathname;
 
   if (req.method === 'HEAD') {
-    if (['/sparql', '/query', '/update'].includes(pathname)) {
+    if ([ '/sparql', '/query', '/update' ].includes(pathname)) {
       res.writeHead(200);
       res.end();
       return;
@@ -118,14 +120,16 @@ const server = http.createServer(async (req, res) => {
   }
 
   // Helper to read post body
-  const readBody = () => new Promise((resolve, reject) => {
-    let data = '';
-    req.on('data', chunk => {
-      data += chunk;
+  function readBody() {
+    return new Promise((resolve, reject) => {
+      let data = '';
+      req.on('data', (chunk) => {
+        data += chunk;
+      });
+      req.on('end', () => resolve(data));
+      req.on('error', err => reject(err));
     });
-    req.on('end', () => resolve(data));
-    req.on('error', err => reject(err));
-  });
+  }
 
   try {
     let query = '';
@@ -165,12 +169,12 @@ const server = http.createServer(async (req, res) => {
         const result = store.query(query);
         if (queryType === 'CONSTRUCT' || queryType === 'DESCRIBE') {
           // CONSTRUCT query (or DESCRIBE)
-          const ntriples = result.map(quad => {
+          const ntriples = `${result.map((quad) => {
             const s = termToNTriples(quad.subject);
             const p = termToNTriples(quad.predicate);
             const o = termToNTriples(quad.object);
             return `${s} ${p} ${o} .`;
-          }).join('\n') + '\n';
+          }).join('\n')}\n`;
           console.log(`[Oxigraph-WASM] CONSTRUCT RESPONSE:\n${ntriples.trim()}`);
           res.writeHead(200, { 'Content-Type': 'application/n-triples' });
           res.end(ntriples);
@@ -182,7 +186,8 @@ const server = http.createServer(async (req, res) => {
           res.end(responseBody);
         }
         return;
-      } else if (update) {
+      }
+      if (update) {
         console.log(`[Oxigraph-WASM] UPDATE:\n${update.trim()}`);
         store.update(update);
         res.writeHead(204);
@@ -191,14 +196,12 @@ const server = http.createServer(async (req, res) => {
       }
     }
 
-    if (pathname === '/update') {
-      if (update) {
-        console.log(`[Oxigraph-WASM] UPDATE:\n${update.trim()}`);
-        store.update(update);
-        res.writeHead(204);
-        res.end();
-        return;
-      }
+    if (pathname === '/update' && update) {
+      console.log(`[Oxigraph-WASM] UPDATE:\n${update.trim()}`);
+      store.update(update);
+      res.writeHead(204);
+      res.end();
+      return;
     }
 
     res.writeHead(400, { 'Content-Type': 'text/plain' });

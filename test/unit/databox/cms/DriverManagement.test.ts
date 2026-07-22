@@ -1,8 +1,8 @@
 import {
-  registerDriver,
   createJobOffer,
-  updateJobStatus,
   dispatchMatch,
+  registerDriver,
+  updateJobStatus,
 } from '../../../../src/databox/cms/modules/delivery/DriverManagement';
 
 describe('Driver Management module', () => {
@@ -28,7 +28,7 @@ describe('Driver Management module', () => {
     });
 
     it('rejects empty zones', () => {
-      expect(() => registerDriver({ ...baseDriver, zones: [] }))
+      expect(() => registerDriver({ ...baseDriver, zones: []}))
         .toThrow('at least one zone');
     });
 
@@ -93,7 +93,7 @@ describe('Driver Management module', () => {
   describe('dispatchMatch', () => {
     const drivers = [
       baseDriver,
-      { ...baseDriver, id: 'https://example.org/d2', person: 'https://example.org/p2', zones: [ 'south' ] },
+      { ...baseDriver, id: 'https://example.org/d2', person: 'https://example.org/p2', zones: [ 'south' ]},
       { ...baseDriver, id: 'https://example.org/d3', person: 'https://example.org/p3', zones: [ 'north', 'central' ], availability: 'busy' as const },
     ];
 

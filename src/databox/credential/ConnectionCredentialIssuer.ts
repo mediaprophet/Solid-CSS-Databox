@@ -183,7 +183,7 @@ export class ConnectionCredentialIssuer {
 
     const connectionId = `urn:uuid:${randomUUID()}`;
     const credential: DataboxConnectionCredential = {
-      // eslint-disable-next-line @typescript-eslint/naming-convention -- JSON-LD reserved term.
+
       '@context': [ VC_V2_CONTEXT, DBX_CREDENTIAL_CONTEXT ],
       id: connectionId,
       type: [ VERIFIABLE_CREDENTIAL_TYPE, DATABOX_CONNECTION_CREDENTIAL_TYPE ],

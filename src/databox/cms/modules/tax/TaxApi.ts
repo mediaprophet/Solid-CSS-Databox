@@ -2,7 +2,7 @@ import type { CmsModuleRouter } from '../../CmsModuleRouter';
 import type { HttpHandlerInput } from '../../../../server/HttpHandler';
 import { readJsonBody, writeJson } from '../../CmsHttpUtils';
 import type { TaxComputationInput, TaxReportInput } from './Tax';
-import { computeTax, buildTaxReport } from './Tax';
+import { buildTaxReport, computeTax } from './Tax';
 
 export function registerTaxRoutes(router: CmsModuleRouter<(input: HttpHandlerInput) => Promise<void>>): void {
   router.register('POST', '/tax/compute', async({ request, response }: HttpHandlerInput): Promise<void> => {

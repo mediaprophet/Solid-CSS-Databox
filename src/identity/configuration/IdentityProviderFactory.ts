@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 import { randomBytes } from 'node:crypto';
 import type {
   Account,

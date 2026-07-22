@@ -140,7 +140,7 @@ export function evaluateConcessionEligibility(input: ConcessionEligibilityInput)
 
   const verified = input.credentialId !== undefined && input.credentialId.length > 0;
 
-  const eligibleGroups: ConcessionGroup[] = input.requestedGroupIds.map((id) => ({
+  const eligibleGroups: ConcessionGroup[] = input.requestedGroupIds.map(id => ({
     id: requireNonEmptyString(id, 'Group ID'),
     name: id,
     discountPercent: 0,
@@ -213,7 +213,7 @@ export function buildConcessionRecord(input: ConcessionRecordInput): ConcessionR
         { name: 'totalDiscount', value: totalDiscount },
         { name: 'totalFinal', value: totalFinal },
       ],
-      orderedItem: input.lines.map((l) => ({
+      orderedItem: input.lines.map(l => ({
         [LD_TYPE]: 'OrderItem',
         productID: l.productId,
         name: l.name,

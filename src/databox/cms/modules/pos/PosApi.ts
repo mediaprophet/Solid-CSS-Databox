@@ -80,20 +80,24 @@ export function registerPosRoutes(
       });
     }
   });
-  router.register('POST', '/pos/register/sessions/close', async({ request, response }: HttpHandlerInput): Promise<void> => {
-    try {
-      if (!cashRegisterStore) {
-        throw new Error('Persisting cash register sessions requires a CashRegisterStore.');
+  router.register(
+    'POST',
+    '/pos/register/sessions/close',
+    async({ request, response }: HttpHandlerInput): Promise<void> => {
+      try {
+        if (!cashRegisterStore) {
+          throw new Error('Persisting cash register sessions requires a CashRegisterStore.');
+        }
+        const result = closeCashRegisterSession(await readJsonBody<CashRegisterCloseInput>(request));
+        const persisted = await cashRegisterStore.persistSession(result);
+        writeJson(response, 200, { persisted, session: result.record }, 'application/ld+json');
+      } catch (error: unknown) {
+        writeJson(response, errorStatusCode(error), {
+          error: error instanceof Error ? error.message : 'Invalid cash register close request.',
+        });
       }
-      const result = closeCashRegisterSession(await readJsonBody<CashRegisterCloseInput>(request));
-      const persisted = await cashRegisterStore.persistSession(result);
-      writeJson(response, 200, { persisted, session: result.record }, 'application/ld+json');
-    } catch (error: unknown) {
-      writeJson(response, errorStatusCode(error), {
-        error: error instanceof Error ? error.message : 'Invalid cash register close request.',
-      });
-    }
-  });
+    },
+  );
   router.register('GET', '/pos/register/sessions', async({ request, response }: HttpHandlerInput): Promise<void> => {
     await readPersistedResource(response, cashRegisterStore, request.url, 'CashRegisterStore');
   });
@@ -158,20 +162,24 @@ export function registerPosRoutes(
       });
     }
   });
-  router.register('POST', '/pos/tables/sessions/close', async({ request, response }: HttpHandlerInput): Promise<void> => {
-    try {
-      if (!tableSessionStore) {
-        throw new Error('Persisting table sessions requires a TableSessionStore.');
+  router.register(
+    'POST',
+    '/pos/tables/sessions/close',
+    async({ request, response }: HttpHandlerInput): Promise<void> => {
+      try {
+        if (!tableSessionStore) {
+          throw new Error('Persisting table sessions requires a TableSessionStore.');
+        }
+        const result = closeTableSession(await readJsonBody<TableSessionCloseInput>(request));
+        const persisted = await tableSessionStore.persistSession(result);
+        writeJson(response, 200, { persisted, session: result.record }, 'application/ld+json');
+      } catch (error: unknown) {
+        writeJson(response, errorStatusCode(error), {
+          error: error instanceof Error ? error.message : 'Invalid table session close request.',
+        });
       }
-      const result = closeTableSession(await readJsonBody<TableSessionCloseInput>(request));
-      const persisted = await tableSessionStore.persistSession(result);
-      writeJson(response, 200, { persisted, session: result.record }, 'application/ld+json');
-    } catch (error: unknown) {
-      writeJson(response, errorStatusCode(error), {
-        error: error instanceof Error ? error.message : 'Invalid table session close request.',
-      });
-    }
-  });
+    },
+  );
   router.register('GET', '/pos/tables/sessions', async({ request, response }: HttpHandlerInput): Promise<void> => {
     await readPersistedResource(response, tableSessionStore, request.url, 'TableSessionStore');
   });

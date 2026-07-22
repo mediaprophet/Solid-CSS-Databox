@@ -122,7 +122,7 @@ describe('A SparqlDataAccessor', (): void => {
 
   it('requests the container data to find its children.', async(): Promise<void> => {
     triples = [ quad(namedNode('http://container/'), LDP.terms.contains, namedNode('http://container/child')) ];
-    const children = [];
+    const children: RepresentationMetadata[] = [];
     for await (const child of accessor.getChildren({ path: 'http://container/' })) {
       children.push(child);
     }

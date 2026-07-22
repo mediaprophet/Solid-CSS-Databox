@@ -1,7 +1,7 @@
 import {
+  buildBackupManifest,
   createBackup,
   restoreBackup,
-  buildBackupManifest,
 } from '../../../../src/databox/cms/modules/backups/BackupManager';
 import type { BackupCreateInput, BackupRestoreInput } from '../../../../src/databox/cms/modules/backups/BackupManager';
 
@@ -136,7 +136,7 @@ describe('Password-Protected Backups module', () => {
       expect(manifest.format).toBe('json-ld');
       expect(manifest.resourceCount).toBe(42);
       expect(manifest.totalSize).toBe(1024);
-      expect(manifest.checksum).toMatch(/^[a-f0-9]{64}$/);
+      expect(manifest.checksum).toMatch(/^[\da-f]{64}$/u);
       expect(manifest.record['@type']).toBe('DataCatalog');
     });
   });

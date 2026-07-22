@@ -200,10 +200,18 @@ export function queryNotifications(
   return notifications
     .filter((n) => {
       const recordRecipient = (n.record.recipient as Record<string, unknown>)?.['@id'];
-      if (recordRecipient !== recipient) return false;
-      if (query.channel && n.channel !== query.channel) return false;
-      if (query.category && n.record.category !== query.category) return false;
-      if (query.unreadOnly && !n.unread) return false;
+      if (recordRecipient !== recipient) {
+        return false;
+      }
+      if (query.channel && n.channel !== query.channel) {
+        return false;
+      }
+      if (query.category && n.record.category !== query.category) {
+        return false;
+      }
+      if (query.unreadOnly && !n.unread) {
+        return false;
+      }
       return true;
     })
     .slice(0, limit);

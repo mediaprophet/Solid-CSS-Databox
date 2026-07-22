@@ -1,7 +1,7 @@
 import type { CmsModuleRouter } from '../../CmsModuleRouter';
 import type { HttpHandlerInput } from '../../../../server/HttpHandler';
 import { readJsonBody, writeJson } from '../../CmsHttpUtils';
-import type { RoleBindingInput, OdrlPolicyInput, ApprovalGateInput } from './Governance';
+import type { ApprovalGateInput, OdrlPolicyInput, RoleBindingInput } from './Governance';
 import type { ResolutionInput } from './Resolution';
 import { bindRole, buildOdrlPolicy, recordApprovalGate } from './Governance';
 import { recordResolution } from './Resolution';
@@ -25,14 +25,18 @@ export function registerGovernanceRoutes(router: CmsModuleRouter<(input: HttpHan
     }
   });
 
-  router.register('POST', '/governance/approval-gate', async({ request, response }: HttpHandlerInput): Promise<void> => {
-    try {
-      const input = await readJsonBody<unknown>(request);
-      writeJson(response, 200, recordApprovalGate(input as ApprovalGateInput), 'application/ld+json');
-    } catch (error: unknown) {
-      writeJson(response, 400, { error: error instanceof Error ? error.message : 'Invalid approval gate.' });
-    }
-  });
+  router.register(
+    'POST',
+    '/governance/approval-gate',
+    async({ request, response }: HttpHandlerInput): Promise<void> => {
+      try {
+        const input = await readJsonBody<unknown>(request);
+        writeJson(response, 200, recordApprovalGate(input as ApprovalGateInput), 'application/ld+json');
+      } catch (error: unknown) {
+        writeJson(response, 400, { error: error instanceof Error ? error.message : 'Invalid approval gate.' });
+      }
+    },
+  );
 
   router.register('POST', '/governance/resolution', async({ request, response }: HttpHandlerInput): Promise<void> => {
     try {

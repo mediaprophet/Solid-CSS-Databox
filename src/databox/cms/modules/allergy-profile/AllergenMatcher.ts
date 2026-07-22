@@ -84,12 +84,20 @@ export function batchMatchAllergens(
   declarations: IngredientDeclarationResult[],
 ): AllergenMatchResult[] {
   return declarations
-    .map((decl) => matchAllergens(profile, decl))
+    .map(decl => matchAllergens(profile, decl))
     .sort((a, b) => {
-      if (a.safe && !b.safe) return -1;
-      if (!a.safe && b.safe) return 1;
-      if (a.mayContainWarnings.length === 0 && b.mayContainWarnings.length > 0) return -1;
-      if (a.mayContainWarnings.length > 0 && b.mayContainWarnings.length === 0) return 1;
+      if (a.safe && !b.safe) {
+        return -1;
+      }
+      if (!a.safe && b.safe) {
+        return 1;
+      }
+      if (a.mayContainWarnings.length === 0 && b.mayContainWarnings.length > 0) {
+        return -1;
+      }
+      if (a.mayContainWarnings.length > 0 && b.mayContainWarnings.length === 0) {
+        return 1;
+      }
       return 0;
     });
 }

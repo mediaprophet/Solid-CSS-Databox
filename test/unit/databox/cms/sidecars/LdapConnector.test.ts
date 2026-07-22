@@ -1,13 +1,13 @@
-import { describe, it, expect } from '@jest/globals';
+import { describe, expect, it } from '@jest/globals';
 import {
-  LdapPackageMissingError,
-  LdapConnectionError,
-  LdapSearchError,
   executeLdapSearch,
+  LdapConnectionError,
+  LdapPackageMissingError,
+  LdapSearchError,
 } from '../../../../../src/databox/cms/sidecars/LdapConnector';
 
 describe('LdapConnector', (): void => {
-  it('throws LdapPackageMissingError when ldapjs package is not installed', async (): Promise<void> => {
+  it('throws LdapPackageMissingError when ldapjs package is not installed', async(): Promise<void> => {
     await expect(executeLdapSearch({
       url: 'ldap://localhost:389',
       bindDn: 'cn=admin',
@@ -16,7 +16,7 @@ describe('LdapConnector', (): void => {
     })).rejects.toThrow(LdapPackageMissingError);
   });
 
-  it('throws LdapConnectionError for empty URL', async (): Promise<void> => {
+  it('throws LdapConnectionError for empty URL', async(): Promise<void> => {
     await expect(executeLdapSearch({
       url: '',
       bindDn: 'cn=admin',
@@ -24,7 +24,7 @@ describe('LdapConnector', (): void => {
     })).rejects.toThrow(LdapConnectionError);
   });
 
-  it('throws LdapSearchError for empty searchBase', async (): Promise<void> => {
+  it('throws LdapSearchError for empty searchBase', async(): Promise<void> => {
     await expect(executeLdapSearch({
       url: 'ldap://localhost:389',
       bindDn: 'cn=admin',

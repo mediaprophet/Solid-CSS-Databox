@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention -- Portable JSON-LD uses @context. */
 import type { BlankNode, Literal, NamedNode, Quad, Term } from '@rdfjs/types';
 import { DataFactory, Parser, Writer } from 'n3';
 import { CMS, DC, RDF } from '../../../../util/Vocabularies';

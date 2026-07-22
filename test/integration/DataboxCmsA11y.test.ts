@@ -1,7 +1,7 @@
-import { getDefaultVariables, instantiateFromConfig } from './Config';
-import type { App } from '../../src/init/App';
 import fetch from 'cross-fetch';
+import type { App } from '../../src/init/App';
 import { getPort } from '../util/Util';
+import { getDefaultVariables, instantiateFromConfig } from './Config';
 
 const port = getPort('DataboxCmsA11y');
 const baseUrl = `http://localhost:${port}/`;
@@ -54,22 +54,22 @@ describe('Databox CMS Accessibility (A11y) & i18n Checks', (): void => {
     });
     expect(res.status).toBe(200);
 
-    const body = await res.json() as any;
+    const body = await res.json();
     const html = body.html;
 
     // Check for standard HTML5 doctype
-    expect(html).toMatch(/<!DOCTYPE html>/i);
+    expect(html).toMatch(/<!doctype html>/iu);
 
     // Check for language declaration
-    expect(html).toMatch(/<html[^>]*lang="en"/i);
+    expect(html).toMatch(/<html[^>]*lang="en"/iu);
 
     // Check for viewport meta tag
-    expect(html).toMatch(/<meta[^>]*name="viewport"/i);
+    expect(html).toMatch(/<meta[^>]*name="viewport"/iu);
 
     // Check for title tag
-    expect(html).toMatch(/<title>.*?<\/title>/i);
+    expect(html).toMatch(/<title>.*?<\/title>/iu);
 
     // Assert ARIA main landmark is present
-    expect(html).toMatch(/<main/i);
+    expect(html).toMatch(/<main/iu);
   });
 });

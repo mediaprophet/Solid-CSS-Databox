@@ -49,7 +49,7 @@ describe('A CachedJwkGenerator', (): void => {
   });
 
   it('caches the private key in memory.', async(): Promise<void> => {
-    const spy = jose.generateKeyPair as jest.Mock;
+    const spy = jest.mocked(jose.generateKeyPair);
     spy.mockClear();
     const privateKey = await generator.getPrivateKey();
     // 1 call from checking the storage
@@ -63,7 +63,7 @@ describe('A CachedJwkGenerator', (): void => {
   });
 
   it('caches the public key in memory.', async(): Promise<void> => {
-    const spy = jose.generateKeyPair as jest.Mock;
+    const spy = jest.mocked(jose.generateKeyPair);
     spy.mockClear();
     const publicKey = await generator.getPublicKey();
     // 1 call from checking the storage
@@ -77,7 +77,7 @@ describe('A CachedJwkGenerator', (): void => {
   });
 
   it('caches the key in storage in case of server restart.', async(): Promise<void> => {
-    const spy = jose.generateKeyPair as jest.Mock;
+    const spy = jest.mocked(jose.generateKeyPair);
     spy.mockClear();
     const privateKey = await generator.getPrivateKey();
     // 1 call from checking the storage

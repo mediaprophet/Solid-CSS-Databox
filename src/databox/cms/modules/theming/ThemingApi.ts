@@ -1,7 +1,7 @@
 import type { CmsModuleRouter } from '../../CmsModuleRouter';
 import type { HttpHandlerInput } from '../../../../server/HttpHandler';
 import { readJsonBody, writeJson } from '../../CmsHttpUtils';
-import { validateThemePackage, themeToCss, themeToForgeTokens } from './Tokens';
+import { themeToCss, themeToForgeTokens, validateThemePackage } from './Tokens';
 
 export function registerThemingRoutes(router: CmsModuleRouter<(input: HttpHandlerInput) => Promise<void>>): void {
   router.register('POST', '/theming/validate', async({ request, response }: HttpHandlerInput): Promise<void> => {

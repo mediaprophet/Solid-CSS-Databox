@@ -1,4 +1,8 @@
-import { evaluateConcessionEligibility, applyConcessionPricing, buildConcessionRecord } from '../../../../src/databox/cms/modules/concessions/Concessions';
+import {
+  applyConcessionPricing,
+  buildConcessionRecord,
+  evaluateConcessionEligibility,
+} from '../../../../src/databox/cms/modules/concessions/Concessions';
 
 describe('Concessions module', () => {
   describe('evaluateConcessionEligibility', () => {
@@ -6,7 +10,7 @@ describe('Concessions module', () => {
       const result = evaluateConcessionEligibility({
         customerId: 'cust-001',
         credentialId: 'vc-001',
-        requestedGroupIds: ['pensioner'],
+        requestedGroupIds: [ 'pensioner' ],
       });
       expect(result.verified).toBe(true);
       expect(result.eligibleGroups).toHaveLength(1);
@@ -15,7 +19,7 @@ describe('Concessions module', () => {
     it('returns verified=false without credentialId', () => {
       const result = evaluateConcessionEligibility({
         customerId: 'cust-001',
-        requestedGroupIds: ['student'],
+        requestedGroupIds: [ 'student' ],
       });
       expect(result.verified).toBe(false);
     });

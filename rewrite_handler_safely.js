@@ -1,4 +1,5 @@
-const fs = require('fs');
+const fs = require('node:fs');
+
 const lines = fs.readFileSync('src/databox/cms/CmsHttpHandler.ts', 'utf8').split('\n');
 
 const imports = `import { registerJobsRoutes } from './modules/jobs/JobsApi';
@@ -36,8 +37,8 @@ const registrations = `    // External module routes
 lines.splice(14, 0, imports);
 
 // Now find the start and end of constructor routes
-const startIdx = lines.findIndex(l => l.includes("this.router.register('GET', '/modules'"));
-const endIdx = lines.findIndex(l => l.includes("public async canHandle"));
+const startIdx = lines.findIndex(l => l.includes('this.router.register(\'GET\', \'/modules\''));
+const endIdx = lines.findIndex(l => l.includes('public async canHandle'));
 
 // We replace from startIdx to endIdx - 2 (since endIdx - 1 is the closing brace of constructor)
 lines.splice(startIdx, (endIdx - 1) - startIdx, registrations);

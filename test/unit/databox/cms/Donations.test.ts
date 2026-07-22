@@ -1,4 +1,9 @@
-import { processDonation, buildDonationReceipt, buildTransparencyReport, type DonationCampaign } from '../../../../src/databox/cms/modules/donations/Donations';
+import {
+  buildDonationReceipt,
+  buildTransparencyReport,
+  type DonationCampaign,
+  processDonation,
+} from '../../../../src/databox/cms/modules/donations/Donations';
 
 describe('Donations module', () => {
   const activeCampaign: DonationCampaign = {
@@ -25,7 +30,7 @@ describe('Donations module', () => {
       expect(result.amount).toBe(500);
       expect(result.newRaisedTotal).toBe(3500);
       expect(result.progressPercent).toBe(35);
-      expect(result.donationId).toMatch(/^don-/);
+      expect(result.donationId).toMatch(/^don-/u);
     });
 
     it('caps progress at 100%', () => {
@@ -121,7 +126,7 @@ describe('Donations module', () => {
       });
       expect(result.report['@type']).toBe('Dataset');
       expect(result.report.distribution).toHaveLength(2);
-      expect(result.report.distribution[0].name).toBe('construction');
+      expect((result.report.distribution as any[])[0].name).toBe('construction');
     });
   });
 });

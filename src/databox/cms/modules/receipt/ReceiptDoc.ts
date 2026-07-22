@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention -- JSON-LD uses @context. */
 import { BadRequestHttpError } from '../../../../util/errors/BadRequestHttpError';
 
 export interface ReceiptOrg {

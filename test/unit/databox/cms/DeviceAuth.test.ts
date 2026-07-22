@@ -1,9 +1,13 @@
 import {
   enrolDevice,
-  verifyDeviceAuth,
   revokeDevice,
+  verifyDeviceAuth,
 } from '../../../../src/databox/cms/modules/device-auth/DeviceAuth';
-import type { DeviceEnrolmentInput, DeviceAuthInput, DeviceRevocationInput } from '../../../../src/databox/cms/modules/device-auth/DeviceAuth';
+import type {
+  DeviceAuthInput,
+  DeviceEnrolmentInput,
+  DeviceRevocationInput,
+} from '../../../../src/databox/cms/modules/device-auth/DeviceAuth';
 
 describe('Device Auth (mTLS) module', () => {
   const enrolmentInput: DeviceEnrolmentInput = {
@@ -12,7 +16,9 @@ describe('Device Auth (mTLS) module', () => {
     organisation: 'https://databox.example.org/org/restaurant',
     deviceType: 'pos-terminal',
     claimUri: 'https://databox.example.org/devices/pos-001/claim',
-    publicKeyPem: '-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA...\n-----END PUBLIC KEY-----',
+    publicKeyPem: '-----BEGIN PUBLIC KEY-----\n' +
+      'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA...\n' +
+      '-----END PUBLIC KEY-----',
     enrolledAt: '2025-07-01T10:00:00Z',
   };
 
@@ -48,7 +54,14 @@ describe('Device Auth (mTLS) module', () => {
     });
 
     it('supports all device types', () => {
-      for (const type of [ 'pos-terminal', 'customer-display', 'kitchen-display', 'scanner', 'printer', 'other' ] as const) {
+      for (const type of [
+        'pos-terminal',
+        'customer-display',
+        'kitchen-display',
+        'scanner',
+        'printer',
+        'other',
+      ] as const) {
         const result = enrolDevice({ ...enrolmentInput, deviceType: type });
         expect(result.record.deviceType).toBe(type);
       }

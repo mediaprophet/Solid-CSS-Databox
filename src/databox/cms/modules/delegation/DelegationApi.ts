@@ -20,7 +20,9 @@ export function registerDelegationRoutes(router: CmsModuleRouter<(input: HttpHan
       const valid = isDelegationValid(input.grant, input.action, input.asOfIso);
       writeJson(response, 200, { valid });
     } catch (error: unknown) {
-      writeJson(response, 400, { error: error instanceof Error ? error.message : 'Invalid delegation validation request.' });
+      writeJson(response, 400, {
+        error: error instanceof Error ? error.message : 'Invalid delegation validation request.',
+      });
     }
   });
 }

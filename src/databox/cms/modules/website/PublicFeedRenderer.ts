@@ -1,7 +1,7 @@
 import type { Quad, Term } from '@rdfjs/types';
 import { DataFactory, Parser } from 'n3';
 import { BadRequestHttpError } from '../../../../util/errors/BadRequestHttpError';
-import { RDF, CMS } from '../../../../util/Vocabularies';
+import { CMS, RDF } from '../../../../util/Vocabularies';
 import type { SolidModuleManifest } from '../../SolidModuleManifest';
 
 // JSON-LD keywords as constants so they can be used as computed keys (the linter's naming

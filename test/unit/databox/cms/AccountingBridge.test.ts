@@ -137,16 +137,15 @@ describe('Accounting Import / Export module', () => {
 
     it('rejects invalid currency', () => {
       expect(() => exportToAccounting({
-        ...{
-          id: 'https://databox.example.org/exports/006',
-          organisation: 'https://databox.example.org/org',
-          package: 'xero',
-          exportType: 'invoices',
-          periodStart: '2025-07-01',
-          periodEnd: '2025-07-31',
-          currency: 'DOLLARS',
-          data: sampleExportData,
-        },
+
+        id: 'https://databox.example.org/exports/006',
+        organisation: 'https://databox.example.org/org',
+        package: 'xero',
+        exportType: 'invoices',
+        periodStart: '2025-07-01',
+        periodEnd: '2025-07-31',
+        currency: 'DOLLARS',
+        data: sampleExportData,
       })).toThrow('three-letter ISO 4217');
     });
 
@@ -217,7 +216,8 @@ describe('Accounting Import / Export module', () => {
     });
 
     it('imports OFX data', () => {
-      const ofx = '<STMTTRN><DTPOSTED>20250701<TRNAMT>100.00<NAME>Acme<FITID>F001</STMTTRN><STMTTRN><DTPOSTED>20250702<TRNAMT>-50.00<NAME>Beta<FITID>F002</STMTTRN>';
+      const ofx = '<STMTTRN><DTPOSTED>20250701<TRNAMT>100.00<NAME>Acme<FITID>F001</STMTTRN>' +
+        '<STMTTRN><DTPOSTED>20250702<TRNAMT>-50.00<NAME>Beta<FITID>F002</STMTTRN>';
       const input: AccountingImportInput = {
         id: 'https://databox.example.org/imports/004',
         organisation: 'https://databox.example.org/org',

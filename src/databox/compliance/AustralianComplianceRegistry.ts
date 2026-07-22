@@ -1,4 +1,4 @@
-/* eslint-disable max-len, @typescript-eslint/explicit-function-return-type, unicorn/no-nested-ternary */
+/* eslint-disable max-len, @typescript-eslint/explicit-function-return-type */
 import type {
   ApplicabilityProfile,
   InstrumentRecord,

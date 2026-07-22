@@ -109,8 +109,12 @@ export function buildIngredientDeclaration(input: IngredientDeclarationInput): I
         freeFrom.add(requireNonEmpty(f, `freeFrom[${i}]`));
       }
     }
-    if (ing.vegan === false) vegan = false;
-    if (ing.vegetarian === false) vegetarian = false;
+    if (ing.vegan === false) {
+      vegan = false;
+    }
+    if (ing.vegetarian === false) {
+      vegetarian = false;
+    }
 
     const record: Record<string, unknown> = {
       [LD_TYPE]: 'Ingredient',
@@ -135,7 +139,7 @@ export function buildIngredientDeclaration(input: IngredientDeclarationInput): I
     name: `Ingredients for ${menuItem}`,
     about: { [LD_ID]: menuItem },
     author: { [LD_ID]: organisation },
-    recipeIngredient: ingredientRecords.map((r) => r.name),
+    recipeIngredient: ingredientRecords.map(r => r.name),
     ingredient: ingredientRecords,
     datePublished: declaredAt,
     declaredAllergens: [ ...declaredAllergens ],

@@ -2,7 +2,7 @@ import type { CmsModuleRouter } from '../../CmsModuleRouter';
 import type { HttpHandlerInput } from '../../../../server/HttpHandler';
 import { isRecord, readJsonBody, writeJson, writeTurtle } from '../../CmsHttpUtils';
 import type { HostingInput, HostingPlan } from './HostingConfig';
-import { planHosting, generateCloudflaredConfig } from './HostingConfig';
+import { generateCloudflaredConfig, planHosting } from './HostingConfig';
 import { CloudflareApi } from './CloudflareApi';
 
 export function registerHostingRoutes(router: CmsModuleRouter<(input: HttpHandlerInput) => Promise<void>>): void {
@@ -113,7 +113,15 @@ function assertBindInput(value: unknown): asserts value is HostingBindInput {
 
 function hostingPlanToTurtle(plan: HostingPlan, input: HostingPersistInput): string {
   const records = plan.dnsRecords.map((r, i) =>
-    `  cms:dnsRecord <${plan.baseUrl}dns/${i}> .\n<${plan.baseUrl}dns/${i}> a cms:DnsRecord ; cms:recordType "${r.type}" ; cms:name "${r.name}" ; cms:content "${r.content}" ; cms:proxied ${r.proxied} ; cms:ttl ${r.ttl} .`).join('\n');
+    `  cms:dnsRecord <${plan.baseUrl}dns/${i}> .\n` +
+    `<${plan.baseUrl}dns/${i}> a cms:DnsRecord ; cms:recordType "${r.type}" ; ` +
+    `cms:name "${r.name}" ; cms:content "${r.content}" ; ` +
+    `cms:proxied ${r.proxied} ; cms:ttl ${r.ttl} .`).join('\n');
+
+  const wwwHostLine = plan.wwwHost ? `  cms:wwwHost "${plan.wwwHost}" ;\n` : '';
+  const launchCmd = plan.launchCommand.replaceAll('"', '\\"');
+  const zoneLine = input.zoneId ? `  cms:cloudflareZone "${input.zoneId}" ;\n` : '';
+  const tunnelLine = input.tunnelId ? `  cms:cloudflareTunnel "${input.tunnelId}" ;\n` : '';
 
   return `@prefix cms: <urn:solid-server:databox:cms#> .
 @prefix dct: <http://purl.org/dc/terms/> .
@@ -123,8 +131,8 @@ function hostingPlanToTurtle(plan: HostingPlan, input: HostingPersistInput): str
   cms:databoxHost "${plan.databoxHost}" ;
   cms:devicesHost "${plan.devicesHost}" ;
   cms:baseUrl "${plan.baseUrl}" ;
-${plan.wwwHost ? `  cms:wwwHost "${plan.wwwHost}" ;\n` : ''}  cms:launchCommand "${plan.launchCommand.replace(/"/g, '\\"')}" ;
-${input.zoneId ? `  cms:cloudflareZone "${input.zoneId}" ;\n` : ''}${input.tunnelId ? `  cms:cloudflareTunnel "${input.tunnelId}" ;\n` : ''}  dct:created "${new Date().toISOString()}"^^xsd:dateTime ;
+${wwwHostLine}  cms:launchCommand "${launchCmd}" ;
+${zoneLine}${tunnelLine}  dct:created "${new Date().toISOString()}"^^xsd:dateTime ;
 ${records}
 `;
 }

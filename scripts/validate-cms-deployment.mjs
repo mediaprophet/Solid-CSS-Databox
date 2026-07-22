@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/* eslint-disable no-console, no-template-curly-in-string -- CLI validator: console output and template literal checks are intended. */
+/* eslint-disable no-template-curly-in-string -- CLI validator: console output and template literal checks are intended. */
 
 import { existsSync, readFileSync, statSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';

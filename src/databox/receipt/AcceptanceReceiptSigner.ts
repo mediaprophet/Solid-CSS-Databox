@@ -162,7 +162,7 @@ export class AcceptanceReceiptSigner {
     const binding = this.buildBinding(request, commit);
     const receiptId = `urn:uuid:${randomUUID()}`;
     const credential: DataboxAcceptanceReceiptCredential = {
-      // eslint-disable-next-line @typescript-eslint/naming-convention -- JSON-LD reserved term.
+
       '@context': [ VC_V2_CONTEXT, DBX_RECORD_CONTEXT ],
       id: receiptId,
       type: [ VERIFIABLE_CREDENTIAL_TYPE, DATABOX_RECEIPT_CREDENTIAL_TYPE ],

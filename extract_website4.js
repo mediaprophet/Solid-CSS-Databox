@@ -1,8 +1,9 @@
-const fs = require('fs');
+const fs = require('node:fs');
+
 const lines = fs.readFileSync('src/databox/cms/CmsHttpHandler.ts', 'utf8').split('\n');
 
-const preview = lines.slice(168, 178).map(l => l.replace(/this\.router\./g, 'router.')).join('\n');
-const rest = lines.slice(350, 374).map(l => l.replace(/this\.router\./g, 'router.').replace(/this\.publicWebsiteStore/g, 'publicWebsiteStore')).join('\n');
+const preview = lines.slice(168, 178).map(l => l.replaceAll('this.router.', 'router.')).join('\n');
+const rest = lines.slice(350, 374).map(l => l.replaceAll('this.router.', 'router.').replaceAll('this.publicWebsiteStore', 'publicWebsiteStore')).join('\n');
 
 const content = `import type { CmsModuleRouter } from '../../CmsModuleRouter';
 import type { CmsControlHandler } from '../../CmsModuleRouter';

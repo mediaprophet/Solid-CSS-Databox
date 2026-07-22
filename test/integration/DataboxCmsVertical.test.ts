@@ -1,7 +1,7 @@
-import { getDefaultVariables, instantiateFromConfig } from './Config';
-import type { App } from '../../src/init/App';
 import fetch from 'cross-fetch';
+import type { App } from '../../src/init/App';
 import { getPort } from '../util/Util';
+import { getDefaultVariables, instantiateFromConfig } from './Config';
 
 const port = getPort('DataboxCmsVertical');
 const baseUrl = `http://localhost:${port}/`;
@@ -42,7 +42,7 @@ describe('Databox CMS Vertical Integration', (): void => {
     expect(resNoAuth.status).toBe(401);
 
     // Cross-module logic: CMS routes shouldn't pollute the generic root
-    const rootCheck = await fetch(`${baseUrl}`);
+    const rootCheck = await fetch(baseUrl);
     expect(rootCheck.status).toBe(200);
   });
 });

@@ -1,7 +1,7 @@
 import type { CmsModuleRouter } from '../../CmsModuleRouter';
 import type { HttpHandlerInput } from '../../../../server/HttpHandler';
 import { readJsonBody, writeJson } from '../../CmsHttpUtils';
-import type { NotificationInput, ChannelSubscriptionInput, NotificationQuery } from './Notifications';
+import type { ChannelSubscriptionInput, NotificationInput, NotificationQuery } from './Notifications';
 import {
   buildNotification,
   buildSubscription,
@@ -41,9 +41,9 @@ export function registerNotificationsRoutes(router: CmsModuleRouter<(input: Http
     try {
       const input = await readJsonBody<unknown>(request);
       const query = input as NotificationQuery & { notifications?: NotificationInput[] };
-      const notifications = (query.notifications ?? []).map((n) => buildNotification(n));
+      const notifications = (query.notifications ?? []).map(n => buildNotification(n));
       const results = queryNotifications(notifications, query);
-      writeJson(response, 200, { results: results.map((r) => r.record), count: results.length }, 'application/ld+json');
+      writeJson(response, 200, { results: results.map(r => r.record), count: results.length }, 'application/ld+json');
     } catch (error: unknown) {
       writeJson(response, 400, { error: error instanceof Error ? error.message : 'Invalid query request.' });
     }

@@ -255,11 +255,11 @@ describe('the Databox CMS control plane in Community Solid Server', (): void => 
     });
     expect(response.status).toBe(200);
     const body = await response.json();
-      expect(body.type).toBe('DataboxCmsWorks');
-      expect(body.modules).toEqual(expect.arrayContaining([
-        expect.objectContaining({ manifest: expect.objectContaining({ id: 'jobs' }), enabled: true }),
-        expect.objectContaining({ manifest: expect.objectContaining({ id: 'payments' }), enabled: true }),
-        expect.objectContaining({
+    expect(body.type).toBe('DataboxCmsWorks');
+    expect(body.modules).toEqual(expect.arrayContaining([
+      expect.objectContaining({ manifest: expect.objectContaining({ id: 'jobs' }), enabled: true }),
+      expect.objectContaining({ manifest: expect.objectContaining({ id: 'payments' }), enabled: true }),
+      expect.objectContaining({
         manifest: expect.objectContaining({ id: 'bookings' }),
         enabled: true,
         state: {
@@ -405,7 +405,7 @@ describe('the Databox CMS control plane in Community Solid Server', (): void => 
 
   it('updates display clients through CSS/Solid notifications.', async(): Promise<void> => {
     const displayIri = `${baseUrl}pos/display-int`;
-    
+
     // Initialize the display state first so the resource exists
     const initState = await fetch(`${baseUrl}.databox/cms/pos/display/state`, {
       method: 'POST',
@@ -415,7 +415,9 @@ describe('the Databox CMS control plane in Community Solid Server', (): void => 
         state: { mode: 'idle', lastUpdatedAt: new Date().toISOString() },
       }),
     });
-    if (initState.status !== 201) { console.error("INIT_ERROR: ", await initState.text()); }
+    if (initState.status !== 201) {
+      console.error('INIT_ERROR: ', await initState.text());
+    }
     expect(initState.status).toBe(201);
 
     // Subscribe using the WebSocketChannel2023 endpoint
@@ -424,10 +426,10 @@ describe('the Databox CMS control plane in Community Solid Server', (): void => 
       method: 'POST',
       headers: { 'content-type': 'application/ld+json' },
       body: JSON.stringify({
-        '@context': ['https://www.w3.org/ns/solid/notification/v1'],
+        '@context': [ 'https://www.w3.org/ns/solid/notification/v1' ],
         type: 'http://www.w3.org/ns/solid/notifications#WebSocketChannel2023',
-        topic: `${displayIri}-state`
-      })
+        topic: `${displayIri}-state`,
+      }),
     });
     expect(subRes.status).toBe(200);
     const body = await subRes.json();
@@ -445,7 +447,9 @@ describe('the Databox CMS control plane in Community Solid Server', (): void => 
         state: { mode: 'transaction', lastUpdatedAt: new Date().toISOString() },
       }),
     });
-    if (stateUpdate.status !== 201) { console.error("STATE_ERROR: ", await stateUpdate.text()); }
+    if (stateUpdate.status !== 201) {
+      console.error('STATE_ERROR: ', await stateUpdate.text());
+    }
     expect(stateUpdate.status).toBe(201);
 
     // Verify the WebSocket received the update
@@ -468,7 +472,10 @@ describe('the Databox CMS control plane in Community Solid Server', (): void => 
         },
       }),
     });
-    if (publishResponse.status !== 201) { console.error('SEO publish failed: ', await publishResponse.text()); } expect(publishResponse.status).toBe(201);
+    if (publishResponse.status !== 201) {
+      console.error('SEO publish failed: ', await publishResponse.text());
+    }
+    expect(publishResponse.status).toBe(201);
     const published = (await publishResponse.json()).published;
     expect(published).toEqual(expect.arrayContaining([
       expect.objectContaining({ role: 'html', iri: `${baseUrl}www-int/index.html` }),
@@ -499,11 +506,13 @@ describe('the Databox CMS control plane in Community Solid Server', (): void => 
       headers: { authorization: `Bearer ${controlToken}`, 'content-type': 'application/json' },
       body: JSON.stringify({
         baseIri: `${baseUrl}www-int/`,
-        sitemap: { pages: [ `${baseUrl}www-int/`, `${baseUrl}www-int/menu` ] },
+        sitemap: { pages: [ `${baseUrl}www-int/`, `${baseUrl}www-int/menu` ]},
         robots: { siteUrl: baseUrl, sitemapUrl: `${baseUrl}www-int/sitemap.xml` },
       }),
     });
-    if (publishResponse.status !== 201) { console.error("SEO_ERROR: ", await publishResponse.text()); }
+    if (publishResponse.status !== 201) {
+      console.error('SEO_ERROR: ', await publishResponse.text());
+    }
     expect(publishResponse.status).toBe(201);
 
     // Fetch the Sitemap (publicly accessible)
@@ -529,9 +538,9 @@ describe('the Databox CMS control plane in Community Solid Server', (): void => 
       body: JSON.stringify({
         productId: 'tshirt',
         options: [
-          { name: 'size', values: ['S', 'M'] },
-          { name: 'color', values: ['red', 'blue'] }
-        ]
+          { name: 'size', values: [ 'S', 'M' ]},
+          { name: 'color', values: [ 'red', 'blue' ]},
+        ],
       }),
     });
     expect(response.status).toBe(200);
@@ -550,13 +559,13 @@ describe('the Databox CMS control plane in Community Solid Server', (): void => 
       },
       body: JSON.stringify({
         products: [
-          { id: 'item1', name: 'Coffee', price: 4.5, currency: 'AUD' }
-        ]
+          { id: 'item1', name: 'Coffee', price: 4.5, currency: 'AUD' },
+        ],
       }),
     });
     expect(response.status).toBe(200);
     expect(response.headers.get('content-type')).toContain('application/ld+json');
-    const feed = await response.json() as any;
+    const feed = await response.json();
     expect(feed['@type']).toBe('ItemList');
     expect(feed.itemListElement[0].item.name).toBe('Coffee');
     expect(feed.itemListElement[0].item.offers.price).toBe('4.50');
@@ -574,7 +583,7 @@ describe('the Databox CMS control plane in Community Solid Server', (): void => 
         windowEnd: 720, // 12:00 PM
         slotMinutes: 60,
         bookings: [
-          { start: 540, end: 600 } // 9:00 AM - 10:00 AM
+          { start: 540, end: 600 }, // 9:00 AM - 10:00 AM
         ],
       }),
     });
@@ -601,7 +610,7 @@ describe('the Databox CMS control plane in Community Solid Server', (): void => 
       }),
     });
     expect(response.status).toBe(200);
-    const reservation = await response.json() as any;
+    const reservation = await response.json();
     expect(reservation['@type']).toBe('Reservation');
     expect(reservation.startTime).toBe('2026-10-10T10:00:00Z');
   });
@@ -613,7 +622,7 @@ describe('the Databox CMS control plane in Community Solid Server', (): void => 
       body: JSON.stringify({ current: 'intake', event: 'queue' }),
     });
     expect(response.status).toBe(200);
-    const result = await response.json() as any;
+    const result = await response.json();
     expect(result.state).toBe('queued');
   });
 
@@ -626,11 +635,11 @@ describe('the Databox CMS control plane in Community Solid Server', (): void => 
         seller: 'Test Store',
         currency: 'USD',
         orderDate: '2026-10-10T10:00:00Z',
-        items: [ { name: 'Item 1', quantity: 2, unitPrice: 10 } ],
+        items: [{ name: 'Item 1', quantity: 2, unitPrice: 10 }],
       }),
     });
     expect(response.status).toBe(200);
-    const receipt = await response.json() as any;
+    const receipt = await response.json();
     expect(receipt['@type']).toBe('Order');
     expect(receipt.totalPaymentDue.price).toBe('20.00');
   });
@@ -642,7 +651,7 @@ describe('the Databox CMS control plane in Community Solid Server', (): void => 
       body: JSON.stringify({ originalTotal: 100, refundAmount: 20 }),
     });
     expect(response.status).toBe(200);
-    const result = await response.json() as any;
+    const result = await response.json();
     expect(result.remaining).toBe(80);
   });
 
@@ -650,10 +659,10 @@ describe('the Databox CMS control plane in Community Solid Server', (): void => 
     const response = await fetch(`${baseUrl}.databox/cms/payments/split/compute`, {
       method: 'POST',
       headers: { authorization: `Bearer ${controlToken}`, 'content-type': 'application/json' },
-      body: JSON.stringify({ total: 100, feePercent: 10, payees: [ { id: 'a', share: 50 }, { id: 'b', share: 50 } ] }),
+      body: JSON.stringify({ total: 100, feePercent: 10, payees: [{ id: 'a', share: 50 }, { id: 'b', share: 50 }]}),
     });
     expect(response.status).toBe(200);
-    const result = await response.json() as any;
+    const result = await response.json();
     expect(result.platformFee).toBe(10);
     expect(result.payouts[0].amount).toBe(45);
   });
@@ -665,7 +674,7 @@ describe('the Databox CMS control plane in Community Solid Server', (): void => 
       body: JSON.stringify({ lastBilledIso: '2026-01-31', interval: 'monthly' }),
     });
     expect(response1.status).toBe(200);
-    expect((await response1.json() as any).nextDate).toBe('2026-02-28');
+    expect((await response1.json()).nextDate).toBe('2026-02-28');
 
     const response2 = await fetch(`${baseUrl}.databox/cms/payments/subscription/is-due`, {
       method: 'POST',
@@ -673,7 +682,7 @@ describe('the Databox CMS control plane in Community Solid Server', (): void => 
       body: JSON.stringify({ lastBilledIso: '2026-01-31', interval: 'monthly', asOfIso: '2026-03-01' }),
     });
     expect(response2.status).toBe(200);
-    expect((await response2.json() as any).due).toBe(true);
+    expect((await response2.json()).due).toBe(true);
   });
 
   it('exposes a POST route to compute tax.', async(): Promise<void> => {
@@ -683,7 +692,7 @@ describe('the Databox CMS control plane in Community Solid Server', (): void => 
       body: JSON.stringify({ amount: 110, ratePercent: 10, inclusive: true }),
     });
     expect(response.status).toBe(200);
-    const result = await response.json() as any;
+    const result = await response.json();
     expect(result.tax).toBe(10);
     expect(result.net).toBe(100);
   });

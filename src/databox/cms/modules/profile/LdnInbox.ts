@@ -38,6 +38,7 @@ function requireNonEmpty(value: string, field: string): string {
 /**
  * Build an LDN (Linked Data Notifications) notification — a W3C LDN-compliant
  * ActivityStreams 2.0 object that can be POSTed to a Solid pod's inbox.
+ *
  * @see https://www.w3.org/TR/ldn/
  */
 export function buildLdnNotification(input: LdnNotification): Record<string, unknown> {

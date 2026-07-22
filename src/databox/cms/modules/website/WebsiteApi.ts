@@ -2,11 +2,18 @@ import type { CmsModuleRouter } from '../../CmsModuleRouter';
 import type { HttpHandlerInput } from '../../../../server/HttpHandler';
 import type { PublicWebsiteStore } from '../../PublicWebsiteStore';
 import { errorStatusCode, isRecord, readJsonBody, writeJson } from '../../CmsHttpUtils';
-import { renderPublicWebsiteFeed, renderPublicWebsiteFeedFromRdf, renderPublicWebsiteFeedPreview } from './PublicFeedRenderer';
+import {
+  renderPublicWebsiteFeed,
+  renderPublicWebsiteFeedFromRdf,
+  renderPublicWebsiteFeedPreview,
+} from './PublicFeedRenderer';
 import { deriveSitemapPages, renderRobots, renderSitemap } from './SitemapRobots';
 import type { PublicWebsiteFeedInput, PublicWebsiteFeedRdfInput } from './PublicFeedRenderer';
 
-export function registerWebsiteRoutes(router: CmsModuleRouter<(input: HttpHandlerInput) => Promise<void>>, publicWebsiteStore?: PublicWebsiteStore): void {
+export function registerWebsiteRoutes(
+  router: CmsModuleRouter<(input: HttpHandlerInput) => Promise<void>>,
+  publicWebsiteStore?: PublicWebsiteStore,
+): void {
   router.register('POST', '/website/preview', async({ request, response }: HttpHandlerInput): Promise<void> => {
     try {
       const input = await readJsonBody<unknown>(request);
@@ -53,7 +60,8 @@ export function registerWebsiteRoutes(router: CmsModuleRouter<(input: HttpHandle
       if (!isRecord(body.sitemap) || !Array.isArray(body.sitemap.pages)) {
         throw new TypeError('A website seo request needs a sitemap object with a pages array.');
       }
-      if (!isRecord(body.robots) || typeof body.robots.siteUrl !== 'string' || typeof body.robots.sitemapUrl !== 'string') {
+      if (!isRecord(body.robots) || typeof body.robots.siteUrl !== 'string' ||
+        typeof body.robots.sitemapUrl !== 'string') {
         throw new TypeError('A website seo request needs a robots object with siteUrl and sitemapUrl strings.');
       }
       const sitemapRender = renderSitemap(body.sitemap as unknown as import('./SitemapRobots').SitemapInput);
@@ -79,7 +87,13 @@ export function registerWebsiteRoutes(router: CmsModuleRouter<(input: HttpHandle
       if (typeof body.businessUrl !== 'string') {
         throw new TypeError('A website sitemap request needs a businessUrl string.');
       }
-      const pages = deriveSitemapPages(body as any);
+      const pages = deriveSitemapPages({
+        businessUrl: body.businessUrl,
+        publicPath: body.publicPath as string | undefined,
+        catalogueItemIds: body.catalogueItemIds as string[] | undefined,
+        menuIds: body.menuIds as string[] | undefined,
+        extraPages: body.extraPages as string[] | undefined,
+      });
       const sitemapRender = renderSitemap({ pages, lastmod: body.lastmod as string | undefined });
       const published = await publicWebsiteStore.publishSeoAssets(body.baseIri, sitemapRender);
       writeJson(response, 201, { published, sitemap: { xml: sitemapRender.xml }}, 'application/ld+json');

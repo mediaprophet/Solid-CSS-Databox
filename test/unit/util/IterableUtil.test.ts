@@ -53,11 +53,10 @@ describe('IterableUtil', (): void => {
 
   describe('#sortedAsyncMerge', (): void => {
     it('sorts the iterables.', async(): Promise<void> => {
-      // eslint-disable-next-line unicorn/consistent-function-scoping
       async function* left(): AsyncIterator<number> {
         yield* [ 1, 3, 5, 7, 9 ];
       }
-      // eslint-disable-next-line unicorn/consistent-function-scoping
+
       async function* right(): AsyncIterator<number> {
         yield* [ 0, 2, 3, 4 ];
       }
@@ -66,11 +65,10 @@ describe('IterableUtil', (): void => {
     });
 
     it('accepts a custom comparator.', async(): Promise<void> => {
-      // eslint-disable-next-line unicorn/consistent-function-scoping
       async function* left(): AsyncIterator<string> {
         yield* [ 'apple', 'citrus', 'date' ];
       }
-      // eslint-disable-next-line unicorn/consistent-function-scoping
+
       async function* right(): AsyncIterator<string> {
         yield* [ 'banana', 'donut' ];
       }

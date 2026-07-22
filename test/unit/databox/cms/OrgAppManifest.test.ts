@@ -1,11 +1,38 @@
 import {
   buildAppProfile,
-  serialiseAppProfile,
-  issueAppInstallLicence,
-  validateAppInstallLicence,
   buildContainerBootConfig,
   checkNetworkScope,
+  issueAppInstallLicence,
+  serialiseAppProfile,
+  validateAppInstallLicence,
 } from '../../../../src/databox/cms/OrgAppManifest';
+
+const menuModule = {
+  id: 'menu',
+  moduleId: 'menu',
+  label: 'Menu',
+  cmsRoute: '/.databox/cms/menu',
+  icon: 'utensils',
+  defaultSort: 1,
+};
+const ordersModule = {
+  id: 'orders',
+  moduleId: 'pos',
+  label: 'Active Orders',
+  cmsRoute: '/.databox/cms/pos/orders',
+  icon: 'clipboard',
+  defaultSort: 2,
+  requiredPermission: 'pos:order',
+};
+const bookingsModule = {
+  id: 'bookings',
+  moduleId: 'bookings',
+  label: 'Reservations',
+  cmsRoute: '/.databox/cms/bookings',
+  icon: 'calendar',
+  defaultSort: 3,
+  requiredPermission: 'bookings:view',
+};
 
 const sampleProfileInput = {
   appId: 'waiter-app',
@@ -16,9 +43,9 @@ const sampleProfileInput = {
   requiredModules: [ 'menu', 'pos', 'bookings' ],
   verticalProfiles: [ 'food.restaurant', 'food.allergy-safety' ],
   uiModules: [
-    { id: 'menu', moduleId: 'menu', label: 'Menu', cmsRoute: '/.databox/cms/menu', icon: 'utensils', defaultSort: 1 },
-    { id: 'orders', moduleId: 'pos', label: 'Active Orders', cmsRoute: '/.databox/cms/pos/orders', icon: 'clipboard', defaultSort: 2, requiredPermission: 'pos:order' },
-    { id: 'bookings', moduleId: 'bookings', label: 'Reservations', cmsRoute: '/.databox/cms/bookings', icon: 'calendar', defaultSort: 3, requiredPermission: 'bookings:view' },
+    menuModule,
+    ordersModule,
+    bookingsModule,
   ],
   defaultPermissions: [ 'pos:order', 'bookings:view' ],
   installUrl: 'https://databox.example.org/apps/waiter-app/',
@@ -46,16 +73,16 @@ describe('Org App Manifest module', () => {
 
     it('rejects invalid network scope', () => {
       expect(() => buildAppProfile({ ...sampleProfileInput, networkScope: 'anywhere' as any }))
-        .toThrow("Network scope must be 'local-only' or 'remote-capable'");
+        .toThrow('Network scope must be \'local-only\' or \'remote-capable\'');
     });
 
     it('rejects empty required modules', () => {
-      expect(() => buildAppProfile({ ...sampleProfileInput, requiredModules: [] }))
+      expect(() => buildAppProfile({ ...sampleProfileInput, requiredModules: []}))
         .toThrow('at least one required module');
     });
 
     it('rejects empty UI modules', () => {
-      expect(() => buildAppProfile({ ...sampleProfileInput, uiModules: [] }))
+      expect(() => buildAppProfile({ ...sampleProfileInput, uiModules: []}))
         .toThrow('at least one UI module');
     });
 
@@ -85,7 +112,7 @@ describe('Org App Manifest module', () => {
     });
 
     it('rejects empty permissions', () => {
-      expect(() => issueAppInstallLicence({ ...sampleLicenceInput, permissions: [] }))
+      expect(() => issueAppInstallLicence({ ...sampleLicenceInput, permissions: []}))
         .toThrow('at least one permission');
     });
 
@@ -158,21 +185,21 @@ describe('Org App Manifest module', () => {
       const licence = issueAppInstallLicence(sampleLicenceInput);
       const result = buildContainerBootConfig(
         profile,
-        [ 'menu', 'pos' ], // bookings not enabled
+        [ 'menu', 'pos' ], // Bookings not enabled
         licence,
         'https://databox.example.org',
         '2025-07-15T10:00:00Z',
       );
       expect(result.config.availableUiModules).toHaveLength(2);
       expect(result.denied.length).toBeGreaterThan(0);
-      expect(result.denied.some((d) => d.includes('bookings'))).toBe(true);
+      expect(result.denied.some(d => d.includes('bookings'))).toBe(true);
     });
 
     it('filters out UI modules requiring unlicensed permissions', () => {
       const profile = buildAppProfile(sampleProfileInput);
       const licence = issueAppInstallLicence({
         ...sampleLicenceInput,
-        permissions: [ 'pos:order' ], // bookings:view not granted
+        permissions: [ 'pos:order' ], // Bookings:view not granted
       });
       const result = buildContainerBootConfig(
         profile,
@@ -182,15 +209,26 @@ describe('Org App Manifest module', () => {
         '2025-07-15T10:00:00Z',
       );
       expect(result.config.availableUiModules).toHaveLength(2);
-      expect(result.denied.some((d) => d.includes('bookings'))).toBe(true);
+      expect(result.denied.some(d => d.includes('bookings'))).toBe(true);
     });
 
     it('blocks write operations for read-only licence', () => {
+      const readOnlyMenu = {
+        ...menuModule,
+      };
+      const readOnlyOrders = {
+        id: 'orders',
+        moduleId: 'pos',
+        label: 'Orders',
+        cmsRoute: 'POST /.databox/cms/pos/orders',
+        icon: 'clipboard',
+        defaultSort: 2,
+      };
       const profile = buildAppProfile({
         ...sampleProfileInput,
         uiModules: [
-          { id: 'menu', moduleId: 'menu', label: 'Menu', cmsRoute: '/.databox/cms/menu', icon: 'utensils', defaultSort: 1 },
-          { id: 'orders', moduleId: 'pos', label: 'Orders', cmsRoute: 'POST /.databox/cms/pos/orders', icon: 'clipboard', defaultSort: 2 },
+          readOnlyMenu,
+          readOnlyOrders,
         ],
       });
       const licence = issueAppInstallLicence({
@@ -205,7 +243,7 @@ describe('Org App Manifest module', () => {
         '2025-07-15T10:00:00Z',
       );
       expect(result.config.availableUiModules).toHaveLength(1);
-      expect(result.denied.some((d) => d.includes('read-only'))).toBe(true);
+      expect(result.denied.some(d => d.includes('read-only'))).toBe(true);
     });
 
     it('rejects mismatched app ID', () => {

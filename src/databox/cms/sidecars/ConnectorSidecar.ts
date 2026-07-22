@@ -30,7 +30,7 @@ async function main(): Promise<void> {
   try {
     let rows: Record<string, unknown>[];
     if (config.type === 'ldap' && config.ldap) {
-      rows = await runLdapSync(config.ldap) as unknown as Record<string, unknown>[];
+      rows = await runLdapSync(config.ldap);
     } else if (config.type === 'odbc' && config.odbc) {
       rows = await runOdbcSync(config.odbc);
     } else {
@@ -54,7 +54,7 @@ async function main(): Promise<void> {
   }
 }
 
-function readStdin(): Promise<string> {
+async function readStdin(): Promise<string> {
   return new Promise((resolve, reject): void => {
     let data = '';
     process.stdin.setEncoding('utf8');

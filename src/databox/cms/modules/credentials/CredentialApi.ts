@@ -1,8 +1,12 @@
 import type { CmsModuleRouter } from '../../CmsModuleRouter';
 import type { HttpHandlerInput } from '../../../../server/HttpHandler';
 import { readJsonBody, writeJson } from '../../CmsHttpUtils';
-import type { CredentialIssuanceInput, CredentialVerificationInput, CredentialRevocationInput } from './CredentialLifecycle';
-import { issueCredential, verifyCredential, revokeCredential } from './CredentialLifecycle';
+import type {
+  CredentialIssuanceInput,
+  CredentialRevocationInput,
+  CredentialVerificationInput,
+} from './CredentialLifecycle';
+import { issueCredential, revokeCredential, verifyCredential } from './CredentialLifecycle';
 
 export function registerCredentialRoutes(router: CmsModuleRouter<(input: HttpHandlerInput) => Promise<void>>): void {
   router.register('POST', '/credentials/issue', async({ request, response }: HttpHandlerInput): Promise<void> => {
