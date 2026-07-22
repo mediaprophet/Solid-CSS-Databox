@@ -7,8 +7,8 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 24.x
       - run: npm ci --ignore-scripts
@@ -23,18 +23,17 @@ jobs:
           - ubuntu-latest
           - windows-latest
         node-version:
-          - 24.18.0
           - 24.x
     timeout-minutes: 15
     steps:
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: ${{ matrix.node-version }}
       - name: Ensure line endings are consistent
         run: git config --global core.autocrlf input
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Install dependencies and run build scripts
         run: npm ci
       - name: Type-check tests
@@ -71,11 +70,11 @@ jobs:
     timeout-minutes: 20
     steps:
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: ${{ matrix.node-version }}
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Install dependencies and run build scripts
         run: npm ci
       - name: Run integration tests
@@ -91,13 +90,13 @@ jobs:
     timeout-minutes: 20
     steps:
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: ${{ matrix.node-version }}
       - name: Ensure line endings are consistent
         run: git config --global core.autocrlf input
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Install dependencies and run build scripts
         run: npm ci
       - name: Run integration tests
@@ -115,11 +114,11 @@ jobs:
           - 4000:8890
     steps:
       - name: Use Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: 24.x
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Install dependencies and run build scripts
         run: npm ci
       - name: Run deploy tests
