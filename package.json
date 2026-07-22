@@ -27,6 +27,7 @@
     "bin",
     "config",
     "dist",
+    "patches",
     "templates"
   ],
   "engines": {
