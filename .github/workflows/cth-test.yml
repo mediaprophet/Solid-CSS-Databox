@@ -77,7 +77,7 @@ jobs:
         if: always()
         uses: yeouchien/sanitize-branch-name-action@v1
         with:
-          branch-name: ${{ inputs.branch || github.head_ref }}
+          branch-name: ${{ inputs.branch || github.head_ref || github.ref_name }}
       - name: Save the reports
         if: always()
         uses: actions/upload-artifact@v4

@@ -159,8 +159,11 @@ jobs:
         run: |
           if [ -n "${{ github.event.inputs.tag }}" ]; then
             echo "name=${{ github.event.inputs.tag }}" >> $GITHUB_OUTPUT
-          else
+          elif [ "${GITHUB_REF#refs/tags/}" != "$GITHUB_REF" ]; then
             echo "name=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+          else
+            VERSION=$(node -p "require('./package.json').version")
+            echo "name=v${VERSION}" >> $GITHUB_OUTPUT
           fi
 
       - name: Download all artifacts
