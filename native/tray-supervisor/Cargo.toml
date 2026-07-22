@@ -5,6 +5,6 @@ edition = "2021"
 
 [dependencies]
 tao = "0.35.3"
-tray-icon = "0.24.1"
+tray-icon = { version = "0.24.1", features = ["ayatana"] }
 webbrowser = "1.2.1"
 wry = "0.55.1"

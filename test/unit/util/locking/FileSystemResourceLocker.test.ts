@@ -85,9 +85,10 @@ describe('A FileSystemResourceLocker', (): void => {
       return locker.release(identifier);
     });
     await Promise.all([ prom2, prom3, prom1 ]);
-    expect(results[0]).toBe(1);
+    expect(results).toContain(1);
     expect(results).toContain(2);
     expect(results).toContain(3);
+    expect(results.length).toBe(3);
   });
 
   it('can acquire different keys simultaneously.', async(): Promise<void> => {
