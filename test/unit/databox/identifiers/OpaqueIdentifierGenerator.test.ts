@@ -56,14 +56,14 @@ describe('A RandomOpaqueIdentifierGenerator', (): void => {
     // Feeding the same "name" thousands of times still yields all-distinct random ids: the name is
     // structurally incapable of reaching the identifier.
     const ids = new Set<string>();
-    const secret = 'customer-12345@example.com';
+    const secret = 'customer-sensitive-secret@example.com';
     for (let i = 0; i < 500; i++) {
       ids.add((generator as { generate: (name: string) => { path: string }}).generate(secret).path);
     }
     expect(ids.size).toBe(500);
     for (const id of ids) {
       expect(id).not.toContain('customer');
-      expect(id).not.toContain('12345');
+      expect(id).not.toContain('sensitive');
       expect(id).not.toContain('example.com');
     }
   });
