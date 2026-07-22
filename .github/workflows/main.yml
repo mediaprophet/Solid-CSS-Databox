@@ -14,8 +14,12 @@ concurrency:
 
 jobs:
   npm-test:
-    # Run the tests in every case
+    # Run the test suite
     uses: ./.github/workflows/npm-test.yml
+
+  build:
+    # Build Server, Admin Demo, and cross-platform native binaries
+    uses: ./.github/workflows/build.yml
 
   cth-test:
     # Run the Conformance Test Harness
@@ -24,18 +28,16 @@ jobs:
       ignore_failures: true
       version: 1.1.14 # The latest version that CSS is confirmed to pass
 
-  # Solid Databox does not publish a container image from CI. The Dockerfile is kept so an operator
-  # forking this repo can build and deploy their own image; publishing to a registry (image name and
-  # credentials) is theirs to configure. See documentation/markdown/usage/starting-server.md.
-
   mkdocs-release:
     # Build and deploy documentation
+    if: startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/main'
     uses: ./.github/workflows/mkdocs.yml
     permissions:
       contents: write
 
   cross-release:
-    # Build and publish cross-platform release artifacts
+    # Publish release artifacts to GitHub Releases on version tags
+    if: startsWith(github.ref, 'refs/tags/v')
     uses: ./.github/workflows/release.yml
     permissions:
       contents: write

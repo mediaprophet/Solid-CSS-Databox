@@ -1,11 +1,8 @@
 # Cross-platform release workflow.
 #
-# Triggers when a version tag (v*) is pushed. Builds:
-#   1. The Node.js / TypeScript server + components.js artifacts
-#   2. The forge-admin demo (static site for GitHub Pages)
-#   3. Native Rust binaries (pos-edge, databox-installer, tray-supervisor)
-#      for macOS (Intel + Apple Silicon), Linux, and Windows
-# Then creates a GitHub Release with all artifacts attached.
+# Triggers when a version tag (v*) is pushed or dispatched.
+# Reuses ./.github/workflows/build.yml to build Server & Native artifacts,
+# then creates a GitHub Release with all artifacts attached.
 name: Release
 
 on:
@@ -24,9 +21,6 @@ on:
         type: string
         required: false
 
-env:
-  NODE_OPTIONS: --require-module
-
 permissions:
   contents: write
 
@@ -35,124 +29,13 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # ── Build the Node.js server + forge-admin demo ────────────────────────
-  build-server:
-    name: Build Server & Admin
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
+  build:
+    name: Build Artifacts
+    uses: ./.github/workflows/build.yml
 
-      - uses: actions/setup-node@v5
-        with:
-          node-version: 24.x
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build TypeScript + components
-        run: npm run build
-
-      - name: Build forge-admin demo
-        run: npm run build:demo
-
-      - name: Pack npm tarball
-        run: npm pack
-
-      - name: Upload server artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: server-artifacts
-          path: |
-            *.tgz
-            dist/
-            config/
-            templates/
-            bin/
-            package.json
-            README.md
-            LICENSE
-          retention-days: 7
-
-      - name: Upload forge-admin demo
-        uses: actions/upload-artifact@v4
-        with:
-          name: forge-admin-demo
-          path: docs/admin/
-          retention-days: 7
-
-  # ── Build native Rust binaries on a cross-platform matrix ──────────────
-  build-native:
-    name: Build Native (${{ matrix.target }})
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - os: ubuntu-latest
-            target: x86_64-unknown-linux-gnu
-            archive: tar.gz
-          - os: macos-13
-            target: x86_64-apple-darwin
-            archive: tar.gz
-          - os: macos-14
-            target: aarch64-apple-darwin
-            archive: tar.gz
-          - os: windows-latest
-            target: x86_64-pc-windows-msvc
-            archive: zip
-
-    runs-on: ${{ matrix.os }}
-    steps:
-      - uses: actions/checkout@v5
-
-      - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          targets: ${{ matrix.target }}
-
-      - name: Cache Cargo
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cargo/registry
-            ~/.cargo/git
-            native/target
-          key: cargo-${{ matrix.target }}-${{ hashFiles('native/**/Cargo.lock') }}
-          restore-keys: |
-            cargo-${{ matrix.target }}-
-
-      - name: Build native binaries (release)
-        working-directory: native
-        run: cargo build --release --target ${{ matrix.target }}
-
-      - name: Stage binaries (Unix)
-        if: matrix.archive != 'zip'
-        run: |
-          mkdir -p native-release
-          cp native/target/${{ matrix.target }}/release/pos-edge native-release/
-          cp native/target/${{ matrix.target }}/release/databox-installer native-release/
-          cp native/target/${{ matrix.target }}/release/tray-supervisor native-release/
-          tar -czf native-${{ matrix.target }}.tar.gz -C native-release .
-
-      - name: Stage binaries (Windows)
-        if: matrix.archive == 'zip'
-        run: |
-          New-Item -ItemType Directory -Force native-release
-          Copy-Item native/target/${{ matrix.target }}/release/pos-edge.exe native-release/
-          Copy-Item native/target/${{ matrix.target }}/release/databox-installer.exe native-release/
-          Copy-Item native/target/${{ matrix.target }}/release/tray-supervisor.exe native-release/
-          Compress-Archive -Path native-release/* -DestinationPath native-${{ matrix.target }}.zip
-
-      - name: Upload native artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: native-${{ matrix.target }}
-          path: native-${{ matrix.target }}.${{ matrix.archive }}
-          retention-days: 7
-
-  # ── Create the GitHub Release with all artifacts ───────────────────────
   create-release:
     name: Create GitHub Release
-    needs: [build-server, build-native]
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -160,8 +43,8 @@ jobs:
       - name: Determine tag
         id: tag
         run: |
-          if [ -n "${{ github.event.inputs.tag }}" ]; then
-            echo "name=${{ github.event.inputs.tag }}" >> $GITHUB_OUTPUT
+          if [ -n "${{ inputs.tag }}" ]; then
+            echo "name=${{ inputs.tag }}" >> $GITHUB_OUTPUT
           elif [ "${GITHUB_REF#refs/tags/}" != "$GITHUB_REF" ]; then
             echo "name=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
           else
