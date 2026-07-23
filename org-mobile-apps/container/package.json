@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "description": "Unified WASM/PWA container that fetches app profiles, UI modules, and per-install licences from the CMS.",
   "type": "module",
+  "engines": {
+    "node": ">=24.0"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",

@@ -1,0 +1,25 @@
+diff --git a/node_modules/componentsjs/lib/rdf/RdfParser.js b/node_modules/componentsjs/lib/rdf/RdfParser.js
+--- a/node_modules/componentsjs/lib/rdf/RdfParser.js
++++ b/node_modules/componentsjs/lib/rdf/RdfParser.js
+@@ -2,6 +2,7 @@
+ Object.defineProperty(exports, "__esModule", { value: true });
+ exports.RdfParser = void 0;
+ const fs_1 = require("fs");
++const stream_1 = require("stream");
+ const rdf_parse_1 = require("rdf-parse");
+ const PrefetchedDocumentLoader_1 = require("./PrefetchedDocumentLoader");
+ const RdfStreamIncluder_1 = require("./RdfStreamIncluder");
+@@ -66,7 +67,12 @@
+      */
+     static async fetchFileOrUrl(pathOrUrl) {
+         if (pathOrUrl.startsWith('http://') || pathOrUrl.startsWith('https://')) {
+-            return (await fetch(pathOrUrl)).body;
++            const response = await fetch(pathOrUrl);
++            if (!response.body) {
++                throw new Error(`Unable to read an empty response body from ${pathOrUrl}`);
++            }
++            // Components.js and RDF parsers consume Node streams; Node 24 fetch returns a Web stream.
++            return stream_1.Readable.fromWeb(response.body);
+         }
+         if (pathOrUrl.startsWith('file://')) {
+             pathOrUrl = pathOrUrl.slice(7);
