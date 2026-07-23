@@ -756,7 +756,7 @@ describe('A CmsHttpHandler', (): void => {
         publicPath: '/menu',
         requiresControlToken: false,
         jsonLd: {
-          '@context': 'https://schema.org/',
+          '@context': { '@vocab': 'https://schema.org/' },
           '@type': 'WebPage',
         },
       });

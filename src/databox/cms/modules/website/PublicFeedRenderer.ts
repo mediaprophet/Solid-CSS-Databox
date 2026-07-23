@@ -9,6 +9,7 @@ import type { SolidModuleManifest } from '../../SolidModuleManifest';
 const LD_CONTEXT = '@context';
 const LD_TYPE = '@type';
 const LD_ID = '@id';
+const LD_VOCAB = '@vocab';
 const SCHEMA = 'https://schema.org/';
 const HTML_CONTENT_TYPE = 'text/html; charset=utf-8';
 const JSON_LD_CONTENT_TYPE = 'application/ld+json; charset=utf-8';
@@ -262,7 +263,7 @@ function buildPublicJsonLd(
     ...menus,
   ];
   return {
-    [LD_CONTEXT]: SCHEMA,
+    [LD_CONTEXT]: { [LD_VOCAB]: SCHEMA },
     [LD_TYPE]: 'WebPage',
     [LD_ID]: input.business.url,
     url: input.business.url,

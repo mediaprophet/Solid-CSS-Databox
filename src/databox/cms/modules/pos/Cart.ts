@@ -14,6 +14,9 @@ import {
   round2,
 } from './PosValidation';
 
+const LD_VOCAB = '@vocab';
+const SCHEMA = 'https://schema.org/';
+
 export type CartState = 'active' | 'held' | 'submitted' | 'abandoned';
 
 export interface CartLineInput {
@@ -126,7 +129,7 @@ export function buildCartRecord(input: CartInput): CartRecordResult {
   return {
     ...summary,
     record: {
-      [LD_CONTEXT]: 'https://schema.org/',
+      [LD_CONTEXT]: { [LD_VOCAB]: SCHEMA },
       [LD_TYPE]: 'ItemList',
       [LD_ID]: id,
       name: 'POS cart',

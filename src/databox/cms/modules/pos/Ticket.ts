@@ -9,6 +9,9 @@ import {
   requireUri,
 } from './PosValidation';
 
+const LD_VOCAB = '@vocab';
+const SCHEMA = 'https://schema.org/';
+
 export type PosTicketState = 'new' | 'open' | 'held' | 'sentToFulfilment' | 'ready' | 'completed' | 'voided';
 export type PosTicketLineState = 'queued' | 'preparing' | 'ready' | 'served' | 'cancelled';
 export type PosTicketServiceMode = 'counter' | 'table' | 'takeaway' | 'delivery';
@@ -135,7 +138,7 @@ export function buildTicketStateRecord(input: PosTicketInput): PosTicketRecordRe
     state,
     openLineCount,
     record: {
-      [LD_CONTEXT]: 'https://schema.org/',
+      [LD_CONTEXT]: { [LD_VOCAB]: SCHEMA },
       [LD_TYPE]: 'Action',
       [LD_ID]: id,
       name: ticketNumber,

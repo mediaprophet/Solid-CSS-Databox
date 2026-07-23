@@ -60,6 +60,10 @@ describe('A PosOrderStore', (): void => {
     expect(persisted.every((resource): boolean => resource.contentType === 'application/ld+json')).toBe(true);
     expect(data.get(`${baseUrl}pos/orders/o-1`)?.contentType).toBe('application/ld+json');
     expect(data.get(`${baseUrl}pos/orders/o-1`)?.content).toContain('"O-1"');
+    for (const resource of persisted) {
+      const stored = JSON.parse(data.get(resource.iri)?.content ?? '{}');
+      expect(stored['@context']).toEqual({ '@vocab': 'https://schema.org/' });
+    }
   });
 
   it('loads a persisted resource back as a serialized string.', async(): Promise<void> => {

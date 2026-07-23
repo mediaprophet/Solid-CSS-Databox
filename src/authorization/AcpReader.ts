@@ -1,6 +1,5 @@
 import { Readable } from 'node:stream';
 import type { IAccessControlledResource, IContext, IPolicy } from '@solid/access-control-policy';
-import { allowAccessModes } from '@solid/access-control-policy';
 import type { Store } from 'n3';
 import type { Credentials } from '../authentication/Credentials';
 import type { AuxiliaryStrategy } from '../http/auxiliary/AuxiliaryStrategy';
@@ -16,7 +15,7 @@ import { IdentifierMap } from '../util/map/IdentifierMap';
 import { getDefault } from '../util/map/MapUtil';
 import { readableToQuads } from '../util/StreamUtil';
 import { ACL } from '../util/Vocabularies';
-import { getAccessControlledResources } from './AcpUtil';
+import { allowAccessModes, getAccessControlledResources } from './AcpUtil';
 import type { PermissionReaderInput } from './PermissionReader';
 import { PermissionReader } from './PermissionReader';
 import type { AclPermissionSet } from './permissions/AclPermissionSet';
