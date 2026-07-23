@@ -169,5 +169,65 @@ describe('AcpUtil', (): void => {
       expect(allowAccessModes([ policy ], context)).toEqual(new Set());
       expect(allowAccessModes([{ ...policy, anyOf: [], noneOf: []}], context)).toEqual(new Set());
     });
+
+    it('matches public, direct, creator, and owner agents.', async(): Promise<void> => {
+      const policyFor = (agent: string): IPolicy => ({
+        iri: `${baseUrl}agent-policy`,
+        allow: new Set([ ACL.Read ]),
+        deny: new Set(),
+        allOf: [{ ...matcher, agent: [ agent ], client: []}],
+        anyOf: [],
+        noneOf: [],
+      });
+      const agent = `${baseUrl}agent`;
+
+      expect(allowAccessModes([ policyFor(ACP.PublicAgent) ], { target: baseUrl }))
+        .toEqual(new Set([ ACL.Read ]));
+      expect(allowAccessModes([ policyFor(ACP.AuthenticatedAgent) ], { target: baseUrl }))
+        .toEqual(new Set());
+      expect(allowAccessModes([ policyFor(agent) ], { target: baseUrl, agent }))
+        .toEqual(new Set([ ACL.Read ]));
+      expect(allowAccessModes([ policyFor(ACP.CreatorAgent) ], { target: baseUrl, agent, creator: [ agent ]}))
+        .toEqual(new Set([ ACL.Read ]));
+      expect(allowAccessModes([ policyFor(ACP.CreatorAgent) ], { target: baseUrl, agent }))
+        .toEqual(new Set());
+      expect(allowAccessModes([ policyFor(ACP.OwnerAgent) ], { target: baseUrl, agent, owner: [ agent ]}))
+        .toEqual(new Set([ ACL.Read ]));
+      expect(allowAccessModes([ policyFor(ACP.OwnerAgent) ], { target: baseUrl, agent }))
+        .toEqual(new Set());
+      expect(allowAccessModes([ policyFor(`${baseUrl}someone-else`) ], { target: baseUrl, agent }))
+        .toEqual(new Set());
+    });
+
+    it('matches client, issuer, and verifiable credential attributes.', async(): Promise<void> => {
+      const client = `${baseUrl}client`;
+      const issuer = `${baseUrl}issuer`;
+      const credential = `${baseUrl}credential`;
+      const policy: IPolicy = {
+        iri: `${baseUrl}attribute-policy`,
+        allow: new Set([ ACL.Read ]),
+        deny: new Set(),
+        allOf: [{
+          iri: `${baseUrl}attribute-matcher`,
+          agent: [],
+          client: [ client ],
+          issuer: [ issuer ],
+          vc: [ credential ],
+        }],
+        anyOf: [],
+        noneOf: [],
+      };
+
+      expect(allowAccessModes([ policy ], { target: baseUrl, client, issuer, vc: [ credential ]}))
+        .toEqual(new Set([ ACL.Read ]));
+      expect(allowAccessModes([ policy ], { target: baseUrl, client, issuer, vc: []}))
+        .toEqual(new Set());
+      expect(allowAccessModes([ policy ], { target: baseUrl, client, vc: [ credential ]}))
+        .toEqual(new Set());
+      expect(allowAccessModes([{
+        ...policy,
+        allOf: [{ ...policy.allOf[0], agent: [], client: [], issuer: [], vc: []}],
+      }], { target: baseUrl })).toEqual(new Set());
+    });
   });
 });
