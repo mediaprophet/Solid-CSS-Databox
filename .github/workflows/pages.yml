@@ -6,7 +6,7 @@
 # REQUIRED once, in the repo: Settings → Pages → Source → "GitHub Actions".
 # (This deploys the docs/ folder; it is independent of the mkdocs workflow,
 # which publishes the versioned CSS docs to the gh-pages branch.)
-name: Deploy DataBox site (Pages)
+name: Publish DataBox site
 
 on:
   push:
@@ -16,7 +16,7 @@ on:
       - docs/**
       - forge-admin/**
       - scripts/build-databox-demo.mjs
-      - .github/workflows/databox-pages.yml
+      - .github/workflows/pages.yml
   workflow_dispatch:
 
 permissions:
@@ -26,7 +26,7 @@ permissions:
 
 # Never run two Pages deploys at once; let a newer push supersede an older run.
 concurrency:
-  group: databox-pages
+  group: pages-databox
   cancel-in-progress: true
 
 jobs:

@@ -1,0 +1,66 @@
+name: Publish release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing tag to publish, for example v0.2.0.
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    name: Verify release candidate
+    uses: ./.github/workflows/verify.yml
+    secrets: inherit
+
+  package:
+    name: Package release candidate
+    needs: verify
+    uses: ./.github/workflows/package.yml
+
+  publish:
+    name: Publish GitHub Release
+    needs: package
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Determine release tag
+        id: release
+        shell: bash
+        run: |
+          if [ -n "${{ inputs.tag }}" ]; then
+            echo "tag=${{ inputs.tag }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "tag=${GITHUB_REF#refs/tags/}" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Download verified release assets
+        uses: actions/download-artifact@v4
+        with:
+          pattern: release-*
+          merge-multiple: true
+          path: release-assets
+      - name: List release assets
+        run: find release-assets -maxdepth 2 -type f -print
+      - name: Extract release notes
+        run: |
+          awk '/^## /{if(found)exit; found=1} found {print}' RELEASE_NOTES.md > release-body.md
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.release.outputs.tag }}
+          name: ${{ steps.release.outputs.tag }}
+          body_path: release-body.md
+          files: release-assets/**
+          prerelease: ${{ contains(steps.release.outputs.tag, '-') }}
+          generate_release_notes: true

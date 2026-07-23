@@ -28,8 +28,19 @@ printf " - %s\n" "${CONFIG_ARRAY[@]}"
 mkdir -p test/tmp/data
 echo "$TEST_NAME - Building and installing package"
 npm pack --loglevel warn
-npm install -g solid-community-server-*.tgz --loglevel warn
-rm solid-community-server-*.tgz
+PACKAGE_ARCHIVE=$(find . -maxdepth 1 -name 'solid-community-server-*.tgz' -print -quit)
+if [ -z "$PACKAGE_ARCHIVE" ]; then
+  echo "Could not find the package archive created by npm pack"
+  exit 1
+fi
+
+# Exercise precisely the tarball that would be published without mutating the
+# runner's global npm prefix. This prevents another globally installed CSS from
+# shadowing the package under test.
+PACKAGE_INSTALL_DIR=test/tmp/installed-package
+npm install --prefix "$PACKAGE_INSTALL_DIR" "$PACKAGE_ARCHIVE" --loglevel warn
+CSS_BINARY="$(pwd)/$PACKAGE_INSTALL_DIR/node_modules/.bin/community-solid-server"
+rm "$PACKAGE_ARCHIVE"
 
 run_server_with_config () {
   if [[ $# -ne 2 ]]; then
@@ -63,7 +74,7 @@ run_server_with_config () {
 
   echo -e "----------------------------------"
   echo "$TEST_NAME($CONFIG_NAME) - Starting the server"
-  community-solid-server "${CSS_ARGS[@]}" -b $CSS_BASE_URL -c $CONFIG_PATH &>test/tmp/"$CONFIG_NAME" &
+  "$CSS_BINARY" "${CSS_ARGS[@]}" -b "$CSS_BASE_URL" -c "$CONFIG_PATH" &>test/tmp/"$CONFIG_NAME" &
   PID=$!
 
   FAILURE=1
@@ -108,7 +119,6 @@ for CONFIG_PATH in "${CONFIG_ARRAY[@]}"; do
 done;
 
 echo "$TEST_NAME - Cleanup"
-npm uninstall -g @solid/community-server
 rm -rf test/tmp/*
 
 

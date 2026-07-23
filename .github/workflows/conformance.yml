@@ -1,0 +1,93 @@
+name: Solid protocol conformance
+
+on:
+  schedule:
+    - cron: '23 5 * * *'
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Branch or tag to test. Leave empty to run the public support matrix.
+        required: false
+        type: string
+      version:
+        description: Conformance Test Harness image version.
+        required: false
+        default: '1.1.14'
+        type: string
+      allow_failure:
+        description: Record reports without failing this manually dispatched run.
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: conformance-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  conformance:
+    name: Conformance (${{ matrix.ref }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        ref: [main]
+    continue-on-error: ${{ inputs.allow_failure || false }}
+    env:
+      NODE_OPTIONS: --require-module
+      TARGET_REF: ${{ inputs.ref || matrix.ref }}
+      CTH_VERSION: ${{ inputs.version || '1.1.14' }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ env.TARGET_REF }}
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24.x
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Start the server
+        run: |
+          npm start > server-output.log 2>&1 &
+          echo $! > server.pid
+      - name: Wait for the server
+        run: curl --output /dev/null --silent --head --fail --retry 30 --retry-connrefused --retry-delay 1 http://localhost:3000/
+      - name: Create conformance accounts
+        run: npx ts-node test/deploy/createAccountCredentials.ts http://localhost:3000/ > test/deploy/conformance.env
+      - name: Run the conformance harness
+        run: |
+          mkdir -p reports/css
+          docker pull solidproject/conformance-test-harness:${CTH_VERSION}
+          docker run -i --rm \
+            -v "$(pwd)/reports/css:/reports" \
+            --env-file=./test/deploy/conformance.env \
+            --network=host \
+            solidproject/conformance-test-harness:${CTH_VERSION} \
+            --skip-teardown \
+            --output=/reports \
+            --target=https://github.com/solid/conformance-test-harness/css
+      - name: Stop the server
+        if: always()
+        run: |
+          if [ -f server.pid ]; then kill "$(cat server.pid)" || true; fi
+      - name: Upload conformance reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: conformance-${{ matrix.ref }}-${{ github.run_id }}
+          path: reports/
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Upload server log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: conformance-server-${{ matrix.ref }}-${{ github.run_id }}
+          path: server-output.log
+          if-no-files-found: warn
+          retention-days: 30

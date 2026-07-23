@@ -1,0 +1,128 @@
+name: Package
+
+on:
+  workflow_call:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  NODE_OPTIONS: --require-module
+
+jobs:
+  server-payload:
+    name: Server package and desktop payload
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24.x
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Build Forge admin assets
+        run: |
+          npm ci --prefix forge-admin
+          npm run build --prefix forge-admin
+      - name: Pack the published server
+        run: npm pack --pack-destination package-output
+      - name: Stage the desktop payload once
+        uses: actions/upload-artifact@v4
+        with:
+          name: desktop-payload
+          path: |
+            bin/
+            config/
+            dist/
+            templates/
+            patches/
+            forge-admin/dist/
+            package.json
+            package-lock.json
+          if-no-files-found: error
+          retention-days: 7
+      - name: Stage the npm package for release
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-server-package
+          path: package-output/*.tgz
+          if-no-files-found: error
+          retention-days: 14
+
+  desktop:
+    name: Desktop (${{ matrix.target }})
+    needs: server-payload
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            archive: tar.gz
+          - os: macos-14
+            target: x86_64-apple-darwin
+            archive: tar.gz
+          - os: macos-14
+            target: aarch64-apple-darwin
+            archive: tar.gz
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            archive: zip
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24.x
+      - name: Restore the verified desktop payload
+        uses: actions/download-artifact@v4
+        with:
+          name: desktop-payload
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+      - name: Cache Cargo
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            native/target
+          key: cargo-${{ matrix.target }}-${{ hashFiles('native/**/Cargo.lock') }}
+          restore-keys: |
+            cargo-${{ matrix.target }}-
+      - name: Install Linux desktop dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential pkg-config libgtk-3-dev libayatana-appindicator3-dev libssl-dev liblzma-dev librsvg2-dev libdbus-1-dev libxdo-dev
+      - name: Build native helpers
+        working-directory: native
+        run: cargo build --release --target ${{ matrix.target }}
+      - name: Assemble the desktop product
+        run: node scripts/package-desktop.mjs
+        env:
+          DATABOX_NATIVE_TARGET: ${{ matrix.target }}
+      - name: Archive desktop product (Unix)
+        if: matrix.archive == 'tar.gz'
+        run: |
+          mkdir -p release-dist
+          tar -czf release-dist/databox-cms-${{ matrix.target }}.tar.gz -C release "Databox CMS"
+      - name: Archive desktop product (Windows)
+        if: matrix.archive == 'zip'
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force release-dist
+          Compress-Archive -Path 'release/Databox CMS/*' -DestinationPath 'release-dist/databox-cms-${{ matrix.target }}.zip'
+      - name: Upload desktop package
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-native-${{ matrix.target }}
+          path: release-dist/
+          if-no-files-found: error
+          retention-days: 14

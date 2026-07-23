@@ -1,4 +1,4 @@
-name: Documentation
+name: Publish documentation
 on:
   workflow_call:
 
@@ -11,6 +11,9 @@ on:
       - documentation/**
     tags-ignore:
       - '*'
+
+permissions:
+  contents: write
 
 jobs:
   mkdocs-prep:

@@ -29,7 +29,7 @@ we run the [Conformance Test Harness (CTH)](https://github.com/solid-contrib/con
 combined with the [specification test suite](https://github.com/solid-contrib/specification-tests/).
 This test suite was made specifically so any Solid server can be tested
 on how well it conforms to the Solid specifications.
-The configuration that runs these tests in the repository can be found [here](https://github.com/CommunitySolidServer/CommunitySolidServer/blob/main/.github/workflows/cth-test.yml).
+The configuration that runs these tests in the repository can be found [here](https://github.com/mediaprophet/Solid-CSS-Databox/blob/main/.github/workflows/conformance.yml).
 
 You can also run this test suite locally.
 Besides the standard requirements for running the server,
