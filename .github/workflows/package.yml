@@ -28,7 +28,9 @@ jobs:
           npm ci --prefix forge-admin
           npm run build --prefix forge-admin
       - name: Pack the published server
-        run: npm pack --pack-destination package-output
+        run: |
+          mkdir -p package-output
+          npm pack --pack-destination package-output
       - name: Stage the desktop payload once
         uses: actions/upload-artifact@v4
         with:

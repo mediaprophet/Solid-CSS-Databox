@@ -20,6 +20,29 @@ jobs:
       - run: npm ci --ignore-scripts
       - run: npm run lint
 
+  documentation:
+    name: Documentation
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24.x
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - name: Lint documentation markdown
+        run: npm run lint:markdown -- documentation/**/*.md
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Build MkDocs site strictly
+        run: |
+          pip install mkdocs-material
+          mkdocs build --strict --config-file documentation/mkdocs.yml
+      - name: Generate API reference
+        run: npm run typedocs
+
   unit:
     name: Unit (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
