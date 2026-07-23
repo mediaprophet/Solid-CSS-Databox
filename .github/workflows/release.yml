@@ -96,7 +96,10 @@ jobs:
           tag_name: ${{ steps.tag.outputs.name }}
           name: ${{ steps.tag.outputs.name }}
           body_path: release-body.md
-          files: release-final/*
+          files: |
+            release-final/*.tar.gz
+            release-final/*.zip
+            release-final/*.tgz
           draft: false
           prerelease: ${{ contains(steps.tag.outputs.name, '-') }}
           generate_release_notes: true
