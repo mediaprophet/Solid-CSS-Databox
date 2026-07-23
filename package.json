@@ -1,6 +1,6 @@
 {
   "name": "@solid/community-server",
-  "version": "8.0.0",
+  "version": "0.2.0",
   "description": "Solid Databox: an organisation-hosted, governed Solid data exchange, built on the Community Solid Server.",
   "license": "MIT",
   "homepage": "https://github.com/mediaprophet/Solid-CSS-Databox#readme",
