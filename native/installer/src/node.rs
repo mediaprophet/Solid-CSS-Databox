@@ -8,9 +8,6 @@ pub fn run(profile: &InstallProfile) -> Result<(), String> {
         println!("  Using the installed private Node.js runtime");
         return Ok(());
     }
-    if let Ok(version) = get_node_version("node") {
-        if compatible(&version) { println!("  Using compatible Node.js already installed on this computer ({version})"); return Ok(()); }
-    }
     provision(profile)?;
     let version = get_node_version(profile.node_binary_path())?;
     if !compatible(&version) { return Err(format!("The downloaded Node runtime is incompatible ({version}).")); }

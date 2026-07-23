@@ -34,7 +34,10 @@ pub fn run(profile: &InstallProfile) -> Result<(), String> {
         .map_err(|error| format!("Could not save desktop configuration: {error}"))?;
     println!("  Created private configuration and local storage");
 
-    let node = if profile.node_binary_path().is_file() { profile.node_binary_path() } else { "node".into() };
+    let node = profile.node_binary_path();
+    if !node.is_file() {
+        return Err("The private Node.js runtime is unavailable. Run setup again to repair the runtime.".to_owned());
+    }
     let script = "const {generateKeyPairSync}=require('crypto'); const fs=require('fs'); const p=process.argv[1]; const k=generateKeyPairSync('rsa',{modulusLength:2048,publicKeyEncoding:{type:'spki',format:'pem'},privateKeyEncoding:{type:'pkcs8',format:'pem'}}); fs.writeFileSync(p+'/oidc-private.pem',k.privateKey,{mode:0o600}); fs.writeFileSync(p+'/oidc-public.pem',k.publicKey);";
     let result = Command::new(node).args(["-e", script, &display_path(&keys_dir)]).output();
     if !matches!(result, Ok(output) if output.status.success()) { return Err("Could not generate local signing keys.".to_owned()); }

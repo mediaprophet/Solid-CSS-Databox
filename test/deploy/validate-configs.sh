@@ -38,7 +38,11 @@ fi
 # runner's global npm prefix. This prevents another globally installed CSS from
 # shadowing the package under test.
 PACKAGE_INSTALL_DIR=test/tmp/installed-package
-npm install --prefix "$PACKAGE_INSTALL_DIR" "$PACKAGE_ARCHIVE" --loglevel warn
+# The archive already contains built assets. Do not run this repository's
+# development lifecycle hooks in the isolated consumer prefix: npm can hoist
+# their dependencies outside the package directory, making patch-package fail
+# before the server binary is linked.
+npm install --ignore-scripts --prefix "$PACKAGE_INSTALL_DIR" "$PACKAGE_ARCHIVE" --loglevel warn
 CSS_BINARY="$(pwd)/$PACKAGE_INSTALL_DIR/node_modules/.bin/community-solid-server"
 rm "$PACKAGE_ARCHIVE"
 

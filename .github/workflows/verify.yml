@@ -6,9 +6,6 @@ on:
 permissions:
   contents: read
 
-env:
-  NODE_OPTIONS: --require-module
-
 jobs:
   lint:
     name: Lint
@@ -97,6 +94,10 @@ jobs:
     name: Packaged configuration validation
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    env:
+      # Node 24 requires this compatibility mode when exercising the packed
+      # package exactly as a downstream consumer would.
+      NODE_OPTIONS: --require-module
     services:
       sparql-endpoint:
         image: tenforce/virtuoso

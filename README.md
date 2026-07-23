@@ -110,8 +110,8 @@ The Databox ecosystem includes native components for hardware integration, syste
 
 - **POS Edge** (`native/pos-edge/`) — Rust native POS edge with ESC/POS thermal printer support, cash drawer control,
   QR code generation, local HTTP server, IPC, and hardware abstraction.
-- **Installer** (`native/installer/`) — Cross-platform installer with macOS launchd service registration,
-  platform-aware Node.js binary provisioning, pre-flight checks, and deployment handoff.
+- **Installer** (`native/installer/`) — Cross-platform installer with pre-flight checks, a private checksum-verified
+  Node.js runtime, locked dependency installation, platform/architecture validation, and deployment handoff.
 - **POS Edge Proxy** (`rust/pos-edge-proxy/`) — Proxy layer for POS edge communication.
 - **Tray Supervisor** (`rust/tray-supervisor/`) — System tray supervisor for desktop lifecycle management.
 - **Connector Sidecar** (`rust/connector-sidecar/`) — Connector sidecar for CMS integration with ODBC/LDAP bridging
@@ -268,7 +268,8 @@ The Databox extension is fail-closed and unit-tested across all 24 subsystems:
 - **Secret management** — templates under `databox/deployment/cms/secrets/`.
 - **Live CSS preset** — experimental Components.js preset under `config/databox/` for mounting the Forge inside a
   running CSS instance.
-- **Native installer** — cross-platform installer for macOS with launchd service registration.
+- **Desktop releases** — platform-specific Windows x64, macOS x64/ARM64, and Linux x64 packages. Setup downloads its
+  private Node.js runtime and locked dependencies on first use, then launches the tray supervisor for desktop editions.
 
 See the [CMS deployment guide](databox/deployment/cms/README.md) for details.
 

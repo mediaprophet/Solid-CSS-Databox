@@ -63,15 +63,19 @@ jobs:
         include:
           - os: ubuntu-latest
             target: x86_64-unknown-linux-gnu
+            asset: linux-x64
             archive: tar.gz
           - os: macos-14
             target: x86_64-apple-darwin
+            asset: macos-x64
             archive: tar.gz
           - os: macos-14
             target: aarch64-apple-darwin
+            asset: macos-arm64
             archive: tar.gz
           - os: windows-latest
             target: x86_64-pc-windows-msvc
+            asset: windows-x64
             archive: zip
     steps:
       - uses: actions/checkout@v5
@@ -108,17 +112,21 @@ jobs:
         run: node scripts/package-desktop.mjs
         env:
           DATABOX_NATIVE_TARGET: ${{ matrix.target }}
+      - name: Verify platform-specific desktop package
+        run: node scripts/verify-desktop-package.mjs
+        env:
+          DATABOX_NATIVE_TARGET: ${{ matrix.target }}
       - name: Archive desktop product (Unix)
         if: matrix.archive == 'tar.gz'
         run: |
           mkdir -p release-dist
-          tar -czf release-dist/databox-cms-${{ matrix.target }}.tar.gz -C release "Databox CMS"
+          tar -czf release-dist/databox-cms-${{ matrix.asset }}.tar.gz -C release "Databox CMS"
       - name: Archive desktop product (Windows)
         if: matrix.archive == 'zip'
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force release-dist
-          Compress-Archive -Path 'release/Databox CMS/*' -DestinationPath 'release-dist/databox-cms-${{ matrix.target }}.zip'
+          Compress-Archive -Path 'release/Databox CMS/*' -DestinationPath 'release-dist/databox-cms-${{ matrix.asset }}.zip'
       - name: Upload desktop package
         uses: actions/upload-artifact@v4
         with:
