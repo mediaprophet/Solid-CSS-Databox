@@ -1,91 +1,88 @@
-use serde::{Deserialize, Serialize};
+use std::path::{Path, PathBuf};
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone)]
 pub struct InstallProfile {
     pub type_name: String,
-    pub install_dir: String,
+    pub install_dir: PathBuf,
     pub config_preset: String,
-    pub service_name: String,
     pub required_port: u16,
-    pub required_node_version: String,
     pub required_binaries: Vec<String>,
     pub native_edge_binary: Option<String>,
-    pub native_edge_http_port: u16,
-    pub printer_device: Option<String>,
-    pub display_device: Option<String>,
-    pub cash_drawer_via: String,
 }
 
 impl InstallProfile {
-    pub fn from_type(type_name: &str, install_dir: &str, config_override: Option<String>) -> Self {
-        let (config_preset, service_name, required_binaries, native_edge_binary) = match type_name {
-            "cms:ServerInstall" => (
-                config_override.unwrap_or("config/cms/cms.json".to_string()),
-                "databox-cms".to_string(),
-                vec![],
-                None,
-            ),
-            "cms:PosInstall" => (
-                config_override.unwrap_or("config/cms/pos.json".to_string()),
-                "databox-pos".to_string(),
-                vec!["pos-edge".to_string()],
-                Some("pos-edge".to_string()),
-            ),
-            "cms:ConnectorInstall" => (
-                config_override.unwrap_or("config/cms/cms.json".to_string()),
-                "databox-connector".to_string(),
-                vec!["connector-sidecar".to_string()],
-                None,
-            ),
-            "cms:TraySupervisorInstall" => (
-                config_override.unwrap_or("config/cms/cms.json".to_string()),
-                "databox-tray".to_string(),
-                vec!["tray-supervisor".to_string()],
-                None,
-            ),
-            "cms:CombinedInstall" => (
-                config_override.unwrap_or("config/cms/pos.json".to_string()),
-                "databox-combined".to_string(),
-                vec!["pos-edge".to_string(), "tray-supervisor".to_string()],
-                Some("pos-edge".to_string()),
-            ),
-            _ => (
-                config_override.unwrap_or("config/cms/cms.json".to_string()),
-                "databox-cms".to_string(),
-                vec![],
-                None,
-            ),
+    pub fn from_type(type_name: &str, install_dir: impl Into<PathBuf>, config_override: Option<String>) -> Result<Self, String> {
+        let (default_config, required_binaries, native_edge_binary) = match type_name {
+            "cms:ServerInstall" => ("config/cms/cms.json", vec![], None),
+            "cms:PosInstall" => ("config/cms/pos.json", vec!["pos-edge"], Some("pos-edge")),
+            "cms:ConnectorInstall" => ("config/cms/cms.json", vec!["connector-sidecar"], None),
+            "cms:TraySupervisorInstall" => ("config/cms/cms.json", vec!["tray-supervisor"], None),
+            "cms:CombinedInstall" => ("config/cms/pos.json", vec!["pos-edge", "tray-supervisor"], Some("pos-edge")),
+            _ => return Err(format!("Unknown package type '{type_name}'. Use --help to see the supported products.")),
         };
 
-        Self {
-            type_name: type_name.to_string(),
-            install_dir: install_dir.to_string(),
-            config_preset,
-            service_name,
+        Ok(Self {
+            type_name: type_name.to_owned(),
+            install_dir: install_dir.into(),
+            config_preset: config_override.unwrap_or_else(|| default_config.to_owned()),
             required_port: 3000,
-            required_node_version: ">=24.0.0 <25.0.0".to_string(),
-            required_binaries,
-            native_edge_binary,
-            native_edge_http_port: 9100,
-            printer_device: None,
-            display_device: None,
-            cash_drawer_via: "printer".to_string(),
-        }
+            required_binaries: required_binaries.into_iter().map(str::to_owned).collect(),
+            native_edge_binary: native_edge_binary.map(str::to_owned),
+        })
     }
 
-    pub fn node_binary_path(&self) -> String {
-        format!("{}/runtime/node/bin/node", self.install_dir)
+    pub fn includes_tray(&self) -> bool {
+        self.required_binaries.iter().any(|name| name == "tray-supervisor")
     }
 
-    pub fn app_dir(&self) -> String {
-        format!("{}/app", self.install_dir)
+    pub fn app_dir(&self) -> PathBuf { self.install_dir.join("app") }
+    pub fn data_dir(&self) -> PathBuf { self.install_dir.join("data") }
+    pub fn bin_dir(&self) -> PathBuf { self.install_dir.join("bin") }
+    pub fn logs_dir(&self) -> PathBuf { self.data_dir().join("logs") }
+
+    pub fn binary_path(&self, name: &str) -> PathBuf {
+        self.bin_dir().join(format!("{}{}", name, exe_suffix()))
     }
 
-    pub fn data_dir(&self) -> String {
-        format!("{}/data", self.install_dir)
+    pub fn node_binary_path(&self) -> PathBuf {
+        #[cfg(target_os = "windows")]
+        { self.install_dir.join("runtime").join("node").join("node.exe") }
+        #[cfg(not(target_os = "windows"))]
+        { self.install_dir.join("runtime").join("node").join("bin").join("node") }
     }
 
-    pub fn bin_dir(&self) -> String {
-        format!("{}/bin", self.install_dir)
+    pub fn npm_binary_path(&self) -> PathBuf {
+        #[cfg(target_os = "windows")]
+        { self.install_dir.join("runtime").join("node").join("npm.cmd") }
+        #[cfg(not(target_os = "windows"))]
+        { self.install_dir.join("runtime").join("node").join("bin").join("npm") }
+    }
+
+    pub fn desktop_config_path(&self) -> PathBuf { self.install_dir.join("databox-desktop.json") }
+}
+
+pub fn exe_suffix() -> &'static str {
+    #[cfg(target_os = "windows")]
+    { ".exe" }
+    #[cfg(not(target_os = "windows"))]
+    { "" }
+}
+
+pub fn default_install_dir() -> PathBuf {
+    #[cfg(target_os = "windows")]
+    {
+        std::env::var_os("LOCALAPPDATA")
+            .map(PathBuf::from)
+            .unwrap_or_else(|| PathBuf::from("."))
+            .join("Databox CMS")
+    }
+    #[cfg(not(target_os = "windows"))]
+    {
+        std::env::var_os("HOME")
+            .map(PathBuf::from)
+            .unwrap_or_else(|| PathBuf::from("."))
+            .join(".local/share/databox-cms")
     }
 }
+
+pub fn display_path(path: &Path) -> String { path.display().to_string() }

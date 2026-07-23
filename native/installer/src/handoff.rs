@@ -1,58 +1,21 @@
-use crate::shape::InstallProfile;
+use std::{fs, process::Command};
+use chrono::Utc;
+use crate::shape::{display_path, InstallProfile};
 
-/// Step 8: Administrative provisioning & handoff.
-/// Writes the install manifest and outputs final URLs.
 pub fn run(profile: &InstallProfile) -> Result<(), String> {
-    let data_dir = profile.data_dir();
-    let manifest_path = format!("{}/install-state.ttl", data_dir);
-
-    let timestamp = current_timestamp();
-    let manifest = format!(
-        r#"@prefix cms: <urn:solid-server:databox:cms#> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix dct: <http://purl.org/dc/terms/> .
-
-<{}/install-state> a cms:InstallProfile ;
-  cms:installType "{}" ;
-  cms:configPreset "{}" ;
-  cms:serviceName "{}" ;
-  cms:requiredPort {} ;
-  dct:created "{}"^^xsd:dateTime ;
-  cms:installDir "{}" .
-"#,
-        data_dir,
-        profile.type_name,
-        profile.config_preset,
-        profile.service_name,
-        profile.required_port,
-        timestamp,
-        profile.install_dir,
-    );
-
-    std::fs::write(&manifest_path, &manifest)
-        .map_err(|e| format!("Failed to write install manifest: {}", e))?;
-
-    println!("  Install manifest written to {}", manifest_path);
-    println!();
-    println!("  ──────────────────────────────────────────────");
-    println!("  Admin panel:     http://localhost:{}/.databox/cms/admin", profile.required_port);
-    println!("  Server root:     http://localhost:{}/", profile.required_port);
-    if profile.native_edge_binary.is_some() {
-        println!("  POS edge bridge: http://localhost:{}/health", profile.native_edge_http_port);
+    let manifest = format!("@prefix cms: <urn:solid-server:databox:cms#> .\n@prefix dct: <http://purl.org/dc/terms/> .\n\n<install-state> a cms:InstallProfile ;\n  cms:installType \"{}\" ;\n  cms:configPreset \"{}\" ;\n  cms:requiredPort {} ;\n  dct:created \"{}\" .\n", profile.type_name, profile.config_preset, profile.required_port, Utc::now().format("%Y-%m-%dT%H:%M:%SZ"));
+    fs::write(profile.data_dir().join("install-state.ttl"), manifest).map_err(|error| format!("Could not save install details: {error}"))?;
+    println!("  Install details saved to {}", display_path(&profile.data_dir().join("install-state.ttl")));
+    if profile.includes_tray() {
+        println!("  The desktop supervisor will keep Databox available from the notification area.");
+    } else {
+        println!("  Start the server from {}", display_path(&profile.app_dir()));
     }
-    println!("  Service name:    {}", profile.service_name);
-    println!("  Data directory:  {}", data_dir);
-    println!("  ──────────────────────────────────────────────");
-    println!();
-    println!("  Next steps:");
-    println!("    1. Open the admin panel URL in your browser");
-    println!("    2. Create the root WebID and primary data pod");
-    println!("    3. Configure access control lists (ACLs)");
-    println!("    4. Enable the first CMS module (hosting)");
-
     Ok(())
 }
 
-fn current_timestamp() -> String {
-    chrono::Utc::now().format("%Y-%m-%dT%H:%M:%SZ").to_string()
+pub fn launch(profile: &InstallProfile) -> Result<(), String> {
+    if !profile.includes_tray() { return Ok(()); }
+    Command::new(profile.binary_path("tray-supervisor")).spawn()
+        .map(|_| ()).map_err(|error| format!("Could not launch the desktop supervisor: {error}"))
 }

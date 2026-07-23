@@ -69,6 +69,7 @@
     "build:pos-edge": "cargo build --release --manifest-path native/pos-edge/Cargo.toml",
     "build:tray": "cargo build --release --manifest-path native/tray-supervisor/Cargo.toml",
     "build:installer": "cargo build --release --manifest-path native/installer/Cargo.toml",
+    "package:desktop": "npm run build && npm run build:native && node scripts/package-desktop.mjs",
     "install:server": "cargo run --release --manifest-path native/installer/Cargo.toml -- --package-type cms:ServerInstall",
     "install:pos": "cargo run --release --manifest-path native/installer/Cargo.toml -- --package-type cms:PosInstall",
     "install:combined": "cargo run --release --manifest-path native/installer/Cargo.toml -- --package-type cms:CombinedInstall",

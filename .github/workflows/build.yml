@@ -114,6 +114,18 @@ jobs:
         working-directory: native
         run: cargo build --release --target ${{ matrix.target }}
 
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24.x
+
+      - name: Build complete desktop package
+        run: |
+          npm ci
+          npm run build
+          node scripts/package-desktop.mjs
+        env:
+          DATABOX_NATIVE_TARGET: ${{ matrix.target }}
+
       - name: Stage binaries (Unix)
         if: matrix.archive != 'zip'
         run: |
@@ -137,4 +149,11 @@ jobs:
         with:
           name: native-${{ matrix.target }}
           path: native-${{ matrix.target }}.${{ matrix.archive }}
+          retention-days: 7
+
+      - name: Upload desktop installer package
+        uses: actions/upload-artifact@v4
+        with:
+          name: databox-desktop-${{ matrix.target }}
+          path: release/Databox CMS/
           retention-days: 7
