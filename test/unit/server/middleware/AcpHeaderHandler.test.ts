@@ -1,11 +1,10 @@
-import { ACP } from '@solid/access-control-policy';
 import { createResponse } from 'node-mocks-http';
 import type { AuxiliaryIdentifierStrategy } from '../../../../src/http/auxiliary/AuxiliaryIdentifierStrategy';
 import type { TargetExtractor } from '../../../../src/http/input/identifier/TargetExtractor';
 import type { HttpRequest } from '../../../../src/server/HttpRequest';
 import type { HttpResponse } from '../../../../src/server/HttpResponse';
 import { AcpHeaderHandler } from '../../../../src/server/middleware/AcpHeaderHandler';
-import { ACL } from '../../../../src/util/Vocabularies';
+import { ACL, ACP } from '../../../../src/util/Vocabularies';
 import { SimpleSuffixStrategy } from '../../../util/SimpleSuffixStrategy';
 
 describe('an AcpHeaderHandler', (): void => {

@@ -83,7 +83,7 @@ describe('buildCartRecord', (): void => {
       lines,
     });
 
-    expect(result.record['@context']).toBe('https://schema.org/');
+    expect(result.record['@context']).toEqual({ '@vocab': 'https://schema.org/' });
     expect(result.record['@type']).toBe('ItemList');
     expect(result.record['@id']).toBe('https://example.org/carts/1');
     expect(result.record.numberOfItems).toBe(3);

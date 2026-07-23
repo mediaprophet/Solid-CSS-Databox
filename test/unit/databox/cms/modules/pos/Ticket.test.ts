@@ -40,7 +40,7 @@ describe('buildTicketStateRecord', (): void => {
 
     expect(result.state).toBe('sentToFulfilment');
     expect(result.openLineCount).toBe(1);
-    expect(result.record['@context']).toBe('https://schema.org/');
+    expect(result.record['@context']).toEqual({ '@vocab': 'https://schema.org/' });
     expect(result.record['@type']).toBe('Action');
 
     const object = record(result.record.object);

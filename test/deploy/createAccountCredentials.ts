@@ -115,6 +115,7 @@ async function outputCredentials(user: User): Promise<void> {
   const { id, secret } = await createCredentials(webId, authorization);
 
   const name = user.podName.toUpperCase();
+  console.log(`USERS_${name}_WEBID=${webId}`);
   console.log(`USERS_${name}_CLIENTID=${id}`);
   console.log(`USERS_${name}_CLIENTSECRET=${secret}`);
 }

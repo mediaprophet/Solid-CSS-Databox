@@ -56,6 +56,8 @@ describe('A PublicWebsiteStore', (): void => {
     expect(data.get(`${baseUrl}index.html`)?.content).toContain('Test Cafe');
     expect(data.get(`${baseUrl}data.jsonld`)?.contentType).toBe('application/ld+json');
     expect(data.get(`${baseUrl}data.jsonld`)?.content).toContain('LocalBusiness');
+    const jsonLd = JSON.parse(data.get(`${baseUrl}data.jsonld`)?.content ?? '{}');
+    expect(jsonLd['@context']).toEqual({ '@vocab': 'https://schema.org/' });
     expect(data.get(`${baseUrl}theme.css`)?.contentType).toBe('text/css');
     expect(data.get(`${baseUrl}theme.css`)?.content).toBe('body{color:red}');
   });

@@ -4,6 +4,8 @@ import { applyDiscount } from './Discount';
 const LD_CONTEXT = '@context';
 const LD_TYPE = '@type';
 const LD_ID = '@id';
+const LD_VOCAB = '@vocab';
+const SCHEMA = 'https://schema.org/';
 
 export type PosOrderStatus = 'draft' | 'held' | 'submitted' | 'paid' | 'voided';
 export type PosPromotionType = 'percent' | 'fixed';
@@ -460,7 +462,7 @@ export function buildOrderRecord(input: PosOrderRecordInput): PosOrderRecordResu
     taxTotal,
     total,
     record: {
-      [LD_CONTEXT]: 'https://schema.org/',
+      [LD_CONTEXT]: { [LD_VOCAB]: SCHEMA },
       [LD_TYPE]: 'Order',
       id,
       orderNumber,

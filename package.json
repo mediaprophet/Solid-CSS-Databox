@@ -1,6 +1,6 @@
 {
   "name": "@solid/community-server",
-  "version": "0.2.0",
+  "version": "1.2.0",
   "description": "Solid Databox: an organisation-hosted, governed Solid data exchange, built on the Community Solid Server.",
   "license": "MIT",
   "homepage": "https://github.com/mediaprophet/Solid-CSS-Databox#readme",
@@ -36,18 +36,19 @@
   "lsd:module": "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server",
   "lsd:components": "dist/components/components.jsonld",
   "lsd:contexts": {
-    "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server/^8.0.0/components/context.jsonld": "dist/components/context.jsonld"
+    "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server/^1.0.0/components/context.jsonld": "dist/components/context.jsonld"
   },
   "lsd:importPaths": {
-    "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server/^8.0.0/components/": "dist/components/",
-    "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server/^8.0.0/config/": "config/",
-    "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server/^8.0.0/dist/": "dist/",
-    "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server/^8.0.0/templates/config/": "templates/config/"
+    "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server/^1.0.0/components/": "dist/components/",
+    "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server/^1.0.0/config/": "config/",
+    "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server/^1.0.0/dist/": "dist/",
+    "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server/^1.0.0/templates/config/": "templates/config/"
   },
   "scripts": {
     "build": "npm run build:ts && npm run build:components",
     "build:components": "componentsjs-generator -s src -c dist/components -r css -i .componentsignore",
     "build:ts": "tsc",
+    "check:version": "node scripts/check-version-consistency.mjs",
     "build:demo": "node scripts/build-databox-demo.mjs",
     "mkdocs": "npm run mkdocs:docker || npm run mkdocs:pip",
     "mkdocs:docker": "docker run --rm -it -p 8000:8000 -v ${PWD}/documentation:/docs squidfunk/mkdocs-material",
@@ -80,7 +81,7 @@
     "test:cms:oxigraph:unified": "node ./scripts/run-cms-oxigraph-smoke.mjs --mode=unified",
     "typedocs": "typedoc --customCss ./documentation/typedoc.css",
     "jest": "jest --coverageReporters text-summary --",
-    "lint": "npm run lint:eslint && npm run lint:markdown",
+    "lint": "npm run check:version && npm run lint:eslint && npm run lint:markdown",
     "lint:eslint": "node ./scripts/run-eslint.mjs",
     "lint:markdown": "markdownlint-cli2",
     "prepare": "husky",

@@ -147,6 +147,13 @@ export const ACP = createVocabulary(
   'client',
   'issuer',
   'vc',
+
+  // Matcher classes
+  'AuthenticatedAgent',
+  'CreatorAgent',
+  'OwnerAgent',
+  'PublicAgent',
+  'PublicClient',
 );
 
 export const AS = createVocabulary(

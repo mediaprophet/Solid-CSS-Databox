@@ -58,7 +58,7 @@ jobs:
       - name: Wait for the server
         run: curl --output /dev/null --silent --head --fail --retry 30 --retry-connrefused --retry-delay 1 http://localhost:3000/
       - name: Create conformance accounts
-        run: npx ts-node test/deploy/createAccountCredentials.ts http://localhost:3000/ > test/deploy/conformance.env
+        run: npx ts-node --project test/tsconfig.json test/deploy/createAccountCredentials.ts http://localhost:3000/ >> test/deploy/conformance.env
       - name: Run the conformance harness
         run: |
           mkdir -p reports/css

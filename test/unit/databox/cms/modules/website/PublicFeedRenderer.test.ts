@@ -96,7 +96,7 @@ describe('renderPublicWebsiteFeed', (): void => {
       vary: 'accept',
     });
 
-    expect(rendered.jsonLd['@context']).toBe('https://schema.org/');
+    expect(rendered.jsonLd['@context']).toEqual({ '@vocab': 'https://schema.org/' });
     expect(rendered.jsonLd['@type']).toBe('WebPage');
     expect(rendered.jsonLd.dateModified).toBe('2026-07-19T00:00:00.000Z');
 
