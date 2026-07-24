@@ -140,7 +140,7 @@
           <h4 style="color: var(--text-accent); font-size: 1.25rem; margin-bottom: 1rem;">Infrastructure &amp; Hosting</h4>
           <ul class="feature-list">
             <li><strong>Hosting Setup:</strong> One-click Cloudflare DNS and tunnel configuration with apex domain, www subdomain, and origin binding.</li>
-            <li><strong>CMS Modules:</strong> Dynamic module system with enable/disable toggles, capability declarations, and route management.</li>
+            <li><strong>IPMS Modules:</strong> Dynamic module system with enable/disable toggles, capability declarations, and route management.</li>
             <li><strong>Connector Mappings:</strong> ODBC and LDAP connector simulator with connection string testing and query preview.</li>
             <li><strong>Event Dispatcher:</strong> Dispatch and monitor typed events across the Databox infrastructure.</li>
             <li><strong>Program Management:</strong> Create and manage organisation programs with full lifecycle support.</li>
@@ -170,10 +170,10 @@
       </div>
     </section>
 
-    <!-- CMS Module Catalog Section -->
+    <!-- IPMS Module Catalog Section -->
     <section class="info-card reveal">
-      <h3 style="color: var(--text-accent);">CMS Module Catalog — 50+ Industry Modules</h3>
-      <p style="margin-bottom: 2rem;">The Databox CMS ships with a dynamic module system of <strong>50+ industry modules</strong>, each with capability declarations, route management, and enable/disable toggles. Modules are organised into industry verticals and can be tailored per organisation profile.</p>
+      <h3 style="color: var(--text-accent);">IPMS Module Catalog — 50+ Industry Modules</h3>
+      <p style="margin-bottom: 2rem;">The Databox IPMS ships with a dynamic module system of <strong>50+ industry modules</strong>, each with capability declarations, route management, and enable/disable toggles. Modules are organised into industry verticals and can be tailored per organisation profile.</p>
 
       <div class="grid-2">
         <div>
@@ -267,7 +267,7 @@
     <!-- Databox Engine Subsystems Section -->
     <section class="info-card reveal">
       <h3 style="color: var(--text-accent);">Databox Engine Subsystems</h3>
-      <p style="margin-bottom: 2rem;">Beyond the CMS modules, the Databox engine provides 24 core subsystems that implement the governed data exchange, policy enforcement, evidence chain, and compliance decision support.</p>
+      <p style="margin-bottom: 2rem;">Beyond the IPMS modules, the Databox engine provides 24 core subsystems that implement the governed data exchange, policy enforcement, evidence chain, and compliance decision support.</p>
 
       <div class="grid-2">
         <div>
@@ -317,7 +317,7 @@
     <!-- Org Mobile Apps Section -->
     <section class="info-card reveal">
       <h3 style="color: var(--text-accent);">Org Mobile Apps — WASM/PWA Container</h3>
-      <p style="margin-bottom: 1.5rem;">A unified WASM/PWA container that fetches its identity, features, and permissions from the CMS at runtime based on the org's vertical profile and the app's purpose. Instead of building separate apps for each purpose, one container dynamically loads UI modules from the CMS.</p>
+      <p style="margin-bottom: 1.5rem;">A unified WASM/PWA container that fetches its identity, features, and permissions from the IPMS at runtime based on the org's vertical profile and the app's purpose. Instead of building separate apps for each purpose, one container dynamically loads UI modules from the IPMS.</p>
 
       <div class="grid-2">
         <div>
@@ -334,11 +334,11 @@
         <div>
           <h4 style="color: var(--text-accent); font-size: 1.25rem; margin-bottom: 1rem;">Container Features</h4>
           <ul class="feature-list">
-            <li><strong>Dynamic Module Loading:</strong> UI component bundles fetched from CMS at boot.</li>
+            <li><strong>Dynamic Module Loading:</strong> UI component bundles fetched from IPMS at boot.</li>
             <li><strong>Per-Install VC Licensing:</strong> Each install receives a Verifiable Credential licence binding app, org, device, scope, and permissions.</li>
             <li><strong>Network Scope Enforcement:</strong> Service worker enforces local-only vs remote-capable access.</li>
             <li><strong>Solid-OIDC Auth:</strong> PWA shell with Solid-OIDC authentication.</li>
-            <li><strong>Profile-Driven Availability:</strong> Apps filtered by org's enabled CMS modules and vertical profile.</li>
+            <li><strong>Profile-Driven Availability:</strong> Apps filtered by org's enabled IPMS modules and vertical profile.</li>
           </ul>
         </div>
       </div>
@@ -363,7 +363,7 @@
           <ul class="feature-list">
             <li><strong>Installer (native):</strong> Cross-platform installer with macOS launchd service registration, platform-aware Node.js provisioning, pre-flight checks, and deployment handoff.</li>
             <li><strong>Tray Supervisor (rust):</strong> System tray supervisor for desktop lifecycle management.</li>
-            <li><strong>Connector Sidecar (rust):</strong> Connector sidecar for CMS integration with ODBC/LDAP bridging and RDF mapping.</li>
+            <li><strong>Connector Sidecar (rust):</strong> Connector sidecar for IPMS integration with ODBC/LDAP bridging and RDF mapping.</li>
           </ul>
         </div>
       </div>
@@ -378,17 +378,17 @@
         <div>
           <h4 style="color: var(--text-accent); font-size: 1.25rem; margin-bottom: 1rem;">Test Coverage</h4>
           <ul class="feature-list">
-            <li><strong>188 unit test files</strong> across 24 Databox subsystems (agent, authorization, bridge, CMS, compliance, context, credential, evidence, feed, gateway, identifiers, notification, ODRL, policy, profile, proof, provisioning, receipt, review, storage, tenant).</li>
-            <li><strong>99 CMS-specific unit tests</strong> covering module APIs, stores, and handlers.</li>
-            <li><strong>6 integration tests</strong> including live CSS/OIDC/WAC, CMS handler, CMS accessibility, Oxigraph sync, vanilla mode, and vertical profiles.</li>
+            <li><strong>188 unit test files</strong> across 24 Databox subsystems (agent, authorization, bridge, IPMS, compliance, context, credential, evidence, feed, gateway, identifiers, notification, ODRL, policy, profile, proof, provisioning, receipt, review, storage, tenant).</li>
+            <li><strong>99 IPMS-specific unit tests</strong> covering module APIs, stores, and handlers.</li>
+            <li><strong>6 integration tests</strong> including live CSS/OIDC/WAC, IPMS handler, IPMS accessibility, Oxigraph sync, vanilla mode, and vertical profiles.</li>
             <li><strong>Fail-closed stubs</strong> verified by dedicated test — no stub silently permits access.</li>
           </ul>
         </div>
         <div>
           <h4 style="color: var(--text-accent); font-size: 1.25rem; margin-bottom: 1rem;">Deployment Options</h4>
           <ul class="feature-list">
-            <li><strong>Docker Compose:</strong> CMS deployment via <code>docker-compose.cms.yml</code> with environment configuration.</li>
-            <li><strong>Kubernetes:</strong> Kubernetes manifests for production CMS deployment.</li>
+            <li><strong>Docker Compose:</strong> IPMS deployment via <code>docker-compose.ipms.yml</code> with environment configuration.</li>
+            <li><strong>Kubernetes:</strong> Kubernetes manifests for production IPMS deployment.</li>
             <li><strong>Secret Management:</strong> Secret templates for deployment configuration.</li>
             <li><strong>Live CSS Preset:</strong> Experimental Components.js preset for mounting the Forge inside a running CSS instance.</li>
             <li><strong>Native Installer:</strong> Cross-platform installer for macOS with service registration.</li>

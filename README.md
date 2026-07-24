@@ -81,11 +81,11 @@ organisation's system.
 - Provides planning and synthetic fixtures for welfare coordination, restaurants, loyalty programs, donations,
   budgeting, resource pools and inter-organisational claims.
 
-### CMS module system
+### IPMS module system
 
-The Databox CMS (`src/databox/cms/`) is a dynamic module system with **50+ built-in industry modules**, each with
+The Databox IPMS (`src/databox/ipms/`) is a dynamic module system with **50+ built-in industry modules**, each with
 capability declarations, route management, and enable/disable toggles. Modules are organised into industry verticals
-(restaurant, welfare, retail, loyalty, print, trade) and can be tailored per organisation profile. The CMS HTTP
+(restaurant, welfare, retail, loyalty, print, trade) and can be tailored per organisation profile. The IPMS HTTP
 handler serves module APIs, an admin panel, and Oxigraph-backed synchronisation.
 
 | Group | Modules |
@@ -114,14 +114,14 @@ The Databox ecosystem includes native components for hardware integration, syste
   Node.js runtime, locked dependency installation, platform/architecture validation, and deployment handoff.
 - **POS Edge Proxy** (`rust/pos-edge-proxy/`) — Proxy layer for POS edge communication.
 - **Tray Supervisor** (`rust/tray-supervisor/`) — System tray supervisor for desktop lifecycle management.
-- **Connector Sidecar** (`rust/connector-sidecar/`) — Connector sidecar for CMS integration with ODBC/LDAP bridging
+- **Connector Sidecar** (`rust/connector-sidecar/`) — Connector sidecar for IPMS integration with ODBC/LDAP bridging
   and RDF mapping.
 
 ### Org mobile apps
 
-A unified WASM/PWA container (`org-mobile-apps/`) fetches its identity, features, and permissions from the CMS at
+A unified WASM/PWA container (`org-mobile-apps/`) fetches its identity, features, and permissions from the IPMS at
 runtime based on the org's vertical profile and the app's purpose. Instead of building separate apps per purpose, one
-container dynamically loads UI component bundles from the CMS. Six app profiles are defined: waiter, driver, tradie,
+container dynamically loads UI component bundles from the IPMS. Six app profiles are defined: waiter, driver, tradie,
 print, scorekeeper, and referee. Each app install receives a Verifiable Credential licence binding app, organisation,
 device, scope, and permissions. Network scope (local-only vs remote-capable) is enforced via service worker.
 
@@ -203,7 +203,7 @@ Two operator front-ends drive this control plane:
 | Location | Contents |
 |---|---|
 | [`src/databox/`](src/databox/) | Databox identity, provisioning, policy, bridge, evidence, review and Forge code |
-| [`src/databox/cms/`](src/databox/cms/) | CMS HTTP handler, 50+ industry modules, vertical profiles, Oxigraph sync |
+| [`src/databox/ipms/`](src/databox/ipms/) | IPMS HTTP handler, 50+ industry modules, vertical profiles, Oxigraph sync |
 | [`config/databox/`](config/databox/) | Experimental live Components.js configuration |
 | [`databox/`](databox/) | Architecture, decisions, threat model, vocabulary, fixtures and implementation plans |
 | [`databox/forge-plan/`](databox/forge-plan/) | Product backplane, application and demonstrator plans |
@@ -212,7 +212,7 @@ Two operator front-ends drive this control plane:
 | [`org-mobile-apps/`](org-mobile-apps/README.md) | WASM/PWA mobile app container with 6 app profiles |
 | [`native/`](native/) | Rust native POS edge and cross-platform installer |
 | [`rust/`](rust/) | Rust connector sidecar, POS edge proxy, and tray supervisor |
-| [`databox/deployment/cms/`](databox/deployment/cms/) | Docker Compose, Kubernetes, and secret templates for CMS deployment |
+| [`databox/deployment/ipms/`](databox/deployment/ipms/) | Docker Compose, Kubernetes, and secret templates for IPMS deployment |
 | [`test/unit/databox/`](test/unit/databox/) | 188 Databox unit and security-invariant tests across 24 subsystems |
 | [`test/integration/`](test/integration/) | 6 Databox integration tests including live CSS/OIDC/WAC |
 
@@ -254,24 +254,24 @@ production organisation IAM, independent security review, legal-policy review an
 
 The Databox extension is fail-closed and unit-tested across all 24 subsystems:
 
-- **188 unit test files** under `test/unit/databox/` covering agent, authorization, bridge, CMS (99 tests), compliance,
+- **188 unit test files** under `test/unit/databox/` covering agent, authorization, bridge, IPMS (99 tests), compliance,
   context, credential, evidence, feed, gateway, identifiers, notification, ODRL, policy, profile, proof, provisioning,
   receipt, review, storage, and tenant.
-- **6 integration tests** including live CSS/OIDC/WAC (`DataboxLive.test.ts`), CMS handler, CMS accessibility, Oxigraph
+- **6 integration tests** including live CSS/OIDC/WAC (`DataboxLive.test.ts`), IPMS handler, IPMS accessibility, Oxigraph
   sync, vanilla mode, and vertical profiles.
 - **Fail-closed stubs** verified by a dedicated test — no stub silently permits access or claims conformance.
 
 ### Deployment
 
-- **Docker Compose** — CMS deployment via `databox/deployment/cms/docker-compose.cms.yml` with environment configuration.
-- **Kubernetes** — manifests under `databox/deployment/cms/kubernetes/` for production CMS deployment.
-- **Secret management** — templates under `databox/deployment/cms/secrets/`.
+- **Docker Compose** — IPMS deployment via `databox/deployment/ipms/docker-compose.ipms.yml` with environment configuration.
+- **Kubernetes** — manifests under `databox/deployment/ipms/kubernetes/` for production IPMS deployment.
+- **Secret management** — templates under `databox/deployment/ipms/secrets/`.
 - **Live CSS preset** — experimental Components.js preset under `config/databox/` for mounting the Forge inside a
   running CSS instance.
 - **Desktop releases** — platform-specific Windows x64, macOS x64/ARM64, and Linux x64 packages. Setup downloads its
   private Node.js runtime and locked dependencies on first use, then launches the tray supervisor for desktop editions.
 
-See the [CMS deployment guide](databox/deployment/cms/README.md) for details.
+See the [IPMS deployment guide](databox/deployment/ipms/README.md) for details.
 
 ## Relationship to Community Solid Server
 
