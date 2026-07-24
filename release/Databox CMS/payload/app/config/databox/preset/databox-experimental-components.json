@@ -1,0 +1,46 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server/^1.0.0/components/context.jsonld",
+  "@graph": [
+    {
+      "comment": [
+        "EXPERIMENTAL Track B (LWS) Databox component wiring (ADR-0024, DBX-09 scaffold).",
+        "These are the accepted Databox-owned component seams from DBX-04, wired here as fail-closed",
+        "placeholders. They are declared as named instances but are deliberately NOT yet spliced into",
+        "the core PermissionReader union or the ResourceStore middleware chain: DBX-14 splices the",
+        "composed authorizer, DBX-17 splices the append-only store. Nothing here widens access; every",
+        "placeholder refuses (throws NotImplemented) or grants nothing. Loading this preset does not",
+        "change any Track A representation (ADR-0024 §3, S-25)."
+      ]
+    },
+    {
+      "comment": "C3 authenticated-context extractor seam (DBX-12 replaces this fail-closed stub).",
+      "@id": "urn:solid-server:databox:AuthenticatedContextExtractor",
+      "@type": "NotImplementedContextExtractor"
+    },
+    {
+      "comment": "C5 tenant resolver seam (DBX-11 replaces this fail-closed stub).",
+      "@id": "urn:solid-server:databox:TenantResolver",
+      "@type": "NotImplementedTenantResolver"
+    },
+    {
+      "comment": "C4 composed Databox authorizer seam — a narrow-never-broaden PermissionReader (DBX-14).",
+      "@id": "urn:solid-server:databox:ComposedAuthorizer",
+      "@type": "DenyAllDataboxPermissionReader"
+    },
+    {
+      "comment": "C10 opaque box-identifier generator seam (DBX-10 replaces this fail-closed stub).",
+      "@id": "urn:solid-server:databox:OpaqueIdentifierGenerator",
+      "@type": "NotImplementedOpaqueIdentifierGenerator"
+    },
+    {
+      "comment": "C13 evidence ledger seam (DBX-18/DBX-19 replace this fail-closed stub).",
+      "@id": "urn:solid-server:databox:EvidenceLedger",
+      "@type": "NotImplementedEvidenceLedger"
+    },
+    {
+      "comment": "C15 cursor / committed-event feed seam (DBX-21 replaces this fail-closed stub).",
+      "@id": "urn:solid-server:databox:CursorFeed",
+      "@type": "NotImplementedCursorFeed"
+    }
+  ]
+}

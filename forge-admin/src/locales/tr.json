@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "Databox CMS",
+    "title": "Databox IPMS",
     "subtitle": "Solid-native içerik yönetimi"
   },
   "nav": {
@@ -96,7 +96,7 @@
     "subtitle": "Aşama 3 operasyonel yatayları: onam, delegasyon, acil durum, envanter, sadakat, fiyatlandırma ve daha fazlası."
   },
   "modules": {
-    "title": "CMS Modülleri",
+    "title": "IPMS Modülleri",
     "enabled": "Etkin",
     "disabled": "Devre dışı",
     "enable": "Etkinleştir",
@@ -139,7 +139,7 @@
   },
   "setup": {
     "title": "Kurulum Sihirbazı",
-    "welcome": "Databox CMS'ye Hoş Geldiniz",
+    "welcome": "Databox IPMS'ye Hoş Geldiniz",
     "chooseProfile": "Kuruluş türünüzü seçin",
     "legalEntity": "Tüzel Kişi Bilgileri",
     "orgName": "Kuruluş Adı",

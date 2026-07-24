@@ -1,0 +1,81 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server/^1.0.0/components/context.jsonld",
+  "import": [],
+  "@graph": [
+    {
+      "comment": "In-process registry of installed IPMS modules and their enabled state.",
+      "@id": "urn:solid-server:ipms:ModuleRegistry",
+      "@type": "InMemoryDataboxModuleRegistry"
+    },
+    {
+      "comment": "Persists IPMS module enabled/config state as ordinary Solid RDF resources.",
+      "@id": "urn:solid-server:ipms:ModuleConfigStore",
+      "@type": "ModuleConfigStore",
+      "store": { "@id": "urn:solid-server:default:ResourceStore" },
+      "baseUrl": { "@id": "urn:solid-server:default:variable:baseUrl" }
+    },
+    {
+      "comment": "Persists POS cart/order/ticket flow records as ordinary Solid RDF resources.",
+      "@id": "urn:solid-server:ipms:PosOrderStore",
+      "@type": "PosOrderStore",
+      "store": { "@id": "urn:solid-server:default:ResourceStore" },
+      "baseUrl": { "@id": "urn:solid-server:default:variable:baseUrl" }
+    },
+    {
+      "comment": "Persists POS cash-register open/close sessions as ordinary Solid RDF resources.",
+      "@id": "urn:solid-server:ipms:CashRegisterStore",
+      "@type": "CashRegisterStore",
+      "store": { "@id": "urn:solid-server:default:ResourceStore" },
+      "baseUrl": { "@id": "urn:solid-server:default:variable:baseUrl" }
+    },
+    {
+      "comment": "Persists rendered customer-display playlists as ordinary Solid RDF resources.",
+      "@id": "urn:solid-server:ipms:CustomerDisplayStore",
+      "@type": "CustomerDisplayStore",
+      "store": { "@id": "urn:solid-server:default:ResourceStore" },
+      "baseUrl": { "@id": "urn:solid-server:default:variable:baseUrl" }
+    },
+    {
+      "comment": "Publishes rendered public website assets (HTML/JSON-LD/CSS) as ordinary Solid resources.",
+      "@id": "urn:solid-server:ipms:PublicWebsiteStore",
+      "@type": "PublicWebsiteStore",
+      "store": { "@id": "urn:solid-server:default:ResourceStore" },
+      "baseUrl": { "@id": "urn:solid-server:default:variable:baseUrl" }
+    },
+    {
+      "comment": "Databox IPMS control plane. It is ordered before the catch-all LDP handler.",
+      "@id": "urn:solid-server:ipms:IpmsHttpHandler",
+      "@type": "IpmsHttpHandler",
+      "registry": { "@id": "urn:solid-server:ipms:ModuleRegistry" },
+      "controlToken": { "@id": "urn:solid-server:ipms:variable:controlToken" },
+      "routeBase": "/.databox/ipms",
+      "configStore": { "@id": "urn:solid-server:ipms:ModuleConfigStore" },
+      "orderStore": { "@id": "urn:solid-server:ipms:PosOrderStore" },
+      "cashRegisterStore": { "@id": "urn:solid-server:ipms:CashRegisterStore" },
+      "customerDisplayStore": { "@id": "urn:solid-server:ipms:CustomerDisplayStore" },
+      "publicWebsiteStore": { "@id": "urn:solid-server:ipms:PublicWebsiteStore" }
+    },
+    {
+      "comment": "All HTTP handlers, with the IPMS route before the general LDP handler.",
+      "@id": "urn:solid-server:default:HttpHandler",
+      "@type": "SequenceHandler",
+      "handlers": [
+        { "@id": "urn:solid-server:default:Middleware" },
+        {
+          "@id": "urn:solid-server:default:BaseHttpHandler",
+          "@type": "WaterfallHandler",
+          "handlers": [
+            { "@id": "urn:solid-server:default:StaticAssetHandler" },
+            { "@id": "urn:solid-server:default:OidcHandler" },
+            { "@id": "urn:solid-server:default:NotificationHttpHandler" },
+            { "@id": "urn:solid-server:default:StorageDescriptionHandler" },
+            { "@id": "urn:solid-server:default:AuthResourceHttpHandler" },
+            { "@id": "urn:solid-server:default:IdentityProviderHandler" },
+            { "@id": "urn:solid-server:ipms:IpmsHttpHandler" },
+            { "@id": "urn:solid-server:default:LdpHandler" }
+          ]
+        }
+      ]
+    }
+  ]
+}

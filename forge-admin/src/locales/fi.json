@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "Databox CMS",
+    "title": "Databox IPMS",
     "subtitle": "Solid-native sisällönhallinta"
   },
   "nav": {
@@ -96,7 +96,7 @@
     "subtitle": "Vaiheen 3 operatiiviset horizontaalit: suostumus, delegointi, hätätila, varasto, uskollisuus, hinnoittelu ja enemmän."
   },
   "modules": {
-    "title": "CMS-moduulit",
+    "title": "IPMS-moduulit",
     "enabled": "Käytössä",
     "disabled": "Pois käytöstä",
     "enable": "Ota käyttöön",
@@ -139,7 +139,7 @@
   },
   "setup": {
     "title": "Asennusohjattu toiminto",
-    "welcome": "Tervetuloa Databox CMS:ään",
+    "welcome": "Tervetuloa Databox IPMS:ään",
     "chooseProfile": "Valitse organisaatiotyyppi",
     "legalEntity": "Yrityksen Tiedot",
     "orgName": "Organisaation Nimi",

@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: databox-ipms
+  labels:
+    app.kubernetes.io/name: databox-ipms
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: databox-ipms
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: databox-ipms
+      annotations:
+        databox.org/device-tls: devices host requires direct TLS or verified edge client-cert forwarding
+    spec:
+      containers:
+        - name: community-solid-server
+          image: solid-databox:local
+          imagePullPolicy: IfNotPresent
+          command:
+            - /bin/sh
+            - -c
+            - |
+              if [ ! -s /run/secrets/cms_control_token ]; then
+                echo "Missing /run/secrets/cms_control_token; create the ipms-control-token Secret." >&2
+                exit 64
+              fi
+              export CSS_CMS_CONTROL_TOKEN="$(cat /run/secrets/cms_control_token)"
+              exec node bin/server.js
+          envFrom:
+            - configMapRef:
+                name: databox-ipms-config
+          ports:
+            - name: http
+              containerPort: 3000
+          volumeMounts:
+            - name: ipms-data
+              mountPath: /data
+            - name: ipms-control-token
+              mountPath: /run/secrets
+              readOnly: true
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 30
+      volumes:
+        - name: ipms-data
+          persistentVolumeClaim:
+            claimName: databox-ipms-data
+        - name: ipms-control-token
+          secret:
+            secretName: ipms-control-token
+            items:
+              - key: ipms-control-token
+                path: cms_control_token

@@ -1,0 +1,64 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server/^1.0.0/components/context.jsonld",
+  "@graph": [
+    {
+      "comment": "SPARQL Update executor for the rebuildable IPMS Oxigraph query environment.",
+      "@id": "urn:solid-server:ipms:OxigraphIpmsHydrationExecutor",
+      "@type": "OxigraphIpmsSparqlUpdateExecutor",
+      "updateEndpoint": { "@id": "urn:solid-server:default:variable:sparqlUpdateEndpoint" }
+    },
+    {
+      "comment": [
+        "Opt-in lifecycle owner for IPMS Oxigraph sync.",
+        "The Solid ResourceStore remains canonical; this only hydrates allowlisted RDF resources into replaceable named graphs."
+      ],
+      "@id": "urn:solid-server:ipms:OxigraphIpmsSyncInitializer",
+      "@type": "OxigraphIpmsSyncInitializer",
+      "source": { "@id": "urn:solid-server:default:ResourceStore" },
+      "activityEmitter": { "@id": "urn:solid-server:default:ResourceStore" },
+      "executor": { "@id": "urn:solid-server:ipms:OxigraphIpmsHydrationExecutor" },
+      "baseUrl": { "@id": "urn:solid-server:default:variable:baseUrl" },
+      "enabled": true,
+      "resourcePaths": [
+        ".well-known/databox-ipms/type-index.ttl",
+        ".well-known/databox-ipms/modules/index.ttl",
+        ".well-known/databox-ipms/modules/hosting.ttl",
+        ".well-known/databox-ipms/modules/receipt.ttl",
+        ".well-known/databox-ipms/modules/pos.ordering.ttl",
+        ".well-known/databox-ipms/modules/pos.promotions-display.ttl",
+        ".well-known/databox-ipms/modules/pos.native-edge-devices.ttl",
+        ".well-known/databox-ipms/modules/menu.ttl",
+        ".well-known/databox-ipms/modules/website-seo.ttl",
+        ".well-known/databox-ipms/vertical-profiles/food.restaurant.ttl",
+        ".well-known/databox-ipms/vertical-profiles/health.privacy-consent.ttl",
+        ".databox/ipms/modules/hosting",
+        ".databox/ipms/modules/receipt",
+        ".databox/ipms/modules/pos.ordering",
+        ".databox/ipms/modules/pos.promotions-display",
+        ".databox/ipms/modules/pos.native-edge-devices",
+        ".databox/ipms/modules/menu",
+        ".databox/ipms/modules/website-seo"
+      ],
+      "hydrateOnStartup": true,
+      "maxResourcesPerBatch": 64
+    },
+    {
+      "@id": "urn:solid-server:default:PrimaryParallelInitializer",
+      "@type": "ParallelHandler",
+      "handlers": [
+        { "@id": "urn:solid-server:ipms:OxigraphIpmsSyncInitializer" }
+      ]
+    },
+    {
+      "@id": "urn:solid-server:default:CleanupFinalizer",
+      "@type": "SequenceHandler",
+      "handlers": [
+        {
+          "comment": "Detach IPMS Oxigraph notification listeners before shutdown completes.",
+          "@type": "FinalizableHandler",
+          "finalizable": { "@id": "urn:solid-server:ipms:OxigraphIpmsSyncInitializer" }
+        }
+      ]
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "Databox CMS",
+    "title": "Databox IPMS",
     "subtitle": "Solid-native content management"
   },
   "nav": {
@@ -96,7 +96,7 @@
     "subtitle": "Phase 3 operational horizontals: consent, delegation, emergency, inventory, loyalty, pricing, and more."
   },
   "modules": {
-    "title": "CMS Modules",
+    "title": "IPMS Modules",
     "enabled": "Enabled",
     "disabled": "Disabled",
     "enable": "Enable",
@@ -139,7 +139,7 @@
   },
   "setup": {
     "title": "Setup Wizard",
-    "welcome": "Welcome to the Databox CMS",
+    "welcome": "Welcome to the Databox IPMS",
     "chooseProfile": "Choose your organisation type",
     "legalEntity": "Legal Entity Details",
     "orgName": "Organisation Name",

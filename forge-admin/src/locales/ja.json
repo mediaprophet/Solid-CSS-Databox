@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "Databox CMS",
+    "title": "Databox IPMS",
     "subtitle": "Solidネイティブコンテンツ管理"
   },
   "nav": {
@@ -96,7 +96,7 @@
     "subtitle": "フェーズ3の運用横断機能：同意、委任、緊急、在庫、ロイヤルティ、価格設定など。"
   },
   "modules": {
-    "title": "CMSモジュール",
+    "title": "IPMSモジュール",
     "enabled": "有効",
     "disabled": "無効",
     "enable": "有効化",
@@ -139,7 +139,7 @@
   },
   "setup": {
     "title": "セットアップウィザード",
-    "welcome": "Databox CMSへようこそ",
+    "welcome": "Databox IPMSへようこそ",
     "chooseProfile": "組織タイプを選択",
     "legalEntity": "法人情報",
     "orgName": "組織名",

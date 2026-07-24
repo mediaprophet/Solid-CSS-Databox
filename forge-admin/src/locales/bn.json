@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "Databox CMS",
+    "title": "Databox IPMS",
     "subtitle": "Solid-নেটিভ কন্টেন্ট ব্যবস্থাপনা"
   },
   "nav": {
@@ -96,7 +96,7 @@
     "subtitle": "ধাপ ৩ পরিচালনামূলক অনুভূমিক: সম্মতি, প্রতিনিধিত্ব, জরুরি, ইনভেন্টরি, আনুগত্য, মূল্য নির্ধারণ, এবং আরও."
   },
   "modules": {
-    "title": "CMS মডিউল",
+    "title": "IPMS মডিউল",
     "enabled": "সক্ষম",
     "disabled": "অক্ষম",
     "enable": "সক্ষম করুন",
@@ -139,7 +139,7 @@
   },
   "setup": {
     "title": "সেটআপ উইজার্ড",
-    "welcome": "Databox CMS-এ স্বাগতম",
+    "welcome": "Databox IPMS-এ স্বাগতম",
     "chooseProfile": "আপনার সংস্থার ধরন বেছে নিন",
     "legalEntity": "আইনি সংস্থার বিবরণ",
     "orgName": "সংস্থার নাম",

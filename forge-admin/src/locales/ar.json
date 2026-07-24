@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "Databox CMS",
+    "title": "Databox IPMS",
     "subtitle": "إدارة المحتوى الأصلية لـ Solid"
   },
   "nav": {
@@ -96,7 +96,7 @@
     "subtitle": "العمليات الأفقية للمرحلة 3: الموافقة، التفويض، الطوارئ، المخزون، الولاء، التسعير، والمزيد."
   },
   "modules": {
-    "title": "وحدات CMS",
+    "title": "وحدات IPMS",
     "enabled": "مفعّل",
     "disabled": "معطّل",
     "enable": "تفعيل",
@@ -139,7 +139,7 @@
   },
   "setup": {
     "title": "معالج الإعداد",
-    "welcome": "مرحباً بك في Databox CMS",
+    "welcome": "مرحباً بك في Databox IPMS",
     "chooseProfile": "اختر نوع المؤسسة",
     "legalEntity": "تفاصيل الكيان القانوني",
     "orgName": "اسم المؤسسة",

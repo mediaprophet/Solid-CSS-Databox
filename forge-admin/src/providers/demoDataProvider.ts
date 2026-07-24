@@ -79,14 +79,14 @@ let mockOutboundRequests = [
   { id: "obr-3002", platformId: "ent-salesforce", platformName: "Salesforce", category: "Enterprise", persona: "organisation", requesterId: "urn:uuid:org-forge-0001", scope: ["identity:core", "financial:transaction_ledger"], regulatoryBasis: "CDR (Consumer Data Right)", status: "pending", submittedAt: new Date(Date.now() - 1 * 86400000).toISOString(), dueDate: new Date(Date.now() + 29 * 86400000).toISOString() },
 ];
 
-const mockCmsModules = [
+const mockIpmsModules = [
   {
     id: "hosting",
     name: "Hosting",
     version: "0.1.0",
-    description: "Guided domain, DNS and launch-configuration planning for the CMS profile.",
-    capabilities: ["cms:hosting", "cms:dns-plan"],
-    routes: ["POST /.databox/cms/hosting/plan"],
+    description: "Guided domain, DNS and launch-configuration planning for the IPMS profile.",
+    capabilities: ["ipms:hosting", "ipms:dns-plan"],
+    routes: ["POST /.databox/ipms/hosting/plan"],
     enabled: true,
     capabilityMode: "css-enhanced",
     adminUi: { navLabel: "Hosting", path: "/hosting" },
@@ -97,12 +97,12 @@ const mockCmsModules = [
     version: "0.1.0",
     description: "Printable receipt documents with QR links to the consumer RDF/VC receipt in the pod.",
     capabilities: [
-      "cms:receipt-document",
-      "cms:portable-core-receipt-doc",
-      "cms:css-enhanced-receipt-build-route",
-      "cms:native-edge-print-job-descriptor",
+      "ipms:receipt-document",
+      "ipms:portable-core-receipt-doc",
+      "ipms:css-enhanced-receipt-build-route",
+      "ipms:native-edge-print-job-descriptor",
     ],
-    routes: ["POST /.databox/cms/receipt/build"],
+    routes: ["POST /.databox/ipms/receipt/build"],
     enabled: true,
     capabilityMode: "css-enhanced",
     adminUi: { navLabel: "Receipts", path: "/receipts" },
@@ -113,11 +113,11 @@ const mockCmsModules = [
     version: "0.1.0",
     description: "Admin proof surfaces for counter POS, waiter ordering, self-order table sessions, and customer display frames.",
     capabilities: [
-      "cms:portable-core-schema-order",
-      "cms:portable-core-table-session",
-      "cms:portable-core-schema-offer",
-      "cms:css-enhanced-kitchen-display-intent",
-      "cms:native-edge-payment-and-printer-boundary",
+      "ipms:portable-core-schema-order",
+      "ipms:portable-core-table-session",
+      "ipms:portable-core-schema-offer",
+      "ipms:css-enhanced-kitchen-display-intent",
+      "ipms:native-edge-payment-and-printer-boundary",
     ],
     routes: [],
     enabled: true,
@@ -137,7 +137,7 @@ const verticalModule = (moduleId: string, rationale: string, defaultConfig?: str
 });
 
 const withDemoAvailability = (profile: any) => {
-  const installed = new Map(mockCmsModules.map((module) => [module.id, module]));
+  const installed = new Map(mockIpmsModules.map((module) => [module.id, module]));
   const modules = profile.modules.map((module: any) => {
     const manifest = installed.get(module.moduleId);
     return manifest
@@ -181,8 +181,8 @@ const mockVerticalProfiles = [
       verticalModule("catalogue", "Catalogue resources hold products, modifiers, variants, and publishable item metadata.", '<> <https://schema.org/itemListOrder> "menu-section" .'),
       verticalModule("stock", "Stock keeps menu availability honest for a small operator."),
       verticalModule("payments", "Payments handles checkout adapters while keeping payment secrets out of portable works."),
-      verticalModule("pos-operations", "POS operations compose counter checkout, waiter ordering, table self-order, and display frames from portable order resources.", '<> <urn:solid-server:databox:cms#posProfile> "restaurant-service" .'),
-      verticalModule("receipt", "Receipts produce RDF-backed proof of purchase and the printable QR payload.", '<> <urn:solid-server:databox:cms#receiptProfile> "consumer-digital-receipt" .'),
+      verticalModule("pos-operations", "POS operations compose counter checkout, waiter ordering, table self-order, and display frames from portable order resources.", '<> <urn:solid-server:databox:ipms#posProfile> "restaurant-service" .'),
+      verticalModule("receipt", "Receipts produce RDF-backed proof of purchase and the printable QR payload.", '<> <urn:solid-server:databox:ipms#receiptProfile> "consumer-digital-receipt" .'),
       verticalModule("bookings", "Bookings supports table reservations, deposits, cancellation and rescheduling."),
       verticalModule("events", "Events covers special sittings, tastings, and venue programming."),
       verticalModule("opening-hours", "Opening hours provides ordinary schema.org availability for public discovery.", '<> <https://schema.org/servesCuisine> "local" .'),
@@ -196,10 +196,10 @@ const mockVerticalProfiles = [
     description: "Health privacy bundle for consent, access, correction, governance, delegation, and emergency access.",
     useCases: ["HEALTH"],
     modules: [
-      verticalModule("consent", "Consent records purpose-limited processing decisions as RDF policy state.", '<> <urn:solid-server:databox:cms#defaultPurpose> "care-provision" .'),
+      verticalModule("consent", "Consent records purpose-limited processing decisions as RDF policy state.", '<> <urn:solid-server:databox:ipms#defaultPurpose> "care-provision" .'),
       verticalModule("access-request", "Access requests support patient rights over held records."),
       verticalModule("correction-request", "Correction requests support amendment workflows without destructive edits."),
-      verticalModule("governance", "Governance supplies approval gates and auditable resolutions for sensitive handling.", '<> <urn:solid-server:databox:cms#approvalMode> "dual-control-for-sensitive-data" .'),
+      verticalModule("governance", "Governance supplies approval gates and auditable resolutions for sensitive handling.", '<> <urn:solid-server:databox:ipms#approvalMode> "dual-control-for-sensitive-data" .'),
       verticalModule("delegation", "Delegation gives carers and guardians scoped revocable authority."),
       verticalModule("break-glass", "Break-glass access is temporary, conditional, and audited for emergencies."),
       verticalModule("credential-gate", "Credential gates verify qualifications or care roles with minimal disclosure."),
@@ -234,7 +234,7 @@ const planHosting = (input: any) => {
     devicesHost,
     baseUrl,
     dnsRecords,
-    launchCommand: `npm run start:cms -- --baseUrl ${baseUrl} --cmsControlToken <32+ byte token>`,
+    launchCommand: `npm run start:ipms -- --baseUrl ${baseUrl} --ipmsControlToken <32+ byte token>`,
   };
 };
 
@@ -276,14 +276,14 @@ const buildReceiptDocument = (input: any) => {
     nativeEdgePrintJob: {
       "@context": {
         schema: "https://schema.org/",
-        cms: "urn:solid-server:databox:cms#",
+        ipms: "urn:solid-server:databox:ipms#",
         nativeEdge: "urn:solid-server:databox:native-edge#",
       },
       type: "DataboxNativeReceiptPrintJob",
       id: `urn:solid-server:databox:native-edge:receipt-print-job:${encodeURIComponent(input.receiptId)}`,
       capability: "native-edge:thermal-receipt-print",
       status: "unavailable",
-      unavailableReason: "No Rust/native-edge printer connector is attached to this CMS control plane.",
+      unavailableReason: "No Rust/native-edge printer connector is attached to this IPMS control plane.",
       target: {
         kind: "thermal-printer",
         protocol: "escpos",
@@ -318,8 +318,8 @@ export const demoDataProvider = {
       case "access-requests": return list(mockAccessRequests);
       case "consumer-ledger": return list(mockLedger);
       case "outbound-requests": return list(mockOutboundRequests);
-      case "cms-modules": return list(mockCmsModules);
-      case "cms-vertical-profiles": return list(mockVerticalProfiles);
+      case "ipms-modules": return list(mockIpmsModules);
+      case "ipms-vertical-profiles": return list(mockVerticalProfiles);
       case "pos-operations": return list([createPosOperationsSnapshot("demo", "css-enhanced", true)]);
       default: return list([]);
     }
@@ -336,8 +336,8 @@ export const demoDataProvider = {
       case "access-requests": return pick(mockAccessRequests);
       case "consumer-ledger": return pick(mockLedger);
       case "outbound-requests": return pick(mockOutboundRequests);
-      case "cms-modules": return pick(mockCmsModules);
-      case "cms-vertical-profiles": return pick(mockVerticalProfiles);
+      case "ipms-modules": return pick(mockIpmsModules);
+      case "ipms-vertical-profiles": return pick(mockVerticalProfiles);
       default: throw new Error(`getOne not supported for '${resource}' in demo mode.`);
     }
   },
@@ -423,7 +423,7 @@ export const demoDataProvider = {
       return { data: buildReceiptDocument(variables) };
     }
 
-    if (resource === "cms-vertical-profile-applications") {
+    if (resource === "ipms-vertical-profile-applications") {
       const profile = mockVerticalProfiles.find((item) => item.id === variables.profileId);
       if (!profile) throw new Error("Vertical profile not found in demo data.");
       const operation = variables.operation === "apply" ? "apply" : "preview";
@@ -460,7 +460,7 @@ export const demoDataProvider = {
       case "corrections": return patch(mockCorrections);
       case "access-requests": return patch(mockAccessRequests);
       case "outbound-requests": return patch(mockOutboundRequests);
-      case "cms-modules": return patch(mockCmsModules);
+      case "ipms-modules": return patch(mockIpmsModules);
       default: throw new Error(`update not supported for '${resource}' in demo mode.`);
     }
   },

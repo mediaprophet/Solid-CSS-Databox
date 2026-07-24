@@ -1,12 +1,12 @@
 @prefix ui: <http://www.w3.org/ns/ui#> .
-@prefix cms: <urn:solid-server:databox:cms#> .
+@prefix ipms: <urn:solid-server:databox:ipms#> .
 @prefix schema: <https://schema.org/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
 # ── Hosting module config shape ───────────────────────────────────────
 
-cms:HostingConfigShape a ui:Form ;
+ipms:HostingConfigShape a ui:Form ;
   rdfs:label "Hosting Configuration" ;
   ui:parts (
     [ a ui:TextInput ;
@@ -17,17 +17,17 @@ cms:HostingConfigShape a ui:Form ;
     ]
     [ a ui:TextInput ;
       ui:label "Databox subdomain" ;
-      ui:property cms:databoxSubdomain ;
+      ui:property ipms:databoxSubdomain ;
       ui:default "databox" ;
     ]
     [ a ui:Boolean ;
       ui:label "Reserve www route" ;
-      ui:property cms:reserveWww ;
+      ui:property ipms:reserveWww ;
       ui:default true ;
     ]
     [ a ui:Choice ;
       ui:label "TLS mode" ;
-      ui:property cms:tlsMode ;
+      ui:property ipms:tlsMode ;
       ui:from ( "cloudflare-proxy" "direct" "tunnel" ) ;
       ui:required true ;
     ]
@@ -35,34 +35,34 @@ cms:HostingConfigShape a ui:Form ;
 
 # ── POS module config shape ───────────────────────────────────────────
 
-cms:PosConfigShape a ui:Form ;
+ipms:PosConfigShape a ui:Form ;
   rdfs:label "POS Configuration" ;
   ui:parts (
     [ a ui:TextInput ;
       ui:label "POS edge binary path" ;
-      ui:property cms:nativeEdgeBinary ;
+      ui:property ipms:nativeEdgeBinary ;
       ui:placeholder "/usr/local/bin/pos-edge" ;
     ]
     [ a ui:Integer ;
       ui:label "POS edge HTTP port" ;
-      ui:property cms:nativeEdgeHttpPort ;
+      ui:property ipms:nativeEdgeHttpPort ;
       ui:default 9100 ;
       ui:min 1024 ;
       ui:max 65535 ;
     ]
     [ a ui:TextInput ;
       ui:label "Thermal printer device" ;
-      ui:property cms:printerDevice ;
+      ui:property ipms:printerDevice ;
       ui:placeholder "/dev/usb/lp0" ;
     ]
     [ a ui:TextInput ;
       ui:label "Customer display device" ;
-      ui:property cms:displayDevice ;
+      ui:property ipms:displayDevice ;
       ui:placeholder "/dev/ttyUSB0" ;
     ]
     [ a ui:Choice ;
       ui:label "Cash drawer connection" ;
-      ui:property cms:cashDrawerVia ;
+      ui:property ipms:cashDrawerVia ;
       ui:from ( "printer" "direct" ) ;
       ui:default "printer" ;
     ]
@@ -70,22 +70,22 @@ cms:PosConfigShape a ui:Form ;
 
 # ── Receipt module config shape ───────────────────────────────────────
 
-cms:ReceiptConfigShape a ui:Form ;
+ipms:ReceiptConfigShape a ui:Form ;
   rdfs:label "Receipt Configuration" ;
   ui:parts (
     [ a ui:TextInput ;
       ui:label "Receipt footer text" ;
-      ui:property cms:receiptFooter ;
+      ui:property ipms:receiptFooter ;
       ui:placeholder "Thank you for your purchase!" ;
     ]
     [ a ui:Boolean ;
       ui:label "Print QR code on receipt" ;
-      ui:property cms:printQrOnReceipt ;
+      ui:property ipms:printQrOnReceipt ;
       ui:default true ;
     ]
     [ a ui:Integer ;
       ui:label "QR code scale (pixels per module)" ;
-      ui:property cms:qrScale ;
+      ui:property ipms:qrScale ;
       ui:default 8 ;
       ui:min 1 ;
       ui:max 32 ;

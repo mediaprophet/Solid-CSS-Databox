@@ -20,7 +20,7 @@ const defaultPreview = (module: any) => {
 
 export const VerticalProfilePicker = () => {
   const { result, query } = useList({
-    resource: "cms-vertical-profiles",
+    resource: "ipms-vertical-profiles",
     pagination: { pageSize: 20 },
   });
   const { mutate, isPending } = useCreate();
@@ -44,7 +44,7 @@ export const VerticalProfilePicker = () => {
     if (!selected) return;
     mutate(
       {
-        resource: "cms-vertical-profile-applications",
+        resource: "ipms-vertical-profile-applications",
         values: { profileId: selected.id, operation },
       },
       {
@@ -68,7 +68,7 @@ export const VerticalProfilePicker = () => {
             <div>
               <h2 className="text-xl font-bold text-white">Vertical Profile</h2>
               <p className="text-sm text-slate-400 mt-1">
-                Choose an ANZSIC-aligned bundle of horizontal CMS modules for onboarding defaults.
+                Choose an ANZSIC-aligned bundle of horizontal IPMS modules for onboarding defaults.
               </p>
             </div>
             <span

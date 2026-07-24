@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title><%= extractTitle(htmlBody) %></title>
+  <link rel="stylesheet" href="<%= baseUrl -%>.well-known/css/styles/main.css?v=7" type="text/css">
+  <script type="text/javascript" src="<%= baseUrl -%>.well-known/css/scripts/util.js?v=7"></script>
+</head>
+<body>
+  <header>
+    <a href="<%= baseUrl %>"><img src="<%= baseUrl -%>.well-known/css/images/solid.svg" alt="[Solid logo]" /></a>
+    <h1>Solid Databox</h1>
+  </header>
+  <main>
+    <%- htmlBody %>
+  </main>
+  <footer>
+    <p>
+      © 2000–2026 <a href="https://webcivics.org/">WebCivics</a> (Solid Databox)<br>
+      © 2019–2025 <a href="https://inrupt.com/">Inrupt Inc.</a>, <a href="https://www.imec-int.com/">imec</a>, & CSS Contributors<br>
+      <span style="font-size: 0.9em; opacity: 0.8; display: inline-block; margin-top: 5px;">
+        Built upon the foundations of W3, W3C, RWW, and WebID.<br>
+        Dedicated to the countless unpaid contributors who built this ecosystem, including those who are no longer with us.
+      </span>
+    </p>
+  </footer>
+  <script>
+    const witty404s = [
+      "Resource not found. It’s probably off building its own sovereign pod somewhere. Classic decentralisation move.",
+      "404: The data has left the building. (Elvis has better WebID hygiene than this resource.)",
+      "This resource is currently practicing digital minimalism. It’s not here right now.",
+      "Resource not found. Did you try asking it nicely? Solid resources respond better to polite ACLs.",
+      "We looked everywhere — even in the triple store. No sign of it. Want to create this resource instead?",
+      "404: Resource is on an extended lunch break in another pod. Federation is hard.",
+      "The requested resource appears to have achieved true data sovereignty… and exercised its right to disappear.",
+      "Error 404: Knowledge not found. This is why we need better provenance.",
+      "This resource is either missing or practicing advanced privacy techniques. Even we can’t see it.",
+      "Resource not found. In a truly decentralised world, sometimes the answer is ‘go ask another server’.",
+      "Looks like this URI is feeling a bit existential today. ‘To be or not to be… indexed.’",
+      "404: The bits have unionised and are currently on strike. Management is negotiating with the RDF.",
+      "Resource not found. Have you tried turning it off and on again? (Just kidding — that never works in Solid.)",
+      "This resource has entered the witness protection programme. Excellent OPSEC.",
+      "404: Not found. But hey, in the spirit of the open web — would you like to create something beautiful here instead?",
+      "Resource missing in action. Probably busy attending a W3C meeting that ran over time.",
+      "We sent a SPARQL query into the void. It came back with nothing but existential dread.",
+      "This resource is currently meditating in an offline pod. Very zen. Very inconvenient.",
+      "Error: Resource not found. Our AI overlords are also confused. You are not alone.",
+      "404. The community thanks you for discovering yet another edge case. You’re doing important work."
+    ];
+
+    const webHistoryFacts = [
+      "<strong>The 'DO NOT POWER IT DOWN!!' Server:</strong> The world’s first web server was a NeXT computer in Tim Berners-Lee’s office at CERN. To stop colleagues from accidentally turning it off, he taped a big handwritten sign in red ink: 'This machine is a server. DO NOT POWER IT DOWN!!'",
+      "<strong>The First Website Was Basically a README:</strong> The world’s first web page (1990) wasn’t flashy — it was just a plain document explaining the World Wide Web project itself, with links to other CERN docs. Very meta.",
+      "<strong>Decentralised By Design:</strong> Tim Berners-Lee could have tried to control the web. Instead, he chose to make the protocols open and royalty-free.",
+      "<strong>The Browser Was Also an Editor:</strong> The very first browser, called 'WorldWideWeb' (later Nexus), was also a WYSIWYG editor. Tim wanted people to be able to both read and write the web easily.",
+      "<strong>The First Non-European Web Server:</strong> Went live at SLAC (Stanford) in 1991 because physicists needed a better way to share huge databases of research papers. Academic file sharing was the first killer app.",
+      "<strong>W3C Was Founded… Kind of Late:</strong> Tim founded the W3C at MIT in 1994 to catch up with the exploding web, which already had hundreds of servers.",
+      "<strong>The Great HTML/XML Schism:</strong> The WHATWG rebelled against W3C's strict XHTML in 2004, which eventually gave us modern HTML5.",
+      "<strong>'Vague But Exciting':</strong> Tim Berners-Lee’s original 1989 proposal for the web didn’t get much traction at first. His manager at CERN scribbled 'vague but exciting' on the cover.",
+      "<strong>Early Web Servers:</strong> By November 1992 there were only 26 known web servers in the entire world. A year later, over 200.",
+      "<strong>The First Image on the Web:</strong> A parody rock band made up of CERN employees, 'Les Horribles Cernettes', uploaded in 1992 to test image format support.",
+      "<strong>'World Wide Web' Wasn’t Even the Original Name:</strong> Tim considered calling it 'The Information Mine' or 'Mine of Information' before settling on World Wide Web. Thank goodness.",
+      "<strong>CERN Almost Patented the Web:</strong> There was internal discussion at CERN to patent or commercialise the tech. Thankfully, they released it into the public domain in 1993."
+    ];
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const titleText = (document.title || '').toLowerCase();
+      const mainH1Text = (document.querySelector('main h1')?.innerText || '').toLowerCase();
+      
+      // Look for error indicators in the title or the first h1 inside main
+      if (titleText.includes('404') || mainH1Text.includes('404') || 
+          titleText.includes('error') || mainH1Text.includes('error') || 
+          titleText.includes('not found') || mainH1Text.includes('not found')) {
+        const mainElement = document.querySelector('main');
+        
+        if (mainElement) {
+          const randomWitty = witty404s[Math.floor(Math.random() * witty404s.length)];
+          const randomFact = webHistoryFacts[Math.floor(Math.random() * webHistoryFacts.length)];
+          
+          const wittyBox = document.createElement('div');
+          wittyBox.innerHTML = `
+            <div style="background: rgba(120, 120, 120, 0.1); border-left: 4px solid var(--color-primary, #0078d4); padding: 15px; margin: 20px 0; border-radius: 4px;">
+              <p style="font-size: 1.1em; font-style: italic; margin-bottom: 10px;">"${randomWitty}"</p>
+              <hr style="border-color: rgba(120, 120, 120, 0.2); border-style: solid; border-width: 1px 0 0 0; margin: 10px 0;">
+              <p style="font-size: 0.85em; opacity: 0.9; margin: 0;"><strong>Did you know?</strong> ${randomFact}</p>
+            </div>
+          `;
+          
+          const h1InMain = mainElement.querySelector('h1');
+          if (h1InMain) {
+            h1InMain.parentNode.insertBefore(wittyBox, h1InMain.nextSibling);
+          } else {
+            mainElement.prepend(wittyBox);
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
+
+<%
+function extractTitle(body) {
+  const match = /^<h1[^>]*>([^<]*)<\/h1>/u.exec(body);
+  return match ? match[1] : 'Solid';
+}
+%>

@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "Databox CMS",
+    "title": "Databox IPMS",
     "subtitle": "Gestionare conținut nativă Solid"
   },
   "nav": {
@@ -96,7 +96,7 @@
     "subtitle": "Orizontale operaționale Faza 3: consimțământ, delegare, urgență, inventar, loialitate, prețuri și altele."
   },
   "modules": {
-    "title": "Module CMS",
+    "title": "Module IPMS",
     "enabled": "Activat",
     "disabled": "Dezactivat",
     "enable": "Activare",
@@ -139,7 +139,7 @@
   },
   "setup": {
     "title": "Asistent Configurare",
-    "welcome": "Bun venit la Databox CMS",
+    "welcome": "Bun venit la Databox IPMS",
     "chooseProfile": "Alegeți tipul organizației",
     "legalEntity": "Detalii Entitate Legală",
     "orgName": "Nume Organizație",

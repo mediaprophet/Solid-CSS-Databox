@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "Databox CMS",
+    "title": "Databox IPMS",
     "subtitle": "การจัดการเนื้อหาแบบ Solid ดั้งเดิม"
   },
   "nav": {
@@ -96,7 +96,7 @@
     "subtitle": "การปฏิบัติการแนวราบระยะที่ 3: ความยินยอม การมอบหมาย เหตุฉุกเฉิน สินค้าคงคลัง ความภักดี การกำหนดราคา และอื่นๆ."
   },
   "modules": {
-    "title": "โมดูล CMS",
+    "title": "โมดูล IPMS",
     "enabled": "เปิดใช้งาน",
     "disabled": "ปิดใช้งาน",
     "enable": "เปิดใช้งาน",
@@ -139,7 +139,7 @@
   },
   "setup": {
     "title": "ตัวช่วยตั้งค่า",
-    "welcome": "ยินดีต้อนรับสู่ Databox CMS",
+    "welcome": "ยินดีต้อนรับสู่ Databox IPMS",
     "chooseProfile": "เลือกประเภทองค์กร",
     "legalEntity": "รายละเอียดนิติบุคคล",
     "orgName": "ชื่อองค์กร",

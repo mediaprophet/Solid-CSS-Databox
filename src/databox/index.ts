@@ -47,27 +47,27 @@ export * from './forge/MappingForgeHttpApi';
 
 // Live CSS integration (DBX-25)
 export * from './integration/LiveDataboxHttpHandler';
-export * from './cms/VerticalProfile';
-export * from './cms/CmsMigrationProof';
-export * from './cms/TableSessionStore';
-export * from './cms/OxigraphCmsHydration';
-export * from './cms/OxigraphCmsSync';
-export * from './cms/OxigraphCmsSyncComposition';
-export * from './cms/modules/integration/ConnectorContract';
-export * from './cms/modules/integration/ConnectorRuntimePlan';
-export * from './cms/modules/menu/Menu';
-export * from './cms/modules/pos/Cart';
-export * from './cms/modules/pos/CashRegister';
-export * from './cms/modules/pos/CustomerOrdering';
-export * from './cms/modules/pos/TableSession';
-export * from './cms/modules/pos/CustomerDisplay';
-export * from './cms/modules/pos/Order';
-export * from './cms/modules/pos/Promotion';
-export * from './cms/modules/pos/Ticket';
-export * from './cms/modules/pos/NativePosDeviceContract';
-export * from './cms/modules/website/PublicFeedRenderer';
-export * from './cms/modules/website/Seo';
-export * from './cms/modules/website/SitemapRobots';
+export * from './ipms/VerticalProfile';
+export * from './ipms/IpmsMigrationProof';
+export * from './ipms/TableSessionStore';
+export * from './ipms/OxigraphIpmsHydration';
+export * from './ipms/OxigraphIpmsSync';
+export * from './ipms/OxigraphIpmsSyncComposition';
+export * from './ipms/modules/integration/ConnectorContract';
+export * from './ipms/modules/integration/ConnectorRuntimePlan';
+export * from './ipms/modules/menu/Menu';
+export * from './ipms/modules/pos/Cart';
+export * from './ipms/modules/pos/CashRegister';
+export * from './ipms/modules/pos/CustomerOrdering';
+export * from './ipms/modules/pos/TableSession';
+export * from './ipms/modules/pos/CustomerDisplay';
+export * from './ipms/modules/pos/Order';
+export * from './ipms/modules/pos/Promotion';
+export * from './ipms/modules/pos/Ticket';
+export * from './ipms/modules/pos/NativePosDeviceContract';
+export * from './ipms/modules/website/PublicFeedRenderer';
+export * from './ipms/modules/website/Seo';
+export * from './ipms/modules/website/SitemapRobots';
 
 // Institution/program profile schema (C10/C11 provisioning inputs, DBX-06)
 export * from './profile/InstitutionProfile';

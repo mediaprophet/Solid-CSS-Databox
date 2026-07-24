@@ -1,0 +1,18 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server/^1.0.0/components/context.jsonld",
+  "import": [
+    "css:config/file.json",
+    "css:config/ipms/ipms-variables.json",
+    "css:config/ipms/ipms-handler.json"
+  ],
+  "@graph": [
+    {
+      "comment": [
+        "Opt-in Databox IPMS profile with persistent file storage.",
+        "Use this for container deployments with CSS_ROOT_FILE_PATH=/data.",
+        "It extends the normal file-backed CSS profile and adds only the IPMS control plane.",
+        "The base/default server remains a vanilla Solid server unless this preset is selected."
+      ]
+    }
+  ]
+}

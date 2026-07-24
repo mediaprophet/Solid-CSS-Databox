@@ -209,7 +209,7 @@ function isValidFieldType(type: string): type is UiFieldType {
 }
 
 /**
- * Serializes form values back to Turtle for submission to the CMS config endpoint.
+ * Serializes form values back to Turtle for submission to the IPMS config endpoint.
  */
 export function serializeFormValuesToTurtle(
   values: Record<string, unknown>,

@@ -1,0 +1,40 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server/^1.0.0/components/context.jsonld",
+  "import": [
+    "css:config/http/handler/handlers/storage-description.json"
+  ],
+  "@graph": [
+    {
+      "comment": "Live CSS Databox control plane. It is ordered before the catch-all LDP handler.",
+      "@id": "urn:solid-server:databox:LiveHttpHandler",
+      "@type": "LiveDataboxHttpHandler",
+      "source": { "@id": "urn:solid-server:default:ResourceStore" },
+      "backend": { "@id": "urn:solid-server:default:ResourceStore_Backend" },
+      "baseUrl": { "@id": "urn:solid-server:default:variable:baseUrl" },
+      "controlToken": { "@id": "urn:solid-server:databox:variable:controlToken" },
+      "routeBase": "/.databox/forge"
+    },
+    {
+      "comment": "All HTTP handlers, with the Databox route before the general LDP handler.",
+      "@id": "urn:solid-server:default:HttpHandler",
+      "@type": "SequenceHandler",
+      "handlers": [
+        { "@id": "urn:solid-server:default:Middleware" },
+        {
+          "@id": "urn:solid-server:default:BaseHttpHandler",
+          "@type": "WaterfallHandler",
+          "handlers": [
+            { "@id": "urn:solid-server:default:StaticAssetHandler" },
+            { "@id": "urn:solid-server:default:OidcHandler" },
+            { "@id": "urn:solid-server:default:NotificationHttpHandler" },
+            { "@id": "urn:solid-server:default:StorageDescriptionHandler" },
+            { "@id": "urn:solid-server:default:AuthResourceHttpHandler" },
+            { "@id": "urn:solid-server:default:IdentityProviderHandler" },
+            { "@id": "urn:solid-server:databox:LiveHttpHandler" },
+            { "@id": "urn:solid-server:default:LdpHandler" }
+          ]
+        }
+      ]
+    }
+  ]
+}

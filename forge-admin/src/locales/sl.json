@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "Databox CMS",
+    "title": "Databox IPMS",
     "subtitle": "Upravljanje vsebine nativno Solid"
   },
   "nav": {
@@ -96,7 +96,7 @@
     "subtitle": "Operativni horizontali Faze 3: soglasje, delegiranje, nujni primer, zaloga, zvestoba, določanje cen in več."
   },
   "modules": {
-    "title": "CMS moduli",
+    "title": "IPMS moduli",
     "enabled": "Omogočeno",
     "disabled": "Onemogočeno",
     "enable": "Omogoči",
@@ -139,7 +139,7 @@
   },
   "setup": {
     "title": "Čarovnik za nastavitev",
-    "welcome": "Dobrodošli v Databox CMS",
+    "welcome": "Dobrodošli v Databox IPMS",
     "chooseProfile": "Izberite vrsto organizacije",
     "legalEntity": "Podatki pravne osebe",
     "orgName": "Ime organizacije",

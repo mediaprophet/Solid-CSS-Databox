@@ -28,8 +28,8 @@ export const DonationsPage = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const cmsUrl = import.meta.env.VITE_CMS_URL || "http://localhost:3000/.databox/cms";
-  const cmsToken = import.meta.env.VITE_CMS_TOKEN || "dev-control-token-at-least-32-bytes-long";
+  const ipmsUrl = import.meta.env.VITE_CMS_URL || "http://localhost:3000/.databox/ipms";
+  const ipmsToken = import.meta.env.VITE_CMS_TOKEN || "dev-control-token-at-least-32-bytes-long";
 
   const donate = async () => {
     setLoading(true);
@@ -55,9 +55,9 @@ export const DonationsPage = () => {
         anonymous,
         dedication: dedication || undefined,
       };
-      const res = await fetch(`${cmsUrl}/donations/process`, {
+      const res = await fetch(`${ipmsUrl}/donations/process`, {
         method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${cmsToken}` },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${ipmsToken}` },
         body: JSON.stringify({ campaign, donation }),
       });
       const data = await res.json();

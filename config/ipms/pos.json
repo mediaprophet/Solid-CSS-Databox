@@ -1,0 +1,14 @@
+{
+  "@import": "./ipms.json",
+  "@graph": [
+    {
+      "@id": "urn:solid-server:default:PosEdgeConfig",
+      "@type": "PosEdgeConfig",
+      "posEdgeBinary": "${POS_EDGE_BINARY:pos-edge}",
+      "posEdgeHttpPort": "${POS_HTTP_PORT:9100}",
+      "posEdgePrinterDevice": "${POS_PRINTER_DEVICE:}",
+      "posEdgeDisplayDevice": "${POS_DISPLAY_DEVICE:}",
+      "posEdgeCashDrawerVia": "${POS_CASH_DRAWER_VIA:printer}"
+    }
+  ]
+}

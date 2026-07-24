@@ -1,7 +1,7 @@
 # Plan: Installer, POS edge binary, and ui# ontology adoption
 
 > Status: **canonical implementation plan, in progress**. Covers three workstreams that are
-> missing from the current CMS implementation despite the plan in `solid-cms-plan.md`:
+> missing from the current IPMS implementation despite the plan in `solid-ipms-plan.md`:
 > (A) an ontology-driven installer for multiple package types, (B) a POS edge binary that
 > runs Node from Rust and bridges hardware I/O, and (C) adoption of the W3C `ui#` ontology
 > plus solid-ui integration for RDF-driven config forms.
@@ -13,21 +13,21 @@
 ### Exists
 
 - **`native/tray-supervisor/`** — working Rust tray app (`tao`/`tray-icon`/`wry`) that spawns
-  `node ./bin/server.js -c config/cms/cms.json`. Menu: Start/Stop/Open Admin/Open Customer
+  `node ./bin/server.js -c config/ipms/ipms.json`. Menu: Start/Stop/Open Admin/Open Customer
   Display/Quit. This is a supervisor, not an installer.
 - **`native/pos-edge/`** — Rust **library** (no binary target) with:
   - `printer.rs` — ESC/POS thermal printer I/O, cash drawer kick bytes (`ESC p 0`), raster
     image generation (`GS v 0`).
   - `qr.rs` — QR code bitmap generation via `fast_qr` + `image`.
   - `lib.rs` — exposes `qr` and `printer` modules. No `main.rs`, no IPC, no Node spawn.
-- **`src/databox/cms/modules/pos/NativePosDeviceContract.ts`** — comprehensive RDF
+- **`src/databox/ipms/modules/pos/NativePosDeviceContract.ts`** — comprehensive RDF
   descriptor/job model for cash-drawer, receipt-printer, customer-display, pos-terminal.
   Includes mTLS endpoint descriptors, role constraints, operator sessions, job queuing,
   Turtle serialization. A **data contract**, not a running POS application.
-- **`CMS` vocabulary** in `src/util/Vocabularies.ts` — minimal: `Module`, `enabled`,
+- **`IPMS` vocabulary** in `src/util/Vocabularies.ts` — minimal: `Module`, `enabled`,
   `config` only.
-- **`start:cms` / `start:cms-demo`** npm scripts. No install/packaging scripts.
-- **`solid-cms-plan.md` §1.2** — describes the tray supervisor + Rust toolchain direction.
+- **`start:ipms` / `start:ipms-demo`** npm scripts. No install/packaging scripts.
+- **`solid-ipms-plan.md` §1.2** — describes the tray supervisor + Rust toolchain direction.
   **§3** says "Adopt W3C `ui#` for config form shapes" and "Adopt the `ui#` ontology…
   renderable by solid-ui elsewhere." **§2** says "Optionally embed solid-ui form rendering
   later; not core now."
@@ -64,11 +64,11 @@ The installer is **package-type aware**. Each package type is defined ontologica
 
 | Package type | What it installs | Target |
 |---|---|---|
-| `cms:ServerInstall` | CSS + CMS presets + Node 24 + service registration | VPS, cloud, on-prem box |
-| `cms:PosInstall` | POS edge binary + Node POS app (CSS with POS modules) + hardware I/O config | Shop box, POS terminal |
-| `cms:ConnectorInstall` | Connector sidecar binary (ODBC/LDAP) + Node runtime | Enterprise edge |
-| `cms:TraySupervisorInstall` | Tray supervisor only (manages an existing server) | Desktop alongside server |
-| `cms:CombinedInstall` | Server + POS + tray supervisor (the typical shop box) | On-prem mini-PC |
+| `ipms:ServerInstall` | CSS + IPMS presets + Node 24 + service registration | VPS, cloud, on-prem box |
+| `ipms:PosInstall` | POS edge binary + Node POS app (CSS with POS modules) + hardware I/O config | Shop box, POS terminal |
+| `ipms:ConnectorInstall` | Connector sidecar binary (ODBC/LDAP) + Node runtime | Enterprise edge |
+| `ipms:TraySupervisorInstall` | Tray supervisor only (manages an existing server) | Desktop alongside server |
+| `ipms:CombinedInstall` | Server + POS + tray supervisor (the typical shop box) | On-prem mini-PC |
 
 The installer accepts a `--package-type` flag or auto-detects from the bundled manifest.
 Each type maps to a SHACL shape (§3) that defines: required binaries, Node version range,
@@ -81,7 +81,7 @@ Each step reads from the install-type SHACL shape to determine what to do.
 **Step 1 — Pre-flight environment assessment**
 - Detect OS (win/mac/linux) and architecture (x86_64/aarch64).
 - Verify privileges (Administrator on Windows, `sudo`/root on Linux, admin on macOS).
-- Check port availability from the shape's `cms:requiredPort` list (default: 3000 for
+- Check port availability from the shape's `ipms:requiredPort` list (default: 3000 for
   CSS, 443/80 if reverse-proxy, dedicated port for device mTLS).
 - Report blocking vs warning conditions; never proceed silently on a blocking condition.
 
@@ -95,9 +95,9 @@ Each step reads from the install-type SHACL shape to determine what to do.
 
 **Step 3 — App & Rust helper deployment**
 - Extract the CSS fork into `<install-dir>/app/`.
-- **Rust helper placement:** for `cms:PosInstall` and `cms:CombinedInstall`, place the
+- **Rust helper placement:** for `ipms:PosInstall` and `ipms:CombinedInstall`, place the
   pre-compiled `pos-edge` binary at `<install-dir>/bin/pos-edge`. Verify SHA-256
-  checksum. On Linux/macOS, `chmod +x`. For `cms:TraySupervisorInstall`, place
+  checksum. On Linux/macOS, `chmod +x`. For `ipms:TraySupervisorInstall`, place
   `tray-supervisor` binary.
 - If distributing from source (dev path), verify `cargo` + `rustc` are present, then
   `cargo build --release` the relevant workspace member.
@@ -109,10 +109,10 @@ Each step reads from the install-type SHACL shape to determine what to do.
   `npm ci` + `npm run build` in `forge-admin/` too.
 
 **Step 5 — Configuration & cryptography bootstrap**
-- Generate `<install-dir>/app/.env` from the install-type shape's `cms:envTemplate`:
+- Generate `<install-dir>/app/.env` from the install-type shape's `ipms:envTemplate`:
   - `BASE_URL` (from operator input or default `http://localhost:3000/`)
   - `CMS_CONTROL_TOKEN` — generate a cryptographically random ≥32-byte token
-  - `CMS_CONFIG` — point at the shape's `cms:configPreset` (e.g. `config/cms/cms.json`)
+  - `CMS_CONFIG` — point at the shape's `ipms:configPreset` (e.g. `config/ipms/ipms.json`)
   - Storage path (`<install-dir>/data/`)
 - Generate signing keys for Solid-OIDC (CSS's existing keygen, invoked via the Node
   binary).
@@ -120,7 +120,7 @@ Each step reads from the install-type SHACL shape to determine what to do.
 
 **Step 6 — Rust helper integration & handshake**
 - Inject the absolute path of the Rust helper into the Node app's config (via env or
-  the CMS config preset's `cms:nativeEdgeBinary` field).
+  the IPMS config preset's `ipms:nativeEdgeBinary` field).
 - Run a silent dry-run: the Node app spawns or communicates with the Rust helper.
   - For POS edge: Node POSTs a test job to the Rust binary's local IPC channel; the
     binary responds with a health check (no hardware I/O, just confirms IPC works).
@@ -131,12 +131,12 @@ Each step reads from the install-type SHACL shape to determine what to do.
 
 **Step 7 — Service registration & persistence**
 - **Linux:** generate a systemd unit file at
-  `/etc/systemd/system/databox-cms.service` (or `databox-pos.service` for POS). The
+  `/etc/systemd/system/databox-ipms.service` (or `databox-pos.service` for POS). The
   unit `ExecStart` points at the Node binary + config preset. Enable and start.
 - **Windows:** register via `sc create` or `node-windows` wrapper. Set `Start=auto`
   and `Restart=on-failure`.
 - **macOS:** generate a `launchd` plist at
-  `~/Library/LaunchAgents/org.databox.cms.plist`.
+  `~/Library/LaunchAgents/org.databox.ipms.plist`.
 - Poll the health-check endpoint (`GET /health` or the CSS root) until `200 OK` or
   timeout (30s default). Report success or dump the service logs on failure.
 
@@ -188,7 +188,7 @@ Multi-arch build via `cargo build --release --target <triple>` in CI.
 ### 2.1 Architecture
 
 The POS edge binary is the **hardware I/O bridge** and the **process supervisor** for the
-Node POS application. The Node app (CSS with CMS + POS modules) handles the data plane
+Node POS application. The Node app (CSS with IPMS + POS modules) handles the data plane
 (carts, orders, receipts as RDF resources); the Rust binary handles the physical plane
 (cash drawer, thermal printer, customer display).
 
@@ -208,8 +208,8 @@ Node POS application. The Node app (CSS with CMS + POS modules) handles the data
 │         ▼                                            │
 │  ┌─────────────────────────────────────────┐        │
 │  │  node ./bin/server.js                   │        │
-│  │  -c config/cms/pos.json                 │        │
-│  │  (CSS + CMS + POS modules)              │        │
+│  │  -c config/ipms/pos.json                 │        │
+│  │  (CSS + IPMS + POS modules)              │        │
 │  │  data plane: RDF resources, LDP, WAC    │        │
 │  └─────────────────────────────────────────┘        │
 └─────────────────────────────────────────────────────┘
@@ -228,7 +228,7 @@ Two channels:
   `{"cmd":"shutdown"}` — graceful shutdown.
 
 **Channel 2 — HTTP on localhost:9100 (job bridge):**
-- The Node CMS posts POS device jobs (using the `NativePosDeviceContract` RDF shape) to
+- The Node IPMS posts POS device jobs (using the `NativePosDeviceContract` RDF shape) to
   the Rust binary's local HTTP endpoint.
 - `POST /jobs` — enqueue a hardware job (cash drawer open, print receipt, display text).
   Body: the `NativePosDeviceJob` as JSON-LD.
@@ -264,7 +264,7 @@ supervisor):
 
 - `POS_NODE_BINARY` — path to the Node binary (default: `node` on PATH, or the
   installer-provisioned path).
-- `POS_NODE_CONFIG` — CSS config preset (default: `config/cms/pos.json`).
+- `POS_NODE_CONFIG` — CSS config preset (default: `config/ipms/pos.json`).
 - `POS_NODE_ARGS` — extra args for `node ./bin/server.js`.
 - `POS_HTTP_PORT` — IPC HTTP port (default: 9100).
 - `POS_PRINTER_DEVICE` — thermal printer device path (e.g. `/dev/usb/lp0`, `COM3:`).
@@ -273,12 +273,12 @@ supervisor):
 
 ### 2.5 POS config preset
 
-A new `config/cms/pos.json` that layers on top of `config/cms/cms.json` and enables the
+A new `config/ipms/pos.json` that layers on top of `config/ipms/ipms.json` and enables the
 POS-specific modules:
 
 ```json
 {
-  "@import": "./cms.json",
+  "@import": "./ipms.json",
   "components": {
     "@graph": [
       {
@@ -301,14 +301,14 @@ The tray supervisor and the POS edge binary are **complementary, not overlapping
   the admin browser, shows the customer display webview. No hardware I/O. For any
   install type that includes a server.
 - **POS edge binary** — manages the *POS hardware* lifecycle + spawns the Node POS app.
-  Does hardware I/O. Only for `cms:PosInstall` and `cms:CombinedInstall`.
+  Does hardware I/O. Only for `ipms:PosInstall` and `ipms:CombinedInstall`.
 
-For `cms:CombinedInstall`, the POS edge binary spawns Node, and the tray supervisor
+For `ipms:CombinedInstall`, the POS edge binary spawns Node, and the tray supervisor
 connects to the same Node process (or the tray supervisor spawns the POS edge binary,
 which in turn spawns Node). The recommended chain:
 
 ```
-tray-supervisor → pos-edge binary → node (CSS + CMS + POS)
+tray-supervisor → pos-edge binary → node (CSS + IPMS + POS)
 ```
 
 The tray supervisor is the user-facing process (tray icon, menu); the POS edge binary is
@@ -325,11 +325,11 @@ A new ontology file at `databox/ontologies/install-types.ttl` defining SHACL sha
 each package type. These shapes are read by the installer (compiled in or loaded at
 runtime) and are also published as Solid resources for admin-panel introspection.
 
-**Vocabulary additions** to `CMS` in `src/util/Vocabularies.ts`:
+**Vocabulary additions** to `IPMS` in `src/util/Vocabularies.ts`:
 
 ```typescript
-export const CMS = createVocabulary(
-  'urn:solid-server:databox:cms#',
+export const IPMS = createVocabulary(
+  'urn:solid-server:databox:ipms#',
   // Existing
   'Module', 'enabled', 'config',
   // Install types
@@ -354,54 +354,54 @@ export const CMS = createVocabulary(
 **SHACL shapes** (sketch — `install-types.ttl`):
 
 ```turtle
-@prefix cms: <urn:solid-server:databox:cms#> .
+@prefix ipms: <urn:solid-server:databox:ipms#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-cms:ServerInstallShape a sh:NodeShape ;
-  sh:targetClass cms:ServerInstall ;
+ipms:ServerInstallShape a sh:NodeShape ;
+  sh:targetClass ipms:ServerInstall ;
   sh:property [
-    sh:path cms:requiredNodeVersion ;
+    sh:path ipms:requiredNodeVersion ;
     sh:datatype xsd:string ;
     sh:hasValue ">=24.0.0 <25.0.0" ;
   ] ;
   sh:property [
-    sh:path cms:requiredPort ;
+    sh:path ipms:requiredPort ;
     sh:datatype xsd:integer ;
     sh:hasValue 3000 ;
   ] ;
   sh:property [
-    sh:path cms:configPreset ;
+    sh:path ipms:configPreset ;
     sh:datatype xsd:string ;
-    sh:hasValue "config/cms/cms.json" ;
+    sh:hasValue "config/ipms/ipms.json" ;
   ] ;
   sh:property [
-    sh:path cms:serviceName ;
+    sh:path ipms:serviceName ;
     sh:datatype xsd:string ;
-    sh:hasValue "databox-cms" ;
+    sh:hasValue "databox-ipms" ;
   ] .
 
-cms:PosInstallShape a sh:NodeShape ;
-  sh:targetClass cms:PosInstall ;
+ipms:PosInstallShape a sh:NodeShape ;
+  sh:targetClass ipms:PosInstall ;
   sh:property [
-    sh:path cms:requiredBinary ;
+    sh:path ipms:requiredBinary ;
     sh:hasValue "pos-edge" ;
   ] ;
   sh:property [
-    sh:path cms:configPreset ;
-    sh:hasValue "config/cms/pos.json" ;
+    sh:path ipms:configPreset ;
+    sh:hasValue "config/ipms/pos.json" ;
   ] ;
   sh:property [
-    sh:path cms:nativeEdgeBinary ;
+    sh:path ipms:nativeEdgeBinary ;
     sh:datatype xsd:string ;
   ] ;
   sh:property [
-    sh:path cms:nativeEdgeHttpPort ;
+    sh:path ipms:nativeEdgeHttpPort ;
     sh:datatype xsd:integer ;
     sh:hasValue 9100 ;
   ] ;
   sh:property [
-    sh:path cms:printerDevice ;
+    sh:path ipms:printerDevice ;
     sh:datatype xsd:string ;
   ] .
 ```
@@ -443,10 +443,10 @@ Example shape for the hosting module's config:
 
 ```turtle
 @prefix ui: <http://www.w3.org/ns/ui#> .
-@prefix cms: <urn:solid-server:databox:cms#> .
+@prefix ipms: <urn:solid-server:databox:ipms#> .
 @prefix schema: <https://schema.org/> .
 
-cms:HostingConfigShape a ui:Form ;
+ipms:HostingConfigShape a ui:Form ;
   ui:parts (
     [ a ui:TextInput ;
       ui:label "Apex domain" ;
@@ -456,17 +456,17 @@ cms:HostingConfigShape a ui:Form ;
     ]
     [ a ui:TextInput ;
       ui:label "Databox subdomain" ;
-      ui:property cms:databoxSubdomain ;
+      ui:property ipms:databoxSubdomain ;
       ui:default "databox" ;
     ]
     [ a ui:Boolean ;
       ui:label "Reserve www route" ;
-      ui:property cms:reserveWww ;
+      ui:property ipms:reserveWww ;
       ui:default true ;
     ]
     [ a ui:Choice ;
       ui:label "TLS mode" ;
-      ui:property cms:tlsMode ;
+      ui:property ipms:tlsMode ;
       ui:from ( "cloudflare-proxy" "direct" "tunnel" ) ;
       ui:required true ;
     ]
@@ -500,14 +500,14 @@ forge-admin/src/components/
 ```
 
 The renderer:
-1. Fetches the `configShape` IRI from the module manifest (via the CMS control plane or
+1. Fetches the `configShape` IRI from the module manifest (via the IPMS control plane or
    direct Solid resource fetch).
 2. Parses the `ui#` shape into a form spec (ordered parts, field types, properties,
    constraints).
 3. Renders the form with Refine's `useForm` hook, binding each field to the
    corresponding RDF property.
 4. On submit, serializes the form values back to Turtle and PUTs them to the module's
-   config endpoint (`PUT /.databox/cms/modules/:id`).
+   config endpoint (`PUT /.databox/ipms/modules/:id`).
 
 ### 3.5 solid-ui integration (optional, later)
 
@@ -524,19 +524,19 @@ This is a separate decision, not part of this plan.
 Each install category, module type, and hardware device kind is defined ontologically —
 not just in TypeScript interfaces but as RDF classes with SHACL shapes. This means:
 
-- **Install types** are `cms:ServerInstall`, `cms:PosInstall`, etc. — SHACL shapes
+- **Install types** are `ipms:ServerInstall`, `ipms:PosInstall`, etc. — SHACL shapes
   define their requirements. The installer reads these shapes.
-- **Module types** are `cms:Module` with `configShape` pointing to `ui#` forms. The
+- **Module types** are `ipms:Module` with `configShape` pointing to `ui#` forms. The
   admin panel reads these shapes to render config UIs.
-- **Device kinds** are `cms:NativePosDeviceDescriptor` with `cms:deviceKind` ranging
+- **Device kinds** are `ipms:NativePosDeviceDescriptor` with `ipms:deviceKind` ranging
   over `cash-drawer`, `receipt-printer`, `customer-display`, `pos-terminal` (already
   defined in `NativePosDeviceContract.ts`).
-- **Capability types** are `cms:capability` values like `cash-drawer.open`,
+- **Capability types** are `ipms:capability` values like `cash-drawer.open`,
   `receipt-printer.print-receipt` — already defined in `NATIVE_EDGE_POS_CAPABILITIES`.
 
 The ontological chain: **install type → required modules → module config shapes (`ui#`)
 → device descriptors → capabilities → hardware I/O (Rust)**. Each link is RDF; the
-runtime code (installer, CMS, POS edge) interprets the RDF.
+runtime code (installer, IPMS, POS edge) interprets the RDF.
 
 ---
 
@@ -570,13 +570,13 @@ runtime code (installer, CMS, POS edge) interprets the RDF.
 - ✎ `native/pos-edge/src/hardware/display.rs` — customer display I/O
 - ✏ `native/pos-edge/Cargo.toml` — add binary target, deps: `serde`, `serde_json`,
   `tiny_http` (or `axum`), `n3` (or parse JSON-LD from Node instead)
-- ✎ `config/cms/pos.json` — POS config preset (layers on `cms.json`)
+- ✎ `config/ipms/pos.json` — POS config preset (layers on `ipms.json`)
 - ✏ `native/tray-supervisor/src/main.rs` — option to spawn `pos-edge` instead of
-  `node` directly (for `cms:CombinedInstall` chain)
+  `node` directly (for `ipms:CombinedInstall` chain)
 
 ### Workstream C — Ontology + ui# + solid-ui
 
-- ✏ `src/util/Vocabularies.ts` — extend `CMS` with install-type + native-edge terms;
+- ✏ `src/util/Vocabularies.ts` — extend `IPMS` with install-type + native-edge terms;
   add `UI` vocabulary
 - ✎ `databox/ontologies/module-config-shapes.ttl` — `ui#` shapes for module configs
 - ✎ `forge-admin/src/components/ui-form/UiFormRenderer.tsx` — React `ui#` renderer
@@ -592,10 +592,10 @@ runtime code (installer, CMS, POS edge) interprets the RDF.
 
 ### Phase 1 — Ontology foundations (sequential, first)
 
-Extends the existing `CMS` vocabulary. Defines install-type SHACL shapes. Adds `UI`
+Extends the existing `IPMS` vocabulary. Defines install-type SHACL shapes. Adds `UI`
 vocabulary. No runtime code yet — just the ontological layer.
 
-- ✏ `src/util/Vocabularies.ts` — extend `CMS`, add `UI`
+- ✏ `src/util/Vocabularies.ts` — extend `IPMS`, add `UI`
 - ✎ `databox/ontologies/install-types.ttl`
 - ✎ `databox/ontologies/module-config-shapes.ttl` (hosting module first)
 - ✎ Unit tests: vocabulary terms resolve, SHACL shapes validate against sample data
@@ -609,7 +609,7 @@ dispatcher. Creates the POS config preset.
 
 - ✎ `native/pos-edge/src/main.rs` + IPC + HTTP + jobs + hardware modules
 - ✏ `native/pos-edge/Cargo.toml`
-- ✎ `config/cms/pos.json`
+- ✎ `config/ipms/pos.json`
 - ✏ `native/tray-supervisor/src/main.rs` — option to spawn `pos-edge`
 - ✎ Rust tests: IPC protocol, job queue, hardware dispatch (mocked devices)
 - ✎ Integration test: Node posts a job → Rust binary executes → status reported
@@ -645,7 +645,7 @@ Rust helpers, registers services, and hands off to the admin panel.
 - Documentation: operator install guide
 - The tray supervisor gets a "Check for Updates" menu item that calls the installer in
   update mode
-- End-to-end test: `cms:CombinedInstall` on win64 + linux → server + POS + tray running
+- End-to-end test: `ipms:CombinedInstall` on win64 + linux → server + POS + tray running
 
 ---
 
@@ -655,7 +655,7 @@ Prefix every node/npm cmd with `export PATH="/c/nvm4w/nodejs:$PATH"`; Jest scope
 `--maxWorkers=2`; `rm -f .eslintcache` before lint.
 
 1. **Vocabulary + ontology (Phase 1):**
-   `npx jest test/unit/util/Vocabularies --maxWorkers=2` — CMS and UI terms resolve.
+   `npx jest test/unit/util/Vocabularies --maxWorkers=2` — IPMS and UI terms resolve.
    SHACL shapes validate against sample install profiles and module configs.
 
 2. **POS edge binary (Phase 2):**
@@ -670,14 +670,14 @@ Prefix every node/npm cmd with `export PATH="/c/nvm4w/nodejs:$PATH"`; Jest scope
 
 4. **Installer (Phase 4):**
    `cargo test -p installer` — each step with mocked environment.
-   Manual: run installer with `--package-type cms:CombinedInstall` on a clean
+   Manual: run installer with `--package-type ipms:CombinedInstall` on a clean
    environment → server + POS + tray running, health check 200 OK.
 
 5. **Gate:** `npm run build` + `npm run lint` + `npx tsc --noEmit` + `cargo build
    --release` + `cargo test` all green on Node 24.18.0.
 
 6. **Basic profile untouched:** `config/default.json` still boots a vanilla Solid server
-   with no CMS, no POS, no installer artifacts.
+   with no IPMS, no POS, no installer artifacts.
 
 ---
 
@@ -701,16 +701,16 @@ Prefix every node/npm cmd with `export PATH="/c/nvm4w/nodejs:$PATH"`; Jest scope
    tray spawns Node directly and pos-edge runs separately? The chain
    (tray → pos-edge → node) is cleaner for lifecycle but adds a process layer. **⟵**
 7. **Install manifest format:** Turtle (`install-state.ttl`) vs JSON-LD. Turtle is
-   consistent with the CMS's RDF-everywhere stance; JSON-LD is easier for the admin
+   consistent with the IPMS's RDF-everywhere stance; JSON-LD is easier for the admin
    panel to consume. **⟵**
 8. **Node provisioning source:** official `nodejs.org/dist/` binaries (this plan) vs
    a bundled Node runtime in the installer package. Bundling is larger but offline-capable. **⟵**
 
 ---
 
-## 8. Relationship to `solid-cms-plan.md`
+## 8. Relationship to `solid-ipms-plan.md`
 
-This plan implements three sections of `solid-cms-plan.md` that are currently unimplemented
+This plan implements three sections of `solid-ipms-plan.md` that are currently unimplemented
 or only partially implemented:
 
 - **§1.2** (Install harness — desktop supervisor): the tray supervisor exists; the
@@ -719,10 +719,10 @@ or only partially implemented:
 - **§10.2** (Device identity — Rust/native POS edge): the data contract exists
   (`NativePosDeviceContract.ts`); the runtime does not. This plan builds the POS edge
   binary.
-- **§10.4** (POS): the CMS modules exist; the native hardware bridge does not. This plan
+- **§10.4** (POS): the IPMS modules exist; the native hardware bridge does not. This plan
   builds it.
 
-The "Still required" list in `solid-cms-plan.md` §0 includes:
+The "Still required" list in `solid-ipms-plan.md` §0 includes:
 > "Build the Rust/native or WASM POS edge package for actual mTLS/WebID-TLS device
 > verification, thermal printer and cash drawer I/O, QR bitmap rendering, offline
 > replay, and audit receipt transport."

@@ -2,7 +2,7 @@
 
 > Maps every gap-analysis item to a concrete, assignable agent task with phase,
 > dependencies, model tier, and verification gates. Follows the execution model
-> from `solid-cms-plan.md` §13 and `dynamic-strolling-lerdorf.md` §13.
+> from `solid-ipms-plan.md` §13 and `dynamic-strolling-lerdorf.md` §13.
 >
 > **Gap analysis reference:** `databox/devdocs/gap-analysis.md` (§numbers cited below).
 
@@ -155,7 +155,7 @@
     - **Language switching:** a language selector in the admin shell and each
       org-mobile-app. The selected locale persists to the user's pod profile
       (§16 person-owned profile) or local storage for anonymous users.
-    - **Server-side messages:** error messages from the CMS API must include a
+    - **Server-side messages:** error messages from the IPMS API must include a
       message key (e.g. `"error.hosting.invalid_domain"`) alongside the English
       fallback, so the client can localise.
     - The agent reports i18n compliance in the task report:
@@ -182,7 +182,7 @@
 | P0-04 | 5.3 | ~~Implement crypto bootstrap in installer~~ **COMPLETED** — `config.rs` generates RSA keypair via Node, sets dir permissions. | Opus | P0-02 | `native/installer/src/config.rs` |
 | P0-05 | 5.5 | ~~Implement Windows privilege check~~ **COMPLETED** — `preflight.rs` uses `net session` for admin detection. | Sonnet | P0-01 | `native/installer/src/preflight.rs` |
 | P0-06 | 5.6 | ~~Fix installer timestamp~~ **COMPLETED** — `handoff.rs` uses `chrono::Utc::now()` ISO 8601. | Haiku | P0-01 | `native/installer/src/handoff.rs` |
-| P0-07 | 2.4 | ~~Fix `ConnectorSidecar` ESM compatibility~~ **COMPLETED** — uses `import.meta.url` check. | Sonnet | — | `src/databox/cms/sidecars/ConnectorSidecar.ts` |
+| P0-07 | 2.4 | ~~Fix `ConnectorSidecar` ESM compatibility~~ **COMPLETED** — uses `import.meta.url` check. | Sonnet | — | `src/databox/ipms/sidecars/ConnectorSidecar.ts` |
 | P0-08 | new | ~~Set up i18n infrastructure~~ **COMPLETED** — `i18n.ts` provider with `i18next` + `react-i18next`, `en.json` with 238 keys, wired in `main.tsx`. | Sonnet | — | `forge-admin/src/i18n.ts`, `forge-admin/src/locales/en.json`, `forge-admin/src/main.tsx`, `forge-admin/package.json` |
 | P0-09 | new | ~~Set up accessibility baseline~~ **COMPLETED** — `eslint.config.js` has `eslint-plugin-jsx-a11y` recommended rules, `index.css` has `:focus-visible` + `.skip-to-content` + `.sr-only`, `App.tsx` has skip link + `aria-live` region. | Sonnet | — | `forge-admin/eslint.config.js`, `forge-admin/src/index.css`, `forge-admin/src/App.tsx` |
 
@@ -195,22 +195,22 @@ runs under ESM. i18n provider wired into forge-admin with `en.json` locale.
 
 ## Phase 1 — Cloudflare Hosting Completion (sequential, Opus→Sonnet)
 
-> The hosting module is the first CMS module and is half-built.
+> The hosting module is the first IPMS module and is half-built.
 
 | Task ID | Gap § | Description | Model | Deps | Files |
 |---------|-------|-------------|-------|------|-------|
-| P1-01 | 11.1 | ~~Add Cloudflare API client~~ **COMPLETED** — CloudflareApi with zone lookup, DNS records, tunnel creation, ingress rules. | Opus | P0-07 | `src/databox/cms/modules/hosting/CloudflareApi.ts` |
-| P1-02 | 11.1 | ~~Add POST /hosting/apply endpoint~~ **COMPLETED** — HostingApi with apply route calling CloudflareApi. | Opus | P1-01 | `src/databox/cms/modules/hosting/HostingApi.ts` |
-| P1-03 | 11.1 | ~~Add POST /hosting/persist endpoint~~ **COMPLETED** — Persist route generates Turtle RDF. | Sonnet | P1-02 | `src/databox/cms/modules/hosting/HostingApi.ts` |
-| P1-04 | 11.1 | ~~Add POST /hosting/bind endpoint~~ **COMPLETED** — Bind route generates TenantBinding Turtle. | Sonnet | P1-03 | `src/databox/cms/modules/hosting/HostingApi.ts` |
-| P1-05 | 11.1 | ~~Generate cloudflared config~~ **COMPLETED** — `generateCloudflaredConfig` in HostingConfig.ts. | Sonnet | P1-01 | `src/databox/cms/modules/hosting/HostingConfig.ts` |
+| P1-01 | 11.1 | ~~Add Cloudflare API client~~ **COMPLETED** — CloudflareApi with zone lookup, DNS records, tunnel creation, ingress rules. | Opus | P0-07 | `src/databox/ipms/modules/hosting/CloudflareApi.ts` |
+| P1-02 | 11.1 | ~~Add POST /hosting/apply endpoint~~ **COMPLETED** — HostingApi with apply route calling CloudflareApi. | Opus | P1-01 | `src/databox/ipms/modules/hosting/HostingApi.ts` |
+| P1-03 | 11.1 | ~~Add POST /hosting/persist endpoint~~ **COMPLETED** — Persist route generates Turtle RDF. | Sonnet | P1-02 | `src/databox/ipms/modules/hosting/HostingApi.ts` |
+| P1-04 | 11.1 | ~~Add POST /hosting/bind endpoint~~ **COMPLETED** — Bind route generates TenantBinding Turtle. | Sonnet | P1-03 | `src/databox/ipms/modules/hosting/HostingApi.ts` |
+| P1-05 | 11.1 | ~~Generate cloudflared config~~ **COMPLETED** — `generateCloudflaredConfig` in HostingConfig.ts. | Sonnet | P1-01 | `src/databox/ipms/modules/hosting/HostingConfig.ts` |
 | P1-06 | 11.2 | ~~Update forge-admin hosting page~~ **COMPLETED** — Hosting page with token input, apply, persist, artifact download. | Sonnet | P1-02 | `forge-admin/src/pages/hosting/index.tsx` |
-| P1-07 | 11.3 | ~~Create docker-compose.yml~~ **COMPLETED** — CMS container + /data volume + env/secrets + health check. | Haiku | — | `docker-compose.yml` |
+| P1-07 | 11.3 | ~~Create docker-compose.yml~~ **COMPLETED** — IPMS container + /data volume + env/secrets + health check. | Haiku | — | `docker-compose.yml` |
 
 **Phase 1 gate:** Hosting wizard computes plan → user enters Cloudflare token → DNS
 records created → tunnel configured → config persisted as RDF → origin bound as
 TenantBinding. Fallback path generates downloadable artifacts. Docker compose boots
-CMS. All tests pass.
+IPMS. All tests pass.
 
 ---
 
@@ -220,13 +220,13 @@ CMS. All tests pass.
 
 | Task ID | Gap § | Description | Model | Deps | Files |
 |---------|-------|-------------|-------|------|-------|
-| P2-01 | 15.3 | ~~Implement governance module~~ **COMPLETED** — Role binding, ODRL policy, approval gate, resolution routes. | Opus | — | `src/databox/cms/modules/governance/` |
-| P2-02 | 15.4 | ~~Implement credential issuance (VC)~~ **COMPLETED** — VC issuer, verifier, revocation routes. | Opus | — | `src/databox/cms/modules/credentials/` |
-| P2-03 | 16 | ~~Implement member/person pod provisioning~~ **COMPLETED** — Pod creation, WebID profile, inbox/outbox, org binding. | Opus | — | `src/databox/cms/modules/profile/MemberPod.ts` |
-| P2-04 | 16 | ~~Implement LDN inbox communication~~ **COMPLETED** — LDN notification builder, inbox container, send notification. | Sonnet | P2-03 | `src/databox/cms/modules/profile/LdnInbox.ts` |
-| P2-05 | 16 | ~~Implement bidirectional member interaction~~ **COMPLETED** — sendToMember, sendToOrganisation, access grant. | Sonnet | P2-04 | `src/databox/cms/modules/profile/MemberInteraction.ts` |
-| P2-06 | 16 | ~~Implement member pod lifecycle~~ **COMPLETED** — Suspend, reactivate, revoke with audit records. | Sonnet | P2-03 | `src/databox/cms/modules/profile/MemberPod.ts` |
-| P2-07 | 15.2 | ~~Implement dynamic sidebar~~ **COMPLETED** — sidebar renders from CMS module manifests. | Sonnet | — | `forge-admin/src/components/layout/index.tsx` |
+| P2-01 | 15.3 | ~~Implement governance module~~ **COMPLETED** — Role binding, ODRL policy, approval gate, resolution routes. | Opus | — | `src/databox/ipms/modules/governance/` |
+| P2-02 | 15.4 | ~~Implement credential issuance (VC)~~ **COMPLETED** — VC issuer, verifier, revocation routes. | Opus | — | `src/databox/ipms/modules/credentials/` |
+| P2-03 | 16 | ~~Implement member/person pod provisioning~~ **COMPLETED** — Pod creation, WebID profile, inbox/outbox, org binding. | Opus | — | `src/databox/ipms/modules/profile/MemberPod.ts` |
+| P2-04 | 16 | ~~Implement LDN inbox communication~~ **COMPLETED** — LDN notification builder, inbox container, send notification. | Sonnet | P2-03 | `src/databox/ipms/modules/profile/LdnInbox.ts` |
+| P2-05 | 16 | ~~Implement bidirectional member interaction~~ **COMPLETED** — sendToMember, sendToOrganisation, access grant. | Sonnet | P2-04 | `src/databox/ipms/modules/profile/MemberInteraction.ts` |
+| P2-06 | 16 | ~~Implement member pod lifecycle~~ **COMPLETED** — Suspend, reactivate, revoke with audit records. | Sonnet | P2-03 | `src/databox/ipms/modules/profile/MemberPod.ts` |
+| P2-07 | 15.2 | ~~Implement dynamic sidebar~~ **COMPLETED** — sidebar renders from IPMS module manifests. | Sonnet | — | `forge-admin/src/components/layout/index.tsx` |
 | P2-08 | 3 | ~~Remove `@ts-nocheck` from all forge-admin pages~~ **COMPLETED** — no `@ts-nocheck` directives remained; all 79 type errors across 20 files fixed (unused React imports, useUpdate wrapper, N3 parser typing, DataProvider generic casts, RdfTerm guards, erasableSyntaxOnly). `tsc --noEmit` passes clean. | Sonnet | — | `forge-admin/src/pages/**/*.tsx`, `forge-admin/src/providers/*.ts`, `forge-admin/src/hooks/useUpdate.ts` (new), `forge-admin/src/components/ui-form/parseUiShape.ts` |
 
 **Phase 2 gate:** A governed entity with a directory can issue/verify VCs. Members
@@ -242,12 +242,12 @@ modules. All forge-admin pages pass TypeScript checking.
 
 | Task ID | Gap § | Description | Model | Deps | Files |
 |---------|-------|-------------|-------|------|-------|
-| P3-01 | 12 | ~~Define allergen/ingredient ontology~~ **COMPLETED** — FSANZ/EU allergen categories (10), dietary restrictions (9), schema.org JSON-LD with DPV legal basis. | Opus | — | `src/databox/cms/modules/allergy-profile/AllergyProfile.ts` |
-| P3-02 | 12 | ~~Implement consumer allergy/dietary profile module~~ **COMPLETED** — Person-owned profile with allergens, dietary restrictions, accessibility needs. | Opus | P3-01, P2-03 | `src/databox/cms/modules/allergy-profile/AllergyProfile.ts` |
-| P3-03 | 12 | ~~Implement retailer ingredient declaration module~~ **COMPLETED** — Ingredient declarations with allergen content, may-contain, free-from, vegan/vegetarian flags. | Opus | P3-01 | `src/databox/cms/modules/allergy-profile/IngredientDeclaration.ts` |
-| P3-04 | 12 | ~~Implement allergen matching engine~~ **COMPLETED** — Cross-references consumer allergens against ingredient declarations. Batch matching, dietary violation detection. | Opus | P3-02, P3-03 | `src/databox/cms/modules/allergy-profile/AllergenMatcher.ts` |
-| P3-05 | 12 | ~~Implement selective disclosure for secret ingredients~~ **COMPLETED** — Attestation-based allergen safety check without revealing full recipe. | Opus | P3-04, P2-02 | `src/databox/cms/modules/allergy-profile/AllergenMatcher.ts` |
-| P3-06 | 12 | ~~Create `food.allergy-safety` vertical profile~~ **COMPLETED** — Bundles allergy-profile, menu, catalogue, pos, notifications, credentials modules. | Sonnet | P3-04, P3-05 | `src/databox/cms/VerticalProfile.ts` |
+| P3-01 | 12 | ~~Define allergen/ingredient ontology~~ **COMPLETED** — FSANZ/EU allergen categories (10), dietary restrictions (9), schema.org JSON-LD with DPV legal basis. | Opus | — | `src/databox/ipms/modules/allergy-profile/AllergyProfile.ts` |
+| P3-02 | 12 | ~~Implement consumer allergy/dietary profile module~~ **COMPLETED** — Person-owned profile with allergens, dietary restrictions, accessibility needs. | Opus | P3-01, P2-03 | `src/databox/ipms/modules/allergy-profile/AllergyProfile.ts` |
+| P3-03 | 12 | ~~Implement retailer ingredient declaration module~~ **COMPLETED** — Ingredient declarations with allergen content, may-contain, free-from, vegan/vegetarian flags. | Opus | P3-01 | `src/databox/ipms/modules/allergy-profile/IngredientDeclaration.ts` |
+| P3-04 | 12 | ~~Implement allergen matching engine~~ **COMPLETED** — Cross-references consumer allergens against ingredient declarations. Batch matching, dietary violation detection. | Opus | P3-02, P3-03 | `src/databox/ipms/modules/allergy-profile/AllergenMatcher.ts` |
+| P3-05 | 12 | ~~Implement selective disclosure for secret ingredients~~ **COMPLETED** — Attestation-based allergen safety check without revealing full recipe. | Opus | P3-04, P2-02 | `src/databox/ipms/modules/allergy-profile/AllergenMatcher.ts` |
+| P3-06 | 12 | ~~Create `food.allergy-safety` vertical profile~~ **COMPLETED** — Bundles allergy-profile, menu, catalogue, pos, notifications, credentials modules. | Sonnet | P3-04, P3-05 | `src/databox/ipms/VerticalProfile.ts` |
 | P3-07 | 12 | ~~Integrate allergen filtering into POS~~ **COMPLETED** — Replaced hardcoded allergen array with FSANZ_ALLERGEN_CATEGORIES (10 categories) in customer self-order page. | Sonnet | P3-04 | `forge-admin/src/pages/pos/allergens.ts`, `pages/pos/customer.tsx` |
 
 **Phase 3 gate:** Consumer shares allergy profile with retailer → retailer's menu is
@@ -262,11 +262,11 @@ without disclosure → POS and waiter pages show real allergen data. All tests p
 
 | Task ID | Gap § | Description | Model | Deps | Files |
 |---------|-------|-------------|-------|------|-------|
-| P4-01 | 13 | ~~Implement real ODBC connector~~ **COMPLETED** — Dynamic import of `odbc` package, connection pooling, parameterised queries, timeout handling, schema browsing, streaming. 4 tests. | Opus | P0-07 | `src/databox/cms/sidecars/OdbcConnector.ts` |
-| P4-02 | 13 | ~~Implement real LDAP connector~~ **COMPLETED** — Dynamic import of `ldapjs` package, bind/search/unbind, connection error handling, attribute mapping, schema browsing. 3 tests. | Opus | P0-07 | `src/databox/cms/sidecars/LdapConnector.ts` |
-| P4-03 | 13 | ~~Implement R2RML/RML mapping engine~~ **COMPLETED** — `RdfMapper.ts` with subject IRI templates, class mapping, predicate-column/constant mappings, language tags, datatypes, URI refs. Turtle + JSON-LD output. Parse + serialize. 10 tests. | Opus | P4-01, P4-02 | `src/databox/cms/sidecars/RdfMapper.ts` |
+| P4-01 | 13 | ~~Implement real ODBC connector~~ **COMPLETED** — Dynamic import of `odbc` package, connection pooling, parameterised queries, timeout handling, schema browsing, streaming. 4 tests. | Opus | P0-07 | `src/databox/ipms/sidecars/OdbcConnector.ts` |
+| P4-02 | 13 | ~~Implement real LDAP connector~~ **COMPLETED** — Dynamic import of `ldapjs` package, bind/search/unbind, connection error handling, attribute mapping, schema browsing. 3 tests. | Opus | P0-07 | `src/databox/ipms/sidecars/LdapConnector.ts` |
+| P4-03 | 13 | ~~Implement R2RML/RML mapping engine~~ **COMPLETED** — `RdfMapper.ts` with subject IRI templates, class mapping, predicate-column/constant mappings, language tags, datatypes, URI refs. Turtle + JSON-LD output. Parse + serialize. 10 tests. | Opus | P4-01, P4-02 | `src/databox/ipms/sidecars/RdfMapper.ts` |
 | P4-04 | 13 | ~~Build interactive mapping app~~ **COMPLETED** — `MappingBuilder` page in forge-admin: source config (ODBC/LDAP), schema browsing, field mapping UI, subject IRI template, RDF class, preview, save. | Sonnet | P4-03 | `forge-admin/src/pages/mappings/builder.tsx` |
-| P4-05 | 13 | ~~Wire connector sidecar execution~~ **COMPLETED** — `ConnectorSidecar.ts` loads R2RML/RML mapping, connects to source, executes query, applies mapping, outputs JSON-LD. | Sonnet | P4-03 | `src/databox/cms/sidecars/ConnectorSidecar.ts` |
+| P4-05 | 13 | ~~Wire connector sidecar execution~~ **COMPLETED** — `ConnectorSidecar.ts` loads R2RML/RML mapping, connects to source, executes query, applies mapping, outputs JSON-LD. | Sonnet | P4-03 | `src/databox/ipms/sidecars/ConnectorSidecar.ts` |
 
 **Phase 4 gate:** Operator connects to ODBC source → browses tables/columns → maps
 fields to RDF predicates → previews output → saves mapping → runs sync → RDF
@@ -280,7 +280,7 @@ committed to pod. Same flow for LDAP. No mock data.
 
 | Task ID | Gap § | Description | Model | Deps | Files |
 |---------|-------|-------------|-------|------|-------|
-| P5-01 | 14 | ~~Create `org-mobile-apps/` directory structure + app manifest format~~ **COMPLETED** — Unified WASM container architecture with OrgAppManifest module (app profiles, per-install licence VCs, network scope enforcement, container boot config). 5 API routes, 26 tests. | Sonnet | — | `src/databox/cms/OrgAppManifest.ts`, `org-mobile-apps/` |
+| P5-01 | 14 | ~~Create `org-mobile-apps/` directory structure + app manifest format~~ **COMPLETED** — Unified WASM container architecture with OrgAppManifest module (app profiles, per-install licence VCs, network scope enforcement, container boot config). 5 API routes, 26 tests. | Sonnet | — | `src/databox/ipms/OrgAppManifest.ts`, `org-mobile-apps/` |
 | P5-02 | 14 | ~~Extract waiter app into standalone container profile~~ **COMPLETED** — Waiter app profile defined as RDF manifest (local-only, menu/pos/bookings modules). Container shell built. | Sonnet | P5-01, P2-03 | `org-mobile-apps/profiles/waiter-app.ttl`, `org-mobile-apps/container/` |
 | P5-03 | 14 | ~~Move tradie app to org-mobile-apps~~ **COMPLETED** — Tradie app profile defined as RDF manifest (remote-capable, jobs/quotations/records modules). | Sonnet | P5-01, P2-03 | `org-mobile-apps/profiles/tradie-app.ttl` |
 | P5-04 | 14 | ~~Build delivery driver app~~ **COMPLETED** — Driver app profile defined as RDF manifest (remote-capable, driver-management/payments modules). | Sonnet | P5-01, P2-04 | `org-mobile-apps/profiles/driver-app.ttl` |
@@ -288,8 +288,8 @@ committed to pod. Same flow for LDAP. No mock data.
 | P5-06 | 14 | ~~Build sports scorekeeper app~~ **COMPLETED** — Scorekeeper app profile defined as RDF manifest (local-only, events/records modules). | Sonnet | P5-01 | `org-mobile-apps/profiles/scorekeeper-app.ttl` |
 | P5-07 | 14 | ~~Build sports referee app~~ **COMPLETED** — Referee app profile defined as RDF manifest (remote-capable, events/records modules). | Sonnet | P5-01 | `org-mobile-apps/profiles/referee-app.ttl` |
 | P5-08 | 14 | ~~Implement WASM/PWA delivery for all apps~~ **COMPLETED** — Unified container with Vite + vite-plugin-pwa, service worker, dynamic module loader. Single container serves all app profiles. | Opus | P5-02..07 | `org-mobile-apps/container/vite.config.ts`, `container/src/sw.ts`, `container/src/loader.ts` |
-| P5-09 | 14 | ~~Implement profile-driven availability~~ **COMPLETED** — Container boot config filters UI modules by org's enabled modules + licence permissions. CMS org-apps module registered. | Sonnet | P5-01, P5-08 | `src/databox/cms/OrgAppManifest.ts`, `BuiltInModules.ts` |
-| P5-10 | 14 | ~~Implement network-scope enforcement~~ **COMPLETED** — checkNetworkScope function with CIDR matching for local-only apps, service worker integration. | Opus | P5-09 | `src/databox/cms/OrgAppManifest.ts`, `org-mobile-apps/container/src/sw.ts` |
+| P5-09 | 14 | ~~Implement profile-driven availability~~ **COMPLETED** — Container boot config filters UI modules by org's enabled modules + licence permissions. IPMS org-apps module registered. | Sonnet | P5-01, P5-08 | `src/databox/ipms/OrgAppManifest.ts`, `BuiltInModules.ts` |
+| P5-10 | 14 | ~~Implement network-scope enforcement~~ **COMPLETED** — checkNetworkScope function with CIDR matching for local-only apps, service worker integration. | Opus | P5-09 | `src/databox/ipms/OrgAppManifest.ts`, `org-mobile-apps/container/src/sw.ts` |
 
 **Phase 5 gate:** Waiter app works on venue WiFi, refuses to load off-network. Tradie
 app works remotely. Driver app aggregates jobs from multiple stores. All apps
@@ -304,14 +304,14 @@ org's vertical profile.
 
 | Task ID | Gap § | Description | Model | Deps | Files |
 |---------|-------|-------------|-------|------|-------|
-| P6-01 | 18 | ~~Implement HR module~~ **COMPLETED** — Onboarding, shift assignment, compliance tracking, payslip generation, expense claims. 5 routes, 12 tests. | Opus | P2-01, P2-02, P2-03 | `src/databox/cms/modules/hr/` |
-| P6-02 | 18 | ~~Implement HR payroll integration~~ **COMPLETED** — Payslip generation with deduction validation, expense claim submission. Included in P6-01. | Sonnet | P6-01, P7-01 | `src/databox/cms/modules/hr/Hr.ts` |
-| P6-03 | 18 | ~~Implement delivery driver management~~ **COMPLETED** — Driver registration with zones/availability, job offers, status tracking, dispatch matching. 4 routes, 11 tests. | Sonnet | P6-01, P2-04 | `src/databox/cms/modules/delivery/DriverManagement.ts` |
-| P6-04 | 18 | ~~Implement multi-store job pickup~~ **COMPLETED** — Dispatch matching engine with zone/availability/priority scoring. Included in P6-03. | Opus | P6-03 | `src/databox/cms/modules/delivery/DriverManagement.ts` |
-| P6-05 | 17 | ~~Implement print shop CMS module~~ **COMPLETED** — Print service catalogue, job intake, status pipeline (intake→prepress→proofing→printing→finishing→ready→delivered). 4 routes, 11 tests. | Opus | P2-04 | `src/databox/cms/modules/print/PrintShop.ts` |
-| P6-06 | 17 | ~~Implement inter-org print job submission~~ **COMPLETED** — B2B workflow with ODRL licence enforcement, artwork URL, delivery address, budget. Included in P6-05. | Opus | P6-05, P2-04 | `src/databox/cms/modules/print/PrintShop.ts` |
-| P6-07 | 17 | ~~Create `print.shop` vertical profile~~ **COMPLETED** — Bundles print, quotations, payments, delivery, licensing, website-seo modules. | Haiku | P6-05 | `src/databox/cms/VerticalProfile.ts` |
-| P6-08 | 18 | ~~Create `hr.workforce` vertical profile~~ **COMPLETED** — Bundles hr, governance, credentials, payments, notifications, driver-management modules. | Haiku | P6-01 | `src/databox/cms/VerticalProfile.ts` |
+| P6-01 | 18 | ~~Implement HR module~~ **COMPLETED** — Onboarding, shift assignment, compliance tracking, payslip generation, expense claims. 5 routes, 12 tests. | Opus | P2-01, P2-02, P2-03 | `src/databox/ipms/modules/hr/` |
+| P6-02 | 18 | ~~Implement HR payroll integration~~ **COMPLETED** — Payslip generation with deduction validation, expense claim submission. Included in P6-01. | Sonnet | P6-01, P7-01 | `src/databox/ipms/modules/hr/Hr.ts` |
+| P6-03 | 18 | ~~Implement delivery driver management~~ **COMPLETED** — Driver registration with zones/availability, job offers, status tracking, dispatch matching. 4 routes, 11 tests. | Sonnet | P6-01, P2-04 | `src/databox/ipms/modules/delivery/DriverManagement.ts` |
+| P6-04 | 18 | ~~Implement multi-store job pickup~~ **COMPLETED** — Dispatch matching engine with zone/availability/priority scoring. Included in P6-03. | Opus | P6-03 | `src/databox/ipms/modules/delivery/DriverManagement.ts` |
+| P6-05 | 17 | ~~Implement print shop IPMS module~~ **COMPLETED** — Print service catalogue, job intake, status pipeline (intake→prepress→proofing→printing→finishing→ready→delivered). 4 routes, 11 tests. | Opus | P2-04 | `src/databox/ipms/modules/print/PrintShop.ts` |
+| P6-06 | 17 | ~~Implement inter-org print job submission~~ **COMPLETED** — B2B workflow with ODRL licence enforcement, artwork URL, delivery address, budget. Included in P6-05. | Opus | P6-05, P2-04 | `src/databox/ipms/modules/print/PrintShop.ts` |
+| P6-07 | 17 | ~~Create `print.shop` vertical profile~~ **COMPLETED** — Bundles print, quotations, payments, delivery, licensing, website-seo modules. | Haiku | P6-05 | `src/databox/ipms/VerticalProfile.ts` |
+| P6-08 | 18 | ~~Create `hr.workforce` vertical profile~~ **COMPLETED** — Bundles hr, governance, credentials, payments, notifications, driver-management modules. | Haiku | P6-01 | `src/databox/ipms/VerticalProfile.ts` |
 
 **Phase 6 gate:** Org onboards an employee → employee gets pod with role VC → shift
 assigned via LDN → payslip delivered to pod. Driver registered with 3 stores →
@@ -323,15 +323,15 @@ deliver → receipt → file deleted per ODRL.
 
 ## Phase 7 — Operational Horizontals (high-parallel swarm, Sonnet)
 
-> Core CMS modules that other features depend on.
+> Core IPMS modules that other features depend on.
 
 | Task ID | Gap § | Description | Model | Deps | Files |
 |---------|-------|-------------|-------|------|-------|
-| P7-01 | 15.6 | ~~Implement payments module~~ **COMPLETED** — PaymentsApi with receipt, refund, split, subscription, tax routes. | Opus | — | `src/databox/cms/modules/payments/` |
-| P7-02 | 15.5 | ~~Implement device identity (mTLS)~~ **COMPLETED** — DeviceAuth with enrolment, verify, revoke routes. mTLS client cert verification via WebID-TLS. | Opus | P1-01 | `src/databox/cms/modules/device-auth/` |
-| P7-03 | 15.1 | ~~Expand website maker~~ **COMPLETED** — WebsiteApi with preview, publish, seo, sitemap routes. PublicFeedRenderer with HTML, JSON-LD, schema.org. | Sonnet | — | `src/databox/cms/modules/website/` |
-| P7-04 | 15.7 | ~~Surface notifications in admin UI~~ **COMPLETED** — Notifications module with create, subscribe, read, query routes. Multi-channel (in-app, email, SMS, push, LDN). 20 tests. | Sonnet | — | `src/databox/cms/modules/notifications/` |
-| P7-05 | 6.2 | ~~Wire `ui#` shapes to module manifests~~ **COMPLETED** — All 30+ module manifests now have `configShape` IRIs. 10 `ui#` shape templates defined in `ModuleConfigShapes.ts`. `GET /modules/:id/config-shape` route serves Turtle. | Haiku | — | `src/databox/cms/BuiltInModules.ts`, `ModuleConfigShapes.ts`, `CmsHttpHandler.ts` |
+| P7-01 | 15.6 | ~~Implement payments module~~ **COMPLETED** — PaymentsApi with receipt, refund, split, subscription, tax routes. | Opus | — | `src/databox/ipms/modules/payments/` |
+| P7-02 | 15.5 | ~~Implement device identity (mTLS)~~ **COMPLETED** — DeviceAuth with enrolment, verify, revoke routes. mTLS client cert verification via WebID-TLS. | Opus | P1-01 | `src/databox/ipms/modules/device-auth/` |
+| P7-03 | 15.1 | ~~Expand website maker~~ **COMPLETED** — WebsiteApi with preview, publish, seo, sitemap routes. PublicFeedRenderer with HTML, JSON-LD, schema.org. | Sonnet | — | `src/databox/ipms/modules/website/` |
+| P7-04 | 15.7 | ~~Surface notifications in admin UI~~ **COMPLETED** — Notifications module with create, subscribe, read, query routes. Multi-channel (in-app, email, SMS, push, LDN). 20 tests. | Sonnet | — | `src/databox/ipms/modules/notifications/` |
+| P7-05 | 6.2 | ~~Wire `ui#` shapes to module manifests~~ **COMPLETED** — All 30+ module manifests now have `configShape` IRIs. 10 `ui#` shape templates defined in `ModuleConfigShapes.ts`. `GET /modules/:id/config-shape` route serves Turtle. | Haiku | — | `src/databox/ipms/BuiltInModules.ts`, `ModuleConfigShapes.ts`, `IpmsHttpHandler.ts` |
 | P7-06 | 6.3 | ~~Connect `UiFormRenderer` to modules page~~ **COMPLETED** — Modules page shows "Configure" button for modules with `configShape`. Opens modal with `UiFormRenderer` that fetches and renders the `ui#` shape, submits config Turtle via PUT. | Sonnet | P7-05 | `forge-admin/src/pages/modules/index.tsx` |
 | P7-07 | 5.7 | Implement direct cash drawer mode — serial/USB I/O for direct cash drawer devices via `serialport` crate in Rust POS edge. | Sonnet | — | `native/pos-edge/src/hardware/drawer.rs` |
 | P7-08 | 5.8 | Clean up Rust warnings — remove unused imports, prefix unused variables, remove dead code in pos-edge. | Haiku | — | `native/pos-edge/src/*.rs` (multiple) |
@@ -344,36 +344,36 @@ via mTLS. Website publishes public pages with SEO. Module config forms render vi
 
 ---
 
-## Phase 8 — Remaining CMS Modules (high-parallel swarm, Sonnet)
+## Phase 8 — Remaining IPMS Modules (high-parallel swarm, Sonnet)
 
 > 19+ modules with manifests but no route handlers. Includes new tax, concessions,
 > discounts, and donations modules required for real-world business operations.
 
 | Task ID | Gap § | Description | Model | Deps | Files |
 |---------|-------|-------------|-------|------|-------|
-| P8-01 | 6.1 | ~~Implement `access` module~~ **COMPLETED** — AccessApi with credential gate evaluation. | Sonnet | P2-01 | `src/databox/cms/modules/access/` |
-| P8-02 | 6.1 | ~~Implement `consent` module~~ **COMPLETED** — ConsentApi with consent record builder. | Sonnet | P2-01 | `src/databox/cms/modules/consent/` |
-| P8-03 | 6.1 | ~~Implement `credentials` module~~ **COMPLETED** — CredentialApi with issue, verify, revoke routes. | Sonnet | P2-02 | `src/databox/cms/modules/credentials/` |
-| P8-04 | 6.1 | ~~Implement `delegation` module~~ **COMPLETED** — DelegationApi with build, validate routes. | Sonnet | P2-01 | `src/databox/cms/modules/delegation/` |
-| P8-05 | 6.1 | ~~Implement `delivery` module~~ **COMPLETED** — DeliveryApi with request, status tracking. | Sonnet | P2-04 | `src/databox/cms/modules/delivery/` |
-| P8-06 | 6.1 | ~~Implement `emergency` module~~ **COMPLETED** — EmergencyApi with break-glass evaluation. | Sonnet | P2-01 | `src/databox/cms/modules/emergency/` |
-| P8-07 | 6.1 | ~~Implement `governance` module routes~~ **COMPLETED** — GovernanceApi with role bind, ODRL policy, approval gate, resolution. | Opus | P2-01 | `src/databox/cms/modules/governance/` |
-| P8-08 | 6.1 | ~~Implement `household` module~~ **COMPLETED** — HouseholdApi with household builder. | Sonnet | P2-01 | `src/databox/cms/modules/household/` |
-| P8-09 | 6.1 | ~~Implement `licensing` module~~ **COMPLETED** — LicensingApi with ODRL licence builder. | Sonnet | P2-01 | `src/databox/cms/modules/licensing/` |
-| P8-10 | 6.1 | ~~Implement `loyalty` module~~ **COMPLETED** — LoyaltyApi with apply, record routes. | Sonnet | P7-01 | `src/databox/cms/modules/loyalty/` |
-| P8-11 | 6.1 | ~~Implement `mcp` module~~ **COMPLETED** — McpServerApi with SSE endpoint. | Sonnet | — | `src/databox/cms/modules/mcp/` |
-| P8-12 | 6.1 | ~~Implement `pricing` module~~ **COMPLETED** — PricingApi with wholesale pricing. | Sonnet | P7-01 | `src/databox/cms/modules/pricing/` |
-| P8-13 | 6.1 | ~~Implement `profile` module~~ **COMPLETED** — ProfileApi with build, provision, lifecycle, LDN, member interaction routes. | Sonnet | P2-03 | `src/databox/cms/modules/profile/` |
-| P8-14 | 6.1 | ~~Implement `theming` module~~ **COMPLETED** — ThemingApi with validate, CSS, forge tokens routes. | Sonnet | — | `src/databox/cms/modules/theming/` |
-| P8-15 | 6.1 | ~~Implement `a11y` module~~ **COMPLETED** — A11yApi with accessibility audit route. | Sonnet | — | `src/databox/cms/modules/a11y/` |
-| P8-16 | new | ~~Implement `tax` module~~ **COMPLETED** — TaxApi with compute, report routes. 8 tests. | Opus | P7-01, P8-12 | `src/databox/cms/modules/tax/` |
-| P8-17 | new | ~~Implement `concessions` module~~ **COMPLETED** — ConcessionsApi with eligibility, pricing, record routes. 7 tests. | Sonnet | P2-02, P8-12 | `src/databox/cms/modules/concessions/` |
-| P8-18 | new | ~~Implement `discounts` module~~ **COMPLETED** — DiscountsApi with apply, record routes. 9 tests. | Sonnet | P8-12, P8-10 | `src/databox/cms/modules/discounts/` |
-| P8-19 | new | ~~Implement `donations` module~~ **COMPLETED** — DonationsApi with process, receipt, transparency routes. 8 tests. | Opus | P7-01, P2-02, P2-03 | `src/databox/cms/modules/donations/` |
-| P8-20 | new | ~~Implement `barcode` module~~ **COMPLETED** — BarcodeApi with scan, lookup routes. GS1 AI parsing, GTIN check digit validation, symbology detection (EAN/UPC/Code-128/QR/DataMatrix). 12 tests. | Sonnet | P8-13 | `src/databox/cms/modules/barcode/` |
-| P8-21 | new | ~~Implement `eftpos` module~~ **COMPLETED** — EftposApi with transaction, settlement, status routes. Multi-provider (Tyro/Linkly/Westpac/CBA/NAB/ANZ/Stripe/Square/Sumup), multi-protocol (IPG/REST/SOAP/HID/SERIAL). 10 tests. | Sonnet | P7-01 | `src/databox/cms/modules/eftpos/` |
-| P8-22 | new | ~~Implement `backups` module~~ **COMPLETED** — BackupApi with create, restore, manifest routes. AES-256-GCM encryption with scrypt key derivation. JSON-LD/Turtle/N-Quads format support. 8 tests. | Sonnet | — | `src/databox/cms/modules/backups/` |
-| P8-23 | new | ~~Implement `accounting` module~~ **COMPLETED** — AccountingApi with export, import routes. Xero/MYOB/QuickBooks/Sage/CSV/OFX/QIF/JSON-LD format support. Invoice/payment/journal/tax/contact/item export and CSV/JSON-LD/QIF/OFX import. 14 tests. | Sonnet | P8-16 | `src/databox/cms/modules/accounting/` |
+| P8-01 | 6.1 | ~~Implement `access` module~~ **COMPLETED** — AccessApi with credential gate evaluation. | Sonnet | P2-01 | `src/databox/ipms/modules/access/` |
+| P8-02 | 6.1 | ~~Implement `consent` module~~ **COMPLETED** — ConsentApi with consent record builder. | Sonnet | P2-01 | `src/databox/ipms/modules/consent/` |
+| P8-03 | 6.1 | ~~Implement `credentials` module~~ **COMPLETED** — CredentialApi with issue, verify, revoke routes. | Sonnet | P2-02 | `src/databox/ipms/modules/credentials/` |
+| P8-04 | 6.1 | ~~Implement `delegation` module~~ **COMPLETED** — DelegationApi with build, validate routes. | Sonnet | P2-01 | `src/databox/ipms/modules/delegation/` |
+| P8-05 | 6.1 | ~~Implement `delivery` module~~ **COMPLETED** — DeliveryApi with request, status tracking. | Sonnet | P2-04 | `src/databox/ipms/modules/delivery/` |
+| P8-06 | 6.1 | ~~Implement `emergency` module~~ **COMPLETED** — EmergencyApi with break-glass evaluation. | Sonnet | P2-01 | `src/databox/ipms/modules/emergency/` |
+| P8-07 | 6.1 | ~~Implement `governance` module routes~~ **COMPLETED** — GovernanceApi with role bind, ODRL policy, approval gate, resolution. | Opus | P2-01 | `src/databox/ipms/modules/governance/` |
+| P8-08 | 6.1 | ~~Implement `household` module~~ **COMPLETED** — HouseholdApi with household builder. | Sonnet | P2-01 | `src/databox/ipms/modules/household/` |
+| P8-09 | 6.1 | ~~Implement `licensing` module~~ **COMPLETED** — LicensingApi with ODRL licence builder. | Sonnet | P2-01 | `src/databox/ipms/modules/licensing/` |
+| P8-10 | 6.1 | ~~Implement `loyalty` module~~ **COMPLETED** — LoyaltyApi with apply, record routes. | Sonnet | P7-01 | `src/databox/ipms/modules/loyalty/` |
+| P8-11 | 6.1 | ~~Implement `mcp` module~~ **COMPLETED** — McpServerApi with SSE endpoint. | Sonnet | — | `src/databox/ipms/modules/mcp/` |
+| P8-12 | 6.1 | ~~Implement `pricing` module~~ **COMPLETED** — PricingApi with wholesale pricing. | Sonnet | P7-01 | `src/databox/ipms/modules/pricing/` |
+| P8-13 | 6.1 | ~~Implement `profile` module~~ **COMPLETED** — ProfileApi with build, provision, lifecycle, LDN, member interaction routes. | Sonnet | P2-03 | `src/databox/ipms/modules/profile/` |
+| P8-14 | 6.1 | ~~Implement `theming` module~~ **COMPLETED** — ThemingApi with validate, CSS, forge tokens routes. | Sonnet | — | `src/databox/ipms/modules/theming/` |
+| P8-15 | 6.1 | ~~Implement `a11y` module~~ **COMPLETED** — A11yApi with accessibility audit route. | Sonnet | — | `src/databox/ipms/modules/a11y/` |
+| P8-16 | new | ~~Implement `tax` module~~ **COMPLETED** — TaxApi with compute, report routes. 8 tests. | Opus | P7-01, P8-12 | `src/databox/ipms/modules/tax/` |
+| P8-17 | new | ~~Implement `concessions` module~~ **COMPLETED** — ConcessionsApi with eligibility, pricing, record routes. 7 tests. | Sonnet | P2-02, P8-12 | `src/databox/ipms/modules/concessions/` |
+| P8-18 | new | ~~Implement `discounts` module~~ **COMPLETED** — DiscountsApi with apply, record routes. 9 tests. | Sonnet | P8-12, P8-10 | `src/databox/ipms/modules/discounts/` |
+| P8-19 | new | ~~Implement `donations` module~~ **COMPLETED** — DonationsApi with process, receipt, transparency routes. 8 tests. | Opus | P7-01, P2-02, P2-03 | `src/databox/ipms/modules/donations/` |
+| P8-20 | new | ~~Implement `barcode` module~~ **COMPLETED** — BarcodeApi with scan, lookup routes. GS1 AI parsing, GTIN check digit validation, symbology detection (EAN/UPC/Code-128/QR/DataMatrix). 12 tests. | Sonnet | P8-13 | `src/databox/ipms/modules/barcode/` |
+| P8-21 | new | ~~Implement `eftpos` module~~ **COMPLETED** — EftposApi with transaction, settlement, status routes. Multi-provider (Tyro/Linkly/Westpac/CBA/NAB/ANZ/Stripe/Square/Sumup), multi-protocol (IPG/REST/SOAP/HID/SERIAL). 10 tests. | Sonnet | P7-01 | `src/databox/ipms/modules/eftpos/` |
+| P8-22 | new | ~~Implement `backups` module~~ **COMPLETED** — BackupApi with create, restore, manifest routes. AES-256-GCM encryption with scrypt key derivation. JSON-LD/Turtle/N-Quads format support. 8 tests. | Sonnet | — | `src/databox/ipms/modules/backups/` |
+| P8-23 | new | ~~Implement `accounting` module~~ **COMPLETED** — AccountingApi with export, import routes. Xero/MYOB/QuickBooks/Sage/CSV/OFX/QIF/JSON-LD format support. Invoice/payment/journal/tax/contact/item export and CSV/JSON-LD/QIF/OFX import. 14 tests. | Sonnet | P8-16 | `src/databox/ipms/modules/accounting/` |
 
 **Phase 8 gate:** Each module has route handlers, data persistence, and business
 logic matching its manifest's `capabilities` and `routes`. All tests pass.
@@ -384,12 +384,12 @@ logic matching its manifest's `capabilities` and `routes`. All tests pass.
 
 | Task ID | Gap § | Description | Model | Deps | Files |
 |---------|-------|-------------|-------|------|-------|
-| P9-01 | 8.1 | ~~Add vocabulary unit tests~~ **COMPLETED** — Extended existing test with CMS and UI vocabulary namespace/term resolution tests. 15 tests total. | Haiku | P3-01 | `test/unit/util/Vocabularies.test.ts` |
+| P9-01 | 8.1 | ~~Add vocabulary unit tests~~ **COMPLETED** — Extended existing test with IPMS and UI vocabulary namespace/term resolution tests. 15 tests total. | Haiku | P3-01 | `test/unit/util/Vocabularies.test.ts` |
 | P9-02 | 8.2 | ~~Add `UiFormRenderer` tests~~ **COMPLETED** — 13 vitest tests: shape parsing (Turtle→form spec), field rendering (TextInput/Boolean/Integer/Choice), form value serialization (string/boolean/integer/decimal/skip-empty). Fixed rdf:List traversal bugs in parseUiShape. | Sonnet | P7-06 | `forge-admin/src/components/ui-form/__tests__/` |
 | P9-03 | 8.3 | Add Rust installer tests — unit tests for each step with mocked environment. | Sonnet | P0-04 | `native/installer/src/*.rs` (add `#[test]` functions) |
 | P9-04 | 8.3 | Add Rust POS edge tests — IPC protocol parsing, job queue state, hardware dispatch with mocked devices. | Sonnet | P7-07 | `native/pos-edge/src/*.rs` (add `#[test]` functions) |
 | P9-05 | 8.4 | Add POS edge IPC integration test — start binary, post cash-drawer job to `localhost:9100/jobs`, verify status transitions. | Opus | P7-07 | `test/integration/PosEdgeIpc.test.ts` (new) |
-| P9-06 | 15.8 | ~~Document profile ladder~~ **COMPLETED** — `profile-ladder.md` documents basic → +databox → +cms → +modules layers with 26 vertical profiles table. | Haiku | — | `databox/devdocs/profile-ladder.md` |
+| P9-06 | 15.8 | ~~Document profile ladder~~ **COMPLETED** — `profile-ladder.md` documents basic → +databox → +ipms → +modules layers with 26 vertical profiles table. | Haiku | — | `databox/devdocs/profile-ladder.md` |
 
 **Phase 9 gate:** All tests green. 100% branch coverage achieved on all new `src/`
 branches (cleanup from 80% per-task baseline). Rust tests pass. Integration test
@@ -437,9 +437,9 @@ demos (AUTO, FOOD, MEMBER, HEALTH) are demonstrable end-to-end.
 | P11-07 | Audit & remediate forge-admin **layout/sidebar** — ARIA navigation landmarks, `aria-current` for active nav item, keyboard nav for sidebar, dynamic sidebar (P2-07) announces changes. Language selector in header. | Sonnet | P2-07, P0-09 | `forge-admin/src/components/layout/` |
 | P11-08 | Audit & remediate **org-mobile-apps** (all built apps) — each app: semantic HTML, ARIA, keyboard nav, contrast, i18n with locale files, RTL-safe CSS. One agent per app or batched. | Sonnet | P5-02 through P5-07 | `org-mobile-apps/*/src/` |
 | P11-09 | Audit & remediate **customer display renderer** — ARIA live for playlist transitions, alt text for QR codes, i18n for slide content. | Sonnet | P0-09 | `forge-admin/src/website/CustomerDisplayRenderer.ts` |
-| P11-10 | Audit & remediate **website maker / public site** — semantic HTML, WCAG AA contrast in theme tokens, skip-to-content link, alt text, lang attribute, i18n for public content. | Sonnet | P7-03, P0-09 | `src/databox/cms/modules/website/` |
+| P11-10 | Audit & remediate **website maker / public site** — semantic HTML, WCAG AA contrast in theme tokens, skip-to-content link, alt text, lang attribute, i18n for public content. | Sonnet | P7-03, P0-09 | `src/databox/ipms/modules/website/` |
 | P11-11 | Create **additional locale files** — translate `en.json` to `es.json`, `fr.json`, `de.json`, `zh.json`, `ar.json`, `ja.json` for all keys. Verify RTL layout with `ar.json`. | Haiku | P0-09, P11-01 through P11-06 | `forge-admin/src/locales/` |
-| P11-12 | Add **server-side i18n message keys** — update all CMS API error responses to include `messageKey` field alongside English fallback. Update `writeJson` error helpers. | Sonnet | — | `src/databox/cms/` (error handlers) |
+| P11-12 | Add **server-side i18n message keys** — update all IPMS API error responses to include `messageKey` field alongside English fallback. Update `writeJson` error helpers. | Sonnet | — | `src/databox/ipms/` (error handlers) |
 | P11-13 | Add **axe-core automated accessibility tests** — integrate `@axe-core/playwright` or `jest-axe` into test suite. Add accessibility test per page component. | Sonnet | P11-01 through P11-07 | `forge-admin/src/__tests__/a11y/` (new) |
 | P11-14 | Add **i18n completeness test** — verify all locale files have the same keys as `en.json`. Fail if any key is missing. | Haiku | P11-11 | `forge-admin/src/__tests__/i18n.test.ts` (new) |
 
@@ -460,10 +460,10 @@ Phase 0 (foundations + i18n/a11y baseline)
   │     ├── Phase 3 (allergy system)  │
   │     ├── Phase 5 (org-mobile-apps) │
   │     ├── Phase 6 (HR + print B2B) ─┤
-  │     └── Phase 8 (CMS modules)     │
+  │     └── Phase 8 (IPMS modules)     │
   ├── Phase 4 (connectors + mapping)  │
   ├── Phase 7 (operational horizontals)┘
-  │     └── Phase 8 (CMS modules)
+  │     └── Phase 8 (IPMS modules)
   └── Phase 9 (tests + docs)
         └── Phase 10 (verticals)
               └── Phase 11 (a11y & i18n remediation)
@@ -519,7 +519,7 @@ npx jest test/integration --runInBand  # integration tests
 
 # Adversarial checker (per task)
 # Verify: (1) basic install untouched, (2) capability modes, (3) declarative-first, (4) vanilla-Solid
-npx jest test/unit/databox/cms --maxWorkers=2 --coverage
+npx jest test/unit/databox/ipms --maxWorkers=2 --coverage
 
 # Accessibility (per UI task)
 cd forge-admin && npx eslint src/ --plugin jsx-a11y && cd ..

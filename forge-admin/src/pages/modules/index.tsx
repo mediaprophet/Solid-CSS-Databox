@@ -32,7 +32,7 @@ const modeBadge = (mode: string, degraded: boolean) => (
 
 export const ModulesPage = () => {
   const { result, query } = useList({
-    resource: "cms-modules",
+    resource: "ipms-modules",
     pagination: { pageSize: 100 },
   });
   const { mutate, isPending } = useUpdate();
@@ -42,7 +42,7 @@ export const ModulesPage = () => {
   const toggle = (module: any) => {
     mutate(
       {
-        resource: "cms-modules",
+        resource: "ipms-modules",
         id: module.id,
         values: { enabled: !module.enabled },
       },
@@ -65,9 +65,9 @@ export const ModulesPage = () => {
     setShapeError(null);
     setShapeLoading(true);
     try {
-      const cmsUrl = import.meta.env.VITE_CMS_API_URL ?? "http://localhost:3000/.databox/cms";
+      const ipmsUrl = import.meta.env.VITE_CMS_API_URL ?? "http://localhost:3000/.databox/ipms";
       const token = import.meta.env.VITE_CMS_TOKEN ?? "12345678901234567890123456789012";
-      const res = await fetch(`${cmsUrl}/modules/${encodeURIComponent(module.id)}/config-shape`, {
+      const res = await fetch(`${ipmsUrl}/modules/${encodeURIComponent(module.id)}/config-shape`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok) {
@@ -93,9 +93,9 @@ export const ModulesPage = () => {
     if (!configModule) return;
     setConfigSaving(true);
     try {
-      const cmsUrl = import.meta.env.VITE_CMS_API_URL ?? "http://localhost:3000/.databox/cms";
+      const ipmsUrl = import.meta.env.VITE_CMS_API_URL ?? "http://localhost:3000/.databox/ipms";
       const token = import.meta.env.VITE_CMS_TOKEN ?? "12345678901234567890123456789012";
-      const res = await fetch(`${cmsUrl}/modules/${encodeURIComponent(configModule.id)}`, {
+      const res = await fetch(`${ipmsUrl}/modules/${encodeURIComponent(configModule.id)}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -118,9 +118,9 @@ export const ModulesPage = () => {
 
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-6xl">
-      <h1 className="text-3xl font-bold mb-2">CMS Modules</h1>
+      <h1 className="text-3xl font-bold mb-2">IPMS Modules</h1>
       <p className="text-slate-400 mb-8 max-w-3xl">
-        Runtime-enabled Solid CMS modules exposed by the active server profile.
+        Runtime-enabled Solid IPMS modules exposed by the active server profile.
       </p>
 
       {(meta.providerMode === "standard-solid" || meta.degraded) && (
@@ -192,7 +192,7 @@ export const ModulesPage = () => {
                       disabled={isPending || module.controlPlaneAvailable === false}
                       onClick={() => toggle(module)}
                       className="action-btn px-3 py-2 text-xs"
-                      title={module.controlPlaneAvailable === false ? "Module toggles require the CSS-enhanced CMS control plane." : undefined}
+                      title={module.controlPlaneAvailable === false ? "Module toggles require the CSS-enhanced IPMS control plane." : undefined}
                     >
                       {module.enabled ? "Disable" : "Enable"}
                     </button>
@@ -214,7 +214,7 @@ export const ModulesPage = () => {
 
         {query.isLoading && <div className="p-8 text-center text-slate-500">Loading modules...</div>}
         {!query.isLoading && modules.length === 0 && (
-          <div className="p-8 text-center text-slate-500">No CMS modules are exposed by this profile.</div>
+          <div className="p-8 text-center text-slate-500">No IPMS modules are exposed by this profile.</div>
         )}
       </div>
 

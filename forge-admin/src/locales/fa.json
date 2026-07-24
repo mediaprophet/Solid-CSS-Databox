@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "Databox CMS",
+    "title": "Databox IPMS",
     "subtitle": "مدیریت محتوای بومی Solid"
   },
   "nav": {
@@ -96,7 +96,7 @@
     "subtitle": "افق‌های عملیاتی مرحله ۳: رضایت، تفویض، اضطراری، موجودی، وفاداری، قیمت‌گذاری و بیشتر."
   },
   "modules": {
-    "title": "ماژول‌های CMS",
+    "title": "ماژول‌های IPMS",
     "enabled": "فعال",
     "disabled": "غیرفعال",
     "enable": "فعال‌سازی",
@@ -139,7 +139,7 @@
   },
   "setup": {
     "title": "جادوگر نصب",
-    "welcome": "به Databox CMS خوش آمدید",
+    "welcome": "به Databox IPMS خوش آمدید",
     "chooseProfile": "نوع سازمان خود را انتخاب کنید",
     "legalEntity": "جزئیات شخص حقوقی",
     "orgName": "نام سازمان",

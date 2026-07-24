@@ -50,16 +50,16 @@ A full-tree inventory was performed of `src/databox/`, `forge-admin/`, `native/`
 
 **Documented:** README mentions "institutional bridge" in the repository guide. Developer guide mentions it. Architecture doc covers the integration plane. Not in gh-pages or MkDocs.
 
-### 1.4 CMS — Content Management System (`src/databox/cms/`)
+### 1.4 IPMS — Content Management System (`src/databox/ipms/`)
 
 | File | Purpose |
 |---|---|
-| `BuiltInModules.ts` | Registry and definitions of all 50+ built-in CMS modules |
+| `BuiltInModules.ts` | Registry and definitions of all 50+ built-in IPMS modules |
 | `CashRegisterStore.ts` | Cash register state store |
-| `CmsHttpHandler.ts` | Main CMS HTTP handler — serves all CMS routes, module APIs, admin panel |
-| `CmsHttpUtils.ts` | HTTP utilities for CMS handler |
-| `CmsMigrationProof.ts` | Migration proof for CMS from legacy handler |
-| `CmsModuleRouter.ts` | Routes requests to enabled CMS modules |
+| `IpmsHttpHandler.ts` | Main IPMS HTTP handler — serves all IPMS routes, module APIs, admin panel |
+| `IpmsHttpUtils.ts` | HTTP utilities for IPMS handler |
+| `IpmsMigrationProof.ts` | Migration proof for IPMS from legacy handler |
+| `IpmsModuleRouter.ts` | Routes requests to enabled IPMS modules |
 | `CustomerDisplayStore.ts` | Customer-facing display state (kiosk/promotional) |
 | `DataboxModuleRegistry.ts` | Module registry: enable/disable, capability declarations |
 | `ModuleConfigShapes.ts` | SHACL shapes for module configuration |
@@ -68,19 +68,19 @@ A full-tree inventory was performed of `src/databox/`, `forge-admin/`, `native/`
 | `ModuleManifestRdf.ts` | RDF manifest parsing for modules |
 | `OrgAppApi.ts` | Org-app boot API for mobile container |
 | `OrgAppManifest.ts` | RDF manifest for org mobile apps |
-| `OxigraphCmsHydration.ts` | Oxigraph-backed CMS hydration |
-| `OxigraphCmsSync.ts` | CMS ↔ Oxigraph synchronisation |
-| `OxigraphCmsSyncComposition.ts` | Components.js composition for Oxigraph sync |
-| `PortableCmsWorks.ts` | Portable CMS works — migration proof, compatibility layer |
+| `OxigraphIpmsHydration.ts` | Oxigraph-backed IPMS hydration |
+| `OxigraphIpmsSync.ts` | IPMS ↔ Oxigraph synchronisation |
+| `OxigraphIpmsSyncComposition.ts` | Components.js composition for Oxigraph sync |
+| `PortableIpmsWorks.ts` | Portable IPMS works — migration proof, compatibility layer |
 | `PosOrderStore.ts` | POS order state store |
 | `PublicWebsiteStore.ts` | Public website content store (Schema.org, sitemap, SEO) |
 | `SolidModuleManifest.ts` | Solid module manifest type |
 | `TableSessionStore.ts` | Table session state for restaurant POS |
 | `VerticalProfile.ts` | Industry vertical profile system (restaurant, welfare, retail, etc.) |
 
-**Documented:** README mentions "CMS Modules" in the gh-pages landing page feature list. Forge-admin README mentions modules page. Not documented in MkDocs. The full scope of the CMS (50+ modules, Oxigraph sync, vertical profiles, module manifests) is not documented anywhere public-facing.
+**Documented:** README mentions "IPMS Modules" in the gh-pages landing page feature list. Forge-admin README mentions modules page. Not documented in MkDocs. The full scope of the IPMS (50+ modules, Oxigraph sync, vertical profiles, module manifests) is not documented anywhere public-facing.
 
-### 1.5 CMS Modules (`src/databox/cms/modules/`) — 50+ modules
+### 1.5 IPMS Modules (`src/databox/ipms/modules/`) — 50+ modules
 
 | Module | Key files | Purpose |
 |---|---|---|
@@ -136,7 +136,7 @@ A full-tree inventory was performed of `src/databox/`, `forge-admin/`, `native/`
 | `ticketing/` | Ticket, TicketingApi | Ticketing |
 | `website/` | CustomerDisplayRenderer, PublicFeedRenderer, Seo, SitemapRobots, WebsiteApi | Public website: customer display renderer (49KB), public feed renderer (31KB), SEO, sitemap/robots |
 
-**Documented:** gh-pages landing page mentions POS Terminal, Waiter Ordering, Customer Self-Order, Promotional Display, Receipt Management, CMS Modules, Connector Mappings, Event Dispatcher, Program Management, Hosting Setup, Governance, Verifiable Credentials, Member Management, Operations, Access Requests, Correction Requests, Consumer Ledger, Data Portability. However, the full breadth of 50+ modules is not enumerated. Many modules (allergy-profile, barcode, bookings, concessions, delivery, discounts, donations, eftpos, emergency, household, hr, inventory, jobs, licensing, loyalty, mcp, print, quotations, reputation, social, tax, theming, ticketing, provenance, etc.) are not mentioned anywhere in public-facing documentation.
+**Documented:** gh-pages landing page mentions POS Terminal, Waiter Ordering, Customer Self-Order, Promotional Display, Receipt Management, IPMS Modules, Connector Mappings, Event Dispatcher, Program Management, Hosting Setup, Governance, Verifiable Credentials, Member Management, Operations, Access Requests, Correction Requests, Consumer Ledger, Data Portability. However, the full breadth of 50+ modules is not enumerated. Many modules (allergy-profile, barcode, bookings, concessions, delivery, discounts, donations, eftpos, emergency, household, hr, inventory, jobs, licensing, loyalty, mcp, print, quotations, reputation, social, tax, theming, ticketing, provenance, etc.) are not mentioned anywhere in public-facing documentation.
 
 ### 1.6 Compliance (`src/databox/compliance/`)
 
@@ -370,7 +370,7 @@ A Refine/React 19 / Vite 8 / Tailwind v4 single-page application.
 | Event Dispatcher | `/events` | Dispatch source events |
 | Organization Set-up | `/setup` | Rich onboarding with ANZSIC classification |
 | Data Portability | `/data-portability` | ~345-platform portability registry |
-| CMS Modules | `/cms/modules` | Module enable/disable management |
+| IPMS Modules | `/ipms/modules` | Module enable/disable management |
 | Hosting | `/hosting` | Cloudflare DNS/tunnel setup |
 | Governance | `/governance` | Role bindings, ODRL policy management |
 | Credentials | `/credentials` | VC issuance, verification, revocation |
@@ -455,7 +455,7 @@ Cross-platform installer (macOS-focused).
 
 | Component | Purpose |
 |---|---|
-| `connector-sidecar/` | Connector sidecar for CMS integration (ODBC/LDAP) |
+| `connector-sidecar/` | Connector sidecar for IPMS integration (ODBC/LDAP) |
 | `pos-edge-proxy/` | POS edge proxy |
 | `tray-supervisor/` | System tray supervisor for desktop management |
 
@@ -465,7 +465,7 @@ Cross-platform installer (macOS-focused).
 
 ## 4. Org Mobile Apps (`org-mobile-apps/`)
 
-A unified WASM/PWA container that fetches its identity, features, and permissions from the CMS at runtime.
+A unified WASM/PWA container that fetches its identity, features, and permissions from the IPMS at runtime.
 
 ### 4.1 App Profiles (6 profiles)
 
@@ -482,7 +482,7 @@ A unified WASM/PWA container that fetches its identity, features, and permission
 
 - Vite/React PWA shell with service worker
 - Solid-OIDC authentication
-- Dynamic UI module loader from CMS
+- Dynamic UI module loader from IPMS
 - Network scope enforcement via service worker
 - Per-install VC licensing
 
@@ -524,7 +524,7 @@ Separate Vite/React application.
 - Minimal dependency-free Programs/Mappings/Events console
 - Published at `/forge/`
 
-**Documented:** The landing page itself is the documentation. However, it is missing coverage of: the full 50+ CMS module list, org mobile apps, tradie app, Rust components (connector-sidecar, pos-edge-proxy, tray-supervisor), the compliance engine, the evidence ledger, the policy engine, the review/disposition workflow, the connection credential lifecycle, and the test suite.
+**Documented:** The landing page itself is the documentation. However, it is missing coverage of: the full 50+ IPMS module list, org mobile apps, tradie app, Rust components (connector-sidecar, pos-edge-proxy, tray-supervisor), the compliance engine, the evidence ledger, the policy engine, the review/disposition workflow, the connection credential lifecycle, and the test suite.
 
 ---
 
@@ -553,7 +553,7 @@ Separate Vite/React application.
 - Databox overview / what it is
 - Databox architecture (control plane / data plane, resource layout, topology)
 - Databox features (provisioning, credentials, policy, evidence, receipts, review, compliance)
-- CMS module system and module catalog
+- IPMS module system and module catalog
 - Forge Admin console
 - Native/Rust components
 - Org mobile apps
@@ -575,7 +575,7 @@ Separate Vite/React application.
 | `architecture.md` | 8KB | Yes (linked) |
 | `compliance/` | 3 items | Partially |
 | `decisions/` | 26 ADRs + README | Yes (linked) |
-| `deployment/cms/` | Docker, K8s, secrets | No |
+| `deployment/ipms/` | Docker, K8s, secrets | No |
 | `devdocs/` | 58 documents | Partially |
 | `fixtures/` | 34 items | No |
 | `forge-plan/` | 14 documents | Yes (linked) |
@@ -610,7 +610,7 @@ Separate Vite/React application.
 | `agent/` | 5 |
 | `authorization/` | 4 |
 | `bridge/` | 5 |
-| `cms/` | 99 |
+| `ipms/` | 99 |
 | `compliance/` | 1 |
 | `context/` | 2 |
 | `credential/` | 8 |
@@ -637,11 +637,11 @@ Separate Vite/React application.
 | Test | Purpose |
 |---|---|
 | `DataboxLive.test.ts` | Live CSS/OIDC/WAC integration |
-| `DataboxCms.test.ts` | CMS handler integration (29KB) |
-| `DataboxCmsA11y.test.ts` | CMS accessibility |
-| `DataboxCmsOxigraph.test.ts` | CMS Oxigraph sync |
-| `DataboxCmsVanilla.test.ts` | CMS vanilla mode |
-| `DataboxCmsVertical.test.ts` | CMS vertical profiles |
+| `DataboxIpms.test.ts` | IPMS handler integration (29KB) |
+| `DataboxIpmsA11y.test.ts` | IPMS accessibility |
+| `DataboxIpmsOxigraph.test.ts` | IPMS Oxigraph sync |
+| `DataboxIpmsVanilla.test.ts` | IPMS vanilla mode |
+| `DataboxIpmsVertical.test.ts` | IPMS vertical profiles |
 
 **Documented:** README mentions test locations in the repository guide table. Not in gh-pages or MkDocs.
 
@@ -675,26 +675,26 @@ Separate Vite/React application.
 | `formatChangelog.ts` | Changelog formatting |
 | `oxigraph-wasm-server.mjs` | Oxigraph WASM server |
 | `patch-demos.js` | Patch demo builds (8KB) |
-| `run-cms-migration-proof.mjs` | CMS migration proof runner (19KB) |
-| `run-cms-oxigraph-smoke.mjs` | CMS Oxigraph smoke test (10KB) |
+| `run-ipms-migration-proof.mjs` | IPMS migration proof runner (19KB) |
+| `run-ipms-oxigraph-smoke.mjs` | IPMS Oxigraph smoke test (10KB) |
 | `run-eslint.mjs` | ESLint runner |
 | `seraphimForgeDemo.ts` | Seraphim forge demo |
 | `test-api.js` | API testing |
 | `update-workflows.js` | Workflow updater |
 | `upgradeConfig.ts` | Config upgrader |
-| `validate-cms-deployment.mjs` | CMS deployment validator (9KB) |
+| `validate-ipms-deployment.mjs` | IPMS deployment validator (9KB) |
 
 **Documented:** `build-forge-ui.js` mentioned in README. Others not documented publicly.
 
 ---
 
-## 12. Deployment (`databox/deployment/cms/`)
+## 12. Deployment (`databox/deployment/ipms/`)
 
 | Item | Purpose |
 |---|---|
 | `.env.example` | Environment variable template |
 | `README.md` | Deployment guide |
-| `docker-compose.cms.yml` | Docker Compose for CMS deployment |
+| `docker-compose.ipms.yml` | Docker Compose for IPMS deployment |
 | `kubernetes/` | Kubernetes manifests (8 items) |
 | `secrets/` | Secret management templates |
 
@@ -707,7 +707,7 @@ Separate Vite/React application.
 | Area | README.md | gh-pages | MkDocs | forge-admin README | databox/ README | guide/ |
 |---|---|---|---|---|---|---|
 | Core Databox engine (24 subsystems) | Partial | Minimal | None | N/A | Good | Good |
-| CMS (50+ modules) | Minimal | Partial | None | Partial | None | None |
+| IPMS (50+ modules) | Minimal | Partial | None | Partial | None | None |
 | Forge Admin (24 pages) | Brief | Good | None | Comprehensive | Brief | None |
 | Native POS Edge (Rust) | None | Good | None | N/A | None | None |
 | Native Installer (Rust) | None | Good | None | N/A | None | None |
@@ -722,8 +722,8 @@ Separate Vite/React application.
 ### Key Gaps
 
 1. **MkDocs** is entirely upstream CSS — zero Databox content, wrong site name, wrong repo URL.
-2. **gh-pages landing page** is missing: full CMS module catalog, org mobile apps, tradie app, Rust sidecar/proxy/supervisor, compliance engine, evidence ledger, policy engine, review workflow, credential lifecycle, deployment guides, test coverage.
-3. **README.md** is missing: CMS module system, native/Rust components, org mobile apps, tradie app, deployment guides, test coverage detail.
+2. **gh-pages landing page** is missing: full IPMS module catalog, org mobile apps, tradie app, Rust sidecar/proxy/supervisor, compliance engine, evidence ledger, policy engine, review workflow, credential lifecycle, deployment guides, test coverage.
+3. **README.md** is missing: IPMS module system, native/Rust components, org mobile apps, tradie app, deployment guides, test coverage detail.
 4. **Org mobile apps** and **tradie app** are not mentioned in any public-facing documentation outside their own READMEs.
 5. **Rust components** (connector-sidecar, pos-edge-proxy, tray-supervisor) are not documented anywhere.
 6. **Deployment guides** (Docker, Kubernetes) are not linked from README or gh-pages.

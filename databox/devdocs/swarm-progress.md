@@ -40,7 +40,7 @@ schema browsing, field mapping, preview, save), ConnectorSidecar wired with mapp
 ## Phase 5 — Org Mobile Apps (ALL 10 DONE)
 
 Unified WASM/PWA container architecture: single container fetches app profiles,
-UI modules, and per-install licences from CMS. 6 app profiles defined as RDF
+UI modules, and per-install licences from IPMS. 6 app profiles defined as RDF
 manifests (waiter, driver, tradie, print, scorekeeper, referee).
 OrgAppManifest module: 5 API routes, 26 tests. Network scope enforcement with
 CIDR matching. Per-install licence VCs with scope/permission/expiry.
@@ -68,7 +68,7 @@ print.shop and hr.workforce vertical profiles.
 | P7-09 Fullscreen display | ❓ | |
 | P7-10 Malware scanner | ✅ | ClamAvScanner (INSTREAM), VirusTotalScanner (v3 API), CompositeScanner. 14 tests. |
 
-## Phase 8 — CMS Modules (ALL 23 DONE)
+## Phase 8 — IPMS Modules (ALL 23 DONE)
 
 All 23 modules have implemented API routes + business logic + tests:
 access, consent, credentials, delegation, delivery, emergency, governance,
@@ -100,7 +100,7 @@ New modules integrated into vertical profiles:
 
 | Task | Status | Notes |
 |------|--------|-------|
-| P9-01 Vocabulary tests | ✅ | 15 tests: CMS + UI namespace/term resolution |
+| P9-01 Vocabulary tests | ✅ | 15 tests: IPMS + UI namespace/term resolution |
 | P9-02 UiFormRenderer tests | ✅ | 13 vitest tests: shape parsing + field rendering + serialization. Fixed rdf:List bugs. |
 | P9-03 Rust installer tests | ❓ | Rust |
 | P9-04 Rust POS edge tests | ❓ | Rust |

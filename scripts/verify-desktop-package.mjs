@@ -3,11 +3,11 @@ import { join } from 'node:path';
 
 const root = process.cwd();
 const target = resolveTarget(process.env.DATABOX_NATIVE_TARGET);
-const product = join(root, 'release', 'Databox CMS');
+const product = join(root, 'release', 'Databox IPMS');
 const payload = join(product, 'payload');
 const extension = target.platform === 'windows' ? '.exe' : '';
 const required = [
-  join(product, `Databox CMS Setup${extension}`),
+  join(product, `Databox IPMS Setup${extension}`),
   join(payload, 'manifest.json'),
   join(payload, 'app', 'bin', 'server.js'),
   join(payload, 'app', 'package-lock.json'),

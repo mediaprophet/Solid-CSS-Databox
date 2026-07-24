@@ -44,8 +44,8 @@ export const DiscountsPage = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const cmsUrl = import.meta.env.VITE_CMS_URL || "http://localhost:3000/.databox/cms";
-  const cmsToken = import.meta.env.VITE_CMS_TOKEN || "dev-control-token-at-least-32-bytes-long";
+  const ipmsUrl = import.meta.env.VITE_CMS_URL || "http://localhost:3000/.databox/ipms";
+  const ipmsToken = import.meta.env.VITE_CMS_TOKEN || "dev-control-token-at-least-32-bytes-long";
 
   const addLine = () => setLines([...lines, { productId: "", name: "", category: "", quantity: 1, unitPrice: 0 }]);
   const removeLine = (i: number) => setLines(lines.filter((_, idx) => idx !== i));
@@ -75,9 +75,9 @@ export const DiscountsPage = () => {
         validUntil,
         stackable: false,
       };
-      const res = await fetch(`${cmsUrl}/discounts/apply`, {
+      const res = await fetch(`${ipmsUrl}/discounts/apply`, {
         method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${cmsToken}` },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${ipmsToken}` },
         body: JSON.stringify({ discount, application: { code, lineItems: lines, subtotal } }),
       });
       const data = await res.json();

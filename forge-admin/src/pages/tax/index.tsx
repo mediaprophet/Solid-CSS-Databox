@@ -38,8 +38,8 @@ export const TaxPage = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const cmsUrl = import.meta.env.VITE_CMS_URL || "http://localhost:3000/.databox/cms";
-  const cmsToken = import.meta.env.VITE_CMS_TOKEN || "dev-control-token-at-least-32-bytes-long";
+  const ipmsUrl = import.meta.env.VITE_CMS_URL || "http://localhost:3000/.databox/ipms";
+  const ipmsToken = import.meta.env.VITE_CMS_TOKEN || "dev-control-token-at-least-32-bytes-long";
 
   const addLine = () => setLines([...lines, { productId: "", category: "", amount: 0, taxRate: 0.1 }]);
   const removeLine = (i: number) => setLines(lines.filter((_, idx) => idx !== i));
@@ -54,9 +54,9 @@ export const TaxPage = () => {
     setError("");
     setResult(null);
     try {
-      const res = await fetch(`${cmsUrl}/tax/compute`, {
+      const res = await fetch(`${ipmsUrl}/tax/compute`, {
         method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${cmsToken}` },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${ipmsToken}` },
         body: JSON.stringify({ jurisdictionCode, taxInclusive, exemptionId: exemptionId || undefined, lineItems: lines }),
       });
       const data = await res.json();

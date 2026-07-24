@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "Databox CMS",
+    "title": "Databox IPMS",
     "subtitle": "Solid 네이티브 콘텐츠 관리"
   },
   "nav": {
@@ -96,7 +96,7 @@
     "subtitle": "3단계 운영 수평 기능: 동의, 위임, 비상, 재고, 로열티, 가격 책정 등."
   },
   "modules": {
-    "title": "CMS 모듈",
+    "title": "IPMS 모듈",
     "enabled": "활성화됨",
     "disabled": "비활성화됨",
     "enable": "활성화",
@@ -139,7 +139,7 @@
   },
   "setup": {
     "title": "설정 마법사",
-    "welcome": "Databox CMS에 오신 것을 환영합니다",
+    "welcome": "Databox IPMS에 오신 것을 환영합니다",
     "chooseProfile": "조직 유형을 선택하세요",
     "legalEntity": "법인 세부 정보",
     "orgName": "조직 이름",

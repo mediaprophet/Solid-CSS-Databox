@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "Databox CMS",
+    "title": "Databox IPMS",
     "subtitle": "Gestione contenuti nativo Solid"
   },
   "nav": {
@@ -96,7 +96,7 @@
     "subtitle": "Orizzontali operativi di Fase 3: consenso, delega, emergenza, inventario, fedeltà, prezzi e altro."
   },
   "modules": {
-    "title": "Moduli CMS",
+    "title": "Moduli IPMS",
     "enabled": "Attivato",
     "disabled": "Disattivato",
     "enable": "Attiva",
@@ -139,7 +139,7 @@
   },
   "setup": {
     "title": "Configurazione Guidata",
-    "welcome": "Benvenuto su Databox CMS",
+    "welcome": "Benvenuto su Databox IPMS",
     "chooseProfile": "Scegli il tipo di organizzazione",
     "legalEntity": "Dettagli Entità Legale",
     "orgName": "Nome Organizzazione",

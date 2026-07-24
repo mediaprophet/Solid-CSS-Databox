@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "Databox CMS",
+    "title": "Databox IPMS",
     "subtitle": "Upravljanje sadržajom nativno Solid"
   },
   "nav": {
@@ -96,7 +96,7 @@
     "subtitle": "Operativni horizontali Faze 3: suglasnost, delegiranje, hitnost, zaliha, odanost, određivanje cijena i više."
   },
   "modules": {
-    "title": "CMS moduli",
+    "title": "IPMS moduli",
     "enabled": "Omogućeno",
     "disabled": "Onemogućeno",
     "enable": "Omogući",
@@ -139,7 +139,7 @@
   },
   "setup": {
     "title": "Čarobnjak za postavljanje",
-    "welcome": "Dobrodošli u Databox CMS",
+    "welcome": "Dobrodošli u Databox IPMS",
     "chooseProfile": "Odaberite vrstu organizacije",
     "legalEntity": "Podaci pravne osobe",
     "orgName": "Naziv organizacije",

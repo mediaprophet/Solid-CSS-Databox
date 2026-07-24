@@ -20,7 +20,7 @@ const baseSections = [
   {
     titleKey: "modules.title",
     links: [
-      { to: "/cms/modules", labelKey: "nav.modules" },
+      { to: "/ipms/modules", labelKey: "nav.modules" },
       { to: "/hosting", labelKey: "nav.hosting" },
       { to: "/governance", labelKey: "nav.governance" },
       { to: "/credentials", labelKey: "nav.credentials" },
@@ -117,11 +117,11 @@ const LanguageSelector: React.FC = () => {
 export const Layout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   const { t } = useTranslation();
   const { result } = useList({
-    resource: "cms-modules",
+    resource: "ipms-modules",
     pagination: { pageSize: 100 },
   });
 
-  const cmsLinks = [
+  const ipmsLinks = [
     ...baseSections[1].links,
     ...((result?.data ?? [])
       .filter((module: any) => module.enabled && module.adminUi?.path)
@@ -131,7 +131,7 @@ export const Layout: React.FC<{ children?: React.ReactNode }> = ({ children }) =
   ];
   const sections = [
     baseSections[0],
-    { ...baseSections[1], links: cmsLinks },
+    { ...baseSections[1], links: ipmsLinks },
     baseSections[2],
   ];
 

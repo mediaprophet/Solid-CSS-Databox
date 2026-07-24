@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "Databox CMS",
+    "title": "Databox IPMS",
     "subtitle": "Solid-native turinio valdymas"
   },
   "nav": {
@@ -96,7 +96,7 @@
     "subtitle": "3 etapo operatyviniai horizontalai: sutikimas, delegavimas, ekstremali situacija, atsargos, lojalumas, kainodara ir daugiau."
   },
   "modules": {
-    "title": "CMS moduliai",
+    "title": "IPMS moduliai",
     "enabled": "Aktyvuota",
     "disabled": "Deaktyvuota",
     "enable": "Aktyvuoti",
@@ -139,7 +139,7 @@
   },
   "setup": {
     "title": "Sąrankos vedlys",
-    "welcome": "Sveiki atvykę į Databox CMS",
+    "welcome": "Sveiki atvykę į Databox IPMS",
     "chooseProfile": "Pasirinkite organizacijos tipą",
     "legalEntity": "Juridinio asmens duomenys",
     "orgName": "Organizacijos pavadinimas",

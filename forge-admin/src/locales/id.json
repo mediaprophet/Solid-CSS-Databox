@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "Databox CMS",
+    "title": "Databox IPMS",
     "subtitle": "Manajemen konten asli Solid"
   },
   "nav": {
@@ -96,7 +96,7 @@
     "subtitle": "Horizontal operasional Fase 3: persetujuan, delegasi, darurat, inventaris, loyalitas, harga, dan lainnya."
   },
   "modules": {
-    "title": "Modul CMS",
+    "title": "Modul IPMS",
     "enabled": "Diaktifkan",
     "disabled": "Dinonaktifkan",
     "enable": "Aktifkan",
@@ -139,7 +139,7 @@
   },
   "setup": {
     "title": "Wisaya Pengaturan",
-    "welcome": "Selamat datang di Databox CMS",
+    "welcome": "Selamat datang di Databox IPMS",
     "chooseProfile": "Pilih jenis organisasi",
     "legalEntity": "Detail Entitas Hukum",
     "orgName": "Nama Organisasi",

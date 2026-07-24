@@ -222,7 +222,7 @@ projection ports with structural exclusion of Databox-private identifiers.
 **Depends on:** MFG-16
 
 Import existing site facts, compare visible and structured content, generate Schema.org JSON-LD, validate it, preview
-changes, and export through a file/CMS/pull-request port with approval and post-deploy drift checks.
+changes, and export through a file/IPMS/pull-request port with approval and post-deploy drift checks.
 
 **Gate:** representative organization and LocalBusiness pages produce valid, consistent projections; no ranking or
 rich-result guarantee is asserted.

@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "Databox CMS",
+    "title": "Databox IPMS",
     "subtitle": "Gestion de contenu natif Solid"
   },
   "nav": {
@@ -96,7 +96,7 @@
     "subtitle": "Horizontaux opérationnels de Phase 3 : consentement, délégation, urgence, inventaire, fidélité, tarification et plus."
   },
   "modules": {
-    "title": "Modules CMS",
+    "title": "Modules IPMS",
     "enabled": "Activé",
     "disabled": "Désactivé",
     "enable": "Activer",
@@ -139,7 +139,7 @@
   },
   "setup": {
     "title": "Assistant de Configuration",
-    "welcome": "Bienvenue sur le Databox CMS",
+    "welcome": "Bienvenue sur le Databox IPMS",
     "chooseProfile": "Choisissez votre type d'organisation",
     "legalEntity": "Détails de l'Entité Légale",
     "orgName": "Nom de l'Organisation",

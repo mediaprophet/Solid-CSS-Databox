@@ -1,0 +1,57 @@
+name: databox-ipms
+
+services:
+  community-solid-server:
+    profiles:
+      - ipms
+    image: ${CMS_IMAGE:-solid-databox:local}
+    build:
+      context: ../../..
+    init: true
+    restart: unless-stopped
+    ports:
+      - '${CSS_PORT:-3000}:3000'
+    environment:
+      CSS_BASE_URL: ${CSS_BASE_URL:?Set CSS_BASE_URL to the public Databox URL, for example https://databox.example.org/}
+      CSS_CONFIG: ${CSS_CONFIG:-config/ipms/ipms-file.json}
+      CSS_PORT: 3000
+      CSS_ROOT_FILE_PATH: /data
+      CSS_LOGGING_LEVEL: ${CSS_LOGGING_LEVEL:-info}
+    volumes:
+      - ipms-data:/data
+    secrets:
+      - cms_control_token
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        if [ ! -s /run/secrets/cms_control_token ]; then
+          echo "Missing /run/secrets/cms_control_token; set CMS_CONTROL_TOKEN_FILE to a 32+ byte token file." >&2
+          exit 64
+        fi
+        export CSS_CMS_CONTROL_TOKEN="$$(cat /run/secrets/cms_control_token)"
+        exec node bin/server.js
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - |
+          fetch('http://127.0.0.1:3000/').then((response) => {
+            process.exit(response.ok ? 0 : 1);
+          }).catch(() => process.exit(1));
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    labels:
+      org.databox.profile: ipms
+      org.databox.storage: file
+      org.databox.device-tls: direct-tls-required-for-devices-host
+
+volumes:
+  ipms-data:
+
+secrets:
+  cms_control_token:
+    file: ${CMS_CONTROL_TOKEN_FILE:?Set CMS_CONTROL_TOKEN_FILE to a local file containing the IPMS control token}

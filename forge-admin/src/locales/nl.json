@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "Databox CMS",
+    "title": "Databox IPMS",
     "subtitle": "Solid-native contentbeheer"
   },
   "nav": {
@@ -96,7 +96,7 @@
     "subtitle": "Operationele horizontals van Fase 3: toestemming, delegatie, noodgeval, voorraad, loyaliteit, prijzen en meer."
   },
   "modules": {
-    "title": "CMS Modules",
+    "title": "IPMS Modules",
     "enabled": "Ingeschakeld",
     "disabled": "Uitgeschakeld",
     "enable": "Inschakelen",
@@ -139,7 +139,7 @@
   },
   "setup": {
     "title": "Installatiewizard",
-    "welcome": "Welkom bij de Databox CMS",
+    "welcome": "Welkom bij de Databox IPMS",
     "chooseProfile": "Kies uw organisatietype",
     "legalEntity": "Rechtspersoon Gegevens",
     "orgName": "Organisatienaam",

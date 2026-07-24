@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "Databox CMS",
+    "title": "Databox IPMS",
     "subtitle": "ניהול תוכן מקורי Solid"
   },
   "nav": {
@@ -96,7 +96,7 @@
     "subtitle": "אופקים תפעוליים של שלב 3: הסכמה, האצלה, חירום, מלאי, נאמנות, תמחור, ועוד."
   },
   "modules": {
-    "title": "מודולי CMS",
+    "title": "מודולי IPMS",
     "enabled": "מופעל",
     "disabled": "מבוטל",
     "enable": "הפעל",
@@ -139,7 +139,7 @@
   },
   "setup": {
     "title": "אשף הגדרה",
-    "welcome": "ברוכים הבאים ל-Databox CMS",
+    "welcome": "ברוכים הבאים ל-Databox IPMS",
     "chooseProfile": "בחר סוג ארגון",
     "legalEntity": "פרטי ישות משפטית",
     "orgName": "שם ארגון",

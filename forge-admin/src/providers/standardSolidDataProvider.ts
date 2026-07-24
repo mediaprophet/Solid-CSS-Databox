@@ -1,5 +1,5 @@
 //
-// Standard-Solid provider mode. This intentionally does not call the CSS CMS
+// Standard-Solid provider mode. This intentionally does not call the CSS IPMS
 // control plane; it reads portable module manifests/state from ordinary Solid
 // resources and reports enhanced operations as unavailable.
 
@@ -13,7 +13,7 @@ const RDF_NS = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
 const RDFS_NS = "http://www.w3.org/2000/01/rdf-schema#";
 const DCTERMS_NS = "http://purl.org/dc/terms/";
 const SCHEMA_NS = "https://schema.org/";
-const CMS_NS = "urn:solid-server:databox:cms#";
+const CMS_NS = "urn:solid-server:databox:ipms#";
 const LDP_NS = "http://www.w3.org/ns/ldp#";
 const SOLID_NS = "http://www.w3.org/ns/solid/terms#";
 const XSD_NS = "http://www.w3.org/2001/XMLSchema#";
@@ -63,7 +63,7 @@ const list = (data: unknown[], meta = {}) => ({
 
 const enhancedError = (operation: string) =>
   new Error(
-    `${operation} requires the CSS-enhanced CMS control plane. ` +
+    `${operation} requires the CSS-enhanced IPMS control plane. ` +
       "The active provider is standard-Solid portable-core mode."
   );
 
@@ -130,7 +130,7 @@ const graphVerticalProfiles = (json: any) => {
   if (Array.isArray(json?.verticalProfiles)) return json.verticalProfiles;
   const items = graphItems(json).filter((item: any) => {
     const types = asArray(item.type ?? item["@type"] ?? item["rdf:type"]);
-    return types.some((type: any) => compactValue(type) === "DataboxVerticalProfile" || compactValue(type) === CMS_VERTICAL_PROFILE || compactValue(type) === "cms:VerticalProfile");
+    return types.some((type: any) => compactValue(type) === "DataboxVerticalProfile" || compactValue(type) === CMS_VERTICAL_PROFILE || compactValue(type) === "ipms:VerticalProfile");
   });
   return items.length > 0 ? items : json?.id || json?.["@id"] ? [json] : [];
 };
@@ -156,24 +156,24 @@ const normalizeAdminUi = (adminUi: any) => {
   const value = compactValue(adminUi);
   if (!value || typeof value !== "object") return value;
   return {
-    navLabel: compactValue(value.navLabel ?? value.adminNavLabel ?? value["cms:adminNavLabel"]),
-    path: compactValue(value.path ?? value.adminPath ?? value["cms:adminPath"]),
+    navLabel: compactValue(value.navLabel ?? value.adminNavLabel ?? value["ipms:adminNavLabel"]),
+    path: compactValue(value.path ?? value.adminPath ?? value["ipms:adminPath"]),
   };
 };
 
 const normalizeManifest = (item: any, sourceUrl: string, state?: any) => {
-  const adminUi = normalizeAdminUi(item.adminUi ?? item.admin ?? item["cms:adminUi"]);
-  const enabled = state?.enabled ?? compactValue(item.enabled ?? item["cms:enabled"]);
+  const adminUi = normalizeAdminUi(item.adminUi ?? item.admin ?? item["ipms:adminUi"]);
+  const enabled = state?.enabled ?? compactValue(item.enabled ?? item["ipms:enabled"]);
   const routes = compactValue(
-    item.routes ?? item["cms:routes"] ?? item.route ?? item["cms:route"] ?? item.routeList ?? item["cms:routeList"]
+    item.routes ?? item["ipms:routes"] ?? item.route ?? item["ipms:route"] ?? item.routeList ?? item["ipms:routeList"]
   );
   const capabilities = compactValue(
     item.capabilities ??
-      item["cms:capabilities"] ??
+      item["ipms:capabilities"] ??
       item.capability ??
-      item["cms:capability"] ??
+      item["ipms:capability"] ??
       item.capabilityList ??
-      item["cms:capabilityList"]
+      item["ipms:capabilityList"]
   );
 
   return {
@@ -195,36 +195,36 @@ const normalizeManifest = (item: any, sourceUrl: string, state?: any) => {
     routes: asArray(routes),
     adminUi,
     enabled: enabled === true || enabled === "true",
-    capabilityMode: compactValue(item.capabilityMode ?? item["cms:capabilityMode"] ?? "portable-core"),
+    capabilityMode: compactValue(item.capabilityMode ?? item["ipms:capabilityMode"] ?? "portable-core"),
     controlPlaneAvailable: false,
     degraded: true,
     degradationReason:
       "Read from ordinary Solid resources. CSS-enhanced module operations are unavailable in standard-Solid mode.",
     sourceUrl,
-    stateUrl: state?.sourceUrl ?? item.stateUrl ?? item["cms:stateUrl"],
+    stateUrl: state?.sourceUrl ?? item.stateUrl ?? item["ipms:stateUrl"],
     stateTurtle: state?.turtle,
   };
 };
 
 const normalizeVerticalProfile = (item: any, sourceUrl: string, moduleById = new Map()) => {
-  const modules = asArray(item.modules ?? item["cms:modules"] ?? item.moduleList ?? item["cms:moduleList"]).map((module: any) => {
-    const moduleId = compactValue(module.moduleId ?? module["cms:moduleId"] ?? module.id ?? module);
+  const modules = asArray(item.modules ?? item["ipms:modules"] ?? item.moduleList ?? item["ipms:moduleList"]).map((module: any) => {
+    const moduleId = compactValue(module.moduleId ?? module["ipms:moduleId"] ?? module.id ?? module);
     const manifest: any = moduleById.get(moduleId);
     return {
       ...module,
       moduleId,
-      required: compactValue(module.required ?? module["cms:required"]) !== false && compactValue(module.required ?? module["cms:required"]) !== "false",
+      required: compactValue(module.required ?? module["ipms:required"]) !== false && compactValue(module.required ?? module["ipms:required"]) !== "false",
       enabledByDefault:
-        compactValue(module.enabledByDefault ?? module["cms:enabledByDefault"]) !== false &&
-        compactValue(module.enabledByDefault ?? module["cms:enabledByDefault"]) !== "false",
-      rationale: compactValue(module.rationale ?? module["cms:rationale"] ?? ""),
-      defaultConfig: module.defaultConfig ?? module["cms:defaultConfig"],
+        compactValue(module.enabledByDefault ?? module["ipms:enabledByDefault"]) !== false &&
+        compactValue(module.enabledByDefault ?? module["ipms:enabledByDefault"]) !== "false",
+      rationale: compactValue(module.rationale ?? module["ipms:rationale"] ?? ""),
+      defaultConfig: module.defaultConfig ?? module["ipms:defaultConfig"],
       available: Boolean(manifest),
       enabled: Boolean(manifest?.enabled),
       capabilityMode: manifest?.capabilityMode ?? "unavailable",
       ...(manifest ? { manifest } : {
         unavailableReason:
-          "This horizontal module was not discovered through the configured Solid CMS Type Index.",
+          "This horizontal module was not discovered through the configured Solid IPMS Type Index.",
       }),
     };
   });
@@ -235,7 +235,7 @@ const normalizeVerticalProfile = (item: any, sourceUrl: string, moduleById = new
     name: compactValue(item.name ?? item.title ?? item["dcterms:title"] ?? item["schema:name"] ?? sourceUrl),
     version: compactValue(item.version ?? item["schema:softwareVersion"] ?? ""),
     description: compactValue(item.description ?? item["dcterms:description"] ?? item["schema:description"] ?? ""),
-    useCases: asArray(compactValue(item.useCases ?? item["cms:useCaseList"] ?? item.useCaseList)),
+    useCases: asArray(compactValue(item.useCases ?? item["ipms:useCaseList"] ?? item.useCaseList)),
     modules,
     missingModules,
     unavailableModules: missingModules,
@@ -244,7 +244,7 @@ const normalizeVerticalProfile = (item: any, sourceUrl: string, moduleById = new
     canApply: false,
     degraded: true,
     degradationReason:
-      "Portable-core mode can inspect declarative vertical profile RDF, but applying defaults requires the CSS-enhanced CMS control plane.",
+      "Portable-core mode can inspect declarative vertical profile RDF, but applying defaults requires the CSS-enhanced IPMS control plane.",
     sourceUrl,
   };
 };
@@ -257,7 +257,7 @@ const parseState = async (stateUrl: string | undefined, baseUrl: string) => {
   if (json !== undefined) {
     return {
       sourceUrl: url,
-      enabled: compactValue(json.enabled ?? json["cms:enabled"]),
+      enabled: compactValue(json.enabled ?? json["ipms:enabled"]),
       turtle: resource.text,
     };
   }
@@ -287,13 +287,13 @@ const readManifestObject = async (entry: any, indexUrl: string, index: number) =
     const manifests = readManifestResource(resource);
     return Promise.all(
       manifests.map(async (manifest: any) => {
-        const state = await parseState(manifest.stateUrl ?? manifest["cms:stateUrl"], manifestUrl);
+        const state = await parseState(manifest.stateUrl ?? manifest["ipms:stateUrl"], manifestUrl);
         return normalizeManifest(manifest, manifestUrl, state);
       })
     );
   }
 
-  const manifestUrl = compactValue(entry.manifestUrl ?? entry["cms:manifestUrl"] ?? entry.url);
+  const manifestUrl = compactValue(entry.manifestUrl ?? entry["ipms:manifestUrl"] ?? entry.url);
   if (manifestUrl) {
     const url = absoluteUrl(manifestUrl, indexUrl);
     const resource = await fetchSolidResource(url);
@@ -301,21 +301,21 @@ const readManifestObject = async (entry: any, indexUrl: string, index: number) =
     return Promise.all(
       manifests.map(async (manifest: any) => {
         const merged = { ...manifest, ...entry };
-        const state = await parseState(entry.stateUrl ?? merged.stateUrl ?? merged["cms:stateUrl"], url);
+        const state = await parseState(entry.stateUrl ?? merged.stateUrl ?? merged["ipms:stateUrl"], url);
         return normalizeManifest(merged, url, state);
       })
     );
   }
 
-  const state = await parseState(entry.stateUrl ?? entry["cms:stateUrl"], indexUrl);
+  const state = await parseState(entry.stateUrl ?? entry["ipms:stateUrl"], indexUrl);
   return [normalizeManifest(entry, `${indexUrl}#module-${index}`, state)];
 };
 
-const getCmsModules = async () => {
+const getIpmsModules = async () => {
   if (!MANIFEST_INDEX_URL) {
     return list([], {
       degraded: true,
-      degradationReason: "Set VITE_SOLID_CMS_MANIFEST_INDEX_URL to read portable CMS module manifests from a Solid resource.",
+      degradationReason: "Set VITE_SOLID_CMS_MANIFEST_INDEX_URL to read portable IPMS module manifests from a Solid resource.",
     });
   }
 
@@ -336,15 +336,15 @@ const getCmsModules = async () => {
   });
 };
 
-const getCmsVerticalProfiles = async () => {
+const getIpmsVerticalProfiles = async () => {
   if (!MANIFEST_INDEX_URL) {
     return list([], {
       degraded: true,
-      degradationReason: "Set VITE_SOLID_CMS_MANIFEST_INDEX_URL to read portable CMS vertical profiles from a Solid Type Index.",
+      degradationReason: "Set VITE_SOLID_CMS_MANIFEST_INDEX_URL to read portable IPMS vertical profiles from a Solid Type Index.",
     });
   }
 
-  const modules = await getCmsModules();
+  const modules = await getIpmsModules();
   const moduleById = new Map((modules.data ?? []).map((module: any) => [module.id, module]));
   const index = await fetchSolidResource(MANIFEST_INDEX_URL);
   const json = parseJsonIfPossible(index);
@@ -364,7 +364,7 @@ const getCmsVerticalProfiles = async () => {
     manifestIndexUrl: MANIFEST_INDEX_URL,
     degradationReason:
       profiles.length === 0
-        ? "The configured Solid Type Index did not contain any cms:VerticalProfile entries."
+        ? "The configured Solid Type Index did not contain any ipms:VerticalProfile entries."
         : "Portable-core mode: vertical profiles were discovered as ordinary Solid/RDF resources; applying defaults is unavailable.",
   });
 };
@@ -374,7 +374,7 @@ const getRdfIndexedModules = async (index: { url: string; text: string }) => {
   if (inlineManifests.length > 0) {
     return Promise.all(
       inlineManifests.map(async (manifest) => {
-        const state = await parseState(manifest.stateUrl ?? manifest["cms:stateUrl"], index.url);
+        const state = await parseState(manifest.stateUrl ?? manifest["ipms:stateUrl"], index.url);
         return normalizeManifest(manifest, manifest["@id"] ?? index.url, state);
       })
     );
@@ -392,7 +392,7 @@ const readVerticalProfileObject = async (entry: any, indexUrl: string, index: nu
     return readVerticalProfileResource(resource).map((profile: any) => normalizeVerticalProfile(profile, url, moduleById));
   }
 
-  const profileUrl = compactValue(entry.profileUrl ?? entry.verticalProfileUrl ?? entry["cms:verticalProfileUrl"] ?? entry.url);
+  const profileUrl = compactValue(entry.profileUrl ?? entry.verticalProfileUrl ?? entry["ipms:verticalProfileUrl"] ?? entry.url);
   if (profileUrl) {
     const url = absoluteUrl(profileUrl, indexUrl);
     const resource = await fetchSolidResource(url);
@@ -538,7 +538,7 @@ const verticalProfileModuleFromNode = (graph: ReturnType<typeof parseTurtle>, no
 const requiredRdfBoolean = (graph: ReturnType<typeof parseTurtle>, subject: RdfTerm, predicates: string[], field: string) => {
   const value = rdfBooleanValue(firstObject(graph, subject, predicates));
   if (value === undefined) {
-    throw new Error(`CMS ${field} boolean is required.`);
+    throw new Error(`IPMS ${field} boolean is required.`);
   }
   return value;
 };
@@ -546,7 +546,7 @@ const requiredRdfBoolean = (graph: ReturnType<typeof parseTurtle>, subject: RdfT
 const requiredRdfValue = (graph: ReturnType<typeof parseTurtle>, subject: RdfTerm, predicates: string[], field: string) => {
   const value = rdfStringValue(firstObject(graph, subject, predicates));
   if (!value) {
-    throw new Error(`CMS module manifest ${field} is required.`);
+    throw new Error(`IPMS module manifest ${field} is required.`);
   }
   return value;
 };
@@ -554,7 +554,7 @@ const requiredRdfValue = (graph: ReturnType<typeof parseTurtle>, subject: RdfTer
 const requiredRdfList = (graph: ReturnType<typeof parseTurtle>, subject: RdfTerm, predicates: string[], field: string) => {
   const values = objects(graph, subject, predicates);
   if (values.length === 0) {
-    throw new Error(`CMS module manifest ${field} list is required.`);
+    throw new Error(`IPMS module manifest ${field} list is required.`);
   }
   return values.flatMap((value) => rdfListValues(value, graph, field));
 };
@@ -562,7 +562,7 @@ const requiredRdfList = (graph: ReturnType<typeof parseTurtle>, subject: RdfTerm
 const requiredRdfTermList = (graph: ReturnType<typeof parseTurtle>, subject: RdfTerm, predicates: string[], field: string) => {
   const values = objects(graph, subject, predicates);
   if (values.length === 0) {
-    throw new Error(`CMS ${field} list is required.`);
+    throw new Error(`IPMS ${field} list is required.`);
   }
   return values.flatMap((value) => rdfListTerms(value, graph, field));
 };
@@ -623,7 +623,7 @@ const rdfListValues = (term: RdfTerm, graph: ReturnType<typeof parseTurtle>, fie
   if (term.termType === "List") {
     return term.items.map((item) => {
       const value = rdfStringValue(item);
-      if (!value) throw new Error(`CMS module manifest ${field} list entries must be literals or IRIs.`);
+      if (!value) throw new Error(`IPMS module manifest ${field} list entries must be literals or IRIs.`);
       return value;
     });
   }
@@ -646,18 +646,18 @@ const rdfLinkedListValues = (head: RdfTerm, graph: ReturnType<typeof parseTurtle
   while (!(current.termType === "NamedNode" && current.value === RDF_NIL)) {
     const key = termKey(current);
     if (seen.has(key)) {
-      throw new Error(`CMS module manifest ${field} list must not contain a cycle.`);
+      throw new Error(`IPMS module manifest ${field} list must not contain a cycle.`);
     }
     seen.add(key);
 
     const first = objects(graph, current, RDF_FIRST);
     const rest = objects(graph, current, RDF_REST);
     if (first.length !== 1 || rest.length !== 1) {
-      throw new Error(`CMS module manifest ${field} list must be a well-formed RDF list.`);
+      throw new Error(`IPMS module manifest ${field} list must be a well-formed RDF list.`);
     }
     const value = rdfStringValue(first[0]);
     if (!value) {
-      throw new Error(`CMS module manifest ${field} list entries must be literals or IRIs.`);
+      throw new Error(`IPMS module manifest ${field} list entries must be literals or IRIs.`);
     }
     values.push(value);
     current = rest[0];
@@ -674,14 +674,14 @@ const rdfLinkedListTerms = (head: RdfTerm, graph: ReturnType<typeof parseTurtle>
   while (!(current.termType === "NamedNode" && current.value === RDF_NIL)) {
     const key = termKey(current);
     if (seen.has(key)) {
-      throw new Error(`CMS module manifest ${field} list must not contain a cycle.`);
+      throw new Error(`IPMS module manifest ${field} list must not contain a cycle.`);
     }
     seen.add(key);
 
     const first = objects(graph, current, RDF_FIRST);
     const rest = objects(graph, current, RDF_REST);
     if (first.length !== 1 || rest.length !== 1) {
-      throw new Error(`CMS module manifest ${field} list must be a well-formed RDF list.`);
+      throw new Error(`IPMS module manifest ${field} list must be a well-formed RDF list.`);
     }
     values.push(first[0]);
     current = rest[0];
@@ -703,7 +703,7 @@ const parseTurtle = (turtle: string, baseUrl: string) => {
 
 class TurtleParser {
   private readonly prefixes: Record<string, string> = {
-    cms: CMS_NS,
+    ipms: CMS_NS,
     dcterms: DCTERMS_NS,
     ldp: LDP_NS,
     rdf: RDF_NS,
@@ -953,11 +953,11 @@ const unquote = (token: string) =>
 
 export const standardSolidDataProvider = {
   getList: async ({ resource }: { resource: string }) => {
-    if (resource === "cms-modules") {
-      return getCmsModules();
+    if (resource === "ipms-modules") {
+      return getIpmsModules();
     }
-    if (resource === "cms-vertical-profiles") {
-      return getCmsVerticalProfiles();
+    if (resource === "ipms-vertical-profiles") {
+      return getIpmsVerticalProfiles();
     }
     if (resource === "pos-operations") {
       const snapshot = createPosOperationsSnapshot("standard-solid", "portable-core", false);
@@ -973,16 +973,16 @@ export const standardSolidDataProvider = {
   },
 
   getOne: async ({ resource, id }: { resource: string; id: BaseKey }) => {
-    if (resource === "cms-modules") {
-      const modules = await getCmsModules();
+    if (resource === "ipms-modules") {
+      const modules = await getIpmsModules();
       const record = modules.data.find((module: any) => module.id === id);
-      if (!record) throw new Error(`CMS module ${id} was not found in the configured Solid manifest index.`);
+      if (!record) throw new Error(`IPMS module ${id} was not found in the configured Solid manifest index.`);
       return { data: record, meta: modules.meta };
     }
-    if (resource === "cms-vertical-profiles") {
-      const profiles = await getCmsVerticalProfiles();
+    if (resource === "ipms-vertical-profiles") {
+      const profiles = await getIpmsVerticalProfiles();
       const record = profiles.data.find((profile: any) => profile.id === id);
-      if (!record) throw new Error(`CMS vertical profile ${id} was not found in the configured Solid Type Index.`);
+      if (!record) throw new Error(`IPMS vertical profile ${id} was not found in the configured Solid Type Index.`);
       return { data: record, meta: profiles.meta };
     }
     throw enhancedError(`Reading ${resource}`);
@@ -995,14 +995,14 @@ export const standardSolidDataProvider = {
     if (resource === "receipt-documents") {
       throw enhancedError("Generating a receipt document");
     }
-    if (resource === "cms-vertical-profile-applications") {
+    if (resource === "ipms-vertical-profile-applications") {
       throw enhancedError("Applying or previewing vertical profile defaults");
     }
     throw enhancedError(`Creating ${resource}`);
   },
 
   update: async ({ resource }: { resource: string }) => {
-    if (resource === "cms-modules") {
+    if (resource === "ipms-modules") {
       throw enhancedError("Changing module enabled state");
     }
     throw enhancedError(`Updating ${resource}`);

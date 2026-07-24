@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "Databox CMS",
+    "title": "Databox IPMS",
     "subtitle": "Solid-native Content-Management"
   },
   "nav": {
@@ -96,7 +96,7 @@
     "subtitle": "Betriebliche Horizontale der Phase 3: Zustimmung, Delegation, Notfall, Bestand, Treue, Preisgestaltung und mehr."
   },
   "modules": {
-    "title": "CMS-Module",
+    "title": "IPMS-Module",
     "enabled": "Aktiviert",
     "disabled": "Deaktiviert",
     "enable": "Aktivieren",
@@ -139,7 +139,7 @@
   },
   "setup": {
     "title": "Einrichtungsassistent",
-    "welcome": "Willkommen beim Databox CMS",
+    "welcome": "Willkommen beim Databox IPMS",
     "chooseProfile": "Wählen Sie Ihren Organisationstyp",
     "legalEntity": "Details zur Rechtsentität",
     "orgName": "Organisationsname",

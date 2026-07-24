@@ -1,5 +1,5 @@
 import { DataFactory } from 'n3';
-import { CMS, createVocabulary, extendVocabulary, UI } from '../../../src/util/Vocabularies';
+import { IPMS, createVocabulary, extendVocabulary, UI } from '../../../src/util/Vocabularies';
 
 describe('Vocabularies', (): void => {
   const vocabulary = createVocabulary('http://www.w3.org/ns/ldp#', 'contains', 'Container');
@@ -48,31 +48,31 @@ describe('Vocabularies', (): void => {
     });
   });
 
-  describe('CMS vocabulary', (): void => {
+  describe('IPMS vocabulary', (): void => {
     it('uses the correct namespace.', (): void => {
-      expect(CMS.namespace).toBe('urn:solid-server:databox:cms#');
+      expect(IPMS.namespace).toBe('urn:solid-server:databox:ipms#');
     });
 
     it('resolves core module framework terms.', (): void => {
-      expect(CMS.Module).toBe('urn:solid-server:databox:cms#Module');
-      expect(CMS.enabled).toBe('urn:solid-server:databox:cms#enabled');
-      expect(CMS.config).toBe('urn:solid-server:databox:cms#config');
-      expect(CMS.configShape).toBe('urn:solid-server:databox:cms#configShape');
-      expect(CMS.manifest).toBe('urn:solid-server:databox:cms#manifest');
+      expect(IPMS.Module).toBe('urn:solid-server:databox:ipms#Module');
+      expect(IPMS.enabled).toBe('urn:solid-server:databox:ipms#enabled');
+      expect(IPMS.config).toBe('urn:solid-server:databox:ipms#config');
+      expect(IPMS.configShape).toBe('urn:solid-server:databox:ipms#configShape');
+      expect(IPMS.manifest).toBe('urn:solid-server:databox:ipms#manifest');
     });
 
     it('resolves install profile terms.', (): void => {
-      expect(CMS.InstallProfile).toBe('urn:solid-server:databox:cms#InstallProfile');
-      expect(CMS.ServerInstall).toBe('urn:solid-server:databox:cms#ServerInstall');
-      expect(CMS.PosInstall).toBe('urn:solid-server:databox:cms#PosInstall');
-      expect(CMS.ConnectorInstall).toBe('urn:solid-server:databox:cms#ConnectorInstall');
+      expect(IPMS.InstallProfile).toBe('urn:solid-server:databox:ipms#InstallProfile');
+      expect(IPMS.ServerInstall).toBe('urn:solid-server:databox:ipms#ServerInstall');
+      expect(IPMS.PosInstall).toBe('urn:solid-server:databox:ipms#PosInstall');
+      expect(IPMS.ConnectorInstall).toBe('urn:solid-server:databox:ipms#ConnectorInstall');
     });
 
     it('resolves native POS device terms.', (): void => {
-      expect(CMS.NativePosDeviceDescriptor).toBe('urn:solid-server:databox:cms#NativePosDeviceDescriptor');
-      expect(CMS.NativePosDeviceJob).toBe('urn:solid-server:databox:cms#NativePosDeviceJob');
-      expect(CMS.deviceKind).toBe('urn:solid-server:databox:cms#deviceKind');
-      expect(CMS.mtlsDeviceWebId).toBe('urn:solid-server:databox:cms#mtlsDeviceWebId');
+      expect(IPMS.NativePosDeviceDescriptor).toBe('urn:solid-server:databox:ipms#NativePosDeviceDescriptor');
+      expect(IPMS.NativePosDeviceJob).toBe('urn:solid-server:databox:ipms#NativePosDeviceJob');
+      expect(IPMS.deviceKind).toBe('urn:solid-server:databox:ipms#deviceKind');
+      expect(IPMS.mtlsDeviceWebId).toBe('urn:solid-server:databox:ipms#mtlsDeviceWebId');
     });
   });
 

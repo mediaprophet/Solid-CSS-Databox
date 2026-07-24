@@ -25,15 +25,15 @@ export const standardIntent = (action: string, snapshot: any) => ({
   "@context": {
     schema: "https://schema.org/",
     odrl: "http://www.w3.org/ns/odrl/2/",
-    cms: "urn:solid-server:databox:cms#",
+    ipms: "urn:solid-server:databox:ipms#",
     nativeEdge: "urn:solid-server:databox:native-edge#",
   },
-  type: "DataboxCmsOperationalIntent",
+  type: "DataboxIpmsOperationalIntent",
   action,
   capabilityMode: snapshot.capabilityMode,
   status: snapshot.controlPlaneAvailable ? "ready-for-css-control-plane" : "pending-standard-solid-resource",
   degradation:
     snapshot.controlPlaneAvailable
-      ? "The UI can hand this intent to an opt-in CMS route when present."
+      ? "The UI can hand this intent to an opt-in IPMS route when present."
       : "Portable fallback only: write/read the intent as RDF and let a compatible runtime decide whether to execute it.",
 });

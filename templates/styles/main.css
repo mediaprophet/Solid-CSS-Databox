@@ -428,3 +428,225 @@ footer {
   opacity: 1;
   transform: translateY(0);
 }
+
+/* Account Management & Form Styling */
+main {
+  max-width: 740px;
+  margin: 3rem auto;
+  width: 92%;
+  background: var(--bg-surface-elevated);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--border-light);
+  border-radius: 24px;
+  padding: 3rem 3.5rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+main::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--text-accent), transparent);
+}
+
+main h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: 2rem;
+  background: linear-gradient(to right, #ffffff, #fcd34d);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+}
+
+main h2 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text-accent);
+  margin-top: 1.75rem;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+main h2::before {
+  content: '✦';
+  font-size: 0.9rem;
+  color: var(--text-accent);
+}
+
+main p {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  margin-bottom: 0.85rem;
+  line-height: 1.5;
+}
+
+main fieldset {
+  border: 1px solid var(--border-light);
+  border-radius: 16px;
+  padding: 1.75rem 2rem;
+  background: rgba(15, 23, 42, 0.4);
+  margin-bottom: 1.75rem;
+}
+
+main legend {
+  color: var(--text-accent);
+  font-weight: 700;
+  font-size: 1.05rem;
+  padding: 0 0.6rem;
+  letter-spacing: 0.02em;
+}
+
+main ol, main ul {
+  list-style: none;
+  margin: 0.5rem 0 1.25rem 0;
+  padding: 0;
+}
+
+main ul li, main ol li {
+  margin-bottom: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: rgba(10, 10, 10, 0.6);
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  color: var(--text-primary);
+  word-break: break-all;
+  font-size: 0.98rem;
+}
+
+main ol li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+main ol li.checkbox {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+main ol li.checkbox label {
+  cursor: pointer;
+  user-select: none;
+}
+
+main label {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+}
+
+main input[type="text"],
+main input[type="email"],
+main input[type="password"] {
+  background: rgba(10, 10, 10, 0.8);
+  border: 1px solid var(--border-light);
+  color: var(--text-primary);
+  padding: 0.85rem 1.1rem;
+  border-radius: 10px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1rem;
+  width: 100%;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+main input[type="text"]:focus,
+main input[type="email"]:focus,
+main input[type="password"]:focus {
+  border-color: var(--text-accent);
+  box-shadow: 0 0 12px var(--primary-glow);
+  background: rgba(15, 15, 15, 0.95);
+}
+
+main input[type="checkbox"] {
+  width: 1.1rem;
+  height: 1.1rem;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
+main button[type="submit"],
+main button:not(.tab-btn) {
+  background: var(--primary);
+  color: #ffffff;
+  border: none;
+  padding: 0.85rem 2rem;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 0 15px var(--primary-glow);
+}
+
+main button:hover:not(:disabled) {
+  background: #f59e0b;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(251, 191, 36, 0.4);
+}
+
+main button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+main p.error {
+  color: #f87171;
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 10px;
+  padding: 0.85rem 1.2rem;
+  font-size: 0.95rem;
+  margin-bottom: 1.25rem;
+}
+
+main p.error:empty {
+  display: none;
+}
+
+main a, main a.link {
+  color: var(--text-accent);
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+main a:hover, main a.link:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+main p.actions, main ul.actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-light);
+  flex-wrap: wrap;
+}
+
+main ul.actions li {
+  margin: 0;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+

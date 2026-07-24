@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "Databox CMS",
+    "title": "Databox IPMS",
     "subtitle": "Solid-native satura pārvaldība"
   },
   "nav": {
@@ -96,7 +96,7 @@
     "subtitle": "3. fāzes operatīvie horizontāli: piekrišana, delegēšana, ārkārtas situācija, krājumi, lojalitāte, cenu noteikšana un vairāk."
   },
   "modules": {
-    "title": "CMS moduļi",
+    "title": "IPMS moduļi",
     "enabled": "Aktivizēts",
     "disabled": "Deaktivizēts",
     "enable": "Aktivizēt",
@@ -139,7 +139,7 @@
   },
   "setup": {
     "title": "Iestatīšanas vednis",
-    "welcome": "Laipni lūdzam Databox CMS",
+    "welcome": "Laipni lūdzam Databox IPMS",
     "chooseProfile": "Izvēlieties organizācijas tipu",
     "legalEntity": "Juridiskās personas dati",
     "orgName": "Organizācijas nosaukums",

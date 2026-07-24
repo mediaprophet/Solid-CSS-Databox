@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "Databox CMS",
+    "title": "Databox IPMS",
     "subtitle": "Solidi-põhine sisuhaldus"
   },
   "nav": {
@@ -96,7 +96,7 @@
     "subtitle": "3. faasi operatiivsed horisontaalid: nõusolek, delegeerimine, hädaolukord, laoseis, lojaalsus, hinnakujundus ja palju muud."
   },
   "modules": {
-    "title": "CMS moodulid",
+    "title": "IPMS moodulid",
     "enabled": "Aktiveeritud",
     "disabled": "Deaktiveeritud",
     "enable": "Aktiveeri",
@@ -139,7 +139,7 @@
   },
   "setup": {
     "title": "Seadistamisviisard",
-    "welcome": "Tere tulemast Databox CMS-i",
+    "welcome": "Tere tulemast Databox IPMS-i",
     "chooseProfile": "Valige organisatsiooni tüüp",
     "legalEntity": "Juriidilise isiku andmed",
     "orgName": "Organisatsiooni nimi",

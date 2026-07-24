@@ -27,9 +27,9 @@ Adds the Databox orchestration layer:
 - **Connector sidecar** framework for enterprise data integration
 
 This layer is useful for organisations that need device management and evidence
-quarantine but don't yet need the full CMS.
+quarantine but don't yet need the full IPMS.
 
-## Layer 3 — +CMS
+## Layer 3 — +IPMS
 
 Adds the Content Management System:
 
@@ -82,10 +82,10 @@ Vertical profiles compose horizontal modules into industry-specific bundles:
 1. **Start basic** — set up a Solid server with pod storage.
 2. **Add Databox** if you need device management, evidence quarantine, or
    native edge POS support.
-3. **Add CMS** if you need structured content, business workflows, or
+3. **Add IPMS** if you need structured content, business workflows, or
    enterprise connectors.
 4. **Select a vertical profile** that matches your industry to get a
    pre-configured bundle of modules with sensible defaults.
 
 Each layer is additive — you can always upgrade from basic to +Databox to
-+CMS without losing data or configuration.
++IPMS without losing data or configuration.

@@ -46,7 +46,7 @@ const createTable = (
       "@context": {
         schema: "https://schema.org/",
         solid: "http://www.w3.org/ns/solid/terms#",
-        pos: "urn:solid-server:databox:cms:pos#",
+        pos: "urn:solid-server:databox:ipms:pos#",
       },
       "@type": "EntryPoint",
       "@id": `${sessionResource}#onboarding`,

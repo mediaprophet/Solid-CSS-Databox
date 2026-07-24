@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "Databox CMS",
+    "title": "Databox IPMS",
     "subtitle": "Správa obsahu natívna Solid"
   },
   "nav": {
@@ -96,7 +96,7 @@
     "subtitle": "Provozné horizontály Fázy 3: súhlas, delegovanie, núdzový prípad, zásoby, vernosť, oceňovanie a ďalšie."
   },
   "modules": {
-    "title": "CMS moduly",
+    "title": "IPMS moduly",
     "enabled": "Aktivované",
     "disabled": "Deaktivované",
     "enable": "Aktivovať",
@@ -139,7 +139,7 @@
   },
   "setup": {
     "title": "Sprievodca nastavením",
-    "welcome": "Vitajte v Databox CMS",
+    "welcome": "Vitajte v Databox IPMS",
     "chooseProfile": "Vyberte typ organizácie",
     "legalEntity": "Údaje právnickej osoby",
     "orgName": "Názov organizácie",

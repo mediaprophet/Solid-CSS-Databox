@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "Databox CMS",
+    "title": "Databox IPMS",
     "subtitle": "Pengurusan kandungan asli Solid"
   },
   "nav": {
@@ -96,7 +96,7 @@
     "subtitle": "Horizontal operasi Fasa 3: persetujuan, perwakilan, kecemasan, inventori, kesetiaan, penentuan harga, dan lain-lain."
   },
   "modules": {
-    "title": "Modul CMS",
+    "title": "Modul IPMS",
     "enabled": "Diaktifkan",
     "disabled": "Dinyahaktifkan",
     "enable": "Aktifkan",
@@ -139,7 +139,7 @@
   },
   "setup": {
     "title": "Wizard Persediaan",
-    "welcome": "Selamat datang ke Databox CMS",
+    "welcome": "Selamat datang ke Databox IPMS",
     "chooseProfile": "Pilih jenis organisasi",
     "legalEntity": "Butiran Entiti Undang-undang",
     "orgName": "Nama Organisasi",

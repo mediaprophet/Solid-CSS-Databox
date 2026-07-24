@@ -34,12 +34,13 @@ import { TaxPage } from "./pages/tax";
 import { ConcessionsPage } from "./pages/concessions";
 import { DiscountsPage } from "./pages/discounts";
 import { DonationsPage } from "./pages/donations";
+import { WebsiteMakerPage } from "./pages/website-maker";
 import "./index.css";
 
 function App() {
   // Static demo build (VITE_DEMO=true) uses an in-memory data provider + hash
   // routing so it runs on GitHub Pages with no backend. VITE_PROVIDER_MODE can
-  // opt into standard-solid portable-core mode without using the CSS CMS control
+  // opt into standard-solid portable-core mode without using the CSS IPMS control
   // plane. The default dev/live build is unchanged.
   const isDemo = import.meta.env.VITE_DEMO === "true";
   const providerMode = import.meta.env.VITE_PROVIDER_MODE;
@@ -58,7 +59,7 @@ function App() {
         dataProvider={activeDataProvider as any}
         routerProvider={routerProvider}
         // Refine reports provider names, its version and a resource count to
-        // telemetry.refine.dev on load. A data-sovereignty demo must not send
+        // telemetry.refine.dev on load. A data-privacy demo must not send
         // anything anywhere the operator did not ask for.
         options={{ disableTelemetry: true }}
         resources={[
@@ -84,15 +85,19 @@ function App() {
             list: "/data-portability",
           },
           {
-            name: "cms-modules",
-            list: "/cms/modules",
+            name: "ipms-modules",
+            list: "/ipms/modules",
           },
           {
-            name: "cms-vertical-profiles",
+            name: "website-maker",
+            create: "/website-maker",
+          },
+          {
+            name: "ipms-vertical-profiles",
             list: "/setup",
           },
           {
-            name: "cms-vertical-profile-applications",
+            name: "ipms-vertical-profile-applications",
             create: "/setup",
           },
           {
@@ -156,7 +161,8 @@ function App() {
             <Route path="/events" element={<EventDispatcher />} />
             <Route path="/setup" element={<SetupPage />} />
             <Route path="/data-portability" element={<DataPortabilityRegistry />} />
-            <Route path="/cms/modules" element={<ModulesPage />} />
+            <Route path="/ipms/modules" element={<ModulesPage />} />
+            <Route path="/website-maker" element={<WebsiteMakerPage />} />
             <Route path="/hosting" element={<HostingPage />} />
             <Route path="/governance" element={<GovernancePage />} />
             <Route path="/credentials" element={<CredentialsPage />} />

@@ -23,7 +23,7 @@ export const CapabilityStrip = ({ snapshot }: { snapshot: any }) => {
     <div className="grid grid-cols-1 xl:grid-cols-[1fr_1fr] gap-3 mb-5">
       <div className={`rounded-lg border px-4 py-3 text-sm ${portable ? "border-amber-500/30 bg-amber-500/10 text-amber-100" : "border-sky-500/25 bg-sky-500/10 text-sky-100"}`}>
         <div className="flex items-center justify-between gap-3">
-          <span className="font-semibold">{portable ? "Standard-Solid portable mode" : "CSS-enhanced CMS mode"}</span>
+          <span className="font-semibold">{portable ? "Standard-Solid portable mode" : "CSS-enhanced IPMS mode"}</span>
           <StatusBadge tone={portable ? "amber" : "sky"}>{snapshot.capabilityMode}</StatusBadge>
         </div>
         <p className="mt-2 text-xs opacity-85">{snapshot.degradationReason}</p>

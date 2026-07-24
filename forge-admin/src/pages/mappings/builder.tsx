@@ -36,8 +36,8 @@ export const MappingBuilder = () => {
   const [previewLoading, setPreviewLoading] = useState(false);
   const [savedMapping, setSavedMapping] = useState<string | null>(null);
 
-  const cmsApiUrl = import.meta.env.VITE_CMS_API_URL ?? "";
-  const cmsToken = import.meta.env.VITE_CMS_TOKEN ?? "";
+  const ipmsApiUrl = import.meta.env.VITE_CMS_API_URL ?? "";
+  const ipmsToken = import.meta.env.VITE_CMS_TOKEN ?? "";
 
   const browseSchema = async () => {
     setSchemaLoading(true);
@@ -45,11 +45,11 @@ export const MappingBuilder = () => {
     setColumns([]);
     try {
       if (sourceType === "odbc") {
-        const res = await fetch(`${cmsApiUrl}/.databox/cms/connectors/odbc/schema`, {
+        const res = await fetch(`${ipmsApiUrl}/.databox/ipms/connectors/odbc/schema`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${cmsToken}`,
+            Authorization: `Bearer ${ipmsToken}`,
           },
           body: JSON.stringify({ connectionString }),
         });
@@ -62,11 +62,11 @@ export const MappingBuilder = () => {
           (t.columns ?? []).map((c: SourceColumn) => c)
         ) ?? []);
       } else {
-        const res = await fetch(`${cmsApiUrl}/.databox/cms/connectors/ldap/schema`, {
+        const res = await fetch(`${ipmsApiUrl}/.databox/ipms/connectors/ldap/schema`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${cmsToken}`,
+            Authorization: `Bearer ${ipmsToken}`,
           },
           body: JSON.stringify({ url: ldapUrl, bindDn: ldapBindDn, searchBase: ldapSearchBase }),
         });
@@ -135,11 +135,11 @@ export const MappingBuilder = () => {
         ? { type: "odbc", odbc: { connectionString, query }, mappingTurtle: JSON.stringify(mapping) }
         : { type: "ldap", ldap: { url: ldapUrl, bindDn: ldapBindDn, searchBase: ldapSearchBase }, mappingTurtle: JSON.stringify(mapping) };
 
-      const res = await fetch(`${cmsApiUrl}/.databox/cms/connectors/preview`, {
+      const res = await fetch(`${ipmsApiUrl}/.databox/ipms/connectors/preview`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${cmsToken}`,
+          Authorization: `Bearer ${ipmsToken}`,
         },
         body: JSON.stringify(body),
       });
@@ -159,11 +159,11 @@ export const MappingBuilder = () => {
   const saveMapping = async () => {
     try {
       const mapping = buildMappingDefinition();
-      const res = await fetch(`${cmsApiUrl}/.databox/cms/connectors/mappings`, {
+      const res = await fetch(`${ipmsApiUrl}/.databox/ipms/connectors/mappings`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${cmsToken}`,
+          Authorization: `Bearer ${ipmsToken}`,
         },
         body: JSON.stringify(mapping),
       });

@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "Databox CMS",
+    "title": "Databox IPMS",
     "subtitle": "Solid-native innholdshåndtering"
   },
   "nav": {
@@ -96,7 +96,7 @@
     "subtitle": "Operasjonelle horisontaler Fase 3: samtykke, delegering, nødsituasjon, beholdning, lojalitet, prising og mer."
   },
   "modules": {
-    "title": "CMS-moduler",
+    "title": "IPMS-moduler",
     "enabled": "Aktivert",
     "disabled": "Deaktivert",
     "enable": "Aktiver",
@@ -139,7 +139,7 @@
   },
   "setup": {
     "title": "Installasjonsveiviser",
-    "welcome": "Velkommen til Databox CMS",
+    "welcome": "Velkommen til Databox IPMS",
     "chooseProfile": "Velg din organisasjonstype",
     "legalEntity": "Juridisk Enhet Detaljer",
     "orgName": "Organisasjonsnavn",

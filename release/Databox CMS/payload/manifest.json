@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "product": "Databox CMS",
+  "target": "x86_64-pc-windows-msvc",
+  "platform": "windows",
+  "architecture": "x64",
+  "nodeVersion": "v24.18.0"
+}

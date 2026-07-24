@@ -108,8 +108,8 @@ export const PromotionDisplayPage = () => {
     playlist: {
       "@context": {
         schema: "https://schema.org/",
-        cms: "urn:solid-server:databox:cms#",
-        pos: "urn:solid-server:databox:cms:pos#",
+        ipms: "urn:solid-server:databox:ipms#",
+        pos: "urn:solid-server:databox:ipms:pos#",
       },
       type: "schema:PresentationDigitalDocument",
       mode: playlistMode,

@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "Databox CMS",
+    "title": "Databox IPMS",
     "subtitle": "Zarządzanie treścią natywne Solid"
   },
   "nav": {
@@ -96,7 +96,7 @@
     "subtitle": "Operacyjne komponenty Fazy 3: zgoda, delegacja, nagły wypadek, zapasy, lojalność, ceny i więcej."
   },
   "modules": {
-    "title": "Moduły CMS",
+    "title": "Moduły IPMS",
     "enabled": "Włączone",
     "disabled": "Wyłączone",
     "enable": "Włącz",
@@ -139,7 +139,7 @@
   },
   "setup": {
     "title": "Kreator Konfiguracji",
-    "welcome": "Witamy w Databox CMS",
+    "welcome": "Witamy w Databox IPMS",
     "chooseProfile": "Wybierz typ organizacji",
     "legalEntity": "Dane Podmiotu Prawnego",
     "orgName": "Nazwa Organizacji",

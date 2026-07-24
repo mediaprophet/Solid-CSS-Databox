@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "Databox CMS",
+    "title": "Databox IPMS",
     "subtitle": "Solid-मूल सामग्री प्रबंधन"
   },
   "nav": {
@@ -96,7 +96,7 @@
     "subtitle": "चरण 3 के संचालन क्षैतिज: सहमति, प्रतिनिधित्व, आपातकाल, इन्वेंट्री, वफादारी, मूल्य निर्धारण, और अधिक."
   },
   "modules": {
-    "title": "CMS मॉड्यूल",
+    "title": "IPMS मॉड्यूल",
     "enabled": "सक्षम",
     "disabled": "अक्षम",
     "enable": "सक्षम करें",
@@ -139,7 +139,7 @@
   },
   "setup": {
     "title": "सेटअप विज़ार्ड",
-    "welcome": "Databox CMS में आपका स्वागत है",
+    "welcome": "Databox IPMS में आपका स्वागत है",
     "chooseProfile": "अपना संगठन प्रकार चुनें",
     "legalEntity": "कानूनी इकाई विवरण",
     "orgName": "संगठन का नाम",

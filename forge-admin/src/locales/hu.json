@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "Databox CMS",
+    "title": "Databox IPMS",
     "subtitle": "Solid-native tartalomkezelés"
   },
   "nav": {
@@ -96,7 +96,7 @@
     "subtitle": "3. fázis operatív horizontálisai: hozzájárulás, delegálás, vészhelyzet, készlet, hűség, árazás és több."
   },
   "modules": {
-    "title": "CMS modulok",
+    "title": "IPMS modulok",
     "enabled": "Engedélyezve",
     "disabled": "Letiltva",
     "enable": "Engedélyezés",
@@ -139,7 +139,7 @@
   },
   "setup": {
     "title": "Beállítási varázsló",
-    "welcome": "Üdvözli a Databox CMS",
+    "welcome": "Üdvözli a Databox IPMS",
     "chooseProfile": "Válassza ki a szervezet típusát",
     "legalEntity": "Jogi személy adatai",
     "orgName": "Szervezet neve",

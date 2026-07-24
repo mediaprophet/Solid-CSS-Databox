@@ -1,0 +1,39 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server/^1.0.0/components/context.jsonld",
+  "@graph": [
+    {
+      "comment": "Required secret supplied by CLI/environment or AppRunner variable binding.",
+      "@id": "urn:solid-server:databox:variable:controlToken",
+      "@type": "Variable"
+    },
+    {
+      "@id": "urn:solid-server-app-setup:default:CliExtractor",
+      "@type": "YargsCliExtractor",
+      "parameters": [
+        {
+          "@type": "YargsParameter",
+          "name": "databoxControlToken",
+          "options": {
+            "requiresArg": true,
+            "type": "string",
+            "describe": "Control-plane bearer token for the experimental live Databox Forge (minimum 32 bytes)."
+          }
+        }
+      ]
+    },
+    {
+      "@id": "urn:solid-server-app-setup:default:ShorthandResolver",
+      "@type": "CombinedShorthandResolver",
+      "resolvers": [
+        {
+          "CombinedShorthandResolver:_resolvers_key": "urn:solid-server:databox:variable:controlToken",
+          "CombinedShorthandResolver:_resolvers_value": {
+            "@type": "KeyExtractor",
+            "key": "databoxControlToken",
+            "defaultValue": ""
+          }
+        }
+      ]
+    }
+  ]
+}

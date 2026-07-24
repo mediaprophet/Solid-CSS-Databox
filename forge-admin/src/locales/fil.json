@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "Databox CMS",
+    "title": "Databox IPMS",
     "subtitle": "Pamamahala ng nilalaman na Solid-native"
   },
   "nav": {
@@ -96,7 +96,7 @@
     "subtitle": "Operational horizontals ng Phase 3: consent, delegation, emergency, inventory, loyalty, pricing, at higit pa."
   },
   "modules": {
-    "title": "Mga CMS Module",
+    "title": "Mga IPMS Module",
     "enabled": "Pinagana",
     "disabled": "Hindi Pinagana",
     "enable": "Paganahin",
@@ -139,7 +139,7 @@
   },
   "setup": {
     "title": "Setup Wizard",
-    "welcome": "Maligayang pagdating sa Databox CMS",
+    "welcome": "Maligayang pagdating sa Databox IPMS",
     "chooseProfile": "Piliin ang uri ng organisasyon",
     "legalEntity": "Detalye ng Legal Entity",
     "orgName": "Pangalan ng Organisasyon",

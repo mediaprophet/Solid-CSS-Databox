@@ -1,4 +1,4 @@
-# Plan: A Solid-native CMS for CSS — modules, config, setup, admin, users
+# Plan: A Solid-native IPMS for CSS — modules, config, setup, admin, users
 ### First concrete module: Hosting / Cloudflare domain setup
 
 > Status: **draft for Timothy to extend** ("I have a lot to add"). This is a plain markdown working
@@ -14,7 +14,7 @@ association, co-op, enterprise) running this on its own box — the **small busi
 archetype** (non-expert operator, modest hardware, low-ops), not the limit. That drives easy domain/hosting
 setup and a growth path into the tools such an org needs — a **POS system**, **IoT / Web-of-Things**
 (devices: scanners, sensors, displays → **device identity**), **real-time** (**WebSockets**), and
-**payments** (§10.5). The CMS is the frame; these arrive as **modules** (roadmap §10). **Design for a
+**payments** (§10.5). The IPMS is the frame; these arrive as **modules** (roadmap §10). **Design for a
 non-expert operator on modest hardware, not a data-centre.**
 
 **The core model is two-part (§5.0)** — the *legal entity* (the organisation as a legal person, the anchor)
@@ -25,34 +25,34 @@ The presenting request: an admin page to point a Solid server at a domain via Cl
 `databox.<org-domain>.tld` (the databox / Solid pod interfaces) and `www.<org-domain>.tld` (the org
 website, optional; **reserve route + DNS only** this pass, "served using databox capabilities" later).
 
-The real intent (your direction): **don't build a one-off page — build the CMS.** A content-management
+The real intent (your direction): **don't build a one-off page — build the IPMS.** A content-management
 system carries a *range* of subsystems — **configuration, setup/onboarding, admin, user management, and
 module management** — WordPress-like but **Solid-native**: every subsystem's state is stored using Solid
 methods (LDP/RDF resources, WAC/ACP access control, Type-Index discovery), not side files. Modules can be
-enabled/disabled and contribute their own admin UI. **Hosting/Cloudflare is the first module** on that CMS.
+enabled/disabled and contribute their own admin UI. **Hosting/Cloudflare is the first module** on that IPMS.
 
 Hard constraint that shapes honesty everywhere: a running server's `baseUrl` and subdomain routing are
 **startup config** (CLI `--baseUrl` + `config/util/identifiers/subdomain.json`), **not runtime-mutable**.
-The CMS therefore *generates correct DNS + launch/config artifacts and persists intended config as Solid
+The IPMS therefore *generates correct DNS + launch/config artifacts and persists intended config as Solid
 data* — it never pretends to re-point a live server; it tells the operator what to (re)launch with.
 
 ---
 
-### 1.1 Packaging — the CMS is an opt-in installation profile (not baked into core)
+### 1.1 Packaging — the IPMS is an opt-in installation profile (not baked into core)
 
 **Requirement:** a user must be able to **install the basic version** — a plain CSS / Solid server — with
-none of this. The whole CMS is **additive and opt-in**, layered the idiomatic CSS way: **Components.js config
+none of this. The whole IPMS is **additive and opt-in**, layered the idiomatic CSS way: **Components.js config
 presets** (`-c config/…json`), exactly as `config/databox/live.json` already layers today. This keeps the
 fork honest (presets are upstream practice, per the community-work standard) and mergeable.
 
 **Two levels of opt-in:**
-- **Install-time profile** — a layered stack the operator chooses: **basic CSS → +databox → +CMS →
+- **Install-time profile** — a layered stack the operator chooses: **basic CSS → +databox → +IPMS →
   +modules**. Choosing *basic* gets a vanilla Solid server; the base presets (`config/default.json`,
   storage/memory/file, identity, etc.) are **left untouched and must keep passing on their own**.
-- **Runtime** — within the CMS profile, individual modules enable/disable (§5.1).
+- **Runtime** — within the IPMS profile, individual modules enable/disable (§5.1).
 
-**Hard rule:** no CMS behaviour may leak into the default/base server. New behaviour ships as *new* presets +
-new code guarded behind the CMS profile. A future step can extract the CMS layer into a **separately
+**Hard rule:** no IPMS behaviour may leak into the default/base server. New behaviour ships as *new* presets +
+new code guarded behind the IPMS profile. A future step can extract the IPMS layer into a **separately
 installable package** (config bundle depending on `@solid/community-server`) so even upstream-CSS operators
 can add it — noted as a path, not required now (**⟵** decision #12).
 
@@ -73,7 +73,7 @@ a **system-tray** presence. Split by job:
   `tao`/`wry` ecosystem), so starting thin keeps Tauri open without committing.
 
 **Honest caveats (bite in any toolkit):**
-- **Node reality:** CSS *is* Node → the harness must **bundle/manage a Node runtime + the CSS/CMS server as a
+- **Node reality:** CSS *is* Node → the harness must **bundle/manage a Node runtime + the CSS/IPMS server as a
   sidecar** (Tauri sidecar model / Rust child-process supervisor). This packaging is the real work,
   independent of UI choice.
 - **Linux tray** (StatusNotifierItem/AppIndicator; GNOME needs an extension) is fiddly *everywhere* — a Linux
@@ -92,11 +92,11 @@ Two supported targets, **both running the same opt-in install profile (§1.1)**:
 **Good news — Docker largely exists.** The repo ships a multi-stage `Dockerfile` (`node:24-alpine`;
 `/config`+`/data` volumes; env-driven **`CSS_CONFIG`** defaulting to `config/file.json`; `EXPOSE 3000`;
 entrypoint `node bin/server.js`), already Databox-branded and build-your-own (no registry publish). Running
-the CMS = point **`CSS_CONFIG` at the CMS preset** (`config/cms/…json`) + mount `/data` (**file storage, not
+the IPMS = point **`CSS_CONFIG` at the IPMS preset** (`config/ipms/…json`) + mount `/data` (**file storage, not
 memory**) + env for baseUrl / control-token. The base image stays basic-install-capable (§1.1).
 
 **To add:**
-- ✎ a `docker-compose.yml` for the small operator (CMS container + volumes + env/secrets; optional reverse
+- ✎ a `docker-compose.yml` for the small operator (IPMS container + volumes + env/secrets; optional reverse
   proxy), wired to the Hosting module's baseUrl/Cloudflare (§6).
 - **Multi-arch** build (amd64 + arm64) → runs on ARM VPS / Pi / Apple Silicon.
 - **Secrets via env / Docker secrets** (control token, gateway keys) — never baked into the image.
@@ -107,7 +107,7 @@ needs a **direct-TLS path** (dedicated listener/port, non-proxied) even in conta
 edge-mTLS with cert forwarding.
 
 **(C) Kubernetes** (scale / multi-tenant / cloud) — a **Helm chart + manifests** wrapping the existing image:
-Deployment, Service, Ingress, **PVC/shared backend**, Secrets, ConfigMap (the CMS preset). **Hard caveat
+Deployment, Service, Ingress, **PVC/shared backend**, Secrets, ConfigMap (the IPMS preset). **Hard caveat
 (decision #27):** CSS's **memory defaults don't do multi-replica** — HA needs a **shared DB/object backend +
 a distributed locker (e.g. Redis)**, not the in-memory locker. Real deployment engineering, not a flag.
 
@@ -115,13 +115,13 @@ a distributed locker (e.g. Redis)**, not the in-memory locker. Real deployment e
 
 The project is anti-lock-in; the system must not trap users on CSS. Honest **layering** (not "runs anywhere"
 hand-waving):
-- **Data — portable by construction.** All CMS state is standard Solid **LDP/RDF resources with open vocabs
+- **Data — portable by construction.** All IPMS state is standard Solid **LDP/RDF resources with open vocabs
   (§3)** — never a proprietary store. *This is why the vocabulary discipline matters:* it **is** the
   portability guarantee. Migrates to any Solid server.
 - **Client apps — portable via back-end *modes* (capability abstraction).** The apps run against a
   **capability interface** in two modes: **(i) standard-Solid mode** — plain Solid surfaces only
   (LDP / WAC-ACP / Solid-OIDC / Notifications / Type-Index) → works against **any** compliant back-end (NSS,
-  Pivot, ESS, …); **(ii) CSS-enhanced mode** — additionally uses the CSS-side CMS control plane for features
+  Pivot, ESS, …); **(ii) CSS-enhanced mode** — additionally uses the CSS-side IPMS control plane for features
   that need server-side compute. The app **detects** back-end capabilities and **degrades gracefully**
   (enhanced features hide/downgrade off-CSS). **Fits the existing seam:** forge-admin already swaps Refine
   `dataProvider`s (`demoDataProvider` vs live `dataProvider` via `VITE_DEMO`) → a **standard-Solid provider** is
@@ -131,7 +131,7 @@ hand-waving):
   **owes a standard-mode degradation**. *Honest limit:* enhanced work that can't move client-side is simply
   unavailable off-CSS. **Build the abstraction from pass-1** so portability isn't retrofitted.
 - **Logic mostly as RDF ("the works"); the engine is thin & per-runtime — declarative-first.** The deeper aim:
-  the CMS's *operational definition* — governance rules (ODRL/DPV), **module definitions/manifests**, workflows,
+  the IPMS's *operational definition* — governance rules (ODRL/DPV), **module definitions/manifests**, workflows,
   access policies (WAC/ACP), RDF-driven views, vocab (OWL/SHACL) — is **declarative RDF**; CSS/Node is *one thin
   interpreter* over it. So the portable unit is the **RDF "works"** (the org's whole operational definition +
   data), which **import into a different Solid server** — OpenLink Virtuoso, a future **QualiaDB** — that
@@ -154,7 +154,7 @@ hand-waving):
   semantics — those ride on standard vocabs as content; where a genuine interop gap appears (e.g. module
   discovery) reach **first** for an existing Solid mechanism (Type Index, `.well-known`), contribute upstream
   only if truly missing, **never a parallel dialect**. **Deliverable = define-by-demonstration:** a working
-  reference proving an org-management CMS runs on **vanilla Solid** — the demonstration *is* the definition.
+  reference proving an org-management IPMS runs on **vanilla Solid** — the demonstration *is* the definition.
 - **Migration tool (decision #28)** — pod **export/import** (resources + containers + ACLs-as-RDF → a portable
   bundle), straightforward *because* the data is standard Solid. **Honest limits — does NOT migrate cleanly,
   must be re-established:** OIDC client registrations, server-specific config, live notification subscriptions.
@@ -163,11 +163,11 @@ hand-waving):
 **Principle:** the anti-extractive stance applies **reflexively** — even *this* system lets you walk with your
 data, apps **and operating logic** intact. It shapes *how* modules are built: **favour standard Solid surfaces;
 keep all data standard-Solid; and express logic as declarative RDF ("the works"), keeping runtime code thin**
-so the whole CMS decouples from the CSS/Node foundation onto another Solid server.
+so the whole IPMS decouples from the CSS/Node foundation onto another Solid server.
 
 ### 1.5 Enterprise connectivity — ODBC + LDAP/AD via the mapper (the *on-ramp*)
 
-Mirrors §1.4's off-ramp: orgs have existing **relational DBs** and **Active Directory/LDAP**; adopting the CMS
+Mirrors §1.4's off-ramp: orgs have existing **relational DBs** and **Active Directory/LDAP**; adopting the IPMS
 needs to bring that in. "You can arrive" as cleanly as "you can leave."
 - **Rust connector layer (§1.2).** Native **ODBC** (relational) + **LDAP/AD** (directory) — a good Rust fit
   (`odbc-api`, `ldap3`); runs as a **connector sidecar** (harness on desktop / container in K8s), talking the
@@ -191,7 +191,7 @@ needs to bring that in. "You can arrive" as cleanly as "you can leave."
 
 Settled across the SPARQL / Oxigraph / WASM / internal-pods discussion. **The model is fixed; the engine is a
 choice** — which is the no-lock-in principle (§1.4) applied to storage.
-- **Model (fixed, portable):** all CMS/org operational data = **internal Solid pods** on `databox.[org].[tld]`
+- **Model (fixed, portable):** all IPMS/org operational data = **internal Solid pods** on `databox.[org].[tld]`
   — WAC-scoped to org/admin agents, **not** publicly discoverable/federated (excluded from public Type Index),
   distinct from external/interop pods (people's pods, public profiles). Reuses CSS multi-pod + the databox's
   existing private-provisioning. Source of truth is **Solid pods** → vanilla-Solid + portable by construction
@@ -213,7 +213,7 @@ choice** — which is the no-lock-in principle (§1.4) applied to storage.
   rebuildable:** lose it → re-hydrate from the pods, so **backup = pods only**. This **sidesteps** the hard
   WAC-respecting-*write*-SPARQL problem — that "Oxigraph owns writes + Solid-persistence + WAC extension" model
   (see prior-art review) becomes a **maybe-later frontier, not a dependency**.
-- **Query:** **SPARQL over the hydrated env** for the CMS's function; **Comunica-over-LDP** = the vanilla
+- **Query:** **SPARQL over the hydrated env** for the IPMS's function; **Comunica-over-LDP** = the vanilla
   fallback on a plain Solid server (§1.4). The raw SPARQL endpoint is **internal/admin only** (public bypasses
   WAC). **Authority-on-read** within the org is **governance-scoped** (§5.7) at the query layer (+ sensitive
   data in separate named graphs) — *not* raw per-triple WAC-SPARQL; external sharing still goes via CSS/LDP/WAC.
@@ -235,7 +235,7 @@ choice** — which is the no-lock-in principle (§1.4) applied to storage.
 
 ## 2. Prior art reviewed — SolidOS (and what we reuse)
 
-SolidOS is, in effect, an existing "OS/CMS for Solid" (a pod data-browser + app shell). Reviewed the repos
+SolidOS is, in effect, an existing "OS/IPMS for Solid" (a pod data-browser + app shell). Reviewed the repos
 you flagged plus the wider org. Honest reuse decisions below — the key friction is that the SolidOS stack
 is **rdflib.js + plain-DOM widgets**, while `forge-admin` is **React/Refine + fetch**; so we adopt SolidOS
 *patterns and ontologies*, and take its code only where it doesn't drag the whole DOM/rdflib runtime in.
@@ -245,15 +245,15 @@ is **rdflib.js + plain-DOM widgets**, while `forge-admin` is **React/Refine + fe
 | [pane-registry](https://github.com/SolidOS/pane-registry) | Index of "panes" (UI views) loaded statically/dynamically, selected per resource RDF type — a plugin registry. | **Adopt the pattern** (type/role → view plugin) for our module & admin-UI registry; reimplement React-native. Don't take the dep (DOM-oriented). |
 | [solid-ui](https://github.com/SolidOS/solid-ui) | UI widgets + **RDF-driven forms** interpreting the W3C `ui#` ontology (TBL's declarative forms; auto-save per field). [forms intro](https://solidos.github.io/solid-ui/Documentation/forms-intro.html) | **Adopt the `ui#` ontology** as our module/config *shape* language (see §3). Optionally embed solid-ui form rendering later; not core now. |
 | [solid-logic](https://github.com/SolidOS/solid-logic) | Core business logic: authn/session, `store`, ACL, `createTypeIndexLogic`, issuer discovery. Node-usable, **rdflib peer dep**. | **Borrow the conventions** (Type Index, ACL patterns) — implement server-side with CSS's own primitives. Consider it as an *optional* browser dep for the admin app only if we need pod RW there. |
-| solid-panes / mashlib | The core panes + the assembled data-browser shell. | Reference only — this is the "whole SolidOS app"; we're building an admin CMS on CSS, not embedding mashlib. |
+| solid-panes / mashlib | The core panes + the assembled data-browser shell. | Reference only — this is the "whole SolidOS app"; we're building an admin IPMS on CSS, not embedding mashlib. |
 | rdflib.js / solid-namespace | RDF store + namespace helpers. | CSS already uses `n3` + `@rdfjs/types` + its own `Vocabularies.ts`. Stay on CSS's stack server-side. |
 
-**Net:** SolidOS validates the whole shape (plugin registry + RDF forms + Type Index + ACL = a Solid CMS).
+**Net:** SolidOS validates the whole shape (plugin registry + RDF forms + Type Index + ACL = a Solid IPMS).
 We take its **ontologies and conventions**, keep our runtime (CSS server-side; React admin client-side).
 
 ### 2.1 The Solid Project ([github.com/solid](https://github.com/solid)) — normative specs we conform to
 
-Distinct from SolidOS (implementation): this org holds the **specs** the CMS must conform to, not code we
+Distinct from SolidOS (implementation): this org holds the **specs** the IPMS must conform to, not code we
 embed. Relevant: [`specification`](https://github.com/solid/specification) (Solid Protocol),
 [`solid-oidc`](https://github.com/solid/solid-oidc) (auth), `web-access-control-spec` (WAC),
 [`webid-profile`](https://github.com/solid/webid-profile) (agent/WebID discovery),
@@ -269,8 +269,8 @@ a rebuild.
 
 | Repo | What | Use to us |
 |---|---|---|
-| [`data-modules`](https://github.com/solid-contrib/data-modules) | Reusable read/write for one data type each (bookmarks, chats, contacts, tasks, profile); vanilla/soukai/rdflib/LDO flavours (NLnet-funded). | **Strong dep candidate** for CMS *content* modules — don't hand-roll RDF for common types. |
-| [`LibreChat`](https://github.com/solid-contrib/LibreChat) | Full AI chat app. | **Exemplar** of a third-party Solid app installed as a module that **consumes CMS config/setup** (API keys, model config) — your example. Validates the "apps depend on settings" flow. |
+| [`data-modules`](https://github.com/solid-contrib/data-modules) | Reusable read/write for one data type each (bookmarks, chats, contacts, tasks, profile); vanilla/soukai/rdflib/LDO flavours (NLnet-funded). | **Strong dep candidate** for IPMS *content* modules — don't hand-roll RDF for common types. |
+| [`LibreChat`](https://github.com/solid-contrib/LibreChat) | Full AI chat app. | **Exemplar** of a third-party Solid app installed as a module that **consumes IPMS config/setup** (API keys, model config) — your example. Validates the "apps depend on settings" flow. |
 | `solid-node-client`, `solid-auth-fetcher` | Node Solid client + auth. | Server-side module→pod calls; app auth. |
 | `access-control-policy`, `web-access-control-tests` | ACP impl + WAC conformance tests. | User-management/ACL correctness (§5.5). |
 | `solid-crud-tests` (incl. **WebSocket**), `conformance-test-harness` | Surface + conformance tests. | Validate the real-time module (§10.3) + overall spec conformance. |
@@ -301,8 +301,8 @@ reasonable way to model richer module data (POS orders, receipts) without raw tr
   **model (RDF) + protocol (Solid)**, never the ontology chosen.
 - **Local vocab utility already exists:** `src/util/Vocabularies.ts` with `createVocabulary()` /
   `extendVocabulary()` and namespaces ACL, ACP, AS, DC, FOAF, LDP, **PIM**, **SOLID**, VCARD, NOTIFY, etc.
-  → **Add our CMS/module vocab as a new `createVocabulary()` entry here.** Proposed namespace
-  `urn:solid-server:databox:cms#` (URN, consistent with existing `urn:solid-server:…` ids; a resolvable
+  → **Add our IPMS/module vocab as a new `createVocabulary()` entry here.** Proposed namespace
+  `urn:solid-server:databox:ipms#` (URN, consistent with existing `urn:solid-server:…` ids; a resolvable
   `w3id.org/databox` vocab is a **TBC** follow-up, not fabricated now). **⟵ your call** on namespace, since
   you drive the standards spine (DPV/ODRL already in the taxonomy work).
 - **Adopt W3C `ui#`** (`http://www.w3.org/ns/ui#`) for **config form shapes** — module settings described in
@@ -310,7 +310,7 @@ reasonable way to model richer module data (POS orders, receipts) without raw tr
   `ui#` for presentation. Could carry both.)
 - **Adopt `solid:` Type Index** (public/private type registrations, already in the `SOLID` vocab) so module
   data locations are **discoverable in the pod** the Solid-standard way, rather than hard-coded paths.
-- **Reuse `PIM`** (`pim:storage`, workspace/preferences) for where CMS/site settings live.
+- **Reuse `PIM`** (`pim:storage`, workspace/preferences) for where IPMS/site settings live.
 - **Directory + legal entity (§5.0):** adopt the **W3C Org Ontology** (`org:` — `org:Organization`,
   `org:Membership`, `org:Role`, `org:memberOf`/`org:hasMember`, `org:Post`) for org structure and roles; the
   **Registered Organization Vocabulary** (`rov:`/regorg) + schema.org `Organization` (already in setup) for
@@ -367,15 +367,15 @@ reasonable way to model richer module data (POS orders, receipts) without raw tr
 
 - **Accounts / identity / login / pod provisioning** — `config/identity/**`, the account API, Solid-OIDC.
   → User management **surfaces and extends** this; it does not re-implement auth.
-- **Access control** — WAC (`webacl`) and ACP presets already wired. → CMS roles/grants ride ACL/ACP.
+- **Access control** — WAC (`webacl`) and ACP presets already wired. → IPMS roles/grants ride ACL/ACP.
 - **Storage + LDP + content negotiation** — the `ResourceStore`; `CssDataboxStore`
   (`src/databox/integration/CssDataboxStore.ts`) already commits **config/state as `ldp:BasicContainer`
-  turtle with `.acl` boundaries**. → the exact pattern for all CMS "state as Solid resource".
+  turtle with `.acl` boundaries**. → the exact pattern for all IPMS "state as Solid resource".
 - **Composition / "static modules"** — **Components.js** (`config/**/*.json`). This is CSS's existing module
-  layer (install-time). Our CMS adds the *runtime-enableable, self-describing, Solid-config-backed* layer on
+  layer (install-time). Our IPMS adds the *runtime-enableable, self-describing, Solid-config-backed* layer on
   top. Stated plainly: a **new fork convention, not an upstream standard** (per `feedback-community-work-standard`).
 - **Control-plane auth** — `LiveDataboxHttpHandler` (`timingSafeEqual`, ≥32-byte token) already protects
-  `/.databox/forge/*`. → the CMS control routes reuse this boundary (proper operator IAM is the later hardening).
+  `/.databox/forge/*`. → the IPMS control routes reuse this boundary (proper operator IAM is the later hardening).
 - **Tenant binding** — `TenantBindingRegistry` binds origins/audiences to a program (T-31, no platform-wide
   credential). → the hosting module registers the new `databox.<apex>` origin here.
 - **Real-time / notifications** — CSS already ships the Solid **Notifications Protocol**: a
@@ -387,9 +387,9 @@ reasonable way to model richer module data (POS orders, receipts) without raw tr
 
 ---
 
-## 5. Architecture — the Solid CMS layer
+## 5. Architecture — the Solid IPMS layer
 
-A CMS shell on CSS. Seven subsystems; each stores state as WAC/ACP-protected LDP/RDF, discoverable via Type
+A IPMS shell on CSS. Seven subsystems; each stores state as WAC/ACP-protected LDP/RDF, discoverable via Type
 Index. Server components mirror `InMemoryTenantBindingRegistry`'s shape; persistence mirrors `CssDataboxStore`.
 
 **5.0 Core model — legal entity + relationship directory (the spine everything hangs off).**
@@ -427,9 +427,9 @@ Two parts, both Solid-native:
 - `SolidModuleManifest` (TS interface + JSON-LD descriptor): `id, name, version, description, capabilities[],
   routes[], configShape(ui#/SHACL), adminUi{ navLabel, path }`.
 - `DataboxModuleRegistry` (interface + in-memory ref impl): list installed, enabled-state, config link.
-- Enabled-state + config persisted as RDF at `/.databox/cms/modules/<id>` (+ `/config`), WAC-locked to admin.
+- Enabled-state + config persisted as RDF at `/.databox/ipms/modules/<id>` (+ `/config`), WAC-locked to admin.
 - Generalise the hardcoded route ladder in `src/databox/forge/MappingForgeHttpApi.ts` into a **module route
-  dispatch** `(method, subpath) → handler`, mounted under `/.databox/cms` (sibling to `/.databox/forge`),
+  dispatch** `(method, subpath) → handler`, mounted under `/.databox/ipms` (sibling to `/.databox/forge`),
   behind the existing control token.
 
 **5.2 Configuration** — site-wide settings (name, branding, locale, storage/baseUrl *intent*) as an RDF
@@ -440,7 +440,7 @@ first module (hosting). The existing **Organization Set-up** page (`forge-admin/
 here as the "org identity + information-obligations" step (already built; taxonomy work per
 `forge-admin-info-taxonomy-direction`).
 
-**5.4 Admin shell** — `forge-admin` becomes the CMS admin: sidebar rendered **dynamically from enabled
+**5.4 Admin shell** — `forge-admin` becomes the IPMS admin: sidebar rendered **dynamically from enabled
 modules** (replaces today's hardcoded `NavLink` list in `forge-admin/src/components/layout/index.tsx`),
 a dashboard, and the module/config/user screens. A module appears only when enabled — this is the
 "**page that can be enabled**" mechanism, backed by real server state (not just a `VITE_` flag, though a
@@ -520,35 +520,35 @@ hosting config (bullet (4) above).
 
 ## 7. Files (create ✎ / modify ✏)
 
-**Server — CMS framework:**
-- ✎ `src/databox/cms/SolidModuleManifest.ts`, `DataboxModuleRegistry.ts`, `ModuleConfigStore.ts`
+**Server — IPMS framework:**
+- ✎ `src/databox/ipms/SolidModuleManifest.ts`, `DataboxModuleRegistry.ts`, `ModuleConfigStore.ts`
   (mirror `TenantBindingRegistry` / reuse `CssDataboxStore` primitives).
-- ✏ `src/util/Vocabularies.ts` — add the CMS/module vocabulary via `createVocabulary()`.
-- ✏ `src/databox/forge/MappingForgeHttpApi.ts` — extract reusable route dispatch (or sibling `CmsHttpApi`);
+- ✏ `src/util/Vocabularies.ts` — add the IPMS/module vocabulary via `createVocabulary()`.
+- ✏ `src/databox/forge/MappingForgeHttpApi.ts` — extract reusable route dispatch (or sibling `IpmsHttpApi`);
   keep forge routes working.
-- ✏ `config/databox/live-handler.json` (+ new `config/databox/cms.json`) — wire registry + `/.databox/cms`.
+- ✏ `config/databox/live-handler.json` (+ new `config/databox/ipms.json`) — wire registry + `/.databox/ipms`.
 
 **Config / packaging — the opt-in install profile (§1.1):**
-- ✎ `config/cms/*.json` — the layered CMS preset(s) that import the base + databox presets and add the CMS
+- ✎ `config/ipms/*.json` — the layered IPMS preset(s) that import the base + databox presets and add the IPMS
   graph. Basic/base presets (`config/default.json`, storage, identity, …) are **not modified**.
-- ✏ `package.json` — a `start:cms` script (parallel to `start:databox-live`); no change to default `start`.
-- Documented profile ladder: **basic → +databox → +cms → +modules**.
-- ✎ `docker-compose.yml` (§1.3) — CMS container + `/data` volume + env/secrets; the existing `Dockerfile`
-  runs the CMS by pointing `CSS_CONFIG` at the CMS preset. Multi-arch (amd64+arm64).
+- ✏ `package.json` — a `start:ipms` script (parallel to `start:databox-live`); no change to default `start`.
+- Documented profile ladder: **basic → +databox → +ipms → +modules**.
+- ✎ `docker-compose.yml` (§1.3) — IPMS container + `/data` volume + env/secrets; the existing `Dockerfile`
+  runs the IPMS by pointing `CSS_CONFIG` at the IPMS preset. Multi-arch (amd64+arm64).
 
 **Server — hosting module:**
-- ✎ `src/databox/cms/modules/hosting/HostingModule.ts` (manifest + route handlers),
+- ✎ `src/databox/ipms/modules/hosting/HostingModule.ts` (manifest + route handlers),
   `HostingConfig.ts` (pure DNS-record/artifact derivation — unit-testable).
 
 **Admin panel (`forge-admin`):**
 - ✎ `src/pages/hosting/index.tsx` (wizard), `src/modules/` (module-contribution convention).
 - ✏ `src/components/layout/index.tsx` (dynamic sidebar), `src/App.tsx` (routes/resources),
-  `src/providers/dataProvider.ts` (`modules`/`hosting`/`config` resources → `/.databox/cms`).
+  `src/providers/dataProvider.ts` (`modules`/`hosting`/`config` resources → `/.databox/ipms`).
 
 **Tests (src/ is under a 100% coverage gate):**
 - ✎ Unit: registry (register/enable/disable, fail-closed), config store (LDP commit + WAC), hosting artifact
   derivation (both routes, wildcard, www reserve, DNS correctness), vocab.
-- ✎ Integration: extend the `test/integration/DataboxLive.test.ts` pattern — `/.databox/cms` token-protected,
+- ✎ Integration: extend the `test/integration/DataboxLive.test.ts` pattern — `/.databox/ipms` token-protected,
   enable/disable persists as a retrievable Solid resource, hosting config round-trips.
 
 ---
@@ -557,29 +557,29 @@ hosting config (bullet (4) above).
 
 Prefix every node/npm cmd with `export PATH="/c/nvm4w/nodejs:$PATH"`; Jest scoped, `--maxWorkers=2`;
 `rm -f .eslintcache` before lint (per `project-node24-and-deps-upgrade-state`).
-1. **Unit:** `npx jest test/unit/databox/cms --maxWorkers=2` — green, 100% coverage on new `src/` branches.
-2. **Integration:** new `DataboxCms.test.ts` (or extend `DataboxLive.test.ts`, `--runInBand`) — real CSS
-   process, random ≥32-byte token; `/.databox/cms` rejects without token; enable/disable writes a Solid
+1. **Unit:** `npx jest test/unit/databox/ipms --maxWorkers=2` — green, 100% coverage on new `src/` branches.
+2. **Integration:** new `DataboxIpms.test.ts` (or extend `DataboxLive.test.ts`, `--runInBand`) — real CSS
+   process, random ≥32-byte token; `/.databox/ipms` rejects without token; enable/disable writes a Solid
    resource retrievable via normal LDP; hosting config round-trips → expected DNS for both routes.
 3. **Admin UI:** run `forge-admin` dev; enable the hosting module → nav entry appears; wizard computes
    `databox.acme.org` + `www.acme.org`, renders the correct Cloudflare DNS table, config persists.
 4. **Gate:** build + lint + tsc(src+test) green on Node 24.18.0.
 5. **Basic profile untouched (§1.1):** launch the vanilla base config (e.g. `config/default.json`) with **no**
-   CMS preset and confirm a plain Solid server boots and the existing base test suites still pass — the CMS
+   IPMS preset and confirm a plain Solid server boots and the existing base test suites still pass — the IPMS
    layer must add nothing to, and remove nothing from, the basic install.
 
 ---
 
 ## 9. Phasing & open decisions
 
-- **Pass 1:** CMS core (module registry/manifest/config-as-resource/route dispatch) + dynamic admin sidebar +
+- **Pass 1:** IPMS core (module registry/manifest/config-as-resource/route dispatch) + dynamic admin sidebar +
   hosting module (guided v1) + vocab. Seams for config/setup/users defined.
 - **Pass 2+:** user management depth, config/setup UIs via `ui#` forms, Cloudflare API apply (v2), the `www`
   site served via databox capabilities, resolvable `w3id.org/databox` vocab.
 
 **Open / your input wanted:**
 1. **Where does this plan live?** Move into the repo (`databox/*.md`, alongside the ADRs) for version control? **⟵**
-2. **CMS vocab namespace** (`urn:solid-server:databox:cms#` vs a `w3id.org/databox` scheme). **⟵**
+2. **IPMS vocab namespace** (`urn:solid-server:databox:ipms#` vs a `w3id.org/databox` scheme). **⟵**
 3. **How WordPress-like** — do you want hooks/filters (event interception), a module marketplace/registry, and
    capability negotiation between modules, or is enable/disable + config + admin-UI enough for now? **⟵**
 4. **User-management depth in pass 1** (list/create + admin role only, vs. full role/capability model). **⟵**
@@ -593,7 +593,7 @@ Prefix every node/npm cmd with `export PATH="/c/nvm4w/nodejs:$PATH"`; Jest scope
 11. **Governance (§5.7)** — how much is machine-enforced vs recorded in pass 1 (role→authority + a simple
     approval gate + resolution records, vs. full quorum/voting)? Any governance/decision vocab you want to
     anchor on beyond Org + ODRL + DPV? **⟵ (standards-lead)**
-12. **Packaging (§1.1)** — keep the CMS as in-repo presets now, or plan to extract it into a **separately
+12. **Packaging (§1.1)** — keep the IPMS as in-repo presets now, or plan to extract it into a **separately
     installable package** (depending on `@solid/community-server`) for upstream-CSS operators? **⟵**
 13. **Discovery protocol (§10.6)** — LDN for the notification leg + Type Index/`.well-known` for endpoint
     discovery: confirm this split, or a different mechanism? **⟵**
@@ -621,7 +621,7 @@ Prefix every node/npm cmd with `export PATH="/c/nvm4w/nodejs:$PATH"`; Jest scope
 
 ## 10. Module roadmap & device identity (the small-business growth path)
 
-The CMS exists so these ship as **modules**, not forks. Ordered by the north star (§1). Each is a *seam*
+The IPMS exists so these ship as **modules**, not forks. Ordered by the north star (§1). Each is a *seam*
 now; only Hosting is built in pass 1.
 
 **10.1 Hosting / Cloudflare** — §6. First module. In scope now.
@@ -631,11 +631,11 @@ Devices (displays, POS terminals, scanners, sensors) are **directory entries** (
 governed by least-privilege WAC/ACP. Provisioning follows Timothy's cinema-rollout model (a small client app
 given a URI, provisioned a cert that governs the device):
 
-1. **Enrol:** operator creates a device in the directory → CMS issues a one-time **claim URI** (enrolment
+1. **Enrol:** operator creates a device in the directory → IPMS issues a one-time **claim URI** (enrolment
    token) + the intended device WebID (e.g. `https://devices.databox.<apex>/screen-01#id`) with role(s).
 2. **Client app (Rust static binary — good fit: cheap hardware, holds its own cert):** given the claim URI,
    it generates a keypair locally and enrols (claim token + public key / CSR).
-3. **Bind:** CMS issues a **client certificate** for that key and writes the public key into the device WebID
+3. **Bind:** IPMS issues a **client certificate** for that key and writes the public key into the device WebID
    profile as **`cert:key`** — the WebID-TLS binding.
 4. **Authenticate:** thereafter the device uses **mutual TLS**; the server verifies the presented cert's key
    matches `cert:key` in its WebID profile (the WebID-TLS algorithm). Governance = WAC/ACP + `TenantBinding`.
@@ -660,7 +660,7 @@ interactive flow). So it's the chosen direction. Honest caveats (engineering, no
   spine), telemetry via notifications (§10.3).
 
 **10.3 Real-time / WebSockets.** CSS already implements the Solid Notifications Protocol (§4). Module work is
-to **enable + surface**: a CMS module manages notification channels and exposes live resource-change streams
+to **enable + surface**: a IPMS module manages notification channels and exposes live resource-change streams
 to the admin UI and to POS/IoT. General app-level pub/sub *beyond* resource notifications (e.g. a POS order
 bus) is a further extension — decide whether to model it as Solid resources + notifications (standards-pure)
 or a dedicated socket channel.
@@ -672,7 +672,7 @@ design pass. Seam + data-model sketch now, build later. **Depends on the Payment
 
 **10.5 Payments (comprehensive) — the money layer POS depends on.** You want full payments: web-payments
 standards, receipts, and real gateways (Stripe + others). Design as a **`PaymentGateway` adapter pattern**
-(one interface, swappable adapters), so the CMS is gateway-agnostic:
+(one interface, swappable adapters), so the IPMS is gateway-agnostic:
 
 - **PCI-safe boundary (non-negotiable, and a safety line):** the self-hosted shop box **never handles raw
   card data (PAN/CVV)**. Use the gateway's **hosted fields / hosted checkout** (e.g. Stripe Checkout /
@@ -829,7 +829,7 @@ Feeds (§10.8), Website (§10.7), Hosting (§6), Real-time (§10.3), Delivery (�
 - **#22 Verticals as bundles** — model industry profiles as declarative **module-bundle + vocab** manifests
   (composing horizontals), ANZSIC-keyed? **⟵**
 - **#23 Connector/broker deployment shape** (job-marketplace) — a **third deployment shape** beyond single-org
-  and multi-tenant: the CMS as a broker over *external* pods it doesn't own. Confirm it as a **flagship later
+  and multi-tenant: the IPMS as a broker over *external* pods it doesn't own. Confirm it as a **flagship later
   vertical** (not pass-1), and that matching/trust-across-pods is scoped as a research track. **⟵**
 - **#24 Minimal-disclosure verification** — confirm **verify-don't-store + government-as-issuer** as the
   default (curator holds nothing sensitive; raw police/WWCC holding is a strictly-authorised fallback), and
@@ -876,7 +876,7 @@ Feeds (§10.8), Website (§10.7), Hosting (§6), Real-time (§10.3), Delivery (�
   **jobs/work-order** horizontal, and — for 3D — **digital-rights licensing** (print-count/CC, pay-per-print
   via Open Payments) + a possible **design marketplace** (creators license models, bring own pods = federation).
 - **Job/task marketplace / modern Yellow Pages** (Airtasker / Taskify shape) → the **fullest anti-extractive
-  Solid case** and a distinct **deployment shape: CMS-as-connector/broker** whose "inventory" is *other
+  Solid case** and a distinct **deployment shape: IPMS-as-connector/broker** whose "inventory" is *other
   people's pods*, not owned data. Connects **independent personal pod owners** across three roles: a
   **professional** (provider, advertises services from *their own* pod), a **contractor** (requester/hirer),
   and a **curator** (a *new actor* — broker orchestrating the multi-party workflow for a service fee). Surfaces
@@ -956,7 +956,7 @@ Modules = **horizontal capabilities** (reusable) composed by **vertical profiles
 `FOOD BAR OPSHOP CHARITY AUTO ACCOM FEST CONTENT PROF MEMBER MKT(multi-tenant) HEALTH PRINT JOBMKT REALEST
 COMMUNITY CLOTHING PET SHARE VENUE MFG`. "All" = every deployment.
 
-### 12.1 Group A — CMS framework (all deployments)
+### 12.1 Group A — IPMS framework (all deployments)
 | Module | Sub-modules | Use-cases |
 |---|---|---|
 | Module system | registry, manifest, config-as-Solid-resource, route dispatch, enable/disable, capability-modes (portable-core/enhanced) | All |
@@ -1058,7 +1058,7 @@ Two surfaces: **admin shell** + **public website**. Design:
   **standard-Solid provider** (two modes §1.4); ontology scaffolding + `Vocabularies.ts` entry (§3); **theming
   token engine** skeleton; and the **invariant test harness** (basic-install-untouched, vanilla-Solid
   conformance, mode-degradation) that every later agent runs against. **Deliverable:** an empty vanilla-Solid
-  CMS shell that boots with the four invariants CI-enforced. *This phase is the guardrail; do not parallelise
+  IPMS shell that boots with the four invariants CI-enforced. *This phase is the guardrail; do not parallelise
   carelessly.*
 - **Phase 1 — Core entity model** (mostly sequential). Legal entity (§5.0.1); directory & relationships (§5.5);
   **pluralistic governance primitive** (role→authority + approval gate + resolution records §5.7); VC issue/
@@ -1100,5 +1100,5 @@ minimal-disclosure); vanilla-Solid define-by-demonstration (§1.4 #29); ontology
 
 ## 14. Note on this document
 This plan has outgrown a single working file (~1000+ lines). **Recommended (decision #1):** move it into the
-repo as `databox/solid-cms-plan.md` (beside the ADRs), and consider splitting: `…-vision.md` (§1–§5),
+repo as `databox/solid-ipms-plan.md` (beside the ADRs), and consider splitting: `…-vision.md` (§1–§5),
 `…-usecases.md` (§11–§12), `…-implementation.md` (§13). Version-controlled, so it evolves with the code.

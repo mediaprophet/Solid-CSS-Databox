@@ -57,7 +57,7 @@ wiring until a preset consciously swaps them out.
 
 ### 2.1 `OdbcConnector` — Mock SQL data
 
-- **File:** `src/databox/cms/sidecars/OdbcConnector.ts:9-46`
+- **File:** `src/databox/ipms/sidecars/OdbcConnector.ts:9-46`
 - **Issue:** Returns hardcoded mock rows (`Acme Corp`, `Globex Inc`) instead of executing
   a real ODBC query. Comment says: "In a real implementation, we would use the `odbc`
   NPM package."
@@ -67,7 +67,7 @@ wiring until a preset consciously swaps them out.
 
 ### 2.2 `LdapConnector` — Mock LDAP data
 
-- **File:** `src/databox/cms/sidecars/LdapConnector.ts:18-55`
+- **File:** `src/databox/ipms/sidecars/LdapConnector.ts:18-55`
 - **Issue:** Returns hardcoded mock entries (`Admin User`, `John Doe`) instead of
   binding to and searching a real LDAP directory. Comment says: "In a real
   implementation, we would use `ldapjs` to bind and search."
@@ -89,7 +89,7 @@ wiring until a preset consciously swaps them out.
 
 ### 2.4 `ConnectorSidecar` — `require.main` check
 
-- **File:** `src/databox/cms/sidecars/ConnectorSidecar.ts:59`
+- **File:** `src/databox/ipms/sidecars/ConnectorSidecar.ts:59`
 - **Issue:** Uses `require.main === module` which is CJS syntax. The project is moving
   to ESM (`"type": "module"` in `package.json`, `nodenext` module resolution). This
   will break under ESM.
@@ -142,7 +142,7 @@ and missing prop validation.
 - **File:** `forge-admin/src/providers/demoDataProvider.ts:1-465+`
 - **Issue:** The entire demo data provider uses in-memory mutable arrays (`mockPrograms`,
   `mockCorrections`, `mockAccessRequests`, `mockLedger`, `mockOutboundRequests`,
-  `mockCmsModules`, `mockVerticalProfiles`). It creates, updates, and deletes from
+  `mockIpmsModules`, `mockVerticalProfiles`). It creates, updates, and deletes from
   these arrays — no persistence, no Solid backend.
 - **Status:** This is **intentional** for demo/dev mode (activated by `VITE_DEMO=true`).
   It is not a scaffold — it's a feature. But it must not be used in production.
@@ -153,7 +153,7 @@ and missing prop validation.
 - **File:** `forge-admin/src/providers/standardSolidDataProvider.ts`
 - **Issue:** Many resources return `degraded: true` with `degradationReason` strings.
   This is **by design** — the standard-Solid provider is the "portable-core" mode that
-  reads from ordinary Solid resources without the CSS CMS control plane. Operations like
+  reads from ordinary Solid resources without the CSS IPMS control plane. Operations like
   enabling/disabling modules or applying vertical profiles are unavailable.
 - **Status:** Intentional degradation, not a stub. The missing piece is that some
   resources simply return `list([])` with a degradation reason (e.g. when
@@ -257,9 +257,9 @@ and missing prop validation.
 
 ---
 
-## 6. CMS Module Scaffolds (Server-Side)
+## 6. IPMS Module Scaffolds (Server-Side)
 
-The CMS has **38 module directories** under `src/databox/cms/modules/`. Most contain
+The IPMS has **38 module directories** under `src/databox/ipms/modules/`. Most contain
 manifest definitions and some route handlers, but many are seams/declarations rather
 than full implementations. Key gaps:
 
@@ -291,7 +291,7 @@ handlers are either absent or return placeholder responses:
 
 ### 6.2 `ui#` form shapes not wired to module manifests
 
-- **Files:** `databox/ontologies/module-config-shapes.ttl`, `src/databox/cms/SolidModuleManifest.ts`
+- **Files:** `databox/ontologies/module-config-shapes.ttl`, `src/databox/ipms/SolidModuleManifest.ts`
 - **Issue:** The `ui#` shapes file defines config forms for hosting, POS, and receipt
   modules, but the `configShape` field on `SolidModuleManifest` is not yet populated to
   point at these shape IRIs in the built-in module registrations.
@@ -314,28 +314,28 @@ handlers are either absent or return placeholder responses:
 
 ## 7. Configuration and Packaging Gaps
 
-### 7.1 No `docker-compose.yml` for CMS
+### 7.1 No `docker-compose.yml` for IPMS
 
-- **Plan reference:** `solid-cms-plan.md` §7, line 589
-- **Issue:** The plan calls for a `docker-compose.yml` with CMS container + `/data`
+- **Plan reference:** `solid-ipms-plan.md` §7, line 589
+- **Issue:** The plan calls for a `docker-compose.yml` with IPMS container + `/data`
   volume + env/secrets, multi-arch (amd64+arm64). None exists.
-- **Work needed:** Create `docker-compose.yml` with the CMS service, volume mounts,
+- **Work needed:** Create `docker-compose.yml` with the IPMS service, volume mounts,
   environment variables, and health check.
 - **Severity:** **Medium** — needed for containerized deployments.
 
-### 7.2 No `config/databox/cms.json` handler config
+### 7.2 No `config/databox/ipms.json` handler config
 
-- **Plan reference:** `solid-cms-plan.md` §7, line 582
-- **Issue:** The plan calls for `config/databox/cms.json` to wire the registry +
-  `/.databox/cms` route. The CMS config exists at `config/cms/cms.json` but the
+- **Plan reference:** `solid-ipms-plan.md` §7, line 582
+- **Issue:** The plan calls for `config/databox/ipms.json` to wire the registry +
+  `/.databox/ipms` route. The IPMS config exists at `config/ipms/ipms.json` but the
   handler-level wiring config may be incomplete.
 - **Work needed:** Verify the handler chain is fully wired in the config preset.
 - **Severity:** **Low** — may already be partially addressed.
 
 ### 7.3 Profile ladder not documented
 
-- **Plan reference:** `solid-cms-plan.md` §7, line 588
-- **Issue:** The plan calls for a documented profile ladder: basic → +databox → +cms →
+- **Plan reference:** `solid-ipms-plan.md` §7, line 588
+- **Issue:** The plan calls for a documented profile ladder: basic → +databox → +ipms →
   +modules. No documentation file exists for this.
 - **Work needed:** Write a profile ladder doc explaining each layer and what it adds.
 - **Severity:** **Low** — documentation.
@@ -346,7 +346,7 @@ handlers are either absent or return placeholder responses:
 
 ### 8.1 No unit tests for new vocabulary terms
 
-- **Issue:** The extended `CMS` and new `UI` vocabularies in `src/util/Vocabularies.ts`
+- **Issue:** The extended `IPMS` and new `UI` vocabularies in `src/util/Vocabularies.ts`
   have no unit tests verifying term resolution.
 - **Work needed:** Add tests to `test/unit/util/Vocabularies` that verify all new terms
   resolve to the correct namespace IRI.
@@ -397,8 +397,8 @@ handlers are either absent or return placeholder responses:
 
 | # | Item | Subsystem |
 |---|------|-----------|
-| 2.1 | ODBC connector returns mock data | CMS sidecars |
-| 2.2 | LDAP connector returns mock data | CMS sidecars |
+| 2.1 | ODBC connector returns mock data | IPMS sidecars |
+| 2.2 | LDAP connector returns mock data | IPMS sidecars |
 | 3 | `@ts-nocheck` on all 22 forge-admin pages | forge-admin |
 | 5.1 | Installer Node.js download not implemented | native/installer |
 | 5.2 | Installer app extraction not implemented | native/installer |
@@ -409,14 +409,14 @@ handlers are either absent or return placeholder responses:
 | # | Item | Subsystem |
 |---|------|-----------|
 | 2.3 | Binary evidence scanner deferred (fail-closed) | gateway |
-| 2.4 | `ConnectorSidecar` uses CJS `require.main` | CMS sidecars |
+| 2.4 | `ConnectorSidecar` uses CJS `require.main` | IPMS sidecars |
 | 5.3 | Crypto bootstrap (OIDC keys) not implemented | native/installer |
 | 5.5 | Windows privilege check is a print-only stub | native/installer |
 | 5.7 | Direct cash drawer mode is a no-op | native/pos-edge |
-| 6.1 | 15+ CMS modules are manifest-only scaffolds | CMS modules |
-| 6.2 | `ui#` shapes not wired to module manifests | CMS modules |
+| 6.1 | 15+ IPMS modules are manifest-only scaffolds | IPMS modules |
+| 6.2 | `ui#` shapes not wired to module manifests | IPMS modules |
 | 6.3 | `UiFormRenderer` not connected to modules page | forge-admin |
-| 7.1 | No `docker-compose.yml` for CMS | packaging |
+| 7.1 | No `docker-compose.yml` for IPMS | packaging |
 | 8.1 | No unit tests for new vocabulary terms | tests |
 | 8.2 | No tests for ui# form renderer | tests |
 | 8.3 | No Rust tests for installer or POS edge | tests |
@@ -442,7 +442,7 @@ handlers are either absent or return placeholder responses:
 
 ### 11.1 Hosting module only generates artifacts — no Cloudflare API integration
 
-- **Files:** `src/databox/cms/modules/hosting/HostingConfig.ts`, `HostingApi.ts`
+- **Files:** `src/databox/ipms/modules/hosting/HostingConfig.ts`, `HostingApi.ts`
 - **Issue:** The hosting module computes DNS records and a launch command (pure
   derivation) and exposes a single `POST /hosting/plan` endpoint. It does **not**:
   - Accept or store a Cloudflare API token
@@ -479,13 +479,13 @@ handlers are either absent or return placeholder responses:
 - **Work needed:** Add token input, apply button, persistence, and artifact download.
 - **Severity:** **Medium** — depends on 11.1.
 
-### 11.3 No `docker-compose.yml` for CMS
+### 11.3 No `docker-compose.yml` for IPMS
 
-- **Plan reference:** `solid-cms-plan.md` §0, `dynamic-strolling-lerdorf.md` §1.3
-- **Issue:** The plan calls for a `docker-compose.yml` with CMS container + `/data`
+- **Plan reference:** `solid-ipms-plan.md` §0, `dynamic-strolling-lerdorf.md` §1.3
+- **Issue:** The plan calls for a `docker-compose.yml` with IPMS container + `/data`
   volume + env/secrets. The checkpoint says "Deployment artifacts exist for Docker
   Compose" but no `docker-compose.yml` file is present in the repo root.
-- **Work needed:** Create `docker-compose.yml` with the CMS service, volume mounts,
+- **Work needed:** Create `docker-compose.yml` with the IPMS service, volume mounts,
   environment variables, and health check. Multi-arch (amd64+arm64).
 - **Severity:** **Medium** — needed for containerized deployments.
 
@@ -495,7 +495,7 @@ handlers are either absent or return placeholder responses:
 
 ### 12.1 Current "health" vertical profile is a clinical privacy bundle, not a food-allergy system
 
-- **File:** `src/databox/cms/VerticalProfile.ts:93-112`
+- **File:** `src/databox/ipms/VerticalProfile.ts:93-112`
 - **Issue:** The `health.privacy-consent` vertical profile bundles consent, access
   requests, correction requests, governance, delegation, break-glass, and credential
   gates — this is a **clinical/medical privacy** bundle, not the food-allergy use case.
@@ -527,7 +527,7 @@ handlers are either absent or return placeholder responses:
    accessibility needs. Shared minimally — the retailer sees filtered results, not the
    raw medical record.
 
-2. **Retailer ingredient declaration module** — a CMS module where the food retailer
+2. **Retailer ingredient declaration module** — a IPMS module where the food retailer
    declares ingredients for each menu/catalogue item. Each ingredient links to
    allergen classifications (using a standard ontology — e.g. FSANZ allergen
    categories, schema.org `Recipe`/`MenuItem`). This is the retailer-side data that
@@ -566,7 +566,7 @@ handlers are either absent or return placeholder responses:
 
 ### 13.1 Current state: mock data + no mapping UI
 
-- **Files:** `src/databox/cms/sidecars/OdbcConnector.ts`, `LdapConnector.ts`
+- **Files:** `src/databox/ipms/sidecars/OdbcConnector.ts`, `LdapConnector.ts`
 - **Issue:** Both connectors return hardcoded mock data. The plan (§1.5) calls for
   R2RML/RML declarative mapping via an interactive mapping application — the operator
   defines how source columns/fields map to RDF predicates, and the connector executes
@@ -597,7 +597,7 @@ handlers are either absent or return placeholder responses:
    - Connect to the source (ODBC/LDAP) using credentials from `secretRefs`
    - Execute the query/search
    - Apply the mapping to produce RDF
-   - Write the RDF to stdout (for the CMS to commit to the pod)
+   - Write the RDF to stdout (for the IPMS to commit to the pod)
 
 5. **ESM compatibility** — `ConnectorSidecar.ts` uses `require.main === module` (CJS);
    must be updated for ESM (`import.meta.url`).
@@ -643,7 +643,7 @@ handlers are either absent or return placeholder responses:
    - Options: compile via `wasm-pack` (if Rust-based), or use WASM-based build tools (e.g. `wasm-bindgen`, or Emscripten for existing C/C++ assets). For React/TS apps, a PWA with a WASM-embedded runtime (e.g. Oxigraph WASM for local SPARQL queries) is the pragmatic path — the app shell is a PWA, with WASM modules for heavy client-side work (RDF parsing, SPARQL querying, crypto for VC verification).
 
 3. **Profile-driven availability** — the org's vertical profile determines which apps are available:
-   - The CMS module registry exposes an `orgApps` field on each module manifest (or vertical profile) listing the app IDs that module provides.
+   - The IPMS module registry exposes an `orgApps` field on each module manifest (or vertical profile) listing the app IDs that module provides.
    - The admin panel shows available apps based on enabled modules / applied vertical profile.
    - The org's Solid server serves the apps at a discoverable URL (e.g. `https://databox.<apex>/apps/<app-id>/`), advertised via Type Index or `.well-known`.
    - Devices/installations fetch the app from the org's server, not a public app store.
@@ -656,10 +656,10 @@ handlers are either absent or return placeholder responses:
    - **`remote-capable`:** the tradie app is designed for field use — connects to the org's Solid server from anywhere via the internet. Uses Solid-OIDC for authentication, works over the public `databox.<apex>` endpoint.
    - The network scope is declared in the app manifest (an RDF resource) and enforced by both the server (serving) and the client (connectivity check).
 
-5. **App manifest format** — each app has a manifest (RDF, reusing the CMS module manifest pattern):
+5. **App manifest format** — each app has a manifest (RDF, reusing the IPMS module manifest pattern):
    - `appId`, `name`, `version`, `description`
    - `networkScope`: `local-only` | `remote-capable`
-   - `requiredModules`: which CMS modules must be enabled (e.g. waiter requires `pos.ordering`)
+   - `requiredModules`: which IPMS modules must be enabled (e.g. waiter requires `pos.ordering`)
    - `verticalProfiles`: which profiles include this app (e.g. `food.restaurant`)
    - `installUrl`: where the WASM/PWA bundle is served
    - `permissions`: what Solid access the app needs (read/write to specific resource types)
@@ -680,7 +680,7 @@ handlers are either absent or return placeholder responses:
 
 ### 16.1 Current state: no per-person pod infrastructure
 
-- **Issue:** The CMS models a relationship directory (§5.0 part 2) with typed roles
+- **Issue:** The IPMS models a relationship directory (§5.0 part 2) with typed roles
   (`org:Membership`, `org:Role`) and the databox has opaque person-program
   relationships, but there is no infrastructure for **each organisational member**
   (contractor, employee, director, member, volunteer, referee, etc.) to have their
@@ -691,11 +691,11 @@ handlers are either absent or return placeholder responses:
   relationship directory stores entries pointing at a person's WebID. But the person's
   pod — where they receive organisational communications, hold their role-issued VCs,
   exercise delegated authority, and interact with the org's governance/workflows — is
-  not provisioned or managed by the CMS.
+  not provisioned or managed by the IPMS.
 
 ### 16.2 What needs to be built
 
-1. **Member pod provisioning** — when a directory entry is created (§5.5), the CMS
+1. **Member pod provisioning** — when a directory entry is created (§5.5), the IPMS
    can optionally provision a Solid pod for that person on the org's server (e.g.
    `https://databox.<apex>/<opaque-id>/`) or link to an external pod the person
    already owns. This reuses CSS's existing multi-pod provisioning. The pod is:
@@ -748,7 +748,7 @@ handlers are either absent or return placeholder responses:
      external provider). The org links to it via the directory entry. This is the
      Solid-sovereignty ideal — the person owns their data. The org communicates via
      LDN to the external pod's inbox.
-   - The CMS supports both; the directory entry records which model is in use.
+   - The IPMS supports both; the directory entry records which model is in use.
 
 6. **Lifecycle** — when a role ends (employment terminated, membership lapses,
    contract complete), the org's write access to the member's pod is revoked (WAC
@@ -761,7 +761,7 @@ handlers are either absent or return placeholder responses:
 - **Medium** — the directory and role model exist in the plan (§5.0/§5.5) but the
   per-person pod infrastructure (provisioning, inbox communication, VC delivery,
   bidirectional workflows, federated vs hosted) is not implemented. This is the
-  connective tissue between the org and its people — without it, the CMS can only
+  connective tissue between the org and its people — without it, the IPMS can only
   manage data about people, not interact with them.
 
 ---
@@ -770,7 +770,7 @@ handlers are either absent or return placeholder responses:
 
 ### 15.1 Website maker — not implemented
 
-- **Plan reference:** `solid-cms-plan.md` §0, `dynamic-strolling-lerdorf.md` §10.7
+- **Plan reference:** `solid-ipms-plan.md` §0, `dynamic-strolling-lerdorf.md` §10.7
 - **Issue:** The plan calls for a website maker that pulls back-end "things" (catalogue,
   menu, business info) into public pages with SEO (schema.org JSON-LD, OG tags,
   sitemap.xml, robots.txt). A "public website preview" route exists but does not produce
@@ -785,9 +785,9 @@ handlers are either absent or return placeholder responses:
 - **Issue:** The forge-admin sidebar is hardcoded in `components/layout/index.tsx` with
   static `NavLink` entries. The plan calls for a dynamic sidebar rendered from enabled
   modules — a module appears only when enabled, backed by real server state.
-- **Work needed:** Fetch enabled modules from the CMS API and render nav entries
+- **Work needed:** Fetch enabled modules from the IPMS API and render nav entries
   dynamically.
-- **Severity:** **Medium** — core CMS framework requirement.
+- **Severity:** **Medium** — core IPMS framework requirement.
 
 ### 15.3 Governance module — manifest only
 
@@ -834,7 +834,7 @@ handlers are either absent or return placeholder responses:
 
 - **Plan reference:** `dynamic-strolling-lerdorf.md` §10.3
 - **Issue:** CSS already implements the Solid Notifications Protocol (WebSocketChannel2023,
-  StreamingHTTPChannel2023), but the CMS admin UI does not surface live resource-change
+  StreamingHTTPChannel2023), but the IPMS admin UI does not surface live resource-change
   streams. No module manages notification channels.
 - **Work needed:** Add a notifications module that manages channels and exposes live
   streams to the admin UI and POS/IoT.
@@ -842,8 +842,8 @@ handlers are either absent or return placeholder responses:
 
 ### 15.8 Profile ladder not documented
 
-- **Plan reference:** `solid-cms-plan.md` §1.1
-- **Issue:** The plan calls for a documented profile ladder: basic → +databox → +cms →
+- **Plan reference:** `solid-ipms-plan.md` §1.1
+- **Issue:** The plan calls for a documented profile ladder: basic → +databox → +ipms →
   +modules. No documentation file exists.
 - **Severity:** **Low** — documentation.
 
@@ -869,7 +869,7 @@ handlers are either absent or return placeholder responses:
 
 ### 17.2 What needs to be built
 
-1. **Print shop CMS module** — a module for the printing business that provides:
+1. **Print shop IPMS module** — a module for the printing business that provides:
    - **Catalogue of print services** — document printing, large-format, binding,
      3D printing, archival reproduction, with pricing tiers and turnaround times.
    - **Print job intake** — accepts job submissions from other orgs (via LDN inbox or
@@ -932,7 +932,7 @@ handlers are either absent or return placeholder responses:
    - The historical society has its own Solid pod with archival documents, event flyers,
      membership forms.
    - It needs 200 copies of a heritage booklet printed and delivered for an event.
-   - The society's admin opens their CMS, selects the print provider from their
+   - The society's admin opens their IPMS, selects the print provider from their
      directory, submits the print job (booklet PDF + specifications + ODRL "no-reuse,
      delete-after-fulfilment" + delivery address).
    - The print shop receives the job in their print-app job queue, sends a quote, the
@@ -969,7 +969,7 @@ handlers are either absent or return placeholder responses:
 
 ### 18.2 What needs to be built
 
-1. **HR module** — a CMS module for managing the org's workforce, covering:
+1. **HR module** — a IPMS module for managing the org's workforce, covering:
    - **Employee/contractor onboarding** — creates a directory entry (§5.0(2)) + provisions
      a member pod (§16) with role VC, employment contract (ODRL Agreement + DPV legal
      basis), tax/banking details (stored securely, not in the pod).
@@ -1014,12 +1014,12 @@ handlers are either absent or return placeholder responses:
      - The driver accepts/rejects jobs from any registered store. Accept creates an
        ODRL obligation (deliver by deadline) between the driver and that store.
      - **Marketplace/multi-tenant case** (§11 #21): a food delivery platform (multi-tenant
-       CMS) has multiple take-away stores as tenant orgs. Drivers register with the
+       IPMS) has multiple take-away stores as tenant orgs. Drivers register with the
        platform, not individual stores. The platform dispatches jobs from any tenant
        store to available drivers. Driver earnings are split per job with platform fee
        (escrow/split payments, §10.5).
      - **Independent/federated case**: a driver has their own pod and is independently
-       registered with multiple stores' CMS instances. Each store sends job offers via
+       registered with multiple stores' IPMS instances. Each store sends job offers via
        LDN to the driver's pod inbox. The driver's app federates across all connected
        stores.
 
@@ -1044,7 +1044,7 @@ handlers are either absent or return placeholder responses:
      offers via LDN to the top N drivers → first to accept gets the job.
    - Dispatch rules: proximity, zone, driver capacity (bike vs car), current workload,
      driver rating (portable reputation, §11).
-   - The dispatch engine is a CMS module (or part of the delivery module) that runs on
+   - The dispatch engine is a IPMS module (or part of the delivery module) that runs on
      the platform's server, reading driver availability from driver pods and order
      status from store pods.
 
@@ -1092,14 +1092,14 @@ handlers are either absent or return placeholder responses:
    modules page** (6.3) — completes the form rendering pipeline.
 13. **Implement crypto bootstrap** (5.3) — server can't start without signing keys.
 14. **Fix `ConnectorSidecar` ESM compatibility** (2.4) — will break under ESM.
-15. **Implement dynamic sidebar** (15.2) — core CMS framework requirement.
+15. **Implement dynamic sidebar** (15.2) — core IPMS framework requirement.
 16. **Implement governance module** (15.3) — core model pillar.
 17. **Implement credential issuance (VC)** (15.4) — cross-cuts multiple modules.
 18. **Implement payments gateway adapters** (15.6) — POS and payroll depend on it.
 19. **Implement device identity (mTLS)** (15.5) — needed for IoT/POS devices.
 20. **Implement website maker** (15.1) — the `www` route is reserved but not served.
 21. **Add tests** (8.1–8.4) — coverage gate compliance and native code safety.
-22. **Implement remaining CMS modules** (6.1) — per the plan's phasing, pass 2+.
+22. **Implement remaining IPMS modules** (6.1) — per the plan's phasing, pass 2+.
 23. **Add `docker-compose.yml`** (11.3) — containerized deployments.
 24. **Surface notifications in admin UI** (15.7) — infrastructure exists, needs UI.
 25. **Clean up Rust warnings** (5.8) and **add fullscreen** (5.9) — polish.

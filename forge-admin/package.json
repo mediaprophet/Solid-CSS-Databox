@@ -17,6 +17,7 @@
     "@refinedev/core": "^5.0.12",
     "@refinedev/react-router": "^2.0.4",
     "@tailwindcss/vite": "^4.3.3",
+    "@xyflow/react": "^12.11.2",
     "autoprefixer": "^10.5.4",
     "i18next": "^26.3.6",
     "n3": "^2.1.1",

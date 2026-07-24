@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "Databox CMS",
+    "title": "Databox IPMS",
     "subtitle": "Gestão de conteúdo nativa Solid"
   },
   "nav": {
@@ -96,7 +96,7 @@
     "subtitle": "Horizontais operacionais da Fase 3: consentimento, delegação, emergência, inventário, fidelidade, preços e mais."
   },
   "modules": {
-    "title": "Módulos CMS",
+    "title": "Módulos IPMS",
     "enabled": "Ativado",
     "disabled": "Desativado",
     "enable": "Ativar",
@@ -139,7 +139,7 @@
   },
   "setup": {
     "title": "Assistente de Configuração",
-    "welcome": "Bem-vindo ao Databox CMS",
+    "welcome": "Bem-vindo ao Databox IPMS",
     "chooseProfile": "Escolha o tipo de organização",
     "legalEntity": "Detalhes da Entidade Legal",
     "orgName": "Nome da Organização",

@@ -174,8 +174,8 @@ export const AUTH = createVocabulary(
   'publicMode',
 );
 
-export const CMS = createVocabulary(
-  'urn:solid-server:databox:cms#',
+export const IPMS = createVocabulary(
+  'urn:solid-server:databox:ipms#',
   // Core module framework
   'Module',
   'enabled',

@@ -35,39 +35,72 @@ fn main() {
     let profile = InstallProfile::from_type(&package_type, install_dir, config_preset)
         .unwrap_or_else(|error| { eprintln!("Error: {error}"); process::exit(2); });
 
-    println!("\nDatabox CMS setup\n=================");
-    println!("Product: {}", profile.type_name);
-    println!("Location: {}\n", display_path(&profile.install_dir));
+    println!("\n┌────────────────────────────────────────────────────────┐");
+    println!("│                SOLID DATABOX CMS SETUP                 │");
+    println!("└────────────────────────────────────────────────────────┘");
+    println!("  Product Profile : {}", profile.type_name);
+    println!("  Target Location : {}\n", display_path(&profile.install_dir));
 
     let steps: [(&str, fn(&InstallProfile) -> Result<(), String>); 8] = [
-        ("Checking this computer", preflight::run),
-        ("Preparing the private Node.js runtime", node::run),
-        ("Installing the application", deploy::run),
-        ("Installing application dependencies", deps::run),
-        ("Securing local configuration", config::run),
-        ("Checking native integrations", handshake::run),
-        ("Setting up background startup", service::run),
-        ("Finishing setup", handoff::run),
+        ("Checking system requirements and environment preflight", preflight::run),
+        ("Preparing private Node.js application runtime", node::run),
+        ("Installing application package and core bundles", deploy::run),
+        ("Verifying application module dependencies", deps::run),
+        ("Configuring secure local storage & access policies", config::run),
+        ("Testing native helper integrations & IPC channels", handshake::run),
+        ("Configuring background service and desktop auto-start", service::run),
+        ("Finalizing installation state and handoff", handoff::run),
     ];
 
+    let total = steps.len();
     for (index, (name, run)) in steps.iter().enumerate() {
-        println!("[{}/{}] {name}", index + 1, steps.len());
-        if let Err(error) = run(&profile) {
-            eprintln!("\nSetup could not finish: {error}\nNothing has been started. You can safely run setup again after resolving the issue.");
-            process::exit(1);
+        let step_num = index + 1;
+        print!("[{step_num}/{total}] {name} ... ");
+        match run(&profile) {
+            Ok(()) => {
+                println!("[✓ OK]");
+            }
+            Err(error) => {
+                println!("[✕ FAILED]");
+                eprintln!("\n┌────────────────────────────────────────────────────────┐");
+                eprintln!("│               INSTALLATION STEP FAILED                 │");
+                eprintln!("└────────────────────────────────────────────────────────┘");
+                eprintln!("Details: {error}\n");
+                eprintln!("Setup could not complete automatically. Resolve the issue and rerun setup.");
+                process::exit(1);
+            }
         }
-        println!("  Done\n");
     }
+
+    println!("\n┌────────────────────────────────────────────────────────┐");
+    println!("│             INSTALLATION COMPLETED CLEANLY              │");
+    println!("└────────────────────────────────────────────────────────┘");
 
     if launch_after_install {
         if let Err(error) = handoff::launch(&profile) {
             eprintln!("Setup completed, but Databox could not be opened automatically: {error}");
             eprintln!("Open {} to start it.", display_path(&profile.binary_path("tray-supervisor")));
+        } else {
+            println!("  [✓] Databox CMS desktop supervisor launched successfully.");
         }
     }
-    println!("Databox CMS is ready.");
+    println!("  [✓] Databox CMS is ready for use.\n");
 }
 
 fn print_help() {
-    println!("Databox CMS setup\n\nUsage: databox-installer [options]\n\nOptions:\n  -t, --package-type <type>   Product to install (default: cms:CombinedInstall)\n  -d, --install-dir <path>    Installation folder\n  -c, --config-preset <path>  Config preset inside the application\n      --no-launch             Finish without opening the desktop app\n  -h, --help                  Show this help\n\nProducts: cms:ServerInstall, cms:PosInstall, cms:ConnectorInstall, cms:TraySupervisorInstall, cms:CombinedInstall");
+    println!("\nSolid Databox CMS Installer\n");
+    println!("Usage: databox-installer [options]\n");
+    println!("Options:");
+    println!("  -t, --package-type <type>   Product profile to install (default: cms:CombinedInstall)");
+    println!("  -d, --install-dir <path>    Installation target folder");
+    println!("  -c, --config-preset <path>  Configuration preset inside the application");
+    println!("      --no-launch             Finish installation without launching desktop app");
+    println!("  -h, --help                  Show this help message\n");
+    println!("Products:");
+    println!("  cms:ServerInstall          Core Solid Databox CMS Server");
+    println!("  cms:PosInstall             POS Edge Terminal & Server");
+    println!("  cms:ConnectorInstall       Enterprise Sidecar Connector");
+    println!("  cms:TraySupervisorInstall  Desktop System Tray Supervisor");
+    println!("  cms:CombinedInstall        Full Server, POS Edge & Desktop Supervisor\n");
 }
+

@@ -9,7 +9,7 @@ const extension = target.platform === 'windows' ? '.exe' : '';
 const nativeRelease = nativeTarget ?
     join(root, 'native', 'target', nativeTarget, 'release') :
     join(root, 'native', 'target', 'release');
-const output = join(root, 'release', 'Databox CMS');
+const output = join(root, 'release', 'Databox IPMS');
 const app = join(output, 'payload', 'app');
 const helpers = join(output, 'payload', 'bin');
 
@@ -26,7 +26,7 @@ if (missing.length > 0) {
 
 await rm(output, { recursive: true, force: true });
 await mkdir(helpers, { recursive: true });
-await cp(join(nativeRelease, `databox-installer${extension}`), join(output, `Databox CMS Setup${extension}`));
+await cp(join(nativeRelease, `databox-installer${extension}`), join(output, `Databox IPMS Setup${extension}`));
 for (const helper of [ 'tray-supervisor', 'pos-edge' ]) {
   await cp(join(nativeRelease, `${helper}${extension}`), join(helpers, `${helper}${extension}`));
 }
@@ -43,18 +43,18 @@ for (const entry of [ 'package.json', 'package-lock.json' ]) {
   await cp(join(root, entry), join(app, entry));
 }
 const setupCommand = target.platform === 'windows' ?
-  `Double-click "Databox CMS Setup${extension}".` :
-  `In Terminal, run: ./"Databox CMS Setup${extension}"`;
+  `Double-click "Databox IPMS Setup${extension}".` :
+  `In Terminal, run: ./"Databox IPMS Setup${extension}"`;
 const manifest = {
   schemaVersion: 1,
-  product: 'Databox CMS',
+  product: 'Databox IPMS',
   target: target.triple,
   platform: target.platform,
   architecture: target.architecture,
   nodeVersion: 'v24.18.0',
 };
 await writeFile(join(output, 'payload', 'manifest.json'), `${JSON.stringify(manifest, null, 2)}\n`);
-await writeFile(join(output, 'README.txt'), `Databox CMS\n===========\n\nPackage: ${target.platform} (${target.architecture})\n\n1. ${setupCommand}\n2. Setup downloads a private, checksum-verified Node.js runtime and installs the locked application dependencies.\n3. Setup starts Databox from the notification area. Use the tray icon to open the admin panel, view logs, or start and stop the server.\n\nThe first setup needs an internet connection. It does not use or modify a system-wide Node.js installation.\n`);
+await writeFile(join(output, 'README.txt'), `Databox IPMS\n===========\n\nPackage: ${target.platform} (${target.architecture})\n\n1. ${setupCommand}\n2. Setup downloads a private, checksum-verified Node.js runtime and installs the locked application dependencies.\n3. Setup starts Databox from the notification area. Use the tray icon to open the admin panel, view logs, or start and stop the server.\n\nThe first setup needs an internet connection. It does not use or modify a system-wide Node.js installation.\n`);
 console.log(`Desktop package created at ${output}`);
 
 function resolveTarget(value) {

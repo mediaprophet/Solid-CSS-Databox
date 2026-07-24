@@ -12,7 +12,7 @@ import { createPosOperationsSnapshot } from "../data/posOperations";
 // origin. The token is the preset's demonstration control boundary, not IAM.
 const API_URL = import.meta.env.VITE_FORGE_API_URL ?? "http://localhost:3000/.databox/forge";
 const TOKEN = import.meta.env.VITE_FORGE_TOKEN ?? "12345678901234567890123456789012";
-const CMS_API_URL = import.meta.env.VITE_CMS_API_URL ?? "http://localhost:3000/.databox/cms";
+const CMS_API_URL = import.meta.env.VITE_CMS_API_URL ?? "http://localhost:3000/.databox/ipms";
 const CMS_TOKEN = import.meta.env.VITE_CMS_TOKEN ?? TOKEN;
 
 const fetchWithAuth = async (url: string, options: RequestInit = {}) => {
@@ -30,7 +30,7 @@ const fetchWithAuth = async (url: string, options: RequestInit = {}) => {
   return data;
 };
 
-const fetchCmsWithAuth = async (url: string, options: RequestInit = {}) => {
+const fetchIpmsWithAuth = async (url: string, options: RequestInit = {}) => {
   const headers = new Headers(options.headers);
   headers.set("Authorization", `Bearer ${CMS_TOKEN}`);
   headers.set("Content-Type", "application/json");
@@ -232,8 +232,8 @@ export const dataProvider = {
       };
     }
 
-    if (resource === "cms-modules") {
-      const data = await fetchCmsWithAuth(`${CMS_API_URL}/modules`);
+    if (resource === "ipms-modules") {
+      const data = await fetchIpmsWithAuth(`${CMS_API_URL}/modules`);
       const items = (Array.isArray(data) ? data : []).map((module: any) =>
         typeof module === "string"
           ? { id: module, name: module, enabled: true, capabilities: [], routes: [] }
@@ -245,8 +245,8 @@ export const dataProvider = {
       };
     }
 
-    if (resource === "cms-vertical-profiles") {
-      const data = await fetchCmsWithAuth(`${CMS_API_URL}/vertical-profiles`);
+    if (resource === "ipms-vertical-profiles") {
+      const data = await fetchIpmsWithAuth(`${CMS_API_URL}/vertical-profiles`);
       const items = (Array.isArray(data) ? data : []).map((profile: any) => ({
         ...profile,
         id: profile.id,
@@ -304,13 +304,13 @@ export const dataProvider = {
       return { data: record };
     }
 
-    if (resource === "cms-modules") {
-      const data = await fetchCmsWithAuth(`${CMS_API_URL}/modules/${encodeURIComponent(String(id))}`);
+    if (resource === "ipms-modules") {
+      const data = await fetchIpmsWithAuth(`${CMS_API_URL}/modules/${encodeURIComponent(String(id))}`);
       return { data: { ...data, id: data.id } };
     }
 
-    if (resource === "cms-vertical-profiles") {
-      const data = await fetchCmsWithAuth(`${CMS_API_URL}/vertical-profiles/${encodeURIComponent(String(id))}`);
+    if (resource === "ipms-vertical-profiles") {
+      const data = await fetchIpmsWithAuth(`${CMS_API_URL}/vertical-profiles/${encodeURIComponent(String(id))}`);
       return { data: { ...data, id: data.id } };
     }
 
@@ -354,8 +354,8 @@ export const dataProvider = {
       return { data: mockOutboundRequests[index] };
     }
 
-    if (resource === "cms-modules") {
-      const data = await fetchCmsWithAuth(`${CMS_API_URL}/modules/${encodeURIComponent(String(id))}`, {
+    if (resource === "ipms-modules") {
+      const data = await fetchIpmsWithAuth(`${CMS_API_URL}/modules/${encodeURIComponent(String(id))}`, {
         method: "PUT",
         body: JSON.stringify(variables),
       });
@@ -402,31 +402,31 @@ export const dataProvider = {
       return { data: record };
     }
     if (resource === "hosting-plans") {
-      const data = await fetchCmsWithAuth(`${CMS_API_URL}/hosting/plan`, {
+      const data = await fetchIpmsWithAuth(`${CMS_API_URL}/hosting/plan`, {
         method: "POST",
         body: JSON.stringify(variables),
       });
       return { data: { id: Date.now(), ...data } as any };
     }
     if (resource === "receipt-documents") {
-      const data = await fetchCmsWithAuth(`${CMS_API_URL}/receipt/build`, {
+      const data = await fetchIpmsWithAuth(`${CMS_API_URL}/receipt/build`, {
         method: "POST",
         body: JSON.stringify(variables),
       });
       return { data: { id: data.receiptId, ...data } as any };
     }
-    if (resource === "cms-vertical-profile-applications") {
+    if (resource === "ipms-vertical-profile-applications") {
       const vars = variables as Record<string, unknown>;
       const profileId = vars.profileId;
       const operation = vars.operation === "apply" ? "apply" : "preview";
-      const data = await fetchCmsWithAuth(
+      const data = await fetchIpmsWithAuth(
         `${CMS_API_URL}/vertical-profiles/${encodeURIComponent(String(profileId))}/${operation}`,
         { method: "POST", body: JSON.stringify({}) }
       );
       return { data: { id: `${profileId}:${operation}`, ...data } as any };
     }
 
-    const cmsModuleRoutes: Record<string, Record<string, string>> = {
+    const ipmsModuleRoutes: Record<string, Record<string, string>> = {
       governance: {
         "role-bind": "/governance/role/bind",
         "odrl-policy": "/governance/odrl/policy",
@@ -476,12 +476,12 @@ export const dataProvider = {
       "mcp.server": { "tools-list": "/mcp/tools/list", "tools-call": "/mcp/tools/call" },
     };
 
-    const moduleRoutes = cmsModuleRoutes[resource];
+    const moduleRoutes = ipmsModuleRoutes[resource];
     if (moduleRoutes) {
       const actionKey = (meta as any)?.action ?? "build";
       const routePath = moduleRoutes[actionKey];
       if (routePath) {
-        const data = await fetchCmsWithAuth(`${CMS_API_URL}${routePath}`, {
+        const data = await fetchIpmsWithAuth(`${CMS_API_URL}${routePath}`, {
           method: "POST",
           body: JSON.stringify(variables),
         });

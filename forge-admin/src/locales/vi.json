@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "Databox CMS",
+    "title": "Databox IPMS",
     "subtitle": "Quản lý nội dung native Solid"
   },
   "nav": {
@@ -96,7 +96,7 @@
     "subtitle": "Chức năng vận hành Giai đoạn 3: đồng ý, ủy quyền, khẩn cấp, hàng tồn kho, khách hàng thân thiết, định giá và hơn thế nữa."
   },
   "modules": {
-    "title": "Mô-đun CMS",
+    "title": "Mô-đun IPMS",
     "enabled": "Đã bật",
     "disabled": "Đã tắt",
     "enable": "Bật",
@@ -139,7 +139,7 @@
   },
   "setup": {
     "title": "Trình hướng dẫn cài đặt",
-    "welcome": "Chào mừng đến với Databox CMS",
+    "welcome": "Chào mừng đến với Databox IPMS",
     "chooseProfile": "Chọn loại tổ chức",
     "legalEntity": "Chi tiết pháp nhân",
     "orgName": "Tên tổ chức",

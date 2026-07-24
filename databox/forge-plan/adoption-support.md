@@ -25,7 +25,7 @@ derived from the canonical graph; they are not competing sources of truth.
 - Compare visible facts with structured data and flag contradictions.
 - Generate previewable JSON-LD for organization and location pages.
 - Validate syntax, vocabulary ranges, required/recommended channel fields, canonical URLs, and crawlability inputs.
-- Export a snippet, CMS adapter payload, pull request, or signed webhook; never silently rewrite a site.
+- Export a snippet, IPMS adapter payload, pull request, or signed webhook; never silently rewrite a site.
 - Record approval and deployed digest, then re-crawl and detect drift.
 - Link to Google Rich Results Test and Search Console validation where the organization has authorized access.
 

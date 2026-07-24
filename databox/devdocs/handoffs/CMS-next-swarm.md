@@ -1,6 +1,6 @@
-# CMS Next Swarm
+# IPMS Next Swarm
 
-Recommended swarm name: `cms-live-runtime-hardware-swarm-3`
+Recommended swarm name: `ipms-live-runtime-hardware-swarm-3`
 
 ## Purpose
 
@@ -12,10 +12,10 @@ execution.
 
 ## Preconditions
 
-- Branch: `databox/cms-plan`
+- Branch: `databox/ipms-plan`
 - Exclude local Claude runtime files such as `.claude/`.
-- Treat `databox/solid-cms-plan.md` as canonical.
-- Read `databox/handoffs/CMS-swarm-status.md` first.
+- Treat `databox/solid-ipms-plan.md` as canonical.
+- Read `databox/handoffs/IPMS-swarm-status.md` first.
 - Preserve the four invariants from the plan:
   - opt-in profile only;
   - portable-core vs CSS-enhanced modes;
@@ -32,28 +32,28 @@ available on PATH.
 Expected shape:
 
 - Configure a local Oxigraph endpoint or launcher for the development environment.
-- Run `npm.cmd run test:cms:oxigraph` in unified mode and split query/update mode.
-- Run `node .\scripts\run-cms-migration-proof.mjs --mode=unified --start-css --start-oxigraph` and split mode.
-- Capture exact endpoint URLs, launch command, and failure/recovery notes in `databox/cms-oxigraph-smoke.md`.
+- Run `npm.cmd run test:ipms:oxigraph` in unified mode and split query/update mode.
+- Run `node .\scripts\run-ipms-migration-proof.mjs --mode=unified --start-css --start-oxigraph` and split mode.
+- Capture exact endpoint URLs, launch command, and failure/recovery notes in `databox/ipms-oxigraph-smoke.md`.
 - Keep this optional for normal CI until the endpoint is provisioned.
 
 ### 2. Live Network Hydration
 
-Status: `OxigraphCmsSyncComposition` now owns config/lifecycle/startup hydration; it still needs a real endpoint
+Status: `OxigraphIpmsSyncComposition` now owns config/lifecycle/startup hydration; it still needs a real endpoint
 run.
 
 Expected shape:
 
-- Start CSS with `config/cms/cms-oxigraph.json`.
-- Write/update/delete allowlisted CMS RDF resources through CSS.
+- Start CSS with `config/ipms/ipms-oxigraph.json`.
+- Write/update/delete allowlisted IPMS RDF resources through CSS.
 - Prove the SPARQL Update endpoint receives replacement/clear graph operations and can be rebuilt from pods.
 - Preserve the invariant that Solid pod resources remain canonical and Oxigraph remains rebuildable.
 
 ### 3. ResourceStore POS Routes
 
 Status: DONE for the ordering flow. `PosOrderStore` persists cart/order/ticket/onboarding through `ResourceStore`;
-`POST /.databox/cms/pos/orders` builds and persists a waiter or customer-self-order flow and
-`GET /.databox/cms/pos/orders?iri=` reads it back. The `DataboxCms` integration test creates a waiter order and
+`POST /.databox/ipms/pos/orders` builds and persists a waiter or customer-self-order flow and
+`GET /.databox/ipms/pos/orders?iri=` reads it back. The `DataboxIpms` integration test creates a waiter order and
 reads the canonical order resource back both through the control plane and through a plain unauthenticated LDP GET
 (Turtle), proving standard-Solid degradation. Still missing: register/close-session and customer-display state
 persistence, and shop Wi-Fi/table-session native-edge handling.
@@ -99,13 +99,13 @@ Expected shape:
 Run at minimum:
 
 ```powershell
-npx.cmd jest test/unit/databox/cms --maxWorkers=2 --coverage=false
+npx.cmd jest test/unit/databox/ipms --maxWorkers=2 --coverage=false
 npx.cmd jest test/unit/storage/accessors/SparqlDataAccessor.test.ts --maxWorkers=2 --coverage=false
 npm.cmd run build
 npm.cmd run test:ts -- --pretty false
 npm.cmd run lint:markdown
-npx.cmd jest test/integration/DataboxCms.test.ts --runInBand --coverage=false
-npx.cmd jest test/integration/DataboxCms.test.ts test/integration/DataboxCmsOxigraph.test.ts --runInBand --coverage=false
+npx.cmd jest test/integration/DataboxIpms.test.ts --runInBand --coverage=false
+npx.cmd jest test/integration/DataboxIpms.test.ts test/integration/DataboxIpmsOxigraph.test.ts --runInBand --coverage=false
 npx.cmd jest test/unit --maxWorkers=2 --coverage=false
 ```
 
