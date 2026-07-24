@@ -69,7 +69,7 @@ export class CssDataboxStore {
     // traverse the normal ResourceStore stack and WAC handler.
     await this.backend.setRepresentation(
       { path: resource },
-      new BasicRepresentation(input.body.toString('utf8'), input.mediaType, true),
+      new BasicRepresentation([ Buffer.from(input.body.toString('utf8'), 'utf-8') ], input.mediaType, true),
     );
     this.committedDigests.set(resource, input.payloadDigest);
     return this.confirm(input);
@@ -86,7 +86,7 @@ export class CssDataboxStore {
 
   private async createIfAbsent(path: string, body: string, contentType: string): Promise<void> {
     if (!await this.source.hasResource({ path })) {
-      await this.source.setRepresentation({ path }, new BasicRepresentation(body, contentType));
+      await this.source.setRepresentation({ path }, new BasicRepresentation([ Buffer.from(body, 'utf-8') ], contentType));
     }
   }
 

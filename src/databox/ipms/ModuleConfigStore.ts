@@ -28,7 +28,7 @@ export class ModuleConfigStore {
 
   /** Write a module's state graph (Turtle) as its Solid resource. */
   public async save(id: string, turtle: string): Promise<void> {
-    await this.store.setRepresentation(this.identifier(id), new BasicRepresentation(turtle, TURTLE));
+    await this.store.setRepresentation(this.identifier(id), new BasicRepresentation([ Buffer.from(turtle, 'utf-8') ], TURTLE));
   }
 
   /** Read a module's state graph as Turtle, or `undefined` if it has none yet. */
@@ -46,7 +46,7 @@ export class ModuleConfigStore {
     const identifier = this.identifier(id);
     await this.store.setRepresentation(
       identifier,
-      new BasicRepresentation(await setModuleEnabledFlag(identifier.path, await this.load(id) ?? '', enabled), TURTLE),
+      new BasicRepresentation([ Buffer.from(await setModuleEnabledFlag(identifier.path, await this.load(id) ?? '', enabled), 'utf-8') ], TURTLE),
     );
   }
 

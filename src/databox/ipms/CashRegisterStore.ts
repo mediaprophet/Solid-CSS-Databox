@@ -45,7 +45,7 @@ export class CashRegisterStore {
     const identifier = this.identifier(this.sessionDocumentIri(result.session));
     await this.store.setRepresentation(
       identifier,
-      new BasicRepresentation(JSON.stringify(result.record), JSON_LD),
+      new BasicRepresentation([ Buffer.from(JSON.stringify(result.record), 'utf-8') ], JSON_LD),
     );
     return { iri: identifier.path, contentType: JSON_LD };
   }

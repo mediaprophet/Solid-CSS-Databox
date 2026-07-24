@@ -75,7 +75,7 @@ export class CustomerDisplayStore {
     };
     await this.store.setRepresentation(
       identifier,
-      new BasicRepresentation(JSON.stringify(document), JSON_LD),
+      new BasicRepresentation([ Buffer.from(JSON.stringify(document), 'utf-8') ], JSON_LD),
     );
     return { iri: identifier.path, contentType: JSON_LD };
   }
@@ -128,7 +128,7 @@ export class CustomerDisplayStore {
     };
     await this.store.setRepresentation(
       identifier,
-      new BasicRepresentation(JSON.stringify(document), JSON_LD),
+      new BasicRepresentation([ Buffer.from(JSON.stringify(document), 'utf-8') ], JSON_LD),
     );
     return { iri: identifier.path, contentType: JSON_LD };
   }

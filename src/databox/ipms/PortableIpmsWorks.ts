@@ -345,7 +345,7 @@ export async function publishPortableIpmsWorksToStandardSolidStore(
   ]) {
     await store.setRepresentation(
       { path: resource.path },
-      new BasicRepresentation(resource.turtle, resource.contentType),
+      new BasicRepresentation([ Buffer.from(resource.turtle, 'utf-8') ], resource.contentType),
     );
   }
   return resources;

@@ -50,7 +50,7 @@ export class PosOrderStore {
       const identifier = this.identifier(resource.iri);
       await this.store.setRepresentation(
         identifier,
-        new BasicRepresentation(JSON.stringify(resource.record), JSON_LD),
+        new BasicRepresentation([ Buffer.from(JSON.stringify(resource.record), 'utf-8') ], JSON_LD),
       );
       persisted.push({ iri: identifier.path, role: resource.role, contentType: JSON_LD });
     }
