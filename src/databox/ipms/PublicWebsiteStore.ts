@@ -75,7 +75,7 @@ export class PublicWebsiteStore {
     const persisted: PersistedPublicWebsiteResource[] = [];
     for (const asset of assets) {
       const identifier = this.identifier(`${base}${asset.suffix}`);
-      await this.store.setRepresentation(identifier, new BasicRepresentation(asset.content, asset.contentType));
+      await this.store.setRepresentation(identifier, new BasicRepresentation([ Buffer.from(asset.content, 'utf-8') ], asset.contentType));
       await this.setPublicAcl(identifier.path);
       persisted.push({ iri: identifier.path, role: asset.role, contentType: asset.contentType });
     }
@@ -119,7 +119,8 @@ export class PublicWebsiteStore {
     const persisted: PersistedPublicWebsiteResource[] = [];
     for (const asset of assets) {
       const identifier = this.identifier(`${base}${asset.suffix}`);
-      await this.store.setRepresentation(identifier, new BasicRepresentation(asset.content, asset.contentType));
+      const buffer = Buffer.from(asset.content, 'utf8');
+      await this.store.setRepresentation(identifier, new BasicRepresentation([buffer], asset.contentType));
       await this.setPublicAcl(identifier.path);
       persisted.push({ iri: identifier.path, role: asset.role, contentType: asset.contentType });
     }
@@ -167,6 +168,6 @@ export class PublicWebsiteStore {
   acl:mode acl:Read.
 `;
     // If the ACL already exists, we overwrite it (setRepresentation overwrites by default).
-    await this.store.setRepresentation(aclIdentifier, new BasicRepresentation(aclContent, 'text/turtle'));
+    await this.store.setRepresentation(aclIdentifier, new BasicRepresentation([ Buffer.from(aclContent, 'utf-8') ], 'text/turtle'));
   }
 }
